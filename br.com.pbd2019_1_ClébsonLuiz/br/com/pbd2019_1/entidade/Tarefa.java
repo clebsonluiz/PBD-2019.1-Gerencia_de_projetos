@@ -4,10 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tarefa")
+@NamedQuery(name = "Tarefa.etapa",
+	query = "select t from Tarefa t where t.etapa = :etapa")
 public class Tarefa extends Entidade{
 
 	@Column

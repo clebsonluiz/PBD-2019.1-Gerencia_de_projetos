@@ -4,22 +4,14 @@ package br.com.pbd2019_1.entidade;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "contato")
-
-@NamedQueries({
-	@NamedQuery(name = "Contato.cliente",
-			query = "select c from Contato c where c.cliente = :cliente"),
-	@NamedQuery(name = "Contato.fornecedor",
-			query = "select c from Contato c where c.fornecedor = :fornecedor"),
-	@NamedQuery(name = "Contato.funcionario",
-			query = "select c from Contato c where c.funcionario = :funcoinario")
-})
+@NamedQuery(name = "Contato.pessoa",
+	query = "select c from Contato c where c.pessoa = :pessoa")
 public class Contato extends Entidade{
 	
 	@Column

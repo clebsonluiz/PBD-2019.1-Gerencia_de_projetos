@@ -6,11 +6,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "etapa")
+@NamedQuery(name = "Etapa.projeto",
+	query = "select e from Etapa e where e.projeto = :projeto")
 public class Etapa extends Entidade{
 
 	@Column

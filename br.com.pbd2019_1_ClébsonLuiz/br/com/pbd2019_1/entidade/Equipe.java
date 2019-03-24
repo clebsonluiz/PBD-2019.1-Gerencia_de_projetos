@@ -3,11 +3,14 @@ package br.com.pbd2019_1.entidade;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "equipe")
+@NamedQuery(name = "Equipe.projeto",
+	query = "select e from Equipe e where e.projeto = :projeto")
 public class Equipe extends Entidade{
 
 	@Column

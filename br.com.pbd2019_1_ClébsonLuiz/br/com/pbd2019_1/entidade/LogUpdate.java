@@ -6,10 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "log_update")
+@NamedQuery(name = "LogUpdate.pessoa",
+	query = "select l from LogUpdate l where l.pessoa = :pessoa")
 public class LogUpdate extends Entidade{
 
 	@Column

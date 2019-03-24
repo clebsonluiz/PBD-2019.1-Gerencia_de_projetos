@@ -3,10 +3,18 @@ package br.com.pbd2019_1.entidade;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "membro_equipe")
+@NamedQueries({
+	@NamedQuery(name = "MembroEquipe.pessoa",
+			query = "select m form MembroEquipe m where m.pessoa = :pessoa"),
+	@NamedQuery(name = "MembroEquipe.equipe",
+			query = "select m form MembroEquipe m where m.equipe = :equipe")
+})
 public class MembroEquipe extends Entidade{
 
 	@ManyToOne

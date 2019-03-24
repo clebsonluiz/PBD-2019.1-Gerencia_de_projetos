@@ -7,12 +7,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "projeto")
+@NamedQuery(name = "Projeto.gerente",
+	query = "select p from Projeto as p where p.gerenteProjeto = :gerenteProjeto")
 public class Projeto extends Entidade{
 
 	@Column

@@ -3,11 +3,14 @@ package br.com.pbd2019_1.entidade;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "gerente_projeto")
+@NamedQuery(name = "GerenteProjeto.pessoa",
+	query = "select g from GerenteProjeto g where g.pessoa = :pessoa")
 public class GerenteProjeto extends Entidade{
 
 	@ManyToOne

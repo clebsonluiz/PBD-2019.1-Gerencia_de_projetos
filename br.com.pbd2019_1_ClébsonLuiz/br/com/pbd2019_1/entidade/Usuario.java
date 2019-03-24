@@ -16,8 +16,9 @@ import javax.persistence.Table;
 	@NamedQuery(name = "Usuario.buscarLogin",
 			query = "select u.id from Usuario as u where u.login like :login"),
 	@NamedQuery(name = "Usuario.buscarUsuario",
-			query = "select u from Usuario as u where u.login like :login and u.senha like :senha")
-	
+			query = "select u from Usuario as u where u.login like :login and u.senha like :senha"),
+	@NamedQuery(name = "Usuario.buscarPessoa",
+			query = "select u from Usuario as u where u.pessoa = :pessoa")
 })
 
 public class Usuario extends Entidade{
