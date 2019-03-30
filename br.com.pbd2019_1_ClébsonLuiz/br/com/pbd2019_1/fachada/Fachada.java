@@ -1,37 +1,37 @@
 package br.com.pbd2019_1.fachada;
 
-import br.com.pbd2019_1.dao.DAOCaracteristicaExtra;
-import br.com.pbd2019_1.dao.DAOColaborador;
-import br.com.pbd2019_1.dao.DAOContato;
-import br.com.pbd2019_1.dao.DAOEtapa;
-import br.com.pbd2019_1.dao.DAOLogUpdate;
-import br.com.pbd2019_1.dao.DAOPessoa;
-import br.com.pbd2019_1.dao.DAOProjeto;
-import br.com.pbd2019_1.dao.DAOTarefa;
-import br.com.pbd2019_1.dao.DAOUsuario;
+import br.com.pbd2019_1.business.BOCaracteristicaExtra;
+import br.com.pbd2019_1.business.BOColaborador;
+import br.com.pbd2019_1.business.BOContato;
+import br.com.pbd2019_1.business.BOEtapa;
+import br.com.pbd2019_1.business.BOLogUpdate;
+import br.com.pbd2019_1.business.BOPessoa;
+import br.com.pbd2019_1.business.BOProjeto;
+import br.com.pbd2019_1.business.BOTarefa;
+import br.com.pbd2019_1.business.BOUsuario;
 
 public class Fachada {
 
-	private DAOEtapa daoEtapa;
-	private DAOPessoa daoPessoa;
-	private DAOTarefa daoTarefa;
-	private DAOContato daoContato;
-	private DAOProjeto daoProjeto;
-	private DAOUsuario daoUsuario;
-	private DAOLogUpdate daoLogUpdate;
-	private DAOColaborador daoColaborador;
-	private DAOCaracteristicaExtra daoCaracteristicaExtra;
+	private BOEtapa boEtapa;
+	private BOPessoa boPessoa;
+	private BOTarefa boTarefa;
+	private BOContato boContato;
+	private BOProjeto boProjeto;
+	private BOUsuario boUsuario;
+	private BOLogUpdate boLogUpdate;
+	private BOColaborador boColaborador;
+	private BOCaracteristicaExtra boCaracteristicaExtra;
 	
 	private  Fachada() {
-		this.daoEtapa = new DAOEtapa();
-		this.daoPessoa = new DAOPessoa();
-		this.daoTarefa = new DAOTarefa();
-		this.daoContato = new DAOContato();
-		this.daoProjeto = new DAOProjeto();
-		this.daoUsuario = new DAOUsuario();
-		this.daoLogUpdate = new DAOLogUpdate();
-		this.daoColaborador = new DAOColaborador();
-		this.daoCaracteristicaExtra = new DAOCaracteristicaExtra();
+		this.boEtapa = new BOEtapa();
+		this.boPessoa = new BOPessoa();
+		this.boTarefa = new BOTarefa();
+		this.boContato = new BOContato();
+		this.boProjeto = new BOProjeto();
+		this.boUsuario = new BOUsuario();
+		this.boLogUpdate = new BOLogUpdate();
+		this.boColaborador = new BOColaborador();
+		this.boCaracteristicaExtra = new BOCaracteristicaExtra();
 	}
 
 	private static Fachada fachada;
@@ -42,14 +42,14 @@ public class Fachada {
 		return fachada;
 	}
 
-	public DAOEtapa getDaoEtapa() {return daoEtapa;}
-	public DAOPessoa getDaoPessoa() {return daoPessoa;}
-	public DAOTarefa getDaoTarefa() {return daoTarefa;}
-	public DAOContato getDaoContato() {return daoContato;}
-	public DAOProjeto getDaoProjeto() {return daoProjeto;}
-	public DAOUsuario getDaoUsuario() {return daoUsuario;}
-	public DAOLogUpdate getDaoLogUpdate() {return daoLogUpdate;}
-	public DAOColaborador getDaoColaborador() {return daoColaborador;}
-	public DAOCaracteristicaExtra getDaoCaracteristicaExtra() {return daoCaracteristicaExtra;}
+	public BOEtapa getBoEtapa() {return boEtapa;}
+	public BOPessoa getBoPessoa() {return boPessoa;}
+	public BOTarefa getBoTarefa() {return boTarefa;}
+	public BOContato getBoContato() {return boContato;}
+	public BOProjeto getBoProjeto() {return boProjeto;}
+	public BOUsuario getBoUsuario() {return boUsuario;}
+	public BOLogUpdate getBoLogUpdate() {return boLogUpdate;}
+	public BOColaborador getBoColaborador() {return boColaborador;}
+	public BOCaracteristicaExtra getBoCaracteristicaExtra() {return boCaracteristicaExtra;}
 	
 }
