@@ -33,8 +33,14 @@ public class Usuario extends Entidade{
 	
 	public String getLogin() {return login;}
 	public String getSenha() {return senha;}
+	public boolean isSuper_user() {return super_user;}
+	public boolean isAdmin_user() {return admin_user;}
+	public boolean isComum_user() {return comum_user;}
 
 	public void setLogin(String login) {this.login = login;}
 	public void setSenha(String senha) {this.senha = senha;}
-
+	public void setSuper_user(boolean super_user) {this.super_user = super_user;}
+	public void setAdmin_user(boolean admin_user) {this.admin_user = admin_user;}
+	public void setComum_user(boolean comum_user) {this.comum_user = comum_user;}
+	
 }

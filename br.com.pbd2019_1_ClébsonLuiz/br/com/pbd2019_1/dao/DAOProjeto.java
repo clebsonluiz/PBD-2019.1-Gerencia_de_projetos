@@ -1,24 +1,29 @@
 package br.com.pbd2019_1.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.exception.DAOException;
 
 public class DAOProjeto extends DAOGenerico<Projeto>{
 
-	public Projeto buscarPorPessoa(Pessoa pessoa) {
+	public List<Projeto> buscarPorPessoa(Pessoa pessoa) throws DAOException {
 		EntityManager entityManager = createEntityManager();
-		Projeto projeto = null;
+		List<Projeto> projetos = null;
 		try {
-			projeto = entityManager.createNamedQuery("Projeto.pessoa", Projeto.class)
-			.setParameter("pessoa", pessoa).getSingleResult();
+			projetos = entityManager.createNamedQuery("Projeto.pessoa", Projeto.class)
+			.setParameter("pessoa", pessoa).getResultList();
 		} catch (Exception e) {
-		
+			e.printStackTrace();
+			
+			throw new DAOException("Erro de busca no banco de dados");
 		} finally {
 			entityManager.close();
 		}
-		return projeto;
+		return projetos;
 	}
 	
 }
