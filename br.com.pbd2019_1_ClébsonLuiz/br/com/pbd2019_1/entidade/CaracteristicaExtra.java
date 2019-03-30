@@ -1,30 +1,30 @@
 package br.com.pbd2019_1.entidade;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "gerente_projeto")
-@NamedQuery(name = "GerenteProjeto.pessoa",
-	query = "select g from GerenteProjeto g where g.pessoa = :pessoa")
-public class GerenteProjeto extends Entidade{
+@Table(name = "caracteristica")
+@NamedQuery(name = "Caracteristica.pessoa", 
+	query = "select c from CaracteristicaExtra as c where c.pessoa = :pessoa")
+public class CaracteristicaExtra extends Entidade{
 
+	
+	@Column
+	private String nome;
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
-	@Transient
-	private Projeto projeto;
 	
-	public GerenteProjeto() {}
+	public CaracteristicaExtra() {}
 
+	public String getNome() {return nome;}
 	public Pessoa getPessoa() {return pessoa;}
-	public Projeto getProjeto() {return projeto;}
-
+	public void setNome(String nome) {this.nome = nome;}
 	public void setPessoa(Pessoa pessoa) {this.pessoa = pessoa;}
-	public void setProjeto(Projeto projeto) {this.projeto = projeto;}
 	
 }

@@ -6,12 +6,10 @@
 
     <persistence-unit name="banco" transaction-type="RESOURCE_LOCAL">
     	<class>entidade.Contato</class>
-    	<class>entidade.Endereco</class>
-    	<class>entidade.Equipe</class>
+    	<class>entidade.CaracteristicaExtra</class>
+    	<class>entidade.Colaborador</class>
     	<class>entidade.Etapa</class>
-    	<class>entidade.GerenteProjeto</class>
     	<class>entidade.LogUpdate</class>
-    	<class>entidade.MembroEquipe</class>
     	<class>entidade.Pessoa</class>
     	<class>entidade.Projeto</class>
     	<class>entidade.Tarefa</class>

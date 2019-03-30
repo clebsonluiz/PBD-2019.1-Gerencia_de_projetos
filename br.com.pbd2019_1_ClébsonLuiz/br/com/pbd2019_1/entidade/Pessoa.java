@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -15,13 +16,16 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "pessoa")
-@NamedQuery(name = "Pessoa.cpf",
-	query = "select COUNT(p) from Pessoa p where p.cpf like cpf")
+@NamedQueries({
+	@NamedQuery(name = "Pessoa.cpf",
+			query = "select COUNT(p) from Pessoa p where p.cpf like cpf"),
+	@NamedQuery(name = "Pessoa.buscarUsuario",
+			query = "select p from Pessoa as p where p.usuaro = :usuario")
+	
+})
+
 public class Pessoa extends Entidade{
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "endereco_id")
-	private Endereco endereco;
 	@Column
 	private String nome;
 	@Column
@@ -30,16 +34,20 @@ public class Pessoa extends Entidade{
 	private String sexo;
 	@Column
 	private Date data_nascimento;
+	@Column
+	private boolean disponibilidade;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 	@Transient
 	private Contato contato;
 	@Transient
-	private List<LogUpdate> logs;
+	private List<Projeto> projetos;
 	@Transient
-	private Usuario usuario;
+	private List<Colaborador> colaboradores;
 	@Transient
-	private List<GerenteProjeto> gerente_projetos;
-	@Transient
-	private List<MembroEquipe> membro_equipes;
+	private List<CaracteristicaExtra> caracteristicas;
+	
 	
 	public Pessoa() {}
 
@@ -48,22 +56,24 @@ public class Pessoa extends Entidade{
 	public String getSexo() {return sexo;}
 	public Contato getContato() {return contato;}
 	public Usuario getUsuario() {return usuario;}
-	public Endereco getEndereco() {return endereco;}
 	public Date getData_nascimento() {return data_nascimento;}
+	public boolean isDisponibilidade() {return disponibilidade;}
 
 	public void setCpf(String cpf) {this.cpf = cpf;}
 	public void setNome(String nome) {this.nome = nome;}
 	public void setSexo(String sexo) {this.sexo = sexo;}
-	public void setLogs(List<LogUpdate> logs) {this.logs = logs;}
 	public void setContato(Contato contato) {this.contato = contato;}
 	public void setUsuario(Usuario usuario) {this.usuario = usuario;}
-	public void setEndereco(Endereco endereco) {this.endereco = endereco;}
+	public void setProjetos(List<Projeto> projetos) {this.projetos = projetos;}
 	public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
-	public void setGerente_projetos(List<GerenteProjeto> gerente_projetos) {this.gerente_projetos = gerente_projetos;}
-	public void setMembro_equipes(List<MembroEquipe> membro_equipes) {this.membro_equipes = membro_equipes;}
+	public void setDisponibilidade(boolean disponibilidade) {this.disponibilidade = disponibilidade;}
+	public void setColaboradores(List<Colaborador> colaboradores) {this.colaboradores = colaboradores;}
+	public void setMembro_equipes(List<Colaborador> membro_equipes) {this.colaboradores = membro_equipes;}
+	public void setCaracteristicas(List<CaracteristicaExtra> caracteristicas) {this.caracteristicas = caracteristicas;}
 
-	public List<LogUpdate> getLogs() {return logs;}
-	public List<GerenteProjeto> getGerente_projetos() {return gerente_projetos;}
-	public List<MembroEquipe> getMembro_equipes() {return membro_equipes;}
-	
+	public List<Projeto> getProjetos() {return projetos;}
+	public List<Colaborador> getColaboradores() {return colaboradores;}
+	public List<Colaborador> getMembro_equipes() {return colaboradores;}
+	public List<CaracteristicaExtra> getCaracteristicas() {return caracteristicas;}
+
 }

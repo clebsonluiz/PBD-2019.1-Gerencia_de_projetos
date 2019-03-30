@@ -1,5 +1,7 @@
 package br.com.pbd2019_1.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -69,6 +71,32 @@ public abstract class DAOGenerico <T extends Entidade> {
 		} finally {
 			entityManager.close();
 		}
+	}
+	
+	public T buscaSQLGenerica(Class<T> classe, String sql) {
+		EntityManager entityManager = createEntityManager();
+		T t = null;
+		try {
+			t = entityManager.createQuery(sql, classe).getSingleResult();
+		} catch (Exception e) {
+		
+		} finally {
+			entityManager.close();
+		}
+		return t;
+	}
+	
+	public List<T> buscaListaSQLGenerica(Class<T> classe, String sql){
+		EntityManager entityManager = createEntityManager();
+		List<T> t = null;
+		try {
+			t = entityManager.createQuery(sql, classe).getResultList();
+		} catch (Exception e) {
+		
+		} finally {
+			entityManager.close();
+		}
+		return t;
 	}
 	
 }
