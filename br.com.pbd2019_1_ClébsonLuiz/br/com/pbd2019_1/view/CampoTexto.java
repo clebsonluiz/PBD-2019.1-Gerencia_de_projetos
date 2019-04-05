@@ -1,6 +1,7 @@
 package br.com.pbd2019_1.view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -18,6 +19,17 @@ public class CampoTexto extends JTextField implements FocusListener{
 
 	public CampoTexto(String text) {
 		super(text);
+		addFocusListener(this);
+	}
+	
+	public CampoTexto(String text, Font font) {
+		super(text);
+		setFont(font);
+		addFocusListener(this);
+	}
+	
+	public CampoTexto(Font font) {
+		setFont(font);
 		addFocusListener(this);
 	}
 	
