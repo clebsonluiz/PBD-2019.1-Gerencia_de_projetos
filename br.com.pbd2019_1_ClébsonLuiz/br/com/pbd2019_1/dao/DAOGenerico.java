@@ -90,6 +90,23 @@ public abstract class DAOGenerico <T extends Entidade> {
 		}
 	}
 	
+	
+	public List<T> buscarAll(Class<T> classe) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		List<T> t = null;
+		try {
+			t = entityManager.
+					createQuery("from entidade."+classe.getSimpleName()+ " entidade",
+							classe).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DAOException("Erro ao buscar todos "+classe.getSimpleName());
+		} finally {
+			entityManager.close();
+		}
+		return t;
+	}
+	
 	public T buscaSQLGenerica(Class<T> classe, String sql) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		T t = null;
