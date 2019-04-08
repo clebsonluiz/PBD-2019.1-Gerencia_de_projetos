@@ -9,13 +9,13 @@ import javax.swing.JTable;
 
 import br.com.pbd2019_1.utils.ViewUtil;
 
-public class TelaColaborador extends JPanel {
+public class TelaColaboradores extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private Botao btAdicionarColaborador;
 
-	public TelaColaborador() {
+	public TelaColaboradores() {
 		setMinimumSize(new Dimension(510, 175));
 		setPreferredSize(new Dimension(510, 175));
 		setLayout(new BorderLayout(0, 0));

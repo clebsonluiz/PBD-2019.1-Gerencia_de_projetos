@@ -14,6 +14,8 @@ import com.toedter.calendar.JDateChooser;
 import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.utils.ViewUtil;
 import br.com.pbd2019_1.utils.ViewUtil.Bordas;
+import java.awt.BorderLayout;
+import javax.swing.JComboBox;
 
 public class TelaTarefa extends JPanel {
 
@@ -23,9 +25,10 @@ public class TelaTarefa extends JPanel {
 	private Horario horario;
 	private JDateChooser dateChooser;
 	private JCheckBox chckbxFinalizada;
+	private JComboBox<String> prioridadeComboBox;
 
 	public TelaTarefa() {
-		setMinimumSize(new Dimension(300, 290));
+		setMinimumSize(new Dimension(300, 350));
 		setPreferredSize(new Dimension(300, 350));
 		setLayout(null);
 		
@@ -69,14 +72,29 @@ public class TelaTarefa extends JPanel {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(ViewUtil.Bordas.criarBordaTitulo("Finalizada"));
-		panel_2.setBounds(189, 44, 70, 70);
+		panel_2.setBounds(189, 22, 70, 50);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 		
 		chckbxFinalizada = new JCheckBox("     ");
-		chckbxFinalizada.setBounds(6, 18, 58, 38);
+		chckbxFinalizada.setBounds(6, 18, 58, 26);
 		chckbxFinalizada.setHorizontalTextPosition(SwingConstants.LEFT);
 		panel_2.add(chckbxFinalizada);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(ViewUtil.Bordas.criarBordaTituloField("Prioridade"));
+		panel_3.setBounds(180, 72, 88, 59);
+		panel_1.add(panel_3);
+		panel_3.setLayout(new BorderLayout(0, 0));
+		
+		
+		prioridadeComboBox = new JComboBox<String>();
+		
+		prioridadeComboBox.addItem("Baixa");
+		prioridadeComboBox.addItem("Media");
+		prioridadeComboBox.addItem("Alta");
+		prioridadeComboBox.setSelectedIndex(0);
+		panel_3.add(prioridadeComboBox, BorderLayout.CENTER);
 	}
 
 	public CampoTexto getNomeTarefaField() {
@@ -99,4 +117,8 @@ public class TelaTarefa extends JPanel {
 		return dateChooser;
 	}
 
+	public JComboBox<String> getPrioridadeComboBox() {
+		return prioridadeComboBox;
+	}
+	
 }

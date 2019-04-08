@@ -22,6 +22,11 @@ public class Botao extends JButton {
 		setBackground(CINZA_CLARO_PADRAO);
 	}
 	
+	public Botao(String texto, Color cor) {
+		super(texto);
+		setBackground(cor);
+	}
+	
 	public Botao(Icon icone,String texto_ao_passar_mouse) {
 		super(icone);
 		setToolTipText(texto_ao_passar_mouse);

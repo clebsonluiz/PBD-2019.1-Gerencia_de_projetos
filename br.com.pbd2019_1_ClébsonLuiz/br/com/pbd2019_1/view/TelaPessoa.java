@@ -91,6 +91,13 @@ public class TelaPessoa extends JPanel {
 		exibirSenhaChbx.setBounds(146, 81, 52, 18);
 		panel_1.add(exibirSenhaChbx);
 		
+		exibirSenhaChbx.addItemListener(ItemEvent->{
+			if(exibirSenhaChbx.isSelected())
+				senhaField.setEchoChar((char)0);
+			else
+				senhaField.setEchoChar('*');
+		});
+		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(ViewUtil.Bordas.criarBordaTitulo("Disponível"));
 		panel_2.setBounds(10, 205, 75, 129);
