@@ -56,4 +56,9 @@ public class DateUtil {
 		return Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(date));
 	}
 	
+	public static String getDateString(String format,Date date) {
+		return new SimpleDateFormat(format).format(date);
+	}
+	
+	
 }
