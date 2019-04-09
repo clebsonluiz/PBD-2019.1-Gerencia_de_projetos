@@ -2,7 +2,6 @@ package br.com.pbd2019_1.business;
 
 import br.com.pbd2019_1.dao.DAOPessoa;
 import br.com.pbd2019_1.entidade.Pessoa;
-import br.com.pbd2019_1.entidade.Usuario;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.utils.DocumentoUtil;
@@ -18,7 +17,9 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 			if(t == null || t.getNome() == null || t.getNome().trim().equals("")
 				|| t.getNome().split(" ").length < 2 || t.getData_nascimento() == null
 				|| t.getSexo() == null || t.getSexo().trim().equals("")
-				|| t.getUsuario() == null)
+				||t.getUser_login() == null || t.getUser_senha() == null || t.getUser_type() == null
+				|| t.getUser_login().trim().equals("") || t.getUser_login().trim().equals("") 
+				|| t.getUser_login().trim().equals(""))
 				throw new BOException("Erro ao validar pessoa");
 			if(buscarPorCPF(t.getCpf()))
 				throw new BOException("Já existe uma pessoa de mesmo CPF");
@@ -31,8 +32,10 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		if(t == null || t.getId() <= 0 || t.getNome() == null || t.getNome().trim().equals("")
 				|| t.getNome().split(" ").length < 2 || t.getData_nascimento() == null
 				|| t.getSexo() == null || t.getSexo().trim().equals("")
-				|| t.getUsuario() == null)
-				throw new BOException("Erro ao validar pessoa");
+				|| t.getUser_login() == null || t.getUser_senha() == null || t.getUser_type() == null
+				|| t.getUser_login().trim().equals("") || t.getUser_login().trim().equals("") 
+				|| t.getUser_login().trim().equals(""))
+				throw new BOException("Erro ao validar pessoa, algum campo está vazio");
 		if(!DocumentoUtil.isCPF(t.getCpf()))
 			throw new BOException("Não é um cpf valido");
 	}
@@ -42,11 +45,22 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 			throw new BOException("Não é um cpf valido");
 		return ((DAOPessoa)this.daoT).buscarPorCPF(cpf);
 	}
+
 	
-	public Pessoa buscarPorUsuario(Usuario usuario) throws BOException, DAOException {
-		if(usuario == null || usuario.getId() <= 0)
-			throw new BOException("Erro ao buscar pessoa");
-		return ((DAOPessoa)this.daoT).buscarPorUsuario(usuario);
+	public boolean buscarPorLogin(String login) throws BOException, DAOException {
+		if(login == null || login.trim().equals(""))
+			throw new BOException("Campo login vazio");
+		if(((DAOPessoa)this.daoT).buscarPorUsuario(login))
+			throw new BOException("Já Existe um usuario de mesmo login");
+		return false;
+	}
+	
+	public Pessoa buscarUsuario(String login, String senha) throws BOException, DAOException {
+		if(login == null || login.trim().equals(""))
+			throw new BOException("Campo login vazio");
+		if(senha == null || senha.trim().equals(""))
+			throw new BOException("Campo senha vazio");
+		return ((DAOPessoa)this.daoT).buscarPorUsuario(login, senha);
 	}
 	
 }

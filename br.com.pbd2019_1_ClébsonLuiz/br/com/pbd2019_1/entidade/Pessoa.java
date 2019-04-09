@@ -3,13 +3,10 @@ package br.com.pbd2019_1.entidade;
 import java.sql.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -19,13 +16,19 @@ import javax.persistence.Transient;
 @NamedQueries({
 	@NamedQuery(name = "Pessoa.cpf",
 			query = "select COUNT(p) from Pessoa p where p.cpf like cpf"),
+	@NamedQuery(name = "Pessoa.buscarUsuarioLogin",
+			query = "select p from Pessoa as p where p.user_login like :login"),
 	@NamedQuery(name = "Pessoa.buscarUsuario",
-			query = "select p from Pessoa as p where p.usuaro = :usuario")
-	
+			query = "select p from Pessoa as p where p.user_login like :login and p.user_senha like :senha")
+
 })
 
 public class Pessoa extends Entidade{
-
+	
+	public static final String COMUM_USER = "comum";
+	public static final String ADMIN_USER = "admin";
+	public static final String SUPER_USER = "super";
+	
 	@Column
 	private String nome;
 	@Column
@@ -36,9 +39,12 @@ public class Pessoa extends Entidade{
 	private Date data_nascimento;
 	@Column
 	private boolean disponibilidade;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
+	@Column
+	private String user_login;
+	@Column
+	private String user_senha;
+	@Column
+	private String user_type;
 	@Transient
 	private Contato contato;
 	@Transient
@@ -55,7 +61,6 @@ public class Pessoa extends Entidade{
 	public String getNome() {return nome;}
 	public String getSexo() {return sexo;}
 	public Contato getContato() {return contato;}
-	public Usuario getUsuario() {return usuario;}
 	public Date getData_nascimento() {return data_nascimento;}
 	public boolean isDisponibilidade() {return disponibilidade;}
 
@@ -63,7 +68,6 @@ public class Pessoa extends Entidade{
 	public void setNome(String nome) {this.nome = nome;}
 	public void setSexo(String sexo) {this.sexo = sexo;}
 	public void setContato(Contato contato) {this.contato = contato;}
-	public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 	public void setProjetos(List<Projeto> projetos) {this.projetos = projetos;}
 	public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
 	public void setDisponibilidade(boolean disponibilidade) {this.disponibilidade = disponibilidade;}
@@ -76,4 +80,12 @@ public class Pessoa extends Entidade{
 	public List<Colaborador> getMembro_equipes() {return colaboradores;}
 	public List<CaracteristicaExtra> getCaracteristicas() {return caracteristicas;}
 
+	public String getUser_type() {return user_type;}
+	public String getUser_login() {return user_login;}
+	public String getUser_senha() {return user_senha;}
+
+	public void setUser_type(String user_type) {this.user_type = user_type;}
+	public void setUser_login(String user_login) {this.user_login = user_login;}
+	public void setUser_senha(String user_senha) {this.user_senha = user_senha;}
+	
 }

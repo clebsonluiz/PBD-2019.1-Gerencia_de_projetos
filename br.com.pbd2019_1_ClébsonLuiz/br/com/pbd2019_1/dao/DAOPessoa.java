@@ -1,9 +1,9 @@
 package br.com.pbd2019_1.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import br.com.pbd2019_1.entidade.Pessoa;
-import br.com.pbd2019_1.entidade.Usuario;
 import br.com.pbd2019_1.exception.DAOException;
 
 public class DAOPessoa extends DAOGenerico<Pessoa>{
@@ -24,12 +24,35 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		return (quantidade > 0)? true : false;
 	}
 	
-	public Pessoa buscarPorUsuario(Usuario usuario) throws DAOException {
+	public boolean buscarPorUsuario(String login) throws DAOException {
+		EntityManager entityManager = createEntityManager();
+		int quantidade = 0;
+		try {
+			quantidade = entityManager.createNamedQuery("Pessoa.buscarUsuarioLogin", Pessoa.class)
+			.setParameter("login", login).getMaxResults();
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			throw new DAOException("Erro de busca no banco de dados");
+		} finally {
+			entityManager.close();
+		}
+		return (quantidade > 0)? true : false;
+	}
+	
+	public Pessoa buscarPorUsuario(String login, String senha) throws DAOException {
 		EntityManager entityManager = createEntityManager();
 		Pessoa pessoa = null;
 		try {
-			pessoa = entityManager.createNamedQuery("Pessoa.buscarUsuario", Pessoa.class)
-			.setParameter("usuario", usuario).getSingleResult();
+			
+			TypedQuery<Pessoa> query = entityManager.
+					createNamedQuery("Pessoa.buscarUsuario", Pessoa.class);
+			
+			query.setParameter("login", login);
+			query.setParameter("senha", senha);
+			
+			pessoa = query.getSingleResult();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			
