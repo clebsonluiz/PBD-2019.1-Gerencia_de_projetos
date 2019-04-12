@@ -11,22 +11,26 @@ import javax.swing.JTextArea;
 
 import br.com.pbd2019_1.utils.ViewUtil;
 
-public class TelaEtapa extends JPanel {
+public abstract class TelaEtapa extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private CampoTexto nomeEtapaField;
 	private JTextArea descricaoTextArea;
 	private JProgressBar barraProgressBar;
 
+	private TelaCadastroEdicao telaCadastroEdicao;
+	
 	public TelaEtapa() {
-		setMinimumSize(new Dimension(300, 290));
-		setPreferredSize(new Dimension(300, 290));
-		setLayout(null);
+		setMinimumSize(new Dimension(300, 320));
+		setPreferredSize(new Dimension(300, 320));
+		setLayout(new BorderLayout(10, 10));
+		
+		JPanel p = new JPanel(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder("Etapa"));
 		panel.setBounds(6, 6, 288, 200);
-		add(panel);
+		p.add(panel);
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -49,7 +53,7 @@ public class TelaEtapa extends JPanel {
 		panel_1.setBorder(ViewUtil.Bordas.criarBordaTitulo("Progresso"));
 		panel_1.setToolTipText("Progresso em andamanto da etapa");
 		panel_1.setBounds(6, 210, 288, 68);
-		add(panel_1);
+		p.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		barraProgressBar = new JProgressBar();
@@ -61,7 +65,29 @@ public class TelaEtapa extends JPanel {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(6, 218, 288, 60);
-		add(panel_2);
+		p.add(panel_2);
+		
+		
+		telaCadastroEdicao = new TelaCadastroEdicao() {
+
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void abilitar() {
+				nomeEtapaField.setEnabled(true);
+				descricaoTextArea.setEnabled(true);
+			}
+			
+			@Override
+			protected void desabilitar() {
+				nomeEtapaField.setEnabled(false);
+				descricaoTextArea.setEnabled(false);
+			}
+		};
+		
+		add(p, BorderLayout.CENTER);
+		add(telaCadastroEdicao, BorderLayout.SOUTH);
+		
 	}
 
 	public CampoTexto getNomeEtapaField() {
@@ -75,6 +101,12 @@ public class TelaEtapa extends JPanel {
 	public JProgressBar getBarraProgressBar() {
 		return barraProgressBar;
 	}
+
+	public TelaCadastroEdicao getTelaCadastroEdicao() {
+		return telaCadastroEdicao;
+	}
 	
-	
+	public Botao getBotao1() {
+		return telaCadastroEdicao.getBtBotao1();
+	}
 }
