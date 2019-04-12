@@ -22,6 +22,7 @@ public class TelaEtapa_Tarefas extends JPanel {
 		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setResizeWeight(0.25);
+		
 		add(splitPane, BorderLayout.CENTER);
 		
 		setMinimumSize(new Dimension(310, 320));
@@ -29,7 +30,7 @@ public class TelaEtapa_Tarefas extends JPanel {
 		
 		
 		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(telaEtapa.getMaximumSize().width);
+		splitPane.setDividerLocation(telaEtapa.getMinimumSize().width);
 		splitPane.setDividerSize(10);
 		splitPane.setAutoscrolls(false);
 		JPanel pGridBag = new JPanel(new GridBagLayout());

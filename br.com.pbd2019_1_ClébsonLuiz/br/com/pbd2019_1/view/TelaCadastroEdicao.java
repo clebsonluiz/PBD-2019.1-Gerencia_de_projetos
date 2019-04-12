@@ -15,25 +15,17 @@ public class TelaCadastroEdicao extends JPanel {
 
 	public TelaCadastroEdicao() {
 		btBotao1 = new Botao();
-		btBotao1.setText("Botao1");
+		btBotao1.setText("Concluir");
 		btBotao1.setVisible(false);
 		add(btBotao1);
 		
 		tglbtnBotao = new JToggleButton("Editar");
 		
 		tglbtnBotao.addActionListener((ActionEvent)->{
-			if(tglbtnBotao.isSelected()) {
+			if(tglbtnBotao.isSelected()) 
 				abilitar();
-				btBotao1.setVisible(true);
-				tglbtnBotao.setBackground(Color.red.brighter());
-				tglbtnBotao.setText("Cancelar");
-			}
-			else {
+			else 
 				desabilitar();
-				btBotao1.setVisible(false);
-				tglbtnBotao.setBackground(null);
-				tglbtnBotao.setText("Editar");
-				}
 		});
 		
 		add(tglbtnBotao);
@@ -42,11 +34,15 @@ public class TelaCadastroEdicao extends JPanel {
 	
 	
 	protected void abilitar() {
-		
+		btBotao1.setVisible(true);
+		tglbtnBotao.setBackground(Color.red.brighter());
+		tglbtnBotao.setText("Cancelar");
 	}
 	
 	protected void desabilitar() {
-		
+		btBotao1.setVisible(false);
+		tglbtnBotao.setBackground(null);
+		tglbtnBotao.setText("Editar");
 	}
 
 	public Botao getBtBotao1() {

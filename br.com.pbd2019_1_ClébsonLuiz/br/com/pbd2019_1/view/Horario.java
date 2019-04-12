@@ -10,6 +10,13 @@ import br.com.pbd2019_1.utils.ViewUtil;
 
 public class Horario extends JPanel {
 
+	@Override
+	public void setEnabled(boolean b) {
+		cmboxHora.setEnabled(b);
+		cmboxMinuto.setEnabled(b);
+		cmboxSegundo.setEnabled(b);
+		super.setEnabled(b);
+	}
 	
 	private static final long serialVersionUID = 1L;
 	private JComboBox<String> cmboxHora;

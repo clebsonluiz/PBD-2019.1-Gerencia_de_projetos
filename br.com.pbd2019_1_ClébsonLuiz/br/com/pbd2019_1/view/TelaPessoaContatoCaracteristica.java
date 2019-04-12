@@ -59,7 +59,7 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 				telaContatoCaracteristica.getTelefoneField().setEnabled(true);
 				telaContatoCaracteristica.getCelularField().setEnabled(true);
 				telaContatoCaracteristica.getEmailField().setEnabled(true);
-				
+				super.abilitar();
 			}
 			
 			protected void desabilitar() {
@@ -75,6 +75,7 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 				telaContatoCaracteristica.getTelefoneField().setEnabled(false);
 				telaContatoCaracteristica.getCelularField().setEnabled(false);
 				telaContatoCaracteristica.getEmailField().setEnabled(false);
+				super.desabilitar();
 			}
 			
 		};

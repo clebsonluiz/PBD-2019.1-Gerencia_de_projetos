@@ -1,9 +1,11 @@
 package br.com.pbd2019_1.view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -14,10 +16,8 @@ import com.toedter.calendar.JDateChooser;
 import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.utils.ViewUtil;
 import br.com.pbd2019_1.utils.ViewUtil.Bordas;
-import java.awt.BorderLayout;
-import javax.swing.JComboBox;
 
-public class TelaTarefa extends JPanel {
+public abstract class TelaTarefa extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private CampoTexto nomeTarefaField;
@@ -26,17 +26,24 @@ public class TelaTarefa extends JPanel {
 	private JDateChooser dateChooser;
 	private JCheckBox chckbxFinalizada;
 	private JComboBox<String> prioridadeComboBox;
-
+	private TelaCadastroEdicao telaCadastroEdicao;
+	
+	
 	public TelaTarefa() {
-		setMinimumSize(new Dimension(300, 350));
-		setPreferredSize(new Dimension(300, 350));
-		setLayout(null);
+		setMinimumSize(new Dimension(300, 380));
+		setPreferredSize(new Dimension(300, 380));
+		setLayout(new BorderLayout());
+		
+		JPanel p = new JPanel(null);
+		
+		p.setMinimumSize(new Dimension(300, 350));
+		p.setPreferredSize(new Dimension(300, 350));
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBorder(BorderFactory.createTitledBorder("Tarefa"));
 		panel.setBounds(6, 6, 288, 338);
-		add(panel);
+		p.add(panel);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(Bordas.criarBordaTituloField("Descrição"));
@@ -95,6 +102,37 @@ public class TelaTarefa extends JPanel {
 		prioridadeComboBox.addItem("Alta");
 		prioridadeComboBox.setSelectedIndex(0);
 		panel_3.add(prioridadeComboBox, BorderLayout.CENTER);
+		
+		
+		telaCadastroEdicao = new TelaCadastroEdicao() {
+			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void abilitar() {
+				nomeTarefaField.setEnabled(true);
+				descricaoTextArea.setEnabled(true);
+				prioridadeComboBox.setEnabled(true);
+				chckbxFinalizada.setEnabled(true);
+				horario.setEnabled(true);
+				dateChooser.setEnabled(true);
+				super.abilitar();
+			}
+			
+			@Override
+			protected void desabilitar() {
+				nomeTarefaField.setEnabled(false);
+				descricaoTextArea.setEnabled(false);
+				prioridadeComboBox.setEnabled(false);
+				chckbxFinalizada.setEnabled(false);
+				horario.setEnabled(false);
+				dateChooser.setEnabled(false);
+				super.desabilitar();
+			}
+		};
+		
+		add(p, BorderLayout.CENTER);
+		add(telaCadastroEdicao, BorderLayout.SOUTH);
 	}
 
 	public CampoTexto getNomeTarefaField() {
@@ -120,5 +158,14 @@ public class TelaTarefa extends JPanel {
 	public JComboBox<String> getPrioridadeComboBox() {
 		return prioridadeComboBox;
 	}
+
+	public TelaCadastroEdicao getTelaCadastroEdicao() {
+		return telaCadastroEdicao;
+	}
+	
+	public Botao getBotao1() {
+		return telaCadastroEdicao.getBtBotao1();
+	}
+	
 	
 }
