@@ -1,0 +1,25 @@
+package br.com.pbd2019_1.view;
+
+import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+
+public abstract class JInternalAbstract extends JInternalFrame {
+
+	private static final long serialVersionUID = 1L;
+
+	public JInternalAbstract(String titulo) {
+		super(titulo, false, true, true, true);
+		
+		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+				fechar();
+				setVisible(false);
+			}
+		});
+	}
+	
+	protected abstract void fechar();
+}
