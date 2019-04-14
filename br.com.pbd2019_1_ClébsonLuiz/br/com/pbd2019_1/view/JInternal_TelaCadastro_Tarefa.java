@@ -14,7 +14,7 @@ public class JInternal_TelaCadastro_Tarefa extends JInternalAbstract {
 		setMaximizable(false);
 		telaCadastro_Tarefa = new TelaCadastro_Tarefa();
 		add(telaCadastro_Tarefa, BorderLayout.CENTER);
-		
+
 		setMinimumSize(new Dimension(315, 405));
 		setPreferredSize(new Dimension(315, 405));
 	}
