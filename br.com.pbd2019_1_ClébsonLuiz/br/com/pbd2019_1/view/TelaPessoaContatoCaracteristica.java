@@ -9,12 +9,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
 
+import br.com.pbd2019_1.utils.DateUtil;
+
 public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 
 	private TelaPessoa telaPessoa;
 	private TelaContatoCaracteristica telaContatoCaracteristica;
 	private TelaCadastroEdicao telaCadastroEdicao;
-	
+	private JTabbedPane tabbedPane;
 	private static final long serialVersionUID = 1L;
 
 	public TelaPessoaContatoCaracteristica() {
@@ -25,7 +27,7 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 		border.setMinimumSize(new Dimension(310, 420));
 		border.setPreferredSize(new Dimension(310, 420));
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
 		telaPessoa = new TelaPessoa();
 		telaContatoCaracteristica = new TelaContatoCaracteristica();
@@ -87,11 +89,16 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 	}
 
 	public void limparCampos() {
-		
+		telaPessoa.getNomeField().setText("");
+		telaPessoa.getLoginField().setText("");
+		telaPessoa.getSenhaField().setText("");
+		telaPessoa.getCampoFormatadoCPF().setText("");
+		telaPessoa.getSexoComboBox().setSelectedIndex(0);
+		telaPessoa.getNascimentoDateChooser().setDate(DateUtil.getDataAtual());
+		telaPessoa.getRdbtnSim().setSelected(false);
+		telaPessoa.getRdbtnNo().setSelected(true);
 	}
 
-	
-	
 	public TelaPessoa getTelaPessoa() {
 		return telaPessoa;
 	}
@@ -108,6 +115,8 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 		return telaCadastroEdicao;
 	}
 
-	
-	
+	public JTabbedPane getTabbedPane() {
+		return tabbedPane;
+	}
+
 }

@@ -48,5 +48,11 @@ public class TelaCadastroEdicao extends JPanel {
 	public Botao getBtBotao1() {
 		return btBotao1;
 	}
+
+	protected void esconderTglbtnBotao() {
+		tglbtnBotao.setEnabled(false);
+		tglbtnBotao.setVisible(false);
+		btBotao1.setVisible(true);
+	}
 	
 }

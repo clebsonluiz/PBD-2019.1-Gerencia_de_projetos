@@ -134,6 +134,15 @@ public abstract class TelaTarefa extends JPanel {
 		add(p, BorderLayout.CENTER);
 		add(telaCadastroEdicao, BorderLayout.SOUTH);
 	}
+	
+	public void limparCampos() {
+		nomeTarefaField.setText("");
+		descricaoTextArea.setText("");
+		prioridadeComboBox.setSelectedIndex(0);
+		chckbxFinalizada.setSelected(false);
+		horario.setLocalTime("0", "0", "0");
+		dateChooser.setDate(DateUtil.getDataAtual());
+	}
 
 	public CampoTexto getNomeTarefaField() {
 		return nomeTarefaField;

@@ -90,6 +90,11 @@ public abstract class TelaEtapa extends JPanel {
 		
 	}
 
+	public void limparCampos() {
+		nomeEtapaField.setText("");
+		descricaoTextArea.setText("");
+	}
+	
 	public CampoTexto getNomeEtapaField() {
 		return nomeEtapaField;
 	}

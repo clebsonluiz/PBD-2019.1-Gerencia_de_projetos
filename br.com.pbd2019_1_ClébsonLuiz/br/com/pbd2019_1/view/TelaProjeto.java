@@ -10,6 +10,7 @@ import javax.swing.JTextArea;
 
 import com.toedter.calendar.JDateChooser;
 
+import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.utils.ViewUtil;
 import br.com.pbd2019_1.utils.ViewUtil.Bordas;
 
@@ -97,6 +98,14 @@ public abstract class TelaProjeto extends JPanel {
 		adicionarNorth();
 	}
 
+	
+	public void limparCampos() {
+		nomeProjetoField.setText("");
+		descricaoTextArea.setText("");
+		dataInicioDateChooser.setDate(DateUtil.getDataAtual());
+		dataFimDateChooser.setDate(DateUtil.getDataAtual());
+	}
+	
 	protected void adicionarNorth() {add(telaCadastroEdicao, BorderLayout.NORTH);}
 	protected void adicionarSouth() {add(telaCadastroEdicao, BorderLayout.SOUTH);}
 	
