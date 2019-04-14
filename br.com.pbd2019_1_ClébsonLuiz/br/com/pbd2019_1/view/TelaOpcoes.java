@@ -3,32 +3,34 @@ package br.com.pbd2019_1.view;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class TelaOpcoes extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JButton btnInfo;
-	private JButton btnPessoas;
-	private JButton btnSQL;
-	private JButton btnLog;
-	private JButton btnSobre;
+	private Botao btnInfo;
+	private Botao btnPessoas;
+	private Botao btnSQL;
+	private Botao btnLog;
+	private Botao btnSobre;
+	private Botao btnSair;
 
 	public TelaOpcoes() {
 		setLayout(new GridLayout(5, 1, 5, 5));
 		setMinimumSize(new Dimension(200, 500));
 		setPreferredSize(new Dimension(200, 500));
-		btnInfo = new JButton("Info");
-		btnPessoas = new JButton("Pessoas");
-		btnSQL = new JButton("Query SQL");
-		btnLog = new JButton("Log");
-		btnSobre = new JButton("Sobre");
+		btnInfo = new Botao("Info");
+		btnPessoas = new Botao("Pessoas");
+		btnSQL = new Botao("Query SQL");
+		btnLog = new Botao("Log");
+		btnSobre = new Botao("Sobre");
+		btnSair = new Botao("Sair");
 	}
 	
 	public void user_comum() {
 		add(btnInfo);
 		add(btnSobre);
+		add(btnSair);
 	}
 	
 	public void user_admin() {
@@ -36,6 +38,7 @@ public class TelaOpcoes extends JPanel {
 		add(btnPessoas);
 		add(btnLog);
 		add(btnSobre);
+		add(btnSair);
 	}
 	
 	public void user_super() {
@@ -44,26 +47,31 @@ public class TelaOpcoes extends JPanel {
 		add(btnSQL);
 		add(btnLog);
 		add(btnSobre);
+		add(btnSair);
 	}
 
-	public JButton getBtnInfo() {
+	public Botao getBtnInfo() {
 		return btnInfo;
 	}
 
-	public JButton getBtnPessoas() {
+	public Botao getBtnPessoas() {
 		return btnPessoas;
 	}
 
-	public JButton getBtnSQL() {
+	public Botao getBtnSQL() {
 		return btnSQL;
 	}
 
-	public JButton getBtnLog() {
+	public Botao getBtnLog() {
 		return btnLog;
 	}
 
-	public JButton getBtnSobre() {
+	public Botao getBtnSobre() {
 		return btnSobre;
+	}
+
+	public Botao getBtnSair() {
+		return btnSair;
 	}
 	
 }
