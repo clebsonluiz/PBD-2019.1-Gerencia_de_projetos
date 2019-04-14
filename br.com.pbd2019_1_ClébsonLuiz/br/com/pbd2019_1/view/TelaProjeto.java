@@ -2,6 +2,7 @@ package br.com.pbd2019_1.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -94,7 +95,9 @@ public abstract class TelaProjeto extends JPanel {
 			
 		};
 		
-		add(p, BorderLayout.CENTER);
+		JPanel pGrid = new JPanel(new GridBagLayout());
+		pGrid.add(p);
+		add(pGrid, BorderLayout.CENTER);
 		adicionarNorth();
 	}
 
