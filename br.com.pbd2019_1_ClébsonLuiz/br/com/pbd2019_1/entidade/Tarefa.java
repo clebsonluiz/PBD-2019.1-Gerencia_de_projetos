@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tarefa")
 @NamedQuery(name = "Tarefa.etapa",
-	query = "select t from Tarefa t where t.etapa = :etapa")
+	query = "select t from Tarefa t where t.etapa = :etapa and t.ativado = true")
 public class Tarefa extends Entidade{
 
 	@Column

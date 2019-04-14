@@ -14,9 +14,9 @@ import javax.persistence.Table;
 @Table(name = "colaborador")
 @NamedQueries({
 	@NamedQuery(name = "Colaborador.pessoa",
-			query = "select c form Colaborador c where c.pessoa = :pessoa"),
+			query = "select c form Colaborador c where c.pessoa = :pessoa and c.ativado = true"),
 	@NamedQuery(name = "Colaborador.projeto",
-			query = "select c form Colaborador c where c.projeto = :projeto")
+			query = "select c form Colaborador c where c.projeto = :projeto and c.ativado = true")
 })
 public class Colaborador extends Entidade{
 

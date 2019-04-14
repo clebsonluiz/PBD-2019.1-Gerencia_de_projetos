@@ -13,7 +13,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "projeto")
 @NamedQuery(name = "Projeto.pessoa",
-	query = "select p from Projeto as p where p.pessoa = :pessoa")
+	query = "select p from Projeto as p where p.pessoa = :pessoa and p.ativado = true")
 public class Projeto extends Entidade{
 
 	@Column

@@ -74,8 +74,9 @@ public abstract class DAOGenerico <T extends Entidade> {
 	public void deletar(T t) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		try {
+			t.setAtivado(false); //Desativa a entidade
 			entityManager.getTransaction().begin();
-			entityManager.remove(t);
+			entityManager.merge(t); // Ao invéz de Remove eu dou um merge
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			
@@ -96,7 +97,8 @@ public abstract class DAOGenerico <T extends Entidade> {
 		List<T> t = null;
 		try {
 			t = entityManager.
-					createQuery("from entidade."+classe.getSimpleName()+ " entidade",
+					createQuery("from entidade."+classe.getSimpleName()+ 
+							" entidade where entidade.ativado = true",
 							classe).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();

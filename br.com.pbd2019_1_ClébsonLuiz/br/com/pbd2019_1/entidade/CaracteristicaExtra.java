@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "caracteristica")
 @NamedQuery(name = "Caracteristica.pessoa", 
-	query = "select c from CaracteristicaExtra as c where c.pessoa = :pessoa")
+	query = "select c from CaracteristicaExtra as c where c.pessoa = :pessoa and c.ativado = true")
 public class CaracteristicaExtra extends Entidade{
 
 	
