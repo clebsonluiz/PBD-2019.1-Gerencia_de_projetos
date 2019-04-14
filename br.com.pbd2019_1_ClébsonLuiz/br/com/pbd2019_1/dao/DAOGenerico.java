@@ -137,4 +137,18 @@ public abstract class DAOGenerico <T extends Entidade> {
 		return t;
 	}
 	
+	public List<Object[]> buscaListaSQLGenerica(String sql) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		List<Object[]> t = null;
+		try {
+			t = entityManager.createQuery(sql, Object[].class).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DAOException("Erro de busca lista SQL no banco de dados");
+		} finally {
+			entityManager.close();
+		}
+		return t;
+	}
+	
 }

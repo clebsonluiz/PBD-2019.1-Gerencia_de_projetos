@@ -6,14 +6,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "etapa")
-@NamedQuery(name = "Etapa.projeto",
-	query = "select e from Etapa e where e.projeto = :projeto")
+@NamedQueries({
+	@NamedQuery(name = "Etapa.projeto",
+	query = "select e from Etapa e where e.projeto = :projeto"),
+	@NamedQuery(name = "Etapa.recalcula",
+	query = "select "
+			+ "(cast(finalizadas as FLOAT)/cast(total as FLOAT))*100 porcentagem "
+			+" FROM ("
+			+ "	select SUM(CASE WHEN t.concluida = true THEN 1 ELSE 0 END) as finalizadas, " 
+			+ "COUNT(*) as total from tarefa as t where t.etapa_fk = :etapa_fk"
+			+ ") as alias_tabela ")
+})
+
 public class Etapa extends Entidade{
 
 	@Column

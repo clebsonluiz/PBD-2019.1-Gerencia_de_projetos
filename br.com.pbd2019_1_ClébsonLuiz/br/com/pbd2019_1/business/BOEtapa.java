@@ -38,4 +38,11 @@ public class BOEtapa extends BOGenerico<Etapa>{
 		return this.daoEtapa.buscarPorProjeto(projeto);
 	}
 
+	
+	public int recalcularPorcentagem(Etapa t) throws BOException, DAOException {
+		if(t == null || t.getId() <= 0)
+			throw new BOException("Erro ao recalcular");
+		return (int) this.daoEtapa.recalcularPorcentagem(t);
+	}
+	
 }

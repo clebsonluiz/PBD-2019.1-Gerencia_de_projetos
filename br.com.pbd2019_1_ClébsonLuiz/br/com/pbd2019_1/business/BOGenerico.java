@@ -55,6 +55,10 @@ public abstract class BOGenerico<T extends Entidade>{
 		return this.daoT.buscarAll(classe);
 	};
 	
+	public List<Object[]> buscaListaSQLGenerica(String sql)throws BOException, DAOException {
+		return this.daoT.buscaListaSQLGenerica(sql);
+	}
+	
 	protected void validacaoInsercao(T t) throws BOException{
 		//TODO - Serão sobrescritos na classe concreta
 	}
