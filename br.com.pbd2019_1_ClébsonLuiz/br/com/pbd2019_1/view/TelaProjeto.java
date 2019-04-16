@@ -132,7 +132,7 @@ public abstract class TelaProjeto extends JPanel {
 		return telaCadastroEdicao;
 	}
 	
-	public Botao btnBotao1() {
+	public Botao getBotao1() {
 		return telaCadastroEdicao.getBtBotao1();
 	}
 }

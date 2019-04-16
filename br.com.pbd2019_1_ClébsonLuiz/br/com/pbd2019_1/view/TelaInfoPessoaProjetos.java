@@ -14,6 +14,8 @@ public class TelaInfoPessoaProjetos extends JPanel {
 	private TelaInfoPessoa telaInfoPessoa;
 	private TelaProjetos telaProjetos;
 	private TelaColaboracoes telaColaboracoes;
+
+	private JTabbedPane tabbedPane;
 	
 	public TelaInfoPessoaProjetos() {
 		setLayout(new BorderLayout(0, 0));
@@ -35,7 +37,7 @@ public class TelaInfoPessoaProjetos extends JPanel {
 		telaProjetos = new TelaProjetos();
 		telaColaboracoes = new TelaColaboracoes();
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setPreferredSize(new Dimension(400, 340));
 		
 		tabbedPane.addTab("Projetos", telaProjetos);
@@ -43,22 +45,22 @@ public class TelaInfoPessoaProjetos extends JPanel {
 		
 		splitPane.setRightComponent(tabbedPane);
 		
-//		add(telaPessoaContatoCaracteristica, BorderLayout.WEST);
-		/*
-		JToggleButton toggleButton = new JToggleButton(">");
-		add(toggleButton, BorderLayout.CENTER);
-		
-		telaProjetos = new TelaProjetos();
-		telaColaboracoes = new TelaColaboracoes();*/
-		
-		/*;
-		
-		add(tabbedPane, BorderLayout.EAST);*/
-		
-		
-		
-		
-		
-		
 	}
+
+	public TelaInfoPessoa getTelaInfoPessoa() {
+		return telaInfoPessoa;
+	}
+
+	public TelaProjetos getTelaProjetos() {
+		return telaProjetos;
+	}
+
+	public TelaColaboracoes getTelaColaboracoes() {
+		return telaColaboracoes;
+	}
+
+	public JTabbedPane getTabbedPane() {
+		return tabbedPane;
+	}
+	
 }
