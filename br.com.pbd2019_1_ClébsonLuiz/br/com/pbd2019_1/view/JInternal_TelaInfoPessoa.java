@@ -15,6 +15,9 @@ public class JInternal_TelaInfoPessoa extends JInternalAbstract {
 		setPreferredSize(new Dimension(350, 450));
 		
 		telaInfoPessoa = new TelaInfoPessoa();
+		
+		telaInfoPessoa.getTelaContatoCaracteristica().getBtAdicionar().setVisible(false);
+		telaInfoPessoa.getTelaContatoCaracteristica().getBtAdicionar().setEnabled(false);
 		add(telaInfoPessoa, BorderLayout.CENTER);
 	}
 

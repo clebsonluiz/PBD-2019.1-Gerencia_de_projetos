@@ -66,7 +66,7 @@ public class TelaContatoCaracteristica extends JPanel {
 		panel_1.add(btAdicionar, BorderLayout.SOUTH);
 	}
 
-	public JTable getTabelaCaracteristicaExtra() {
+	public JTable getJTable() {
 		return tabelaCaracteristicaExtra;
 	}
 
