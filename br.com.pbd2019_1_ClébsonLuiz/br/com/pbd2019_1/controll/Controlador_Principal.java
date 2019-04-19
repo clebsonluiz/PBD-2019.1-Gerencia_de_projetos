@@ -1,20 +1,24 @@
 package br.com.pbd2019_1.controll;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 
+import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.Tarefa;
-import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.TCaracteristicaExtra;
+import br.com.pbd2019_1.tabelas.TColaboracoes;
 import br.com.pbd2019_1.tabelas.TColaborador;
 import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TLogUpdate;
@@ -22,6 +26,8 @@ import br.com.pbd2019_1.tabelas.TPessoa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
+import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Projeto;
@@ -33,9 +39,11 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas_Simples;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
+import br.com.pbd2019_1.view.PopUp;
 import br.com.pbd2019_1.view.TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
+import br.com.pbd2019_1.view.TelaInfoTarefa;
 import br.com.pbd2019_1.view.TelaOpcoes;
 import br.com.pbd2019_1.view.TelaPessoa;
 import br.com.pbd2019_1.view.TelaPrincipal;
@@ -57,10 +65,17 @@ public class Controlador_Principal {
 	private JInternal_TelaInfoProjeto_Etapas jInternal_TelaInfoProjeto_Etapas;
 	private JInternal_TelaInfoPessoa_Projetos jInternal_TelaInfoPessoa_Projetos;
 	private JInternal_TelaInfoProjeto_Etapas_Simples jInternal_TelaInfoPessoa_Projetos_Simples;
-
+	private JInternal_TabelaPessoas jInternal_TabelaPessoas;
+	private JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores;
+	
+	//Telas para o colaborador
+	
+	
+	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
 	private TColaborador tColaborador;
+	private TColaboracoes tColaboracoes;
 	private TEtapa tEtapa;
 	private TLogUpdate tLogUpdate;
 	private TPessoa tPessoa;
@@ -68,10 +83,15 @@ public class Controlador_Principal {
 	private TTarefa tTarefa;
 	
 	private static Pessoa pessoa_static;
+	private static Pessoa pessoa_outrem_static;
 	private static Projeto projeto_static;
 	private static Etapa etapa_static;
 	private static Tarefa tarefa_static;
+	private static Colaborador colaborador_static;
 	private static String type_user = "";
+	
+	private static PopUp popUpCaracteristica = new PopUp(new String[]{"Editar", "Excluir"});
+	private static PopUp popUp= new PopUp(new String[]{"Visualizar", "Excluir"});
 	
 	public Controlador_Principal(TelaPrincipal telaPrincipal) {
 		super();
@@ -82,6 +102,7 @@ public class Controlador_Principal {
 		tCaracteristicaExtra = new TCaracteristicaExtra();
 		tCaracteristicaExtra2 = new TCaracteristicaExtra();
 		tColaborador = new TColaborador();
+		tColaboracoes = new TColaboracoes();
 		tEtapa = new TEtapa();
 		tLogUpdate = new TLogUpdate();
 		tPessoa = new TPessoa();
@@ -92,52 +113,166 @@ public class Controlador_Principal {
 				.getTelaEtapa_Tarefas()
 				.getTelaTarefas()
 				.getTable();
+		
 		JTable tableCaracteristicas = jInternal_TelaInfoPessoa
 				.getTelaInfoPessoa()
 				.getTelaContatoCaracteristica()
 				.getJTable();
+		
 		JTable tableEtapas = jInternal_TelaInfoProjeto_Etapas
 				.getTelaProjeto_Etapas()
 				.getTelaEtapas()
 				.getTable();
+		
 		JTable tableColaboradores = jInternal_TelaInfoProjeto_Etapas
 				.getTelaProjeto_Etapas()
 				.getTelaColaboradores()
 				.getTable();
+		
 		JTable tableCaracteristicas2 = jInternal_TelaInfoPessoa_Projetos
 				.getTelaInfoPessoaProjetos()
 				.getTelaInfoPessoa()
 				.getTelaContatoCaracteristica()
 				.getJTable();
+		
 		JTable tableProjetos = jInternal_TelaInfoPessoa_Projetos
 				.getTelaInfoPessoaProjetos()
 				.getTelaProjetos()
 				.getTable();
+		
 		JTable tableColaboracoes = jInternal_TelaInfoPessoa_Projetos
 				.getTelaInfoPessoaProjetos()
 				.getTelaColaboracoes()
 				.getTable();
+		
 		JTable tableEtapas2 = jInternal_TelaInfoPessoa_Projetos_Simples
 				.getTelaProjeto_Etapas_Simples()
 				.getTelaEtapas()
 				.getTable();
 		
+		JTable tablePessoas = jInternal_TabelaPessoas
+				.getTelaPessoas()
+				.getTable();
+		
+		JTable tablePessoasDisponiveis = jInternal_TabelaPessoasColaboradores
+				.getTelaPessoas()
+				.getTable();
+		
+		
 		tableTarefas.setModel(tTarefa);
+		tableTarefas.getColumnModel().getColumn(2).setCellEditor(tTarefa.getCellEditor());
 		tableCaracteristicas.setModel(tCaracteristicaExtra);
 		tableEtapas.setModel(tEtapa);
 		tableColaboradores.setModel(tColaborador);
+		tableColaboradores.getColumnModel().getColumn(2).setCellEditor(tColaborador.getCellEditor());
 		tableCaracteristicas2.setModel(tCaracteristicaExtra2);
 		tableProjetos.setModel(tProjeto);
-//		tableColaboracoes.setModel(dataModel);
+		tableColaboracoes.setModel(tColaboracoes);
 		tableEtapas2.setModel(tEtapa);
+		tablePessoas.setModel(tPessoa);
+		tablePessoasDisponiveis.setModel(tPessoa);
 
 	}
 	
-	public void adicionarEventos() {
+	private void adicionarMouseEventJTable(JTable table) {
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//TODO
+				int linha = table.rowAtPoint(e.getPoint());
+				int coluna = table.columnAtPoint(e.getPoint());
+				
+				table.setRowSelectionInterval(linha, linha);
+				table.setColumnSelectionInterval(coluna, coluna);
+				
+				if(SwingUtilities.isRightMouseButton(e)) 
+				{
+					if(table.getModel() instanceof TCaracteristicaExtra) 
+					{
+						popUpCaracteristica.setjTableAtual(table);
+						popUpCaracteristica.show(table, e.getX(), e.getY());
+					} 
+					else 
+					{
+						popUp.setjTableAtual(table);
+						popUp.show(table, e.getX(), e.getY());
+					}
+				} 
+				else 
+				{
+					if(table.getModel() instanceof TTarefa) 
+					{
+						
+					} 
+					else if (table.getModel() instanceof TEtapa)
+					{
+						
+					}
+					else if (table.getModel() instanceof TProjeto)
+					{
+						
+					}
+					else if (table.getModel() instanceof TColaborador)
+					{
+						
+					}
+					else if (table.getModel() instanceof TColaboracoes)
+					{
+						
+					}
+					else if (table.getModel() instanceof TLogUpdate)
+					{
+						
+					}
+					else if (table.getModel() instanceof TPessoa)
+					{
+						
+					}
+					
+					//Outros eventos com o botão esquerdo.
+					//Verificar qual o tablemodel da tabela
+					//para executar os evento certo
+				}
+			}
+		});
+	}
+		
+	
+	public void adicionarEventosTelaPrincipal() {
 		
 		telaPrincipal.getTelaCadastro_Pessoa()
 			.getBtBotao1().addActionListener(ActionEvent->{
 				//TODO - inserir aqui o cadastro
+				try {
+					TelaPessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa().getTelaPessoa();
+					String nome = telaPessoa.getNomeField().getTexto();
+					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
+					Date data = telaPessoa.getNascimentoDateChooser().getDate();
+					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
+					String login = telaPessoa.getLoginField().getTexto();
+					String senha = telaPessoa.getSenhaField().getTexto();
+					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
+
+					Fachada.getInstance().getBoPessoa().buscarPorCPF(cpf);
+					Fachada.getInstance().getBoPessoa().buscarPorLogin(login);
+
+					Pessoa pessoa = new Pessoa();
+					pessoa.setNome(nome);
+					pessoa.setCpf(cpf);
+					pessoa.setData_nascimento(DateUtil.getDateSQL(data));
+					pessoa.setSexo(sexo);
+					pessoa.setUser_login(login);
+					pessoa.setUser_senha(senha);
+					pessoa.setDisponibilidade(disponivel);
+
+					pessoa.setUser_type(Pessoa.COMUM_USER);
+					Fachada.getInstance().inserir(pessoa);
+					
+				} catch (ValidacaoException e) {
+					//TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			});
 		
 		telaPrincipal.getTelaLoginSistema()
@@ -263,7 +398,7 @@ public class Controlador_Principal {
 					projeto.setData_inicio(DateUtil.getDateSQL(dataI));
 					projeto.setData_fim(DateUtil.getDateSQL(dataF));
 					projeto.setPessoa(pessoa_static);
-					projeto.setPrivilegio((type_user.equals(Pessoa.COMUM_USER)));
+					projeto.setPrivilegio(!(type_user.equals(Pessoa.COMUM_USER)));
 					Fachada.getInstance().inserir(projeto);
 					tProjeto.addValor(projeto);
 				} catch (ValidacaoException e) {
@@ -432,13 +567,15 @@ public class Controlador_Principal {
 				//TODO - Update tarefa
 				try {
 
-					String nome = telaInfoTarefa.getTelaInfoTarefa().getNomeTarefaField().getTexto();
-					String descr = telaInfoTarefa.getTelaInfoTarefa().getDescricaoTextArea().getText();
-					boolean finalizada = telaInfoTarefa.getTelaInfoTarefa().getChckbxFinalizada().isSelected();
-					String prior = (String) telaInfoTarefa.getTelaInfoTarefa().getPrioridadeComboBox().getSelectedItem();
+					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
+					
+					String nome = telaTarefa.getNomeTarefaField().getTexto();
+					String descr = telaTarefa.getDescricaoTextArea().getText();
+					boolean finalizada = telaTarefa.getChckbxFinalizada().isSelected();
+					String prior = (String) telaTarefa.getPrioridadeComboBox().getSelectedItem();
 
-					LocalTime time = telaInfoTarefa.getTelaInfoTarefa().getHorario().getLocalTime();
-					Date date = telaInfoTarefa.getTelaInfoTarefa().getDateChooser().getDate();
+					LocalTime time = telaTarefa.getHorario().getLocalTime();
+					Date date = telaTarefa.getDateChooser().getDate();
 
 					LocalDateTime localDateTime = DateUtil.getDateTime(DateUtil.parseToLocalDate(date), time);
 
@@ -621,6 +758,59 @@ public class Controlador_Principal {
 			//TODO - Adicionar etapa
 			});
 
+	}
+	
+	private void preencherTelaPessoa(TelaPessoa telaPessoa, Pessoa pessoa) 
+	{
+		telaPessoa.getNomeField().setText(pessoa.getNome());
+		telaPessoa.getCampoFormatadoCPF().setText(pessoa.getCpf());
+		telaPessoa.getNascimentoDateChooser().setDate(DateUtil.getDate(pessoa.getData_nascimento()));
+		telaPessoa.getSexoComboBox().setSelectedItem(pessoa.getSexo());
+		telaPessoa.getLoginField().setText(pessoa.getUser_login());
+		telaPessoa.getSenhaField().setText(pessoa.getUser_senha());
+
+		telaPessoa.getRdbtnSim().setSelected(pessoa.isDisponibilidade());
+		telaPessoa.getRdbtnNo().setSelected(!pessoa.isDisponibilidade());
+	}
+	
+	private void preencherTelaContato(TelaContatoCaracteristica telaContato, Contato contato) 
+	{
+		telaContato.getEmailField().setText(contato.getEmail());
+		telaContato.getCelularField().setText(contato.getCelular());
+		telaContato.getTelefoneField().setText(contato.getCelular());
+	}
+	
+	private void preencherTelaProjeto(TelaProjeto telaProjeto, Projeto projeto)
+	{
+		
+		telaProjeto.getNomeProjetoField().setText(projeto.getNome());
+		telaProjeto.getDescricaoTextArea().setText(projeto.getDescricao());
+		telaProjeto.getDataInicioDateChooser().setDate(DateUtil.getDate(projeto.getData_inicio()));
+		telaProjeto.getDataFimDateChooser().setDate(DateUtil.getDate(projeto.getData_fim()));
+		
+	}
+	
+	private void preencherTelaEtapa(TelaEtapa telaEtapa, Etapa etapa)
+	{
+		telaEtapa.getNomeEtapaField().setText(etapa.getNome());
+		telaEtapa.getDescricaoTextArea().setText(etapa.getDescricao());
+		telaEtapa.getBarraProgressBar().setValue(Math.round(etapa.getPorcentagem_andamento()));
+	}
+	
+	private void preencherTelaTarefa(TelaInfoTarefa telaTarefa, Tarefa tarefa) 
+	{
+		telaTarefa.getNomeTarefaField().setText(tarefa.getNome());
+		telaTarefa.getDescricaoTextArea().setText(tarefa.getDescricao());
+		telaTarefa.getChckbxFinalizada().setSelected(tarefa.isConcluida());
+		telaTarefa.getPrioridadeComboBox().setSelectedItem(tarefa.getPrioridade());
+
+		String[] horaData = tarefa.getHorario_tarefa().split("'T'");
+		
+		String[] hora = horaData[1].split(":");
+		
+		telaTarefa.getHorario().setLocalTime(hora[0], hora[1], hora[2]);
+		telaTarefa.getDateChooser().setDate(DateUtil.getDate(horaData[0]));
+		
 	}
 	
 }

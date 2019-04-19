@@ -70,5 +70,9 @@ public class TTarefa extends TGenerica<Tarefa>{
 	public DefaultCellEditor getCellEditor() {
 		return new DefaultCellEditor(combo);
 	}
+
+	public JComboBox<String> getCombo() {
+		return combo;
+	}
 	
 }
