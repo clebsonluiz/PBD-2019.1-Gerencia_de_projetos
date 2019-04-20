@@ -21,9 +21,12 @@ public abstract class TGenerica<T extends Entidade> extends AbstractTableModel {
 	}
 	
 	public void addAll(List<T> t) {
-		this.t.clear();
-		this.t.addAll(t);
-		fireTableDataChanged();
+		if(t != null)
+		{
+			this.t.clear();
+			this.t.addAll(t);
+			fireTableDataChanged();
+		}
 	}
 	
 	public void remover(int index) {

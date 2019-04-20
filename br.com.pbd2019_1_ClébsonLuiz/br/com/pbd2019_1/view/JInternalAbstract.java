@@ -1,5 +1,7 @@
 package br.com.pbd2019_1.view;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -22,4 +24,12 @@ public abstract class JInternalAbstract extends JInternalFrame {
 	}
 	
 	protected abstract void fechar();
+	
+	public void queroFoco() throws PropertyVetoException {
+		toFront();
+		setSelected(true);
+		if(isIcon())
+			setIcon(false);
+		show();
+	}
 }

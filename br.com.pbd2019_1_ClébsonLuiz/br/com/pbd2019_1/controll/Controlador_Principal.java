@@ -2,19 +2,24 @@ package br.com.pbd2019_1.controll;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
+import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.Etapa;
+import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.Tarefa;
+import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.TCaracteristicaExtra;
@@ -43,6 +48,7 @@ import br.com.pbd2019_1.view.PopUp;
 import br.com.pbd2019_1.view.TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
+import br.com.pbd2019_1.view.TelaInfoPessoa;
 import br.com.pbd2019_1.view.TelaInfoTarefa;
 import br.com.pbd2019_1.view.TelaOpcoes;
 import br.com.pbd2019_1.view.TelaPessoa;
@@ -64,13 +70,9 @@ public class Controlador_Principal {
 	private JInternal_TelaInfoTarefa jInternal_TelaInfoTarefa;
 	private JInternal_TelaInfoProjeto_Etapas jInternal_TelaInfoProjeto_Etapas;
 	private JInternal_TelaInfoPessoa_Projetos jInternal_TelaInfoPessoa_Projetos;
-	private JInternal_TelaInfoProjeto_Etapas_Simples jInternal_TelaInfoPessoa_Projetos_Simples;
+	private JInternal_TelaInfoProjeto_Etapas_Simples jInternal_TelaInfoProjeto_Etapas_Simples;
 	private JInternal_TabelaPessoas jInternal_TabelaPessoas;
 	private JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores;
-	
-	//Telas para o colaborador
-	
-	
 	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
@@ -88,10 +90,12 @@ public class Controlador_Principal {
 	private static Etapa etapa_static;
 	private static Tarefa tarefa_static;
 	private static Colaborador colaborador_static;
+	private static LogUpdate logUpdate_static;
 	private static String type_user = "";
+	private static boolean bool_colaborador = false;
 	
 	private static PopUp popUpCaracteristica = new PopUp(new String[]{"Editar", "Excluir"});
-	private static PopUp popUp= new PopUp(new String[]{"Visualizar", "Excluir"});
+	private static PopUp popUp = new PopUp(new String[]{"Visualizar", "Excluir"});
 	
 	public Controlador_Principal(TelaPrincipal telaPrincipal) {
 		super();
@@ -145,7 +149,7 @@ public class Controlador_Principal {
 				.getTelaColaboracoes()
 				.getTable();
 		
-		JTable tableEtapas2 = jInternal_TelaInfoPessoa_Projetos_Simples
+		JTable tableEtapas2 = jInternal_TelaInfoProjeto_Etapas_Simples
 				.getTelaProjeto_Etapas_Simples()
 				.getTelaEtapas()
 				.getTable();
@@ -185,6 +189,8 @@ public class Controlador_Principal {
 				table.setRowSelectionInterval(linha, linha);
 				table.setColumnSelectionInterval(coluna, coluna);
 				
+				Object obj = table.getValueAt(linha, coluna);
+				
 				if(SwingUtilities.isRightMouseButton(e)) 
 				{
 					if(table.getModel() instanceof TCaracteristicaExtra) 
@@ -202,41 +208,282 @@ public class Controlador_Principal {
 				{
 					if(table.getModel() instanceof TTarefa) 
 					{
-						
+						if(coluna == 3) 
+						{
+							if(obj instanceof Boolean)
+							{
+								try 
+								{
+									obj = !((Boolean)obj).booleanValue();
+									tTarefa.setValueAt(obj, linha, coluna);
+									Fachada.getInstance().atualizar(tTarefa.getValor(linha));
+								} 
+								catch (ValidacaoException ve) 
+								{
+									// TODO Auto-generated catch block
+									ve.printStackTrace();
+								}
+							}
+						}
+						else if (coluna == 4)
+						{
+							try 
+							{
+								tarefa_static = tTarefa.getValor(linha);
+								preencherTelaTarefa(jInternal_TelaInfoTarefa.getTelaInfoTarefa(), tarefa_static);
+								jInternal_TelaInfoTarefa.queroFoco();
+							} catch (PropertyVetoException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
 					} 
 					else if (table.getModel() instanceof TEtapa)
 					{
-						
+						if(coluna == 2) 
+						{
+							//TODO - Abrir tela ver Etapa
+							try 
+							{
+								etapa_static = tEtapa.getValor(linha);
+								
+								TelaEtapa tE = jInternal_TelaInfoEtapa
+										.getTelaEtapa_Tarefas()
+										.getTelaEtapa();
+								
+								atualizarDadoEtapa(tE, etapa_static, tTarefa);
+								jInternal_TelaInfoEtapa.queroFoco();
+								
+							} 
+							catch (ValidacaoException e1) 
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							catch (PropertyVetoException e1)
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
 					}
 					else if (table.getModel() instanceof TProjeto)
 					{
-						
+						if(coluna == 3)
+						{
+							//TODO - Abrir Tela ver Projeto
+							try
+							{
+								bool_colaborador = false;
+								projeto_static = tProjeto.getValor(linha);
+								
+								if(!type_user.equals(Pessoa.COMUM_USER))
+								{
+									TelaProjeto tP = jInternal_TelaInfoProjeto_Etapas
+											.getTelaProjeto_Etapas()
+											.getTelaProjeto();
+									
+									atualizarDadoProjeto(tP, projeto_static, tEtapa, tColaborador);
+									jInternal_TelaInfoProjeto_Etapas.queroFoco();
+								}
+								else
+								{
+									TelaProjeto tP = jInternal_TelaInfoProjeto_Etapas_Simples
+											.getTelaProjeto_Etapas_Simples()
+											.getTelaProjeto();
+									
+									atualizarDadoProjetoSimples(tP, projeto_static, tEtapa);
+									jInternal_TelaInfoProjeto_Etapas_Simples.queroFoco();
+								}
+								
+								
+							} 
+							catch (ValidacaoException e1)
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} 
+							catch (PropertyVetoException e1) 
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
 					}
 					else if (table.getModel() instanceof TColaborador)
 					{
-						
+						//TODO - TColaborador
+						if(coluna == 3) 
+						{
+							try 
+							{
+								colaborador_static = tColaborador.getValor(linha);
+							
+								pessoa_outrem_static = (Pessoa) Fachada
+										.getInstance()
+										.buscar(
+												Pessoa.class,
+												colaborador_static
+												.getPessoa()
+												.getId()
+												);
+								
+								TelaInfoPessoa tIP = jInternal_TelaInfoPessoa.getTelaInfoPessoa();
+								
+								atualizarDadoPessoa(tIP, pessoa_outrem_static, tCaracteristicaExtra2);
+								
+								jInternal_TelaInfoPessoa.queroFoco();
+								
+							} 
+							catch (ValidacaoException e1)
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} 
+							catch (PropertyVetoException e1)
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+						}
 					}
 					else if (table.getModel() instanceof TColaboracoes)
 					{
-						
+						//TODO - TColaboracoes
+						if(coluna == 3)
+						{
+							try 
+							{
+								bool_colaborador = true;
+								
+								colaborador_static = tColaboracoes.getValor(linha);
+							
+								projeto_static = (Projeto) Fachada.getInstance()
+										.buscar(
+												Projeto.class,
+												colaborador_static
+												.getProjeto()
+												.getId()
+												);
+								
+								TelaProjeto tP = jInternal_TelaInfoProjeto_Etapas_Simples
+										.getTelaProjeto_Etapas_Simples()
+										.getTelaProjeto();
+							
+								atualizarDadoProjetoSimples(tP, projeto_static, tEtapa);
+								jInternal_TelaInfoProjeto_Etapas_Simples.queroFoco();
+								
+							} catch (ValidacaoException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (PropertyVetoException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
 					}
 					else if (table.getModel() instanceof TLogUpdate)
 					{
-						
+						if(coluna == 2)
+						{
+							//TODO - Abrir tela ver log update
+							logUpdate_static = tLogUpdate.getValor(linha);
+						}
 					}
 					else if (table.getModel() instanceof TPessoa)
 					{
-						
+						if(coluna == 3)
+						{
+							//TODO - Abrir tela ver Pessoa outrem 
+							try
+							{
+								pessoa_outrem_static = tPessoa.getValor(linha);
+								
+								TelaInfoPessoa tIP = jInternal_TelaInfoPessoa.getTelaInfoPessoa();
+								
+								atualizarDadoPessoa(tIP, pessoa_outrem_static, tCaracteristicaExtra2);
+								
+								jInternal_TelaInfoPessoa.queroFoco();
+								
+							} 
+							catch (ValidacaoException e1) 
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							catch (PropertyVetoException e1) 
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
 					}
-					
-					//Outros eventos com o botão esquerdo.
-					//Verificar qual o tablemodel da tabela
-					//para executar os evento certo
 				}
 			}
 		});
 	}
 		
+	
+	private void adicionarEventosComboBox(JTable tarefaTable, JTable colaboradorTable) 
+	{
+		tTarefa.getCombo().addActionListener(ActionEvent->{
+			
+			if(tTarefa.getCombo().getSelectedItem() != null) 
+			{
+				int linha = tarefaTable.getSelectedRow();
+				int coluna = tarefaTable.getSelectedColumn();
+				
+				if(linha >= 0 && coluna >= 0) 
+				{ 
+					try 
+					{
+						if(bool_colaborador)
+							if(colaborador_static.getPrivilegio().equals("Visitante"))
+								throw new ValidacaoException("Não tem permição");
+						
+						tTarefa.setValueAt(tTarefa.getCombo().getSelectedItem(),
+								linha,
+								coluna
+								);
+						Fachada.getInstance().atualizar(tTarefa.getValor(linha));
+					} 
+					catch (ValidacaoException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		tColaborador.getCombo().addActionListener(ActionEvent->{
+			
+			if(tColaborador.getCombo().getSelectedItem() != null) 
+			{
+				int linha = colaboradorTable.getSelectedRow();
+				int coluna = colaboradorTable.getSelectedColumn();
+				
+				if(linha >= 0 && coluna >= 0) 
+				{ 
+					try 
+					{
+						tColaborador.setValueAt(tColaborador.getCombo().getSelectedItem(),
+								linha,
+								coluna
+								);
+						Fachada.getInstance().atualizar(tColaborador.getValor(linha));
+					} 
+					catch (ValidacaoException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+	
 	
 	public void adicionarEventosTelaPrincipal() {
 		
@@ -456,6 +703,11 @@ public class Controlador_Principal {
 			//TODO - Atualizar info Etapa
 				
 				try {
+					
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+					
 					TelaEtapa telaEtapa = telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa();
 					String nome = telaEtapa.getNomeEtapaField().getTexto();
 					String descr = telaEtapa.getDescricaoTextArea().getText();
@@ -475,6 +727,16 @@ public class Controlador_Principal {
 		telaInfoEtapa.getTelaEtapa_Tarefas().getTelaTarefas().getBtNovaTarefa()
 			.addActionListener(ActionEvent->{
 			//TODO - Nova Tarefa
+				try {
+				
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+				
+				} catch (ValidacaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			});
 		
 	}
@@ -518,17 +780,17 @@ public class Controlador_Principal {
 					String telef = telaContato.getTelefoneField().getText();
 
 
-					pessoa_static.setNome(nome);
-					pessoa_static.setCpf(cpf);
-					pessoa_static.setData_nascimento(DateUtil.getDateSQL(data));
-					pessoa_static.setSexo(sexo);
-					pessoa_static.setUser_login(login);
-					pessoa_static.setUser_senha(senha);
-					pessoa_static.setDisponibilidade(disponivel);
-					Fachada.getInstance().atualizar(pessoa_static);
+					pessoa_outrem_static.setNome(nome);
+					pessoa_outrem_static.setCpf(cpf);
+					pessoa_outrem_static.setData_nascimento(DateUtil.getDateSQL(data));
+					pessoa_outrem_static.setSexo(sexo);
+					pessoa_outrem_static.setUser_login(login);
+					pessoa_outrem_static.setUser_senha(senha);
+					pessoa_outrem_static.setDisponibilidade(disponivel);
+					Fachada.getInstance().atualizar(pessoa_outrem_static);
 					tPessoa.fireTableDataChanged();
 
-					Contato c = pessoa_static.getContato();
+					Contato c = pessoa_outrem_static.getContato();
 
 					if(c == null) {
 						c = new Contato();
@@ -566,7 +828,11 @@ public class Controlador_Principal {
 			.addActionListener(ActionEvent->{
 				//TODO - Update tarefa
 				try {
-
+						
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+					
 					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
 					
 					String nome = telaTarefa.getNomeTarefaField().getTexto();
@@ -599,6 +865,15 @@ public class Controlador_Principal {
 		telaInfoTarefa.getTelaInfoTarefa().getChckbxFinalizada()
 			.addItemListener(ItemEvent->{
 				//TODO - Marcar/Desmarcar como finalizada
+				try {
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+				
+				} catch (ValidacaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			});
 		
 	}
@@ -610,7 +885,10 @@ public class Controlador_Principal {
 			.addActionListener(ActionEvent->{
 				//TODO - Update Projeto
 				try {
-				
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+					
 					TelaProjeto telaProjeto = telaInfoProjetoEtapas.getTelaProjeto_Etapas()
 							.getTelaProjeto();
 
@@ -636,6 +914,16 @@ public class Controlador_Principal {
 		telaInfoProjetoEtapas.getTelaProjeto_Etapas().getTelaEtapas()
 			.getBtNovaEtapa().addActionListener(ActionEvent->{
 				//TODO - Adicionar etapa
+				try {
+					
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+				
+				} catch (ValidacaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			});
 		
 		telaInfoProjetoEtapas.getTelaProjeto_Etapas().getTelaColaboradores()
@@ -733,6 +1021,10 @@ public class Controlador_Principal {
 			.getBotao1().addActionListener(ActionEvent->{
 				//TODO - Update Projeto
 				try {
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+					
 					TelaProjeto telaProjeto = telaInfoProjeto_Etapas_Simples
 							.getTelaProjeto_Etapas_Simples().getTelaProjeto();
 
@@ -756,6 +1048,16 @@ public class Controlador_Principal {
 		telaInfoProjeto_Etapas_Simples.getTelaProjeto_Etapas_Simples().getTelaEtapas()
 			.getBtNovaEtapa().addActionListener(ActionEvent->{
 			//TODO - Adicionar etapa
+				try {
+					
+					if(bool_colaborador)
+						if(colaborador_static.getPrivilegio().equals("Visitante"))
+							throw new ValidacaoException("Não tem permição");
+				
+				} catch (ValidacaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			});
 
 	}
@@ -811,6 +1113,60 @@ public class Controlador_Principal {
 		telaTarefa.getHorario().setLocalTime(hora[0], hora[1], hora[2]);
 		telaTarefa.getDateChooser().setDate(DateUtil.getDate(horaData[0]));
 		
+	}
+	
+	private void atualizarDadoProjetoSimples(TelaProjeto tp, Projeto p, TEtapa te) throws ValidacaoException
+	{
+		List<Etapa> lEtapa = Fachada.getInstance().getBoEtapa().buscarPorProjeto(p);
+		te.addAll(lEtapa);
+		p.setEtapas(lEtapa);
+		preencherTelaProjeto(tp, p);
+	}
+	
+	private void atualizarDadoProjeto(TelaProjeto tp, Projeto p, TEtapa te, TColaborador tc) throws ValidacaoException
+	{
+		atualizarDadoProjetoSimples(tp, p, te);
+		
+		List<Colaborador> lColaborador = Fachada.getInstance().getBoColaborador().buscarPorProjeto(p);
+		tc.addAll(lColaborador);
+		p.setColaboradores(lColaborador);
+	}
+	
+	private void atualizarDadoPessoa(TelaInfoPessoa tIP, Pessoa p, TCaracteristicaExtra tce) throws ValidacaoException
+	{
+		preencherTelaPessoa(tIP.getTelaPessoa(),p);
+	
+		Contato c = Fachada.getInstance().getBoContato().buscarPorPessoa(p);
+		
+		if(c == null) c = new Contato();
+		
+		List<CaracteristicaExtra> lc = Fachada.getInstance().getBoCaracteristicaExtra().buscaPorPessoa(p);
+		
+		preencherTelaContato(tIP.getTelaContatoCaracteristica(), c);
+		
+		p.setContato(c);
+		p.setCaracteristicas(lc);
+		
+		tce.addAll(lc);
+	}
+	
+	private void atualizarDadoMinhaPessoa(TelaInfoPessoa tIP, Pessoa p, TCaracteristicaExtra tce, TProjeto tP, TColaboracoes tC) throws ValidacaoException
+	{
+		atualizarDadoPessoa(tIP, p, tce);
+		List<Projeto> lp = Fachada.getInstance().getBoProjeto().buscarPorPessoa(p);
+		tP.addAll(lp);
+		List<Colaborador> lcolaboracoes = Fachada.getInstance().getBoColaborador().buscarPorPessoa(p);
+		tC.addAll(lcolaboracoes);
+		p.setProjetos(lp);
+		p.setColaboradores(lcolaboracoes);
+	}
+	
+	private void atualizarDadoEtapa(TelaEtapa tE, Etapa e, TTarefa tT) throws ValidacaoException
+	{
+		preencherTelaEtapa(tE,e);
+		List<Tarefa> t = Fachada.getInstance().getBoTarefa().buscarPorEtapa(e);
+		tT.addAll(t);
+		e.setTarefas(t);
 	}
 	
 }
