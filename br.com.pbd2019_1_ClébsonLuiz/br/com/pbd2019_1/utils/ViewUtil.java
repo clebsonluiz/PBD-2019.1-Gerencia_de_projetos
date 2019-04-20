@@ -204,7 +204,12 @@ public interface ViewUtil {
 			}
 			
 			//Inserir constantes de Icones aqui ex
-			public static final ImageIcon IMAGE_ICON = getIcon("nomeIcone");
+			public static final ImageIcon ICONE_CADASTRAR_USUARIO = getIcon("Freepik\\add-user");
+			public static final ImageIcon ICONE_LOGAR = getIcon("Freepik\\logIn");
+			public static final ImageIcon ICONE_TELA_LOGIN = getIcon("Freepik\\telaLogin");
+			public static final ImageIcon ICONE_LOGIN_USUARIO = getIcon("Freepik\\user_login");
+			public static final ImageIcon ICONE_SENHA_USUARIO = getIcon("Freepik\\user_senha");
+			
 			
 	}
 	

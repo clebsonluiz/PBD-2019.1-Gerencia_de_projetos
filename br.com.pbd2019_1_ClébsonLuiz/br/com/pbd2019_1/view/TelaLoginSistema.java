@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.com.pbd2019_1.utils.ViewUtil;
 import br.com.pbd2019_1.utils.ViewUtil.Fonts.Arial;
 
 
@@ -35,14 +36,14 @@ private static final long serialVersionUID = 1L;
 		contentPane.setPreferredSize(new Dimension(400, 400));
 		contentPane.setMinimumSize(getPreferredSize());
 		
-		lblSistema = new JLabel("[ICONE]");
+		lblSistema = new JLabel(ViewUtil.Icones.ICONE_TELA_LOGIN);
 		lblSistema.setBounds(23, 12, 345, 130);
 		lblSistema.setToolTipText("Sistema de Gestão de Projetos Tela de Login");
 		lblSistema.setFont(Arial.ARIAL_TITULO_B);
 		lblSistema.setForeground(Color.RED.darker());
 		contentPane.add(lblSistema);
 		
-		JLabel lblLogin = new JLabel("[ICONE]");
+		JLabel lblLogin = new JLabel(ViewUtil.Icones.ICONE_LOGIN_USUARIO);
 		lblLogin.setToolTipText("Login de Usuário");
 		lblLogin.setBounds(10, 140, 98, 85);
 		lblLogin.setFont(Arial.ARIAL_TITULO_B);
@@ -55,7 +56,7 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(loginField);
 		loginField.setColumns(10);
 		
-		JLabel lblSenha = new JLabel("[ICONE]");
+		JLabel lblSenha = new JLabel(ViewUtil.Icones.ICONE_SENHA_USUARIO);
 		lblSenha.setToolTipText("Senha de Usuário");
 		lblSenha.setFont(Arial.ARIAL_TITULO_B);
 		lblSenha.setBounds(10, 216, 98, 73);
@@ -67,14 +68,16 @@ private static final long serialVersionUID = 1L;
 		senhaField.setFont(Arial.ARIAL_TITULO_B);
 		contentPane.add(senhaField);
 		
-		btnLogar = new JButton("[ICONE]");
+		btnLogar = new JButton(ViewUtil.Icones.ICONE_LOGAR);
+		btnLogar.setToolTipText("Logar no sistema");
 		btnLogar.setBounds(23, 300, 98, 73);
 		btnLogar.setFont(Arial.ARIAL_TITULO_B);
 		btnLogar.setBackground(Color.lightGray);
 		btnLogar.setForeground(Color.green.darker());
 		contentPane.add(btnLogar);
 		
-		btnCadastrar = new JButton("CADASTR. USUARIO");
+		btnCadastrar = new JButton(ViewUtil.Icones.ICONE_CADASTRAR_USUARIO);
+		btnCadastrar.setToolTipText("Cadastrar novo usuario");
 		btnCadastrar.setBounds(141, 300, 220, 73);
 		btnCadastrar.setFont(Arial.ARIAL_TITULO_B);
 		btnCadastrar.setBackground(Color.LIGHT_GRAY);

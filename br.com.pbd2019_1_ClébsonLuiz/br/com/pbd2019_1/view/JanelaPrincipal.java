@@ -1,6 +1,7 @@
 package br.com.pbd2019_1.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
@@ -13,6 +14,10 @@ public class JanelaPrincipal extends JFrame {
 	public JanelaPrincipal() {
 		super("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setMinimumSize(new Dimension(800, 500));
+		setPreferredSize(new Dimension(800, 500));
+		setSize(new Dimension(800, 500));
+		
 		setLocationRelativeTo(null);
 		
 		telaPrincipal = new TelaPrincipal();
