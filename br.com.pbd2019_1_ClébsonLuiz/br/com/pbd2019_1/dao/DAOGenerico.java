@@ -97,7 +97,7 @@ public abstract class DAOGenerico <T extends Entidade> {
 		List<T> t = null;
 		try {
 			t = entityManager.
-					createQuery("from entidade."+classe.getSimpleName()+ 
+					createQuery("from "+classe.getSimpleName()+ 
 							" entidade where entidade.ativado = true",
 							classe).getResultList();
 		} catch (Exception e) {
