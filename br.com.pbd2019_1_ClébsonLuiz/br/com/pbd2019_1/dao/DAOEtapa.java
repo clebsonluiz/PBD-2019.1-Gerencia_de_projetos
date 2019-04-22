@@ -1,8 +1,10 @@
 package br.com.pbd2019_1.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.com.pbd2019_1.entidade.Etapa;
@@ -17,6 +19,9 @@ public class DAOEtapa extends DAOGenerico<Etapa>{
 		try {
 			etapas = entityManager.createNamedQuery("Etapa.projeto", Etapa.class)
 			.setParameter("projeto", projeto).getResultList();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			etapas = new ArrayList<>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -96,6 +101,9 @@ public class DAOEtapa extends DAOGenerico<Etapa>{
 							" and t.ativado = true) as alias_tabela", Float.class);
 			query.setParameter("etapa_id", t.getId());
 			porcent = (Float)query.getSingleResult();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			porcent = 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 			

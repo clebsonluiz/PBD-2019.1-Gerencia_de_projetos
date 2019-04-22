@@ -1,9 +1,11 @@
 package br.com.pbd2019_1.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 import br.com.pbd2019_1.entidade.Entidade;
@@ -61,6 +63,9 @@ public abstract class DAOGenerico <T extends Entidade> {
 		
 		t = entityManager.find(classe, id);
 		
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			t = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -100,6 +105,9 @@ public abstract class DAOGenerico <T extends Entidade> {
 					createQuery("from "+classe.getSimpleName()+ 
 							" entidade where entidade.ativado = true",
 							classe).getResultList();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			t = new ArrayList<>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DAOException("Erro ao buscar todos "+classe.getSimpleName());
@@ -114,6 +122,9 @@ public abstract class DAOGenerico <T extends Entidade> {
 		T t = null;
 		try {
 			t = entityManager.createQuery(sql, classe).getSingleResult();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			t = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -129,6 +140,9 @@ public abstract class DAOGenerico <T extends Entidade> {
 		List<T> t = null;
 		try {
 			t = entityManager.createQuery(sql, classe).getResultList();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			t = new ArrayList<>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -144,6 +158,9 @@ public abstract class DAOGenerico <T extends Entidade> {
 		List<Object[]> t = null;
 		try {
 			t = entityManager.createQuery(sql, Object[].class).getResultList();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			t = new ArrayList<>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DAOException("Erro de busca lista SQL no banco de dados");

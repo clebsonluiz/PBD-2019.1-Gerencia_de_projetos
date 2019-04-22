@@ -1,8 +1,10 @@
 package br.com.pbd2019_1.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.Tarefa;
@@ -17,6 +19,9 @@ public class DAOTarefa extends DAOGenerico<Tarefa>{
 			tarefas = entityManager.createNamedQuery("Tarefa.etapa",
 					Tarefa.class)
 			.setParameter("etapa", etapa).getResultList();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			tarefas = new ArrayList<>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			

@@ -1,6 +1,7 @@
 package br.com.pbd2019_1.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import br.com.pbd2019_1.entidade.Pessoa;
@@ -52,7 +53,9 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 			query.setParameter("senha", senha);
 			
 			pessoa = query.getSingleResult();
-			
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			pessoa = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			

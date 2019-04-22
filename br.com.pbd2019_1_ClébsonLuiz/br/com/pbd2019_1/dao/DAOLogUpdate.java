@@ -1,9 +1,11 @@
 package br.com.pbd2019_1.dao;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import br.com.pbd2019_1.entidade.LogUpdate;
@@ -21,6 +23,9 @@ public class DAOLogUpdate extends DAOGenerico<LogUpdate>{
 			query.setParameter("data1", data1);
 			query.setParameter("data2", data2);
 			logUpdates = query.getResultList();
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			logUpdates = new ArrayList<>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			
