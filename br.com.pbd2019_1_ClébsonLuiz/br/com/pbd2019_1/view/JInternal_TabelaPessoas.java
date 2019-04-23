@@ -14,6 +14,7 @@ public class JInternal_TabelaPessoas extends JInternalAbstract {
 		setIconifiable(false);
 		setMinimumSize(new Dimension(400, 300));
 		setPreferredSize(new Dimension(400, 300));
+		setSize(getPreferredSize());
 		telaPessoas = new TelaPessoas();
 		add(telaPessoas, BorderLayout.CENTER);
 	}

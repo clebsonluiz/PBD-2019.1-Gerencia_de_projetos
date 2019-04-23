@@ -3,9 +3,10 @@ package br.com.pbd2019_1.tabelas;
 import java.awt.Color;
 import java.awt.Component;
 
-import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+
+import br.com.pbd2019_1.view.Botao;
 
 public class CellRenderer extends DefaultTableCellRenderer{
 	
@@ -19,15 +20,29 @@ public class CellRenderer extends DefaultTableCellRenderer{
 			int row,
 			int column) {
 		
-		if(value instanceof JButton) {
-			JButton btn = (JButton) value;
-			if(hasFocus)
-				btn.setBackground(Color.red);
-			else if(isSelected)
-				btn.setBackground(Color.red.brighter());
-			else
-				btn.setBackground(Color.red.brighter().brighter());
-			return btn;
+		if(value instanceof Botao) {
+			Botao btn = (Botao) value;
+			if(btn.getText().equalsIgnoreCase("ver"))
+			{
+				if(hasFocus)
+					btn.setBackground(Color.GRAY.darker());
+				else if(isSelected)
+					btn.setBackground(Color.GRAY);
+				else
+					btn.setBackground(Color.lightGray);
+				return btn;
+			}
+			/*else if(btn.getText().equalsIgnoreCase("x"))
+			{
+				if(hasFocus)
+					btn.setBackground(Color.red);
+				else if(isSelected)
+					btn.setBackground(Color.red.brighter());
+				else
+					btn.setBackground(Color.red.brighter().brighter());
+				return btn;
+			}*/
+			
 		}
 		return super.getTableCellRendererComponent(
 				table,

@@ -9,6 +9,7 @@ public class JInternal_TabelaPessoasColaboradores extends JInternal_TabelaPessoa
 	public JInternal_TabelaPessoasColaboradores() {
 		setMinimumSize(new Dimension(400, 300));
 		setPreferredSize(new Dimension(400, 300));
+		setSize(getPreferredSize());
 		getTelaPessoas().getBtAdicionarPessoa().setVisible(false);
 	}
 

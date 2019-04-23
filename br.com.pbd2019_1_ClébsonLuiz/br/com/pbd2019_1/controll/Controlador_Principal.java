@@ -23,6 +23,7 @@ import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.Tarefa;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
+import br.com.pbd2019_1.tabelas.CellRenderer;
 import br.com.pbd2019_1.tabelas.TCaracteristicaExtra;
 import br.com.pbd2019_1.tabelas.TColaboracoes;
 import br.com.pbd2019_1.tabelas.TColaborador;
@@ -207,6 +208,34 @@ public class Controlador_Principal {
 		tablePessoas.setModel(tPessoa);
 		tablePessoasDisponiveis.setModel(tPessoa);
 
+		
+		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
+		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
+		tableCaracteristicas.setDefaultRenderer(Object.class, new CellRenderer());
+		tableEtapas.setDefaultRenderer(Object.class, new CellRenderer());
+		tableColaboradores.setDefaultRenderer(Object.class, new CellRenderer());
+		tableColaboradores.setDefaultRenderer(Object.class, new CellRenderer());
+		tableCaracteristicas2.setDefaultRenderer(Object.class, new CellRenderer());
+		tableProjetos.setDefaultRenderer(Object.class, new CellRenderer());
+		tableColaboracoes.setDefaultRenderer(Object.class, new CellRenderer());
+		tableEtapas2.setDefaultRenderer(Object.class, new CellRenderer());
+		tablePessoas.setDefaultRenderer(Object.class, new CellRenderer());
+		tablePessoasDisponiveis.setDefaultRenderer(Object.class, new CellRenderer());
+		
+		tableTarefas.setRowHeight(30);
+		tableTarefas.setRowHeight(30);
+		tableCaracteristicas.setRowHeight(30);
+		tableEtapas.setRowHeight(30);
+		tableColaboradores.setRowHeight(30);
+		tableColaboradores.setRowHeight(30);
+		tableCaracteristicas2.setRowHeight(30);
+		tableProjetos.setRowHeight(30);
+		tableColaboracoes.setRowHeight(30);
+		tableEtapas2.setRowHeight(30);
+		tablePessoas.setRowHeight(30);
+		tablePessoasDisponiveis.setRowHeight(30);
+		
+		
 		adicionarMouseEventJTable(tableTarefas);
 		adicionarMouseEventJTable(tableCaracteristicas);
 		adicionarMouseEventJTable(tableEtapas);

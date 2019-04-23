@@ -18,7 +18,7 @@ public class JInternal_TelaCadastro_Pessoa extends JInternalAbstract {
 
 		setMinimumSize(new Dimension(300, 340));
 		setPreferredSize(new Dimension(310, 420));
-		
+		setSize(getPreferredSize());
 	}
 
 	@Override

@@ -17,6 +17,7 @@ public class JInternal_TelaCadastro_Projeto extends JInternalAbstract {
 		
 		setMinimumSize(new Dimension(520, 230));
 		setPreferredSize(new Dimension(520, 230));
+		setSize(getPreferredSize());
 	}
 
 	@Override

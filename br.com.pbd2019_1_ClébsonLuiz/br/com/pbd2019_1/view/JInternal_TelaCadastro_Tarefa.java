@@ -17,6 +17,7 @@ public class JInternal_TelaCadastro_Tarefa extends JInternalAbstract {
 
 		setMinimumSize(new Dimension(315, 405));
 		setPreferredSize(new Dimension(315, 405));
+		setSize(getPreferredSize());
 	}
 
 	@Override

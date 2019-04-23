@@ -13,10 +13,9 @@ import br.com.pbd2019_1.exception.DAOException;
 
 public abstract class DAOGenerico <T extends Entidade> {
 
-	private EntityManagerFactory entityManagerFactory;
+	private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("banco");
 	
 	public EntityManager createEntityManager(){
-		entityManagerFactory = Persistence.createEntityManagerFactory("banco");
 		return entityManagerFactory.createEntityManager();
 	}
 	

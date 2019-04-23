@@ -13,7 +13,7 @@ public class JInternal_TelaInfoPessoa_Projetos extends JInternalAbstract {
 		super("Info Pessoa");
 		setMinimumSize(new Dimension(350, 450));
 		setPreferredSize(new Dimension(350, 450));
-		
+		setSize(getPreferredSize());
 		telaInfoPessoaProjetos = new TelaInfoPessoaProjetos();
 		add(telaInfoPessoaProjetos, BorderLayout.CENTER);
 	}

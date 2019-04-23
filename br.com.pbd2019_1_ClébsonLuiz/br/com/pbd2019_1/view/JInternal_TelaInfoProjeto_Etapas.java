@@ -13,6 +13,7 @@ public class JInternal_TelaInfoProjeto_Etapas extends JInternalAbstract {
 		super("Projeto");
 		setMinimumSize(new Dimension(520, 380));
 		setPreferredSize(new Dimension(520, 380));
+		setSize(getPreferredSize());
 		telaProjeto_Etapas = new TelaProjeto_Etapas();
 		getContentPane().add(telaProjeto_Etapas, BorderLayout.CENTER);
 	}

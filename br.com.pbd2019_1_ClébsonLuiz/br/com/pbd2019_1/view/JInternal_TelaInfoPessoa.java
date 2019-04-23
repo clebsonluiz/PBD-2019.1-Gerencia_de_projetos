@@ -13,7 +13,7 @@ public class JInternal_TelaInfoPessoa extends JInternalAbstract {
 		super("Info Pessoa");
 		setMinimumSize(new Dimension(350, 450));
 		setPreferredSize(new Dimension(350, 450));
-		
+		setSize(getPreferredSize());
 		telaInfoPessoa = new TelaInfoPessoa();
 		
 		telaInfoPessoa.getTelaContatoCaracteristica().getBtAdicionar().setVisible(false);

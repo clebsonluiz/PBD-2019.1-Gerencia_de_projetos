@@ -13,6 +13,7 @@ public class JInternal_TelaInfoTarefa extends JInternalAbstract {
 		super("Info Tarefa");
 		setMinimumSize(new Dimension(315, 405));
 		setPreferredSize(new Dimension(315, 405));
+		setSize(getPreferredSize());
 		telaInfoTarefa = new TelaInfoTarefa();
 		getContentPane().add(telaInfoTarefa, BorderLayout.CENTER);
 	}

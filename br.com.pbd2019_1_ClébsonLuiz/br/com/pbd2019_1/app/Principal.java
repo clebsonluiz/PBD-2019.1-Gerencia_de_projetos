@@ -27,6 +27,7 @@ import br.com.pbd2019_1.view.JanelaPrincipal;
 public class Principal {
 
 	public static void main(String[] args) {
+//		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
 		try {
 			UIManager.setLookAndFeel(new NimbusLookAndFeel());

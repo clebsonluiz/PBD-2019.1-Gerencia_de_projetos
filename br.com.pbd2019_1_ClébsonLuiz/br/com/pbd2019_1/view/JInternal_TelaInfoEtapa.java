@@ -13,7 +13,7 @@ public class JInternal_TelaInfoEtapa extends JInternalAbstract {
 		super("Info Etapa");
 		setMinimumSize(new Dimension(320, 350));
 		setPreferredSize(new Dimension(320, 350));
-		
+		setSize(getPreferredSize());
 		telaEtapa_Tarefas = new TelaEtapa_Tarefas();
 
 		add(telaEtapa_Tarefas, BorderLayout.CENTER);

@@ -15,9 +15,9 @@ import javax.persistence.Transient;
 @Table(name = "pessoa")
 @NamedQueries({
 	@NamedQuery(name = "Pessoa.cpf",
-			query = "select COUNT(p) from Pessoa p where p.cpf like cpf and p.ativado = true"),
+			query = "select cast(COUNT(p) as int) from Pessoa p where p.cpf like :cpf and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.buscarUsuarioLogin",
-			query = "select p from Pessoa as p where p.user_login like :login and p.ativado = true"),
+			query = "select cast(COUNT(p) as int) from Pessoa p where p.user_login like :login and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.buscarUsuario",
 			query = "select p from Pessoa as p where p.user_login like :login and p.user_senha like :senha and p.ativado = true")
 

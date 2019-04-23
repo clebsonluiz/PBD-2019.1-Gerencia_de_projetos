@@ -12,7 +12,7 @@ public abstract class JInternalAbstract extends JInternalFrame {
 
 	public JInternalAbstract(String titulo) {
 		super(titulo, false, true, true, true);
-		
+		setVisible(false);
 		setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
@@ -31,5 +31,6 @@ public abstract class JInternalAbstract extends JInternalFrame {
 		if(isIcon())
 			setIcon(false);
 		show();
+		grabFocus();
 	}
 }

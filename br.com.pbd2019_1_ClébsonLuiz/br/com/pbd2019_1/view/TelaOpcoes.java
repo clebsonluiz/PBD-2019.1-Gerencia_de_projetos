@@ -16,7 +16,7 @@ public class TelaOpcoes extends JPanel {
 	private Botao btnSair;
 
 	public TelaOpcoes() {
-		setLayout(new GridLayout(5, 1, 5, 5));
+		setLayout(new GridLayout(6, 1, 5, 5));
 		setMinimumSize(new Dimension(200, 500));
 		setPreferredSize(new Dimension(200, 500));
 		btnInfo = new Botao("Info");

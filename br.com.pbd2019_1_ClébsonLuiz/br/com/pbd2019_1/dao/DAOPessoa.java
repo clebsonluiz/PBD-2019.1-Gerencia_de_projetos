@@ -13,8 +13,8 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		EntityManager entityManager = createEntityManager();
 		int quantidade = 0;
 		try {
-			quantidade = entityManager.createNamedQuery("Pessoa.cpf")
-			.setParameter("cpf", cpf).getMaxResults();
+			quantidade = entityManager.createNamedQuery("Pessoa.cpf", Integer.class)
+			.setParameter("cpf", cpf).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -22,6 +22,7 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		} finally {
 			entityManager.close();
 		}
+		System.out.println("Quantidade : "+quantidade);
 		return (quantidade > 0)? true : false;
 	}
 	
@@ -29,8 +30,8 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		EntityManager entityManager = createEntityManager();
 		int quantidade = 0;
 		try {
-			quantidade = entityManager.createNamedQuery("Pessoa.buscarUsuarioLogin", Pessoa.class)
-			.setParameter("login", login).getMaxResults();
+			quantidade = entityManager.createNamedQuery("Pessoa.buscarUsuarioLogin", Integer.class)
+			.setParameter("login", login).getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 			
@@ -38,6 +39,7 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		} finally {
 			entityManager.close();
 		}
+		System.out.println("Quantidade : "+quantidade);
 		return (quantidade > 0)? true : false;
 	}
 	

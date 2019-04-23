@@ -16,7 +16,7 @@ public class JInternal_TelaCadastro_Etapa extends JInternalAbstract {
 		
 		setMinimumSize(new Dimension(310, 280));
 		setPreferredSize(new Dimension(310, 280));
-		
+		setSize(getPreferredSize());
 		add(telaCadastro_Etapa, BorderLayout.CENTER);
 		
 	}

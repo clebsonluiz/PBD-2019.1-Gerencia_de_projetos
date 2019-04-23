@@ -1,6 +1,7 @@
 package br.com.pbd2019_1.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 public class JInternal_TelaInserirSQL extends JInternalAbstract {
 
@@ -10,6 +11,9 @@ public class JInternal_TelaInserirSQL extends JInternalAbstract {
 	
 	public JInternal_TelaInserirSQL() {
 		super("Inserir SQL");
+		setMinimumSize(new Dimension(300, 300));
+		setPreferredSize(new Dimension(300, 300));
+		setSize(getPreferredSize());
 		telaInserirSQL = new TelaInserirSQL();
 		add(telaInserirSQL, BorderLayout.CENTER);
 	}
