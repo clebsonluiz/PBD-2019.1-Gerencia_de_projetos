@@ -24,12 +24,24 @@ public class CellRenderer extends DefaultTableCellRenderer{
 			Botao btn = (Botao) value;
 			if(btn.getText().equalsIgnoreCase("ver"))
 			{
-				if(hasFocus)
-					btn.setBackground(Color.GRAY.darker());
+				if(hasFocus) 
+				{
+					btn.setBackground(Botao.VERDE);
+					btn.setForeground(Color.white);
+					btn.setFont(Botao.FONT_CLICK);
+				}
 				else if(isSelected)
-					btn.setBackground(Color.GRAY);
+				{
+					btn.setBackground(Botao.MARROM);
+					btn.setForeground(Color.white);
+					btn.setFont(Botao.FONT_PADRAO);
+				}
 				else
-					btn.setBackground(Color.lightGray);
+				{
+					btn.setBackground(Botao.VERDE_ESCURO);
+					btn.setForeground(Color.white);
+					btn.setFont(Botao.FONT_PADRAO);
+				}
 				return btn;
 			}
 			/*else if(btn.getText().equalsIgnoreCase("x"))

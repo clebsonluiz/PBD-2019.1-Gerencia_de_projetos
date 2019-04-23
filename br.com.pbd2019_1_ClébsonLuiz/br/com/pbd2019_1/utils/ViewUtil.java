@@ -209,7 +209,7 @@ public interface ViewUtil {
 			public static final ImageIcon ICONE_TELA_LOGIN = getIcon("Freepik\\telaLogin");
 			public static final ImageIcon ICONE_LOGIN_USUARIO = getIcon("Freepik\\user_login");
 			public static final ImageIcon ICONE_SENHA_USUARIO = getIcon("Freepik\\user_senha");
-			
+			public static final ImageIcon IMAGEM_CARREGAMENTO = getIcon("Outros\\FundoTelaCarregamento");
 			
 	}
 	

@@ -1,6 +1,7 @@
 package br.com.pbd2019_1.view;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -9,6 +10,14 @@ public class Botao extends JButton {
 
 	public static final Color CINZA_CLARO_PADRAO = Color.LIGHT_GRAY;
 	public static final Color CINZA_CLARO_2 = new Color(210, 210, 210);
+	
+	public static final Color VERDE = new Color(100, 150, 0);
+	public static final Color VERDE_ESCURO = new Color(0, 100, 0);
+	public static final Color MARROM = new Color(100, 100, 0);
+	
+	public static final Font FONT_PADRAO = new Font("Arial", Font.BOLD, 14);
+	public static final Font FONT_CLICK = new Font("Arial", Font.BOLD, 16);
+	
 	
 	private static final long serialVersionUID = 1L;
 
