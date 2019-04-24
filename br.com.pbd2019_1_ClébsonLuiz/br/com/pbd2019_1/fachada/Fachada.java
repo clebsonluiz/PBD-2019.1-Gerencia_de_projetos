@@ -33,16 +33,16 @@ public class Fachada {
 	private BOColaborador boColaborador;
 	private BOCaracteristicaExtra boCaracteristicaExtra;
 	
-	private  Fachada() {
-		this.boEtapa = new BOEtapa();
-		this.boPessoa = new BOPessoa();
-		this.boTarefa = new BOTarefa();
-		this.boContato = new BOContato();
-		this.boProjeto = new BOProjeto();
-		this.boLogUpdate = new BOLogUpdate();
-		this.boColaborador = new BOColaborador();
-		this.boCaracteristicaExtra = new BOCaracteristicaExtra();
-	}
+	public void carregarBoEtapa() {this.boEtapa = new BOEtapa();}
+	public void carregarBoPessoa() {this.boPessoa = new BOPessoa();}
+	public void carregarBoTarefa() {this.boTarefa = new BOTarefa();}
+	public void carregarBoContato() {this.boContato = new BOContato();}
+	public void carregarBoProjeto() {this.boProjeto = new BOProjeto();}
+	public void carregarBoLogUpdate() {this.boLogUpdate = new BOLogUpdate();}
+	public void carregarBoColaborador() {this.boColaborador = new BOColaborador();}
+	public void carregarBoCaracteristicaExtra() {this.boCaracteristicaExtra = new BOCaracteristicaExtra();}
+
+	private  Fachada() {}
 
 	private static Fachada fachada;
 	

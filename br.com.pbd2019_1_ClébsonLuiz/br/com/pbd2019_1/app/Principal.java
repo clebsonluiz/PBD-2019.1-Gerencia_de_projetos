@@ -5,6 +5,14 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
+import br.com.pbd2019_1.business.BOCaracteristicaExtra;
+import br.com.pbd2019_1.business.BOColaborador;
+import br.com.pbd2019_1.business.BOContato;
+import br.com.pbd2019_1.business.BOEtapa;
+import br.com.pbd2019_1.business.BOLogUpdate;
+import br.com.pbd2019_1.business.BOPessoa;
+import br.com.pbd2019_1.business.BOProjeto;
+import br.com.pbd2019_1.business.BOTarefa;
 import br.com.pbd2019_1.controll.Controlador_Principal;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.exception.DAOException;
@@ -40,14 +48,37 @@ public class Principal {
 		janelaLoading.setVisible(true);
 		janelaLoading.etapaAtual("Banco de Dados!", 0);
 		
-		try {
-			Fachada.getInstance().buscarAll(Pessoa.class);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Fachada.getInstance().carregarBoEtapa();
 		
-		janelaLoading.etapaAtual("Banco de Dados Carregado!", 50);
+		janelaLoading.etapaAtual("Banco de Dados!", 6);
+		
+		Fachada.getInstance().carregarBoPessoa();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 12);
+		
+		Fachada.getInstance().carregarBoTarefa();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 18);
+		
+		Fachada.getInstance().carregarBoContato();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 24);
+		
+		Fachada.getInstance().carregarBoProjeto();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 30);
+		
+		Fachada.getInstance().carregarBoLogUpdate();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 36);
+		
+		Fachada.getInstance().carregarBoColaborador();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 42);
+		
+		Fachada.getInstance().carregarBoCaracteristicaExtra();
+		
+		janelaLoading.etapaAtual("Banco de Dados Carregado!", 48);
 		janelaLoading.etapaAtual("Janela Principal!", 50);
 		
 		JanelaPrincipal janela = new JanelaPrincipal();
