@@ -41,14 +41,14 @@ public abstract class BOGenerico<T extends Entidade>{
 		this.daoT.deletar(t);
 	};
 	
-	public T buscaSQL(String s) throws BOException, DAOException {
-		validacaoBuscaSQL(s);
-		return this.daoT.buscaSQLGenerica(classe, s);
+	public T buscaHQL(String s) throws BOException, DAOException {
+		validacaoBuscaHQL(s);
+		return this.daoT.buscaHQLGenerica(classe, s);
 	};
 	
-	public List<T> buscaSQLList(String s) throws BOException, DAOException {
-		validacaoBuscaSQLLista(s);
-		return this.daoT.buscaListaSQLGenerica(classe, s);
+	public List<T> buscaHQLList(String s) throws BOException, DAOException {
+		validacaoBuscaHQLLista(s);
+		return this.daoT.buscaListaHQLGenerica(classe, s);
 	};
 	
 	public List<T> buscarALL() throws BOException, DAOException {
@@ -56,7 +56,7 @@ public abstract class BOGenerico<T extends Entidade>{
 	};
 	
 	public List<Object[]> buscaListaSQLGenerica(String sql)throws BOException, DAOException {
-		return this.daoT.buscaListaSQLGenerica(sql);
+		return this.daoT.buscaSQLGenerica(sql);
 	}
 	
 	protected void validacaoInsercao(T t) throws BOException{
@@ -68,11 +68,11 @@ public abstract class BOGenerico<T extends Entidade>{
 	}
 	
 	
-	protected void validacaoBuscaSQL(String s) throws BOException{
+	protected void validacaoBuscaHQL(String s) throws BOException{
 		//TODO - Serão sobrescritos na classe concreta
 	}
 	
-	protected void validacaoBuscaSQLLista(String s) throws BOException{
+	protected void validacaoBuscaHQLLista(String s) throws BOException{
 		//TODO - Serão sobrescritos na classe concreta
 	}
 	

@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
+
+import org.hibernate.Session;
 
 import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.Projeto;
@@ -85,22 +86,35 @@ public class DAOEtapa extends DAOGenerico<Etapa>{
 		return porcent;
 	}*/
 	
+	@SuppressWarnings("deprecation")
 	public float recalcularPorcentagem(Etapa t) throws DAOException {
 		EntityManager entityManager = createEntityManager();
 
 		float porcent = 0;
 		try {
-			Query query = entityManager.
-					
-					
+			
+			 /*Query query = entityManager.
 					createNativeQuery("select" + 
 							" (cast(finalizadas as FLOAT)/cast(total as FLOAT))*100 " + 
 							" as porcentagem " + 
 							" FROM ( select SUM(CASE WHEN t.concluida = true THEN 1 ELSE 0 END) as finalizadas, " + 
 							" COUNT(*) as total from Tarefa as t where t.etapa.id = :etapa_fk " + 
-							" and t.ativado = true) as alias_tabela", Float.class);
-			query.setParameter("etapa_id", t.getId());
+							" and t.ativado = true) as alias_tabela");
+			query.setParameter("etapa_fk", t.getId());
+			
 			porcent = (Float)query.getSingleResult();
+			*/	
+			Session session = entityManager.unwrap(Session.class);
+			Object o = session.createSQLQuery("select" + 
+					" (cast(finalizadas as FLOAT)/cast(total as FLOAT))*100 " + 
+					" as porcentagem " + 
+					" FROM ( select SUM(CASE WHEN t.concluida = true THEN 1 ELSE 0 END) as finalizadas, " + 
+					" COUNT(*) as total from Tarefa as t where t.etapa_id = "+ t.getId()+ " "+ 
+					" and t.ativado = true) as alias_tabela")
+			.getSingleResult();
+			
+			porcent = ((Double)o).floatValue();
+			
 		} catch (NoResultException e) {
 			e.printStackTrace();
 			porcent = 0;

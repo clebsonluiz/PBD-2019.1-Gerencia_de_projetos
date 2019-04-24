@@ -8,6 +8,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
+import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
+
 import br.com.pbd2019_1.entidade.Entidade;
 import br.com.pbd2019_1.exception.DAOException;
 
@@ -116,7 +119,7 @@ public abstract class DAOGenerico <T extends Entidade> {
 		return t;
 	}
 	
-	public T buscaSQLGenerica(Class<T> classe, String sql) throws DAOException{
+	public T buscaHQLGenerica(Class<T> classe, String sql) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		T t = null;
 		try {
@@ -134,7 +137,7 @@ public abstract class DAOGenerico <T extends Entidade> {
 		return t;
 	}
 	
-	public List<T> buscaListaSQLGenerica(Class<T> classe, String sql) throws DAOException{
+	public List<T> buscaListaHQLGenerica(Class<T> classe, String sql) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		List<T> t = null;
 		try {
@@ -152,18 +155,37 @@ public abstract class DAOGenerico <T extends Entidade> {
 		return t;
 	}
 	
-	public List<Object[]> buscaListaSQLGenerica(String sql) throws DAOException{
+	public List<Object[]> buscaSQLGenerica(String sql) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		List<Object[]> t = null;
 		try {
-			t = entityManager.createQuery(sql, Object[].class).getResultList();
-		} catch (NoResultException e) {
-			e.printStackTrace();
-			t = new ArrayList<>();
-		} catch (Exception e) {
+			
+			Session session = entityManager.unwrap(Session.class);
+			
+			@SuppressWarnings({ "deprecation", "unchecked" })
+			NativeQuery<Object[]> query = session.createSQLQuery(sql);
+			
+			t = query.list();
+			
+		} 
+		
+		catch (Exception e) 
+		{
+			if(e.getMessage().equals("org.hibernate.MappingException: No Dialect mapping for JDBC type: 2002"))
+			{
+				e.printStackTrace();
+				throw new DAOException("Mapeamento Errado");
+			}
+			if(e.getMessage().equals("org.hibernate.exception.GenericJDBCException: could not extract ResultSet"))
+			{
+				e.printStackTrace();
+				throw new DAOException("Sem resultados");
+			}
 			e.printStackTrace();
 			throw new DAOException("Erro de busca lista SQL no banco de dados");
-		} finally {
+		} 
+		finally 
+		{
 			entityManager.close();
 		}
 		return t;

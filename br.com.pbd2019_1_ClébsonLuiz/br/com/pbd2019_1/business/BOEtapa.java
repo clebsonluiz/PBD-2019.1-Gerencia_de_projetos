@@ -10,8 +10,6 @@ import br.com.pbd2019_1.exception.DAOException;
 
 public class BOEtapa extends BOGenerico<Etapa>{
 
-	private DAOEtapa daoEtapa;
-	
 	public BOEtapa() {
 		super(new DAOEtapa(), Etapa.class);
 	}
@@ -35,14 +33,14 @@ public class BOEtapa extends BOGenerico<Etapa>{
 	public List<Etapa> buscarPorProjeto(Projeto projeto) throws BOException, DAOException {
 		if(projeto == null || projeto.getId() <= 0)
 			throw new BOException("Erro ao buscar a Etapa por projeto");
-		return this.daoEtapa.buscarPorProjeto(projeto);
+		return ((DAOEtapa)this.daoT).buscarPorProjeto(projeto);
 	}
 
 	
 	public int recalcularPorcentagem(Etapa t) throws BOException, DAOException {
 		if(t == null || t.getId() <= 0)
 			throw new BOException("Erro ao recalcular");
-		return (int) this.daoEtapa.recalcularPorcentagem(t);
+		return (int) ((DAOEtapa)this.daoT).recalcularPorcentagem(t);
 	}
 	
 }
