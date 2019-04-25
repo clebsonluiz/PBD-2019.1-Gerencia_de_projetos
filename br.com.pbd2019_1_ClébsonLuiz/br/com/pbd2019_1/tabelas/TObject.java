@@ -23,9 +23,17 @@ public class TObject extends AbstractTableModel{
 		if(t != null)
 		{
 			this.colunas.clear();
-			for(int i = 0; i < t.size(); i++)
-				colunas.add("VALUE COLUMN");
 			
+			if(t.size() > 0)
+			{
+				Object o = t.get(0);
+				if(o instanceof Object[])
+				{
+					for(int i = 0; i < ((Object[])o).length; i++)
+						colunas.add("VALUE COLUMN");
+				}
+			}
+
 			this.t.clear();
 			this.t.addAll(t);
 			fireTableStructureChanged();

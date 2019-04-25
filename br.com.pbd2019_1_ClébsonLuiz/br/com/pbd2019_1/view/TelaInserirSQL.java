@@ -2,10 +2,14 @@ package br.com.pbd2019_1.view;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import br.com.pbd2019_1.utils.ViewUtil;
+
 import javax.swing.JTable;
 import java.awt.GridLayout;
 
@@ -14,43 +18,84 @@ public class TelaInserirSQL extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private JTextArea textArea;
-	private Botao btInserir;
-	private Botao btBtn;
+	private JTextArea exceptionTextArea;
+	private Botao btnInserir;
+	private Botao btnLimpar;
+	private Botao btnSalvar;
+	private Botao btnAbrir;
 
 	public TelaInserirSQL() {
 		setLayout(new BorderLayout());
-		setMinimumSize(new Dimension(300, 300));
-		setPreferredSize(new Dimension(300, 300));
+		setMinimumSize(new Dimension(300, 350));
+		setPreferredSize(new Dimension(300, 350));
 		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, BorderLayout.CENTER);
 		
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
+		scrollPane.setMinimumSize(new Dimension(300, 150));
+		scrollPane.setPreferredSize(new Dimension(300, 150));
 		
-		JPanel panel = new JPanel();
+		JPanel panelGrid = new JPanel();
+		JPanel panelCentro = new JPanel(new BorderLayout(0, 0));
+
+		add(panelCentro, BorderLayout.CENTER);
 		
-		panel.setMinimumSize(new Dimension(300, 40));
-		panel.setPreferredSize(new Dimension(300, 40));
+		panelGrid.setMinimumSize(new Dimension(300, 40));
+		panelGrid.setPreferredSize(new Dimension(300, 40));
 		
-		add(panel, BorderLayout.NORTH);
-		panel.setLayout(new GridLayout(1, 1, 5, 5));
+		add(panelGrid, BorderLayout.NORTH);
+		panelGrid.setLayout(new GridLayout(1, 5, 10, 10));
 		
-		btInserir = new Botao();
-		btInserir.setText("Inserir");
-		panel.add(btInserir);
+		btnInserir = new Botao();
+		btnInserir.setIcon(ViewUtil.Icones.ICONE_SETA_PLAY);
+		btnInserir.setText("Inserir");
+		btnInserir.setToolTipText("Executar código SQL");
+		panelGrid.add(btnInserir);
 		
-		btBtn = new Botao();
-		btBtn.setText("Btn2");
-		panel.add(btBtn);
+		btnLimpar = new Botao();
+		btnLimpar.setIcon(ViewUtil.Icones.ICONE_VASSOURA);
+		btnLimpar.setText("Limpar");
+		btnLimpar.setToolTipText("Limpar o campo");
+		panelGrid.add(btnLimpar);
+		
+		btnSalvar = new Botao();
+		btnSalvar.setIcon(ViewUtil.Icones.ICONE_SALVAR_ARQUIVO);
+		btnSalvar.setText("Salvar");
+		btnSalvar.setToolTipText("Salvar arquivo sql");
+		panelGrid.add(btnSalvar);
+		
+		btnAbrir = new Botao();
+		btnAbrir.setIcon(ViewUtil.Icones.ICONE_ABRIR_ARQUIVO);
+		btnAbrir.setText("Abrir");
+		btnAbrir.setToolTipText("Abrir arquivo sql");
+		panelGrid.add(btnAbrir);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setMinimumSize(new Dimension(300, 100));
-		scrollPane_1.setPreferredSize(new Dimension(300, 100));
+		scrollPane_1.setMinimumSize(new Dimension(300, 150));
+		scrollPane_1.setPreferredSize(new Dimension(300, 150));
 		
 		table = new JTable();
 		
-		add(scrollPane_1, BorderLayout.SOUTH);
+		panelCentro.add(scrollPane, BorderLayout.CENTER);
+		panelCentro.add(scrollPane_1, BorderLayout.SOUTH);
+		
 		scrollPane_1.setViewportView(table);
+		
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		
+		exceptionTextArea = new JTextArea();
+		exceptionTextArea.setEditable(false);
+		exceptionTextArea.setWrapStyleWord(true);
+		exceptionTextArea.setLineWrap(true);
+		exceptionTextArea.setBackground(Color.LIGHT_GRAY);
+		exceptionTextArea.setForeground(Color.RED);
+		exceptionTextArea.setText("Campo de Exceções");
+		scrollPane_2.setViewportView(exceptionTextArea);
+		scrollPane_2.setMinimumSize(new Dimension(300, 50));
+		scrollPane_2.setPreferredSize(new Dimension(300, 50));
+		
+		add(scrollPane_2, BorderLayout.SOUTH);
 	}
 
 	public JTable getTable() {
@@ -61,12 +106,24 @@ public class TelaInserirSQL extends JPanel {
 		return textArea;
 	}
 
-	public Botao getBtInserir() {
-		return btInserir;
+	public Botao getBtnInserir() {
+		return btnInserir;
 	}
 
-	public Botao getBtBtn() {
-		return btBtn;
+	public Botao getBtnLimpar() {
+		return btnLimpar;
+	}
+	
+	public Botao getBtnSalvar() {
+		return btnSalvar;
+	}
+
+	public Botao getBtnAbrir() {
+		return btnAbrir;
+	}
+
+	public JTextArea getExceptionTextArea() {
+		return exceptionTextArea;
 	}
 	
 }

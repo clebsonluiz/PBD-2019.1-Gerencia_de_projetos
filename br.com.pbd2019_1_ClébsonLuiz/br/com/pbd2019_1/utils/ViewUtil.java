@@ -209,6 +209,12 @@ public interface ViewUtil {
 			public static final ImageIcon ICONE_TELA_LOGIN = getIcon("Freepik\\telaLogin");
 			public static final ImageIcon ICONE_LOGIN_USUARIO = getIcon("Freepik\\user_login");
 			public static final ImageIcon ICONE_SENHA_USUARIO = getIcon("Freepik\\user_senha");
+			public static final ImageIcon ICONE_VASSOURA = getIcon("Freepik\\short-broom");
+			public static final ImageIcon ICONE_SETA_PLAY = getIcon("Freepik\\play-arrow");
+			public static final ImageIcon ICONE_SALVAR_ARQUIVO = getIcon("Freepik\\diskette");
+			public static final ImageIcon ICONE_ABRIR_ARQUIVO = getIcon("Freepik\\open-folder-with-document");
+			
+			
 			public static final ImageIcon IMAGEM_CARREGAMENTO = getIcon("Outros\\FundoTelaCarregamento");
 			
 	}

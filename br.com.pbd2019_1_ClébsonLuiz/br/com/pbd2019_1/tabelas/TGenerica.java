@@ -39,7 +39,10 @@ public abstract class TGenerica<T extends Entidade> extends AbstractTableModel {
 	}
 	
 	public boolean addValor(T t) {
-		return this.t.add(t);
+		boolean b = this.t.add(t);
+		if(b)
+			fireTableRowsInserted(this.t.size() - 1, this.t.size() - 1);
+		return b;
 	}
 	
 	public List<T> getList() {
