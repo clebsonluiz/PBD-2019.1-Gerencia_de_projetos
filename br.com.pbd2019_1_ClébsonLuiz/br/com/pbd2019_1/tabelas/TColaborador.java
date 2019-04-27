@@ -23,6 +23,10 @@ public class TColaborador extends TGenerica<Colaborador>{
 		super(new String[]{"Nome","Data ingressão","Privilegio", ""});
 	}
 	
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return (columnIndex == 2);
+	}
+	
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
 		if(columnIndex == 2) {
 			getList().get(rowIndex).setPrivilegio((String)value);

@@ -3,6 +3,7 @@ package br.com.pbd2019_1.tabelas;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -44,16 +45,18 @@ public class CellRenderer extends DefaultTableCellRenderer{
 				}
 				return btn;
 			}
-			/*else if(btn.getText().equalsIgnoreCase("x"))
-			{
-				if(hasFocus)
-					btn.setBackground(Color.red);
-				else if(isSelected)
-					btn.setBackground(Color.red.brighter());
+			
+			else if(value instanceof JComboBox) {
+				@SuppressWarnings("unchecked")
+				JComboBox<String> cmbx = (JComboBox<String>) value;
+				if(hasFocus) 
+					cmbx.setBackground(Color.GRAY.darker());
+				else if(isSelected) 
+					cmbx.setBackground(Color.GRAY);
 				else
-					btn.setBackground(Color.red.brighter().brighter());
-				return btn;
-			}*/
+					cmbx.setBackground(Color.lightGray);
+				return cmbx;
+			}
 			
 		}
 		return super.getTableCellRendererComponent(

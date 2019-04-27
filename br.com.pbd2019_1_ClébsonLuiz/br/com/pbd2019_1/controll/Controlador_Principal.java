@@ -13,14 +13,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
-import br.com.pbd2019_1.entidade.CaracteristicaExtra;
-import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
-import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
-import br.com.pbd2019_1.entidade.Tarefa;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.CellRenderer;
@@ -49,7 +45,6 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas_Simples;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
 import br.com.pbd2019_1.view.PopUp;
-import br.com.pbd2019_1.view.TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
 import br.com.pbd2019_1.view.TelaInfoPessoa;
@@ -91,15 +86,9 @@ public class Controlador_Principal {
 	private TTarefa tTarefa;
 	private TObject tObject;
 	
-	private static Pessoa pessoa_static;
-	private static Pessoa pessoa_outrem_static;
-	private static Projeto projeto_static;
-	private static Etapa etapa_static;
-	private static Tarefa tarefa_static;
-	private static Colaborador colaborador_static;
-	private static LogUpdate logUpdate_static;
-	private static String type_user = "";
-	private static boolean bool_colaborador = false;
+	
+	private Controlador_Preenche_Tela preenche_Tela;
+	private Controlador_Cadastro controlador_Cadastro;
 	
 	private static PopUp popUpCaracteristica = new PopUp(new String[]{"Editar", "Excluir"});
 	private static PopUp popUp = new PopUp(new String[]{"", "Excluir", ""});
@@ -107,6 +96,8 @@ public class Controlador_Principal {
 	public Controlador_Principal(TelaPrincipal telaPrincipal) {
 		super();
 		this.telaPrincipal = telaPrincipal;
+		this.preenche_Tela = new Controlador_Preenche_Tela();
+		this.controlador_Cadastro = new Controlador_Cadastro();
 	}
 
 	public void adicionarJInternals(JInternal_TelaCadastro_Etapa jInternal_TelaCadastro_Etapa,
@@ -262,10 +253,10 @@ public class Controlador_Principal {
 		adicionarEventosComboBox(tableTarefas, tableColaboradores);
 		
 		
-		adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Tarefa);
-		adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Etapa);
-		adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Projeto);
-		adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Pessoa);
+		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Tarefa, tTarefa, jInternal_TelaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa());
+		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Etapa, tEtapa);
+		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Projeto, tProjeto);
+		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Pessoa, tPessoa);
 		
 		adicionarEventoJInternal(jInternal_TelaInfoEtapa);
 		adicionarEventoJInternal(jInternal_TelaInfoPessoa);
@@ -313,9 +304,9 @@ public class Controlador_Principal {
 							{
 								try 
 								{
-									if(bool_colaborador)
+									if(Controlador_Statics.bool_colaborador)
 									{
-										if(!colaborador_static.getPrivilegio().equals("Visitante"))
+										if(!Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 										{
 											obj = !((Boolean)obj).booleanValue();
 											tTarefa.setValueAt(obj, linha, coluna);
@@ -328,10 +319,10 @@ public class Controlador_Principal {
 										tTarefa.setValueAt(obj, linha, coluna);
 										Fachada.getInstance().atualizar(tTarefa.getValor(linha));
 										
-										etapa_static.setPorcentagem_andamento(
+										Controlador_Statics.etapa_static.setPorcentagem_andamento(
 												Fachada.getInstance()
 													.getBoEtapa()
-													.recalcularPorcentagem(etapa_static)
+													.recalcularPorcentagem(Controlador_Statics.etapa_static)
 												);
 										
 										jInternal_TelaInfoEtapa
@@ -339,7 +330,7 @@ public class Controlador_Principal {
 											.getTelaEtapa()
 											.getBarraProgressBar()
 											.setValue(
-													Math.round(etapa_static.getPorcentagem_andamento())
+													Math.round(Controlador_Statics.etapa_static.getPorcentagem_andamento())
 													);
 										
 									}
@@ -355,8 +346,9 @@ public class Controlador_Principal {
 						{
 							try 
 							{
-								tarefa_static = tTarefa.getValor(linha);
-								preencherTelaTarefa(jInternal_TelaInfoTarefa.getTelaInfoTarefa(), tarefa_static);
+								Controlador_Statics.tarefa_static = tTarefa.getValor(linha);
+								preenche_Tela.preencherTelaTarefa(jInternal_TelaInfoTarefa.getTelaInfoTarefa(), Controlador_Statics.tarefa_static);
+								jInternal_TelaInfoTarefa.resetLocation();
 								jInternal_TelaInfoTarefa.queroFoco();
 							} catch (PropertyVetoException e1) {
 								// TODO Auto-generated catch block
@@ -371,13 +363,14 @@ public class Controlador_Principal {
 							//TODO - Abrir tela ver Etapa
 							try 
 							{
-								etapa_static = tEtapa.getValor(linha);
+								Controlador_Statics.etapa_static = tEtapa.getValor(linha);
 								
 								TelaEtapa tE = jInternal_TelaInfoEtapa
 										.getTelaEtapa_Tarefas()
 										.getTelaEtapa();
 								
-								atualizarDadoEtapa(tE, etapa_static, tTarefa);
+								preenche_Tela.atualizarDadoEtapa(tE, Controlador_Statics.etapa_static, tTarefa);
+								jInternal_TelaInfoEtapa.resetLocation();
 								jInternal_TelaInfoEtapa.queroFoco();
 								
 							} 
@@ -400,16 +393,17 @@ public class Controlador_Principal {
 							//TODO - Abrir Tela ver Projeto
 							try
 							{
-								bool_colaborador = false;
-								projeto_static = tProjeto.getValor(linha);
+								Controlador_Statics.bool_colaborador = false;
+								Controlador_Statics.projeto_static = tProjeto.getValor(linha);
 								
-								if(!type_user.equals(Pessoa.COMUM_USER))
+								if(!Controlador_Statics.type_user.equals(Pessoa.COMUM_USER))
 								{
 									TelaProjeto tP = jInternal_TelaInfoProjeto_Etapas
 											.getTelaProjeto_Etapas()
 											.getTelaProjeto();
 									
-									atualizarDadoProjeto(tP, projeto_static, tEtapa, tColaborador);
+									preenche_Tela.atualizarDadoProjeto(tP, Controlador_Statics.projeto_static, tEtapa, tColaborador);
+									jInternal_TelaInfoProjeto_Etapas.resetLocation();
 									jInternal_TelaInfoProjeto_Etapas.queroFoco();
 								}
 								else
@@ -418,7 +412,8 @@ public class Controlador_Principal {
 											.getTelaProjeto_Etapas_Simples()
 											.getTelaProjeto();
 									
-									atualizarDadoProjetoSimples(tP, projeto_static, tEtapa);
+									preenche_Tela.atualizarDadoProjetoSimples(tP, Controlador_Statics.projeto_static, tEtapa);
+									jInternal_TelaInfoProjeto_Etapas_Simples.resetLocation();
 									jInternal_TelaInfoProjeto_Etapas_Simples.queroFoco();
 								}
 								
@@ -443,21 +438,21 @@ public class Controlador_Principal {
 						{
 							try 
 							{
-								colaborador_static = tColaborador.getValor(linha);
+								Controlador_Statics.colaborador_static = tColaborador.getValor(linha);
 							
-								pessoa_outrem_static = (Pessoa) Fachada
+								Controlador_Statics.pessoa_outrem_static = (Pessoa) Fachada
 										.getInstance()
 										.buscar(
 												Pessoa.class,
-												colaborador_static
+												Controlador_Statics.colaborador_static
 												.getPessoa()
 												.getId()
 												);
 								
 								TelaInfoPessoa tIP = jInternal_TelaInfoPessoa.getTelaInfoPessoa();
 								
-								atualizarDadoPessoa(tIP, pessoa_outrem_static, tCaracteristicaExtra2);
-								
+								preenche_Tela.atualizarDadoPessoa(tIP, Controlador_Statics.pessoa_outrem_static, tCaracteristicaExtra2);
+								jInternal_TelaInfoPessoa.resetLocation();
 								jInternal_TelaInfoPessoa.queroFoco();
 								
 							} 
@@ -481,14 +476,14 @@ public class Controlador_Principal {
 						{
 							try 
 							{
-								bool_colaborador = true;
+								Controlador_Statics.bool_colaborador = true;
 								
-								colaborador_static = tColaboracoes.getValor(linha);
+								Controlador_Statics.colaborador_static = tColaboracoes.getValor(linha);
 							
-								projeto_static = (Projeto) Fachada.getInstance()
+								Controlador_Statics.projeto_static = (Projeto) Fachada.getInstance()
 										.buscar(
 												Projeto.class,
-												colaborador_static
+												Controlador_Statics.colaborador_static
 												.getProjeto()
 												.getId()
 												);
@@ -497,7 +492,8 @@ public class Controlador_Principal {
 										.getTelaProjeto_Etapas_Simples()
 										.getTelaProjeto();
 							
-								atualizarDadoProjetoSimples(tP, projeto_static, tEtapa);
+								preenche_Tela.atualizarDadoProjetoSimples(tP, Controlador_Statics.projeto_static, tEtapa);
+								jInternal_TelaInfoProjeto_Etapas_Simples.resetLocation();
 								jInternal_TelaInfoProjeto_Etapas_Simples.queroFoco();
 								
 							} catch (ValidacaoException e1) {
@@ -514,7 +510,7 @@ public class Controlador_Principal {
 						if(coluna == 2)
 						{
 							//TODO - Abrir tela ver log update
-							logUpdate_static = tLogUpdate.getValor(linha);
+							Controlador_Statics.logUpdate_static = tLogUpdate.getValor(linha);
 						}
 					}
 					else if (table.getModel() instanceof TPessoa)
@@ -524,12 +520,12 @@ public class Controlador_Principal {
 							//TODO - Abrir tela ver Pessoa outrem 
 							try
 							{
-								pessoa_outrem_static = tPessoa.getValor(linha);
+								Controlador_Statics.pessoa_outrem_static = tPessoa.getValor(linha);
 								
 								TelaInfoPessoa tIP = jInternal_TelaInfoPessoa.getTelaInfoPessoa();
 								
-								atualizarDadoPessoa(tIP, pessoa_outrem_static, tCaracteristicaExtra2);
-								
+								preenche_Tela.atualizarDadoPessoa(tIP, Controlador_Statics.pessoa_outrem_static, tCaracteristicaExtra2);
+								jInternal_TelaInfoPessoa.resetLocation();
 								jInternal_TelaInfoPessoa.queroFoco();
 								
 							} 
@@ -558,8 +554,8 @@ public class Controlador_Principal {
 		excluir.addItemListener(ItemEvent->{
 			//TODO - 
 			try {
-				if(bool_colaborador)
-					if(!colaborador_static.getPrivilegio().equals("Administrador"))
+				if(Controlador_Statics.bool_colaborador)
+					if(!Controlador_Statics.colaborador_static.getPrivilegio().equals("Administrador"))
 						throw new ValidacaoException("Não tem permição");
 					
 				int linha = popUp.getjTableAtual().getSelectedRow();
@@ -628,8 +624,8 @@ public class Controlador_Principal {
 				{ 
 					try 
 					{
-						if(bool_colaborador)
-							if(colaborador_static.getPrivilegio().equals("Visitante"))
+						if(Controlador_Statics.bool_colaborador)
+							if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 								throw new ValidacaoException("Não tem permição");
 						
 						tTarefa.setValueAt(tTarefa.getCombo().getSelectedItem(),
@@ -727,7 +723,7 @@ public class Controlador_Principal {
 							.getSenhaField()
 							.getTexto();
 					
-					pessoa_static = Fachada
+					Controlador_Statics.pessoa_static = Fachada
 							.getInstance()
 							.getBoPessoa()
 							.buscarUsuario(
@@ -735,20 +731,20 @@ public class Controlador_Principal {
 									senha
 									);
 					
-					if(pessoa_static != null) 
+					if(Controlador_Statics.pessoa_static != null) 
 					{
-						type_user = pessoa_static.getUser_type();
+						Controlador_Statics.type_user = Controlador_Statics.pessoa_static.getUser_type();
 						
 						TelaInfoPessoa tIP = jInternal_TelaInfoPessoa_Projetos
 								.getTelaInfoPessoaProjetos().getTelaInfoPessoa();
 						
-						atualizarDadoMinhaPessoa(tIP, pessoa_static, tCaracteristicaExtra, tProjeto, tColaboracoes);
+						preenche_Tela.atualizarDadoMinhaPessoa(tIP, Controlador_Statics.pessoa_static, tCaracteristicaExtra, tProjeto, tColaboracoes);
 						
-						if(type_user.equals(Pessoa.COMUM_USER))
+						if(Controlador_Statics.type_user.equals(Pessoa.COMUM_USER))
 							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_COMUM);
-						else if(type_user.equals(Pessoa.ADMIN_USER))
+						else if(Controlador_Statics.type_user.equals(Pessoa.ADMIN_USER))
 							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_ADMIN);
-						else if(type_user.equals(Pessoa.SUPER_USER))
+						else if(Controlador_Statics.type_user.equals(Pessoa.SUPER_USER))
 							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_SUPER);
 						
 						telaPrincipal.exibirTela(TelaPrincipal.TELA_PRINCIPAL);
@@ -779,8 +775,8 @@ public class Controlador_Principal {
 				TelaInfoPessoa tIP = jInternal_TelaInfoPessoa_Projetos
 						.getTelaInfoPessoaProjetos().getTelaInfoPessoa();
 			
-				atualizarDadoMinhaPessoa(tIP, pessoa_static, tCaracteristicaExtra, tProjeto, tColaboracoes);
-				resetLocation(jInternal_TelaInfoPessoa_Projetos);
+				preenche_Tela.atualizarDadoMinhaPessoa(tIP, Controlador_Statics.pessoa_static, tCaracteristicaExtra, tProjeto, tColaboracoes);
+				jInternal_TelaInfoPessoa_Projetos.resetLocation();
 				jInternal_TelaInfoPessoa_Projetos.queroFoco();
 			} 
 			catch (ValidacaoException e) 
@@ -813,7 +809,7 @@ public class Controlador_Principal {
 			try
 			{
 				tPessoa.addAll((List<Pessoa>) Fachada.getInstance().buscarAll(Pessoa.class));
-				resetLocation(jInternal_TabelaPessoas);
+				jInternal_TabelaPessoas.resetLocation();
 				jInternal_TabelaPessoas.queroFoco();
 			} 
 			catch (ValidacaoException e) 
@@ -830,7 +826,7 @@ public class Controlador_Principal {
 		telaOpcoes.getBtnSQL().addActionListener(ActionEvent->{
 			//TODO - Inserir evento SUPER USUARIO Inserir SQL
 			try {
-				resetLocation(jInternal_TelaInserirSQL);
+				jInternal_TelaInserirSQL.resetLocation();
 				jInternal_TelaInserirSQL.queroFoco();
 			} catch (PropertyVetoException e) {
 				// TODO Auto-generated catch block
@@ -858,156 +854,6 @@ public class Controlador_Principal {
 	}
 	
 	
-	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Etapa telaCadastroEtapa) {
-		telaCadastroEtapa.getTelaCadastro_Etapa().getBotao1()
-			.addActionListener(ActionEvent->{
-				try {
-					TelaEtapa telaEtapa = telaCadastroEtapa.getTelaCadastro_Etapa();
-					String nome = telaEtapa.getNomeEtapaField().getText();
-					String descr = telaEtapa.getDescricaoTextArea().getText();
-
-					Etapa etapa = new Etapa();
-					etapa.setNome(nome);
-					etapa.setDescricao(descr);
-					etapa.setPorcentagem_andamento(0);
-					etapa.setProjeto(projeto_static);
-					Fachada.getInstance().inserir(etapa);
-					tEtapa.addValor(etapa);
-					telaEtapa.limparCampos();
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-		});
-	}
-	
-	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Pessoa telaCadastroPessoa) {
-		telaCadastroPessoa.getTelaCadastro_Pessoa().getBtBotao1()
-			.addActionListener(ActionEvent->{
-				//TODO - Cadastro Pessoa
-				try {
-					TelaPessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa().getTelaPessoa();
-					String nome = telaPessoa.getNomeField().getTexto();
-					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
-					Date data = telaPessoa.getNascimentoDateChooser().getDate();
-					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
-					String login = telaPessoa.getLoginField().getTexto();
-					String senha = telaPessoa.getSenhaField().getTexto();
-					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
-
-					Fachada.getInstance().getBoPessoa().buscarPorCPF(cpf);
-					Fachada.getInstance().getBoPessoa().buscarPorLogin(login);
-
-					Pessoa pessoa = new Pessoa();
-					pessoa.setNome(nome);
-					pessoa.setCpf(cpf);
-					pessoa.setData_nascimento(DateUtil.getDateSQL(data));
-					pessoa.setSexo(sexo);
-					pessoa.setUser_login(login);
-					pessoa.setUser_senha(senha);
-					pessoa.setDisponibilidade(disponivel);
-
-					if(type_user.equals(Pessoa.ADMIN_USER))
-						pessoa.setUser_type(Pessoa.COMUM_USER);
-					else if(type_user.equals(Pessoa.SUPER_USER))
-						pessoa.setUser_type(Pessoa.ADMIN_USER);
-					Fachada.getInstance().inserir(pessoa);
-					tPessoa.addValor(pessoa);
-					telaCadastroPessoa.getTelaCadastro_Pessoa().limparCampos();
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		});
-	}
-	
-	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Projeto telaCadastroProjeto) {
-		telaCadastroProjeto.getTelaCadastro_Projeto().getBotao1()
-			.addActionListener(ActionEvent->{
-				//TODO - Cadastro Projeto
-				try {
-
-					TelaProjeto telaProjeto = telaCadastroProjeto.getTelaCadastro_Projeto();
-
-					String nome = telaProjeto.getNomeProjetoField().getTexto();
-					String descr = telaProjeto.getDescricaoTextArea().getText();
-					Date dataI = telaProjeto.getDataInicioDateChooser().getDate();
-					Date dataF = telaProjeto.getDataFimDateChooser().getDate();
-
-					Projeto projeto = new Projeto();
-					projeto.setNome(nome);
-					projeto.setDescricao(descr);
-					projeto.setData_inicio(DateUtil.getDateSQL(dataI));
-					projeto.setData_fim(DateUtil.getDateSQL(dataF));
-					projeto.setPessoa(pessoa_static);
-					projeto.setPrivilegio(!(type_user.equals(Pessoa.COMUM_USER)));
-					Fachada.getInstance().inserir(projeto);
-					tProjeto.addValor(projeto);
-					telaProjeto.limparCampos();
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-				
-				
-		});
-	}
-	
-	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Tarefa telaCadastroTarefa) {
-		telaCadastroTarefa.getTelaCadastro_Tarefa().getBotao1()
-			.addActionListener(ActionEvent->{
-				//TODO - Cadastro Tarefa
-				
-				try {
-					TelaCadastro_Tarefa telaCadastro = telaCadastroTarefa.getTelaCadastro_Tarefa();
-
-					String nome = telaCadastro.getNomeTarefaField().getTexto();
-					String descr = telaCadastro.getDescricaoTextArea().getText();
-					boolean finalizada = telaCadastro.getChckbxFinalizada().isSelected();
-					String prior = (String) telaCadastro.getPrioridadeComboBox().getSelectedItem();
-
-					LocalTime time = telaCadastro.getHorario().getLocalTime();
-					Date date = telaCadastro.getDateChooser().getDate();
-
-					LocalDateTime localDateTime = DateUtil.getDateTime(DateUtil.parseToLocalDate(date), time);
-
-					String horario = localDateTime.toString();
-
-					Tarefa tarefa = new Tarefa();
-					tarefa.setNome(nome);
-					tarefa.setDescricao(descr);
-					tarefa.setConcluida(finalizada);
-					tarefa.setPrioridade(prior);
-					tarefa.setHorario_tarefa(horario);
-					tarefa.setEtapa(etapa_static);
-					Fachada.getInstance().inserir(tarefa);
-					tTarefa.addValor(tarefa);
-					telaCadastro.limparCampos();
-					
-					etapa_static.setPorcentagem_andamento(
-							Fachada.getInstance()
-								.getBoEtapa()
-								.recalcularPorcentagem(etapa_static)
-							);
-					
-					jInternal_TelaInfoEtapa
-						.getTelaEtapa_Tarefas()
-						.getTelaEtapa()
-						.getBarraProgressBar()
-						.setValue(
-								(int)etapa_static.getPorcentagem_andamento()
-								);
-					
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		});
-	}
-
-	
 
 	private void adicionarEventoJInternal(JInternal_TelaInfoEtapa telaInfoEtapa) {
 		
@@ -1017,17 +863,17 @@ public class Controlador_Principal {
 				
 				try {
 					
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaEtapa telaEtapa = telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa();
 					String nome = telaEtapa.getNomeEtapaField().getTexto();
 					String descr = telaEtapa.getDescricaoTextArea().getText();
 
-					etapa_static.setNome(nome);
-					etapa_static.setDescricao(descr);
-					Fachada.getInstance().atualizar(etapa_static);
+					Controlador_Statics.etapa_static.setNome(nome);
+					Controlador_Statics.etapa_static.setDescricao(descr);
+					Fachada.getInstance().atualizar(Controlador_Statics.etapa_static);
 					tEtapa.fireTableDataChanged();
 				} catch (ValidacaoException e) {
 					//TODO Auto-generated catch block
@@ -1042,10 +888,10 @@ public class Controlador_Principal {
 			//TODO - Nova Tarefa
 				try {
 				
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
-					resetLocation(jInternal_TelaCadastro_Tarefa);
+					jInternal_TelaCadastro_Tarefa.resetLocation();
 					jInternal_TelaCadastro_Tarefa.queroFoco();
 				} catch (ValidacaoException e) {
 					// TODO Auto-generated catch block
@@ -1123,17 +969,17 @@ public class Controlador_Principal {
 					String telef = telaContato.getTelefoneField().getText();
 
 
-					pessoa_outrem_static.setNome(nome);
-					pessoa_outrem_static.setCpf(cpf);
-					pessoa_outrem_static.setData_nascimento(DateUtil.getDateSQL(data));
-					pessoa_outrem_static.setSexo(sexo);
-					pessoa_outrem_static.setUser_login(login);
-					pessoa_outrem_static.setUser_senha(senha);
-					pessoa_outrem_static.setDisponibilidade(disponivel);
-					Fachada.getInstance().atualizar(pessoa_outrem_static);
+					Controlador_Statics.pessoa_outrem_static.setNome(nome);
+					Controlador_Statics.pessoa_outrem_static.setCpf(cpf);
+					Controlador_Statics.pessoa_outrem_static.setData_nascimento(DateUtil.getDateSQL(data));
+					Controlador_Statics.pessoa_outrem_static.setSexo(sexo);
+					Controlador_Statics.pessoa_outrem_static.setUser_login(login);
+					Controlador_Statics.pessoa_outrem_static.setUser_senha(senha);
+					Controlador_Statics.pessoa_outrem_static.setDisponibilidade(disponivel);
+					Fachada.getInstance().atualizar(Controlador_Statics.pessoa_outrem_static);
 					tPessoa.fireTableDataChanged();
 
-					Contato c = pessoa_outrem_static.getContato();
+					Contato c = Controlador_Statics.pessoa_outrem_static.getContato();
 
 					if(c == null) {
 						c = new Contato();
@@ -1172,8 +1018,8 @@ public class Controlador_Principal {
 				//TODO - Update tarefa
 				try {
 						
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
@@ -1190,13 +1036,13 @@ public class Controlador_Principal {
 
 					String horario = localDateTime.toString();
 
-					tarefa_static.setNome(nome);
-					tarefa_static.setDescricao(descr);
-					tarefa_static.setConcluida(finalizada);
-					tarefa_static.setPrioridade(prior);
-					tarefa_static.setHorario_tarefa(horario);
+					Controlador_Statics.tarefa_static.setNome(nome);
+					Controlador_Statics.tarefa_static.setDescricao(descr);
+					Controlador_Statics.tarefa_static.setConcluida(finalizada);
+					Controlador_Statics.tarefa_static.setPrioridade(prior);
+					Controlador_Statics.tarefa_static.setHorario_tarefa(horario);
 
-					Fachada.getInstance().atualizar(tarefa_static);
+					Fachada.getInstance().atualizar(Controlador_Statics.tarefa_static);
 					tTarefa.fireTableDataChanged();
 				} catch (ValidacaoException e) {
 					// TODO Auto-generated catch block
@@ -1209,21 +1055,21 @@ public class Controlador_Principal {
 			.addItemListener(ItemEvent->{
 				//TODO - Marcar/Desmarcar como finalizada
 				try {
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
 					boolean finalizada = telaTarefa.getChckbxFinalizada().isSelected();
-					tarefa_static.setConcluida(finalizada);
-					Fachada.getInstance().atualizar(tarefa_static);
+					Controlador_Statics.tarefa_static.setConcluida(finalizada);
+					Fachada.getInstance().atualizar(Controlador_Statics.tarefa_static);
 					tTarefa.fireTableDataChanged();
 					
 					
-					etapa_static.setPorcentagem_andamento(
+					Controlador_Statics.etapa_static.setPorcentagem_andamento(
 							Fachada.getInstance()
 								.getBoEtapa()
-								.recalcularPorcentagem(etapa_static)
+								.recalcularPorcentagem(Controlador_Statics.etapa_static)
 							);
 					
 					jInternal_TelaInfoEtapa
@@ -1231,7 +1077,7 @@ public class Controlador_Principal {
 						.getTelaEtapa()
 						.getBarraProgressBar()
 						.setValue(
-								Math.round(etapa_static.getPorcentagem_andamento())
+								Math.round(Controlador_Statics.etapa_static.getPorcentagem_andamento())
 								);
 				} catch (ValidacaoException e) {
 					// TODO Auto-generated catch block
@@ -1248,8 +1094,8 @@ public class Controlador_Principal {
 			.addActionListener(ActionEvent->{
 				//TODO - Update Projeto
 				try {
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaProjeto telaProjeto = telaInfoProjetoEtapas.getTelaProjeto_Etapas()
@@ -1260,11 +1106,11 @@ public class Controlador_Principal {
 					Date dataI = telaProjeto.getDataInicioDateChooser().getDate();
 					Date dataF = telaProjeto.getDataFimDateChooser().getDate();
 
-					projeto_static.setNome(nome);
-					projeto_static.setDescricao(descr);
-					projeto_static.setData_inicio(DateUtil.getDateSQL(dataI));
-					projeto_static.setData_fim(DateUtil.getDateSQL(dataF));
-					Fachada.getInstance().atualizar(projeto_static);
+					Controlador_Statics.projeto_static.setNome(nome);
+					Controlador_Statics.projeto_static.setDescricao(descr);
+					Controlador_Statics.projeto_static.setData_inicio(DateUtil.getDateSQL(dataI));
+					Controlador_Statics.projeto_static.setData_fim(DateUtil.getDateSQL(dataF));
+					Fachada.getInstance().atualizar(Controlador_Statics.projeto_static);
 					tProjeto.fireTableDataChanged();
 				} catch (ValidacaoException e) {
 					// TODO Auto-generated catch block
@@ -1279,11 +1125,11 @@ public class Controlador_Principal {
 				//TODO - Adicionar etapa
 				try {
 					
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
-					resetLocation(jInternal_TelaCadastro_Etapa);
+					jInternal_TelaCadastro_Etapa.resetLocation();
 					jInternal_TelaCadastro_Etapa.queroFoco();
 					
 				} catch (ValidacaoException e) {
@@ -1329,17 +1175,17 @@ public class Controlador_Principal {
 					String celular = telaContato.getCelularField().getText();
 					String telef = telaContato.getTelefoneField().getText();
 
-					pessoa_static.setNome(nome);
-					pessoa_static.setCpf(cpf);
-					pessoa_static.setData_nascimento(DateUtil.getDateSQL(data));
-					pessoa_static.setSexo(sexo);
-					pessoa_static.setUser_login(login);
-					pessoa_static.setUser_senha(senha);
-					pessoa_static.setDisponibilidade(disponivel);
-					Fachada.getInstance().atualizar(pessoa_static);
+					Controlador_Statics.pessoa_static.setNome(nome);
+					Controlador_Statics.pessoa_static.setCpf(cpf);
+					Controlador_Statics.pessoa_static.setData_nascimento(DateUtil.getDateSQL(data));
+					Controlador_Statics.pessoa_static.setSexo(sexo);
+					Controlador_Statics.pessoa_static.setUser_login(login);
+					Controlador_Statics.pessoa_static.setUser_senha(senha);
+					Controlador_Statics.pessoa_static.setDisponibilidade(disponivel);
+					Fachada.getInstance().atualizar(Controlador_Statics.pessoa_static);
 					tPessoa.fireTableDataChanged();
 
-					Contato c = pessoa_static.getContato();
+					Contato c = Controlador_Statics.pessoa_static.getContato();
 
 					if(c == null) {
 						c = new Contato();
@@ -1372,7 +1218,7 @@ public class Controlador_Principal {
 			.addActionListener(ActionEvent->{
 				//TODO - Cadastrar Novo projeto
 				try {
-					resetLocation(jInternal_TelaCadastro_Projeto);
+					jInternal_TelaCadastro_Projeto.resetLocation();
 					jInternal_TelaCadastro_Projeto.queroFoco();
 				} catch (PropertyVetoException e) {
 					// TODO Auto-generated catch block
@@ -1398,8 +1244,8 @@ public class Controlador_Principal {
 			.getBotao1().addActionListener(ActionEvent->{
 				//TODO - Update Projeto
 				try {
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaProjeto telaProjeto = telaInfoProjeto_Etapas_Simples
@@ -1410,11 +1256,11 @@ public class Controlador_Principal {
 					Date dataI = telaProjeto.getDataInicioDateChooser().getDate();
 					Date dataF = telaProjeto.getDataFimDateChooser().getDate();
 
-					projeto_static.setNome(nome);
-					projeto_static.setDescricao(descr);
-					projeto_static.setData_inicio(DateUtil.getDateSQL(dataI));
-					projeto_static.setData_fim(DateUtil.getDateSQL(dataF));
-					Fachada.getInstance().atualizar(projeto_static);
+					Controlador_Statics.projeto_static.setNome(nome);
+					Controlador_Statics.projeto_static.setDescricao(descr);
+					Controlador_Statics.projeto_static.setData_inicio(DateUtil.getDateSQL(dataI));
+					Controlador_Statics.projeto_static.setData_fim(DateUtil.getDateSQL(dataF));
+					Fachada.getInstance().atualizar(Controlador_Statics.projeto_static);
 					tProjeto.fireTableDataChanged();
 				} catch (ValidacaoException e) {
 					// TODO Auto-generated catch block
@@ -1427,11 +1273,11 @@ public class Controlador_Principal {
 			//TODO - Adicionar etapa
 				try {
 					
-					if(bool_colaborador)
-						if(colaborador_static.getPrivilegio().equals("Visitante"))
+					if(Controlador_Statics.bool_colaborador)
+						if(Controlador_Statics.colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
-					resetLocation(jInternal_TelaCadastro_Etapa);
+					jInternal_TelaCadastro_Etapa.resetLocation();
 					jInternal_TelaCadastro_Etapa.queroFoco();
 				} catch (ValidacaoException e) {
 					// TODO Auto-generated catch block
@@ -1442,127 +1288,6 @@ public class Controlador_Principal {
 				}
 			});
 
-	}
-	
-	private void preencherTelaPessoa(TelaPessoa telaPessoa, Pessoa pessoa) 
-	{
-		telaPessoa.getNomeField().setText(pessoa.getNome());
-		telaPessoa.getCampoFormatadoCPF().setText(pessoa.getCpf());
-		telaPessoa.getNascimentoDateChooser().setDate(DateUtil.getDate(pessoa.getData_nascimento()));
-		telaPessoa.getSexoComboBox().setSelectedItem(pessoa.getSexo());
-		telaPessoa.getLoginField().setText(pessoa.getUser_login());
-		telaPessoa.getSenhaField().setText(pessoa.getUser_senha());
-
-		telaPessoa.getRdbtnSim().setSelected(pessoa.isDisponibilidade());
-		telaPessoa.getRdbtnNo().setSelected(!pessoa.isDisponibilidade());
-	}
-	
-	private void preencherTelaContato(TelaContatoCaracteristica telaContato, Contato contato) 
-	{
-		telaContato.getEmailField().setText(contato.getEmail());
-		telaContato.getCelularField().setText(contato.getCelular());
-		telaContato.getTelefoneField().setText(contato.getCelular());
-	}
-	
-	private void preencherTelaProjeto(TelaProjeto telaProjeto, Projeto projeto)
-	{
-		
-		telaProjeto.getNomeProjetoField().setText(projeto.getNome());
-		telaProjeto.getDescricaoTextArea().setText(projeto.getDescricao());
-		telaProjeto.getDataInicioDateChooser().setDate(DateUtil.getDate(projeto.getData_inicio()));
-		telaProjeto.getDataFimDateChooser().setDate(DateUtil.getDate(projeto.getData_fim()));
-		
-	}
-	
-	private void preencherTelaEtapa(TelaEtapa telaEtapa, Etapa etapa)
-	{
-		telaEtapa.getNomeEtapaField().setText(etapa.getNome());
-		telaEtapa.getDescricaoTextArea().setText(etapa.getDescricao());
-		telaEtapa.getBarraProgressBar().setValue(Math.round(etapa.getPorcentagem_andamento()));
-	}
-	
-	private void preencherTelaTarefa(TelaInfoTarefa telaTarefa, Tarefa tarefa) 
-	{
-		telaTarefa.getNomeTarefaField().setText(tarefa.getNome());
-		telaTarefa.getDescricaoTextArea().setText(tarefa.getDescricao());
-		telaTarefa.getChckbxFinalizada().setSelected(tarefa.isConcluida());
-		telaTarefa.getPrioridadeComboBox().setSelectedItem(tarefa.getPrioridade());
-
-		String[] horaData = tarefa.getHorario_tarefa().split("T");
-		
-		System.out.println("Horario "+ tarefa.getHorario_tarefa());
-		System.out.println("HoraData " + horaData.toString());
-		
-		String[] hora = horaData[1].split(":");
-		
-		if(hora.length < 3)
-			hora = new String[]{hora[0], hora[1], "00"};
-		
-		telaTarefa.getHorario().setLocalTime(hora[0], hora[1], hora[2]);
-		telaTarefa.getDateChooser().setDate(DateUtil.getDate(horaData[0]));
-		
-	}
-	
-	private void atualizarDadoProjetoSimples(TelaProjeto tp, Projeto p, TEtapa te) throws ValidacaoException
-	{
-		List<Etapa> lEtapa = Fachada.getInstance().getBoEtapa().buscarPorProjeto(p);
-		te.addAll(lEtapa);
-		p.setEtapas(lEtapa);
-		preencherTelaProjeto(tp, p);
-	}
-	
-	private void atualizarDadoProjeto(TelaProjeto tp, Projeto p, TEtapa te, TColaborador tc) throws ValidacaoException
-	{
-		atualizarDadoProjetoSimples(tp, p, te);
-		
-		List<Colaborador> lColaborador = Fachada.getInstance().getBoColaborador().buscarPorProjeto(p);
-		tc.addAll(lColaborador);
-		p.setColaboradores(lColaborador);
-	}
-	
-	private void atualizarDadoPessoa(TelaInfoPessoa tIP, Pessoa p, TCaracteristicaExtra tce) throws ValidacaoException
-	{
-		preencherTelaPessoa(tIP.getTelaPessoa(),p);
-	
-		Contato c = Fachada.getInstance().getBoContato().buscarPorPessoa(p);
-		
-		if(c == null) c = new Contato();
-		
-		List<CaracteristicaExtra> lc = Fachada.getInstance().getBoCaracteristicaExtra().buscaPorPessoa(p);
-		
-		preencherTelaContato(tIP.getTelaContatoCaracteristica(), c);
-		
-		p.setContato(c);
-		p.setCaracteristicas(lc);
-		
-		tce.addAll(lc);
-	}
-	
-	private void atualizarDadoMinhaPessoa(TelaInfoPessoa tIP, Pessoa p, TCaracteristicaExtra tce, TProjeto tP, TColaboracoes tC) throws ValidacaoException
-	{
-		atualizarDadoPessoa(tIP, p, tce);
-		List<Projeto> lp = Fachada.getInstance().getBoProjeto().buscarPorPessoa(p);
-		tP.addAll(lp);
-		List<Colaborador> lcolaboracoes = Fachada.getInstance().getBoColaborador().buscarPorPessoa(p);
-		tC.addAll(lcolaboracoes);
-		p.setProjetos(lp);
-		p.setColaboradores(lcolaboracoes);
-	}
-	
-	private void atualizarDadoEtapa(TelaEtapa tE, Etapa e, TTarefa tT) throws ValidacaoException
-	{
-		preencherTelaEtapa(tE,e);
-		List<Tarefa> t = Fachada.getInstance().getBoTarefa().buscarPorEtapa(e);
-		tT.addAll(t);
-		e.setTarefas(t);
-	}
-	
-	private void resetLocation(JInternalAbstract jIF) 
-	{
-		int largura = telaPrincipal.getjDesktopPane().getWidth();
-		int altura = telaPrincipal.getjDesktopPane().getHeight();
-		Point p =  new Point(largura/2 - jIF.getWidth()/2, altura/2 - jIF.getHeight()/2);
-		jIF.setLocation(p);
 	}
 	
 	private void sair() throws PropertyVetoException {

@@ -3,6 +3,7 @@ package br.com.pbd2019_1.fachada;
 import java.util.List;
 
 import br.com.pbd2019_1.business.BO;
+import br.com.pbd2019_1.business.BOBackup;
 import br.com.pbd2019_1.business.BOCaracteristicaExtra;
 import br.com.pbd2019_1.business.BOColaborador;
 import br.com.pbd2019_1.business.BOContato;
@@ -28,6 +29,7 @@ public class Fachada {
 
 	private BO bo;
 	private BOEtapa boEtapa;
+	private BOBackup boBackup;
 	private BOPessoa boPessoa;
 	private BOTarefa boTarefa;
 	private BOContato boContato;
@@ -39,6 +41,7 @@ public class Fachada {
 	/*Loaders*/
 	public void carregarBo() {this.bo = new BO(new DAO() {}) {};}
 	public void carregarBoEtapa() {this.boEtapa = new BOEtapa();}
+	public void carregarBoBackup() {this.boBackup = new BOBackup();}
 	public void carregarBoPessoa() {this.boPessoa = new BOPessoa();}
 	public void carregarBoTarefa() {this.boTarefa = new BOTarefa();}
 	public void carregarBoContato() {this.boContato = new BOContato();}
@@ -199,6 +202,7 @@ public class Fachada {
 	/*Getters*/
 	public BO getBo() {return bo;}
 	public BOEtapa getBoEtapa() {return boEtapa;}
+	public BOBackup getBoBackup() {return boBackup;}
 	public BOPessoa getBoPessoa() {return boPessoa;}
 	public BOTarefa getBoTarefa() {return boTarefa;}
 	public BOContato getBoContato() {return boContato;}

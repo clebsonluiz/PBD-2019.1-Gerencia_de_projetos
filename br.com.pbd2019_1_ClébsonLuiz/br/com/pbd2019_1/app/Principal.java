@@ -99,19 +99,23 @@ public class Principal {
 		
 		Fachada.getInstance().carregarBo();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 6);
+		janelaLoading.etapaAtual("Banco de Dados!", 5);
 		
 		Fachada.getInstance().carregarBoEtapa();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 12);
+		janelaLoading.etapaAtual("Banco de Dados!", 10);
+		
+		Fachada.getInstance().carregarBoBackup();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 15);
 		
 		Fachada.getInstance().carregarBoPessoa();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 18);
+		janelaLoading.etapaAtual("Banco de Dados!", 20);
 		
 		Fachada.getInstance().carregarBoTarefa();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 24);
+		janelaLoading.etapaAtual("Banco de Dados!", 25);
 		
 		Fachada.getInstance().carregarBoContato();
 		
@@ -119,20 +123,20 @@ public class Principal {
 		
 		Fachada.getInstance().carregarBoProjeto();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 36);
+		janelaLoading.etapaAtual("Banco de Dados!", 35);
 		
 		Fachada.getInstance().carregarBoLogUpdate();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 42);
+		janelaLoading.etapaAtual("Banco de Dados!", 40);
 		
 		Fachada.getInstance().carregarBoColaborador();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 48);
+		janelaLoading.etapaAtual("Banco de Dados!", 45);
 		
 		Fachada.getInstance().carregarBoCaracteristicaExtra();
 		
-		janelaLoading.etapaAtual("Banco de Dados Carregado!", 54);
-		janelaLoading.etapaAtual("Janela Principal!", 54);
+		janelaLoading.etapaAtual("Banco de Dados Carregado!", 50);
+		janelaLoading.etapaAtual("Janela Principal!", 50);
 		
 		JanelaPrincipal janela = new JanelaPrincipal();
 		

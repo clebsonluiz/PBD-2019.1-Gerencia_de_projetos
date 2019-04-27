@@ -36,6 +36,9 @@ public class TTarefa extends TGenerica<Tarefa>{
 		return null;
 	}
 	
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return (columnIndex == 2 || columnIndex == 3);
+	}
 	
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
 		if(columnIndex == 2) {
