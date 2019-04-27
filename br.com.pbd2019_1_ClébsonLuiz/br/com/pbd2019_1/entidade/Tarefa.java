@@ -17,13 +17,13 @@ import javax.persistence.Table;
 
 public class Tarefa extends Entidade{
 
-	@Column
+	@Column(nullable = false)
 	private String nome;
 	@Column
 	private String descricao;
-	@Column
+	@Column(nullable = false)
 	private boolean concluida;
-	@Column
+	@Column(nullable = false)
 	private String prioridade;
 	@Column
 	private String horario_tarefa;

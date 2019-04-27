@@ -11,6 +11,7 @@ public class JInternal_TelaInfoTarefa extends JInternalAbstract {
 
 	public JInternal_TelaInfoTarefa() {
 		super("Info Tarefa");
+		setMaximizable(false);
 		setMinimumSize(new Dimension(315, 405));
 		setPreferredSize(new Dimension(315, 405));
 		setSize(getPreferredSize());

@@ -1,20 +1,23 @@
 package br.com.pbd2019_1.view;
 
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 import br.com.pbd2019_1.utils.ViewUtil;
 
-import javax.swing.JTable;
-import java.awt.GridLayout;
-
 public class TelaInserirSQL extends JPanel {
 
+	private static Font font = new Font("Consolas", Font.PLAIN, 16);
+	private static Font font2 = new Font("Consolas", Font.PLAIN, 14);
+	
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private JTextArea textArea;
@@ -31,6 +34,7 @@ public class TelaInserirSQL extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		
 		textArea = new JTextArea();
+		textArea.setFont(font);
 		scrollPane.setViewportView(textArea);
 		scrollPane.setMinimumSize(new Dimension(300, 150));
 		scrollPane.setPreferredSize(new Dimension(300, 150));
@@ -85,6 +89,7 @@ public class TelaInserirSQL extends JPanel {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		
 		exceptionTextArea = new JTextArea();
+		exceptionTextArea.setFont(font2);
 		exceptionTextArea.setEditable(false);
 		exceptionTextArea.setWrapStyleWord(true);
 		exceptionTextArea.setLineWrap(true);

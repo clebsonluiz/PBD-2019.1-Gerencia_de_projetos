@@ -16,29 +16,18 @@ import javax.persistence.Transient;
 @NamedQueries({
 	@NamedQuery(name = "Etapa.projeto",
 	query = "select e from Etapa e where e.projeto = :projeto and e.ativado = true"),
-	/*@NamedQuery(name = "Etapa.recalcula",
-	query = "select "
-			+ "(cast(finalizadas as FLOAT)/cast(total as FLOAT))*100 "
-			+ " as porcentagem "
-			+" FROM ( select SUM(CASE WHEN t.concluida = true THEN 1 ELSE 0 END) as finalizadas, " 
-			+ "COUNT(*) as total from Tarefa as t where t.etapa.id = :etapa_id "
-			+ " and t.ativado = true) as alias_tabela ")*/
-	@NamedQuery(name = "Etapa.totalTarefaConcluida",
-	query = " select SUM(CASE WHEN t.concluida = true THEN 1 ELSE 0 END ) as soma "
-			+ "from Tarefa as t where t.etapa.id = :etapa_id  and t.ativado = true"),
 	
-	@NamedQuery(name = "Etapa.totalTarefa",
-	query = "select COUNT(*) as total "
-			+ "from Tarefa as t where t.etapa.id = :etapa_id and t.ativado = true")	
+	@NamedQuery(name = "Etapa.recalcula_porcentagem",
+	query = " select e.porcentagem_andamento from Etapa e where e.id = :etapa_id and e.ativado = true"),
 })
 
 public class Etapa extends Entidade{
 
-	@Column
+	@Column(nullable = false)
 	private String nome;
 	@Column
 	private String descricao;
-	@Column
+	@Column(nullable = false)
 	private float porcentagem_andamento;
 	@ManyToOne
 	@JoinColumn(name = "projeto_id")

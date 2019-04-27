@@ -21,9 +21,9 @@ import javax.persistence.Table;
 public class Colaborador extends Entidade{
 
 	
-	@Column
+	@Column(nullable = false)
 	private Date data_ingresso;
-	@Column
+	@Column(nullable = false)
 	private String privilegio;
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")

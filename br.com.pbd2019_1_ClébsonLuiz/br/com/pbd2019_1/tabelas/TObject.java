@@ -30,8 +30,10 @@ public class TObject extends AbstractTableModel{
 				if(o instanceof Object[])
 				{
 					for(int i = 0; i < ((Object[])o).length; i++)
-						colunas.add("VALUE COLUMN");
+						colunas.add("COLUMN");
 				}
+				else
+					colunas.add("COLUMN");
 			}
 
 			this.t.clear();

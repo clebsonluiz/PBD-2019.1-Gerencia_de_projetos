@@ -5,17 +5,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import br.com.pbd2019_1.business.BOCaracteristicaExtra;
-import br.com.pbd2019_1.business.BOColaborador;
-import br.com.pbd2019_1.business.BOContato;
-import br.com.pbd2019_1.business.BOEtapa;
-import br.com.pbd2019_1.business.BOLogUpdate;
-import br.com.pbd2019_1.business.BOPessoa;
-import br.com.pbd2019_1.business.BOProjeto;
-import br.com.pbd2019_1.business.BOTarefa;
 import br.com.pbd2019_1.controll.Controlador_Principal;
-import br.com.pbd2019_1.entidade.Pessoa;
-import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
@@ -36,7 +26,66 @@ import br.com.pbd2019_1.view.JanelaPrincipal;
 public class Principal {
 
 	public static void main(String[] args) {
-//		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
+		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
+		
+		
+		
+		
+		
+		/*Etapa e = new Etapa();
+		e.setId(1);
+		
+		try {
+			Fachada.getInstance().carregarBo();
+			
+			
+			System.out.println(Fachada.getInstance().buscarHQL(Etapa.class, "select e from Etapa e where e.id = 1"));
+			
+			
+//			float f = Fachada.getInstance().getBoEtapa().recalcularPorcentagem(e);
+			
+//			System.out.println(f);
+		
+			List<Object[]> o = Fachada.getInstance().inserirSQLGenerica("select e.id from Etapa e where e.id = 2");
+			
+			System.out.println(o.toString());
+			
+			for(int i = 0; i < o.size(); i++) 
+			{
+				Object ob = o.get(i);
+				
+				if(ob instanceof Object[]) 
+				{
+					Object[] obV = (Object[])ob;
+					for(Object obj: obV)
+						System.out.println(obj.toString());
+				}
+				else
+					System.out.println(ob.toString());
+				
+				System.out.println(ob.toString());
+				
+				
+				if(o.get(i) instanceof Number[]) 
+				{
+					Number[] ov = (Number[]) o.get(i);
+					System.out.println(ov.toString());
+				}
+				else
+				{
+					Object[] ov = o.get(i);
+					System.out.println(ov.toString());
+				}
+				
+				
+			}
+			
+			System.exit(0);
+		} catch (DAOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
+		
 		
 		try {
 			UIManager.setLookAndFeel(new NimbusLookAndFeel());
@@ -48,38 +97,42 @@ public class Principal {
 		janelaLoading.setVisible(true);
 		janelaLoading.etapaAtual("Banco de Dados!", 0);
 		
-		Fachada.getInstance().carregarBoEtapa();
+		Fachada.getInstance().carregarBo();
 		
 		janelaLoading.etapaAtual("Banco de Dados!", 6);
 		
-		Fachada.getInstance().carregarBoPessoa();
+		Fachada.getInstance().carregarBoEtapa();
 		
 		janelaLoading.etapaAtual("Banco de Dados!", 12);
 		
-		Fachada.getInstance().carregarBoTarefa();
+		Fachada.getInstance().carregarBoPessoa();
 		
 		janelaLoading.etapaAtual("Banco de Dados!", 18);
 		
-		Fachada.getInstance().carregarBoContato();
+		Fachada.getInstance().carregarBoTarefa();
 		
 		janelaLoading.etapaAtual("Banco de Dados!", 24);
 		
-		Fachada.getInstance().carregarBoProjeto();
+		Fachada.getInstance().carregarBoContato();
 		
 		janelaLoading.etapaAtual("Banco de Dados!", 30);
 		
-		Fachada.getInstance().carregarBoLogUpdate();
+		Fachada.getInstance().carregarBoProjeto();
 		
 		janelaLoading.etapaAtual("Banco de Dados!", 36);
 		
-		Fachada.getInstance().carregarBoColaborador();
+		Fachada.getInstance().carregarBoLogUpdate();
 		
 		janelaLoading.etapaAtual("Banco de Dados!", 42);
 		
+		Fachada.getInstance().carregarBoColaborador();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 48);
+		
 		Fachada.getInstance().carregarBoCaracteristicaExtra();
 		
-		janelaLoading.etapaAtual("Banco de Dados Carregado!", 48);
-		janelaLoading.etapaAtual("Janela Principal!", 50);
+		janelaLoading.etapaAtual("Banco de Dados Carregado!", 54);
+		janelaLoading.etapaAtual("Janela Principal!", 54);
 		
 		JanelaPrincipal janela = new JanelaPrincipal();
 		
@@ -165,6 +218,7 @@ public class Principal {
 		janelaLoading.dispose();
 		
 		janela.setVisible(true);
+		
 	}
 	
 }

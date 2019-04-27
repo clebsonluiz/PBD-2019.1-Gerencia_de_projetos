@@ -29,21 +29,21 @@ public class Pessoa extends Entidade{
 	public static final String ADMIN_USER = "admin";
 	public static final String SUPER_USER = "super";
 	
-	@Column
+	@Column(nullable = false)
 	private String nome;
-	@Column
+	@Column(nullable = false, unique = true)
 	private String cpf;
-	@Column
+	@Column(nullable = false)
 	private String sexo;
-	@Column
+	@Column(nullable = false)
 	private Date data_nascimento;
-	@Column
+	@Column(nullable = false)
 	private boolean disponibilidade;
-	@Column
+	@Column(nullable = false, unique = true)
 	private String user_login;
-	@Column
+	@Column(nullable = false)
 	private String user_senha;
-	@Column
+	@Column(nullable = false)
 	private String user_type;
 	@Transient
 	private Contato contato;

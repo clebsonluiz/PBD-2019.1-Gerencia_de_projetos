@@ -29,6 +29,7 @@ import br.com.pbd2019_1.tabelas.TColaboracoes;
 import br.com.pbd2019_1.tabelas.TColaborador;
 import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TLogUpdate;
+import br.com.pbd2019_1.tabelas.TObject;
 import br.com.pbd2019_1.tabelas.TPessoa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
@@ -53,6 +54,7 @@ import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
 import br.com.pbd2019_1.view.TelaInfoPessoa;
 import br.com.pbd2019_1.view.TelaInfoTarefa;
+import br.com.pbd2019_1.view.TelaInserirSQL;
 import br.com.pbd2019_1.view.TelaMenu;
 import br.com.pbd2019_1.view.TelaOpcoes;
 import br.com.pbd2019_1.view.TelaPessoa;
@@ -87,6 +89,7 @@ public class Controlador_Principal {
 	private TPessoa tPessoa;
 	private TProjeto tProjeto;
 	private TTarefa tTarefa;
+	private TObject tObject;
 	
 	private static Pessoa pessoa_static;
 	private static Pessoa pessoa_outrem_static;
@@ -144,6 +147,7 @@ public class Controlador_Principal {
 		tPessoa = new TPessoa();
 		tProjeto = new TProjeto();
 		tTarefa = new TTarefa();
+		tObject = new TObject();
 		
 		JTable tableTarefas = jInternal_TelaInfoEtapa
 				.getTelaEtapa_Tarefas()
@@ -194,6 +198,10 @@ public class Controlador_Principal {
 				.getTelaPessoas()
 				.getTable();
 		
+		JTable tableInserirSQL = jInternal_TelaInserirSQL
+				.getTelaInserirSQL()
+				.getTable();
+		
 		
 		tableTarefas.setModel(tTarefa);
 		tableTarefas.getColumnModel().getColumn(2).setCellEditor(tTarefa.getCellEditor());
@@ -208,6 +216,8 @@ public class Controlador_Principal {
 		tablePessoas.setModel(tPessoa);
 		tablePessoasDisponiveis.setModel(tPessoa);
 
+		tableInserirSQL.setModel(tObject);
+		tableInserirSQL.setRowHeight(30);
 		
 		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
 		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
@@ -317,6 +327,21 @@ public class Controlador_Principal {
 										obj = !((Boolean)obj).booleanValue();
 										tTarefa.setValueAt(obj, linha, coluna);
 										Fachada.getInstance().atualizar(tTarefa.getValor(linha));
+										
+										etapa_static.setPorcentagem_andamento(
+												Fachada.getInstance()
+													.getBoEtapa()
+													.recalcularPorcentagem(etapa_static)
+												);
+										
+										jInternal_TelaInfoEtapa
+											.getTelaEtapa_Tarefas()
+											.getTelaEtapa()
+											.getBarraProgressBar()
+											.setValue(
+													Math.round(etapa_static.getPorcentagem_andamento())
+													);
+										
 									}
 								} 
 								catch (ValidacaoException ve) 
@@ -804,6 +829,14 @@ public class Controlador_Principal {
 		
 		telaOpcoes.getBtnSQL().addActionListener(ActionEvent->{
 			//TODO - Inserir evento SUPER USUARIO Inserir SQL
+			try {
+				resetLocation(jInternal_TelaInserirSQL);
+				jInternal_TelaInserirSQL.queroFoco();
+			} catch (PropertyVetoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		});
 		
 		telaOpcoes.getBtnSobre().addActionListener(ActionEvent->{
@@ -812,9 +845,15 @@ public class Controlador_Principal {
 		
 		telaOpcoes.getBtnSair().addActionListener(ActionEvent->{
 			//TODO - Inserir evento deslogar
-			telaPrincipal.getTelaLoginSistema().getLoginField().setText("");
-			telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
-			telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
+			try {
+				telaPrincipal.getTelaLoginSistema().getLoginField().setText("");
+				telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
+				telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
+				sair();
+			} catch (PropertyVetoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		});
 	}
 	
@@ -942,10 +981,25 @@ public class Controlador_Principal {
 					tarefa.setConcluida(finalizada);
 					tarefa.setPrioridade(prior);
 					tarefa.setHorario_tarefa(horario);
-
+					tarefa.setEtapa(etapa_static);
 					Fachada.getInstance().inserir(tarefa);
 					tTarefa.addValor(tarefa);
 					telaCadastro.limparCampos();
+					
+					etapa_static.setPorcentagem_andamento(
+							Fachada.getInstance()
+								.getBoEtapa()
+								.recalcularPorcentagem(etapa_static)
+							);
+					
+					jInternal_TelaInfoEtapa
+						.getTelaEtapa_Tarefas()
+						.getTelaEtapa()
+						.getBarraProgressBar()
+						.setValue(
+								(int)etapa_static.getPorcentagem_andamento()
+								);
+					
 				} catch (ValidacaoException e) {
 					//TODO Auto-generated catch block
 					e.printStackTrace();
@@ -1005,17 +1059,43 @@ public class Controlador_Principal {
 	}
 	
 
-	private void adicionarEventoJInternal(JInternal_TelaInserirSQL telaInserirSQL) {
+	private void adicionarEventoJInternal(JInternal_TelaInserirSQL jInternal_TelaInserirSQL) {
 		
-		telaInserirSQL.getTelaInserirSQL().getBtInserir()
-			.addActionListener(ActionEvent->{
-				//TODO - Inserir SQL
-			});
+		TelaInserirSQL telaInserirSQL = jInternal_TelaInserirSQL.getTelaInserirSQL();
 		
-		telaInserirSQL.getTelaInserirSQL().getBtBtn()
-			.addActionListener(ActionEvent->{
-				//TODO - Botao Extra
-			});
+		telaInserirSQL.getBtnInserir()
+		.addActionListener(ActionEvent->{
+			//TODO - Inserir SQL
+			try {
+				String sql = telaInserirSQL.getTextArea().getSelectedText();
+			
+				if(sql == null)
+					sql = telaInserirSQL.getTextArea().getText();
+			
+				tObject.addAll(Fachada.getInstance().inserirSQLGenerica(sql));
+				
+				telaInserirSQL.getExceptionTextArea().setText("");
+			} catch (ValidacaoException e) {
+				telaInserirSQL.getExceptionTextArea().setText(e.getMessage());
+			}
+			
+		});
+
+		telaInserirSQL.getBtnLimpar()
+		.addActionListener(ActionEvent->{
+			//TODO - Botao Limpar
+			telaInserirSQL.getTextArea().setText("");
+		});
+
+		telaInserirSQL.getBtnSalvar()
+		.addActionListener(ActionEvent->{
+			//TODO - Botao Salvar
+		});
+
+		telaInserirSQL.getBtnAbrir()
+		.addActionListener(ActionEvent->{
+			//TODO - Botao abrir
+		});
 	}
 	
 
@@ -1132,7 +1212,27 @@ public class Controlador_Principal {
 					if(bool_colaborador)
 						if(colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
-				
+					
+					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
+					boolean finalizada = telaTarefa.getChckbxFinalizada().isSelected();
+					tarefa_static.setConcluida(finalizada);
+					Fachada.getInstance().atualizar(tarefa_static);
+					tTarefa.fireTableDataChanged();
+					
+					
+					etapa_static.setPorcentagem_andamento(
+							Fachada.getInstance()
+								.getBoEtapa()
+								.recalcularPorcentagem(etapa_static)
+							);
+					
+					jInternal_TelaInfoEtapa
+						.getTelaEtapa_Tarefas()
+						.getTelaEtapa()
+						.getBarraProgressBar()
+						.setValue(
+								Math.round(etapa_static.getPorcentagem_andamento())
+								);
 				} catch (ValidacaoException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -1182,8 +1282,14 @@ public class Controlador_Principal {
 					if(bool_colaborador)
 						if(colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
-				
+					
+					resetLocation(jInternal_TelaCadastro_Etapa);
+					jInternal_TelaCadastro_Etapa.queroFoco();
+					
 				} catch (ValidacaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (PropertyVetoException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -1265,6 +1371,14 @@ public class Controlador_Principal {
 			.getTelaProjetos().getBtCriarUmNovo()
 			.addActionListener(ActionEvent->{
 				//TODO - Cadastrar Novo projeto
+				try {
+					resetLocation(jInternal_TelaCadastro_Projeto);
+					jInternal_TelaCadastro_Projeto.queroFoco();
+				} catch (PropertyVetoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			});
 		
 		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
@@ -1316,8 +1430,13 @@ public class Controlador_Principal {
 					if(bool_colaborador)
 						if(colaborador_static.getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
-				
+					
+					resetLocation(jInternal_TelaCadastro_Etapa);
+					jInternal_TelaCadastro_Etapa.queroFoco();
 				} catch (ValidacaoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (PropertyVetoException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -1369,9 +1488,15 @@ public class Controlador_Principal {
 		telaTarefa.getChckbxFinalizada().setSelected(tarefa.isConcluida());
 		telaTarefa.getPrioridadeComboBox().setSelectedItem(tarefa.getPrioridade());
 
-		String[] horaData = tarefa.getHorario_tarefa().split("'T'");
+		String[] horaData = tarefa.getHorario_tarefa().split("T");
+		
+		System.out.println("Horario "+ tarefa.getHorario_tarefa());
+		System.out.println("HoraData " + horaData.toString());
 		
 		String[] hora = horaData[1].split(":");
+		
+		if(hora.length < 3)
+			hora = new String[]{hora[0], hora[1], "00"};
 		
 		telaTarefa.getHorario().setLocalTime(hora[0], hora[1], hora[2]);
 		telaTarefa.getDateChooser().setDate(DateUtil.getDate(horaData[0]));
@@ -1438,6 +1563,31 @@ public class Controlador_Principal {
 		int altura = telaPrincipal.getjDesktopPane().getHeight();
 		Point p =  new Point(largura/2 - jIF.getWidth()/2, altura/2 - jIF.getHeight()/2);
 		jIF.setLocation(p);
+	}
+	
+	private void sair() throws PropertyVetoException {
+		
+		JInternalAbstract jIA[] = new JInternalAbstract[13];
+		jIA[0] = jInternal_TelaCadastro_Etapa;
+		jIA[1] = jInternal_TelaCadastro_Projeto;
+		jIA[2] = jInternal_TelaCadastro_Pessoa;
+		jIA[3] = jInternal_TelaCadastro_Tarefa;
+		
+		jIA[4] = jInternal_TelaInfoEtapa;
+		jIA[5] = jInternal_TelaInserirSQL;
+		jIA[6] = jInternal_TelaInfoPessoa;
+		jIA[7] = jInternal_TelaInfoTarefa;
+		jIA[8] = jInternal_TelaInfoProjeto_Etapas;
+		jIA[9] = jInternal_TelaInfoPessoa_Projetos;
+		jIA[10] = jInternal_TelaInfoProjeto_Etapas_Simples;
+		jIA[11] = jInternal_TabelaPessoas;
+		jIA[12] = jInternal_TabelaPessoasColaboradores;
+
+		for(JInternalAbstract jAbstract: jIA) {
+			jAbstract.setIcon(false);
+			jAbstract.setVisible(false);
+		}
+		
 	}
 }
 

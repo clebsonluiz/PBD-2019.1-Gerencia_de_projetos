@@ -17,15 +17,15 @@ import javax.persistence.Transient;
 	query = "select p from Projeto as p where p.pessoa = :pessoa and p.ativado = true")
 public class Projeto extends Entidade{
 
-	@Column
+	@Column(nullable = false)
 	private String nome;
 	@Column
 	private String descricao;
-	@Column
+	@Column(nullable = false)
 	private boolean privilegio;
-	@Column
+	@Column(nullable = false)
 	private Date data_inicio;
-	@Column
+	@Column(nullable = false)
 	private Date data_fim;
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id")

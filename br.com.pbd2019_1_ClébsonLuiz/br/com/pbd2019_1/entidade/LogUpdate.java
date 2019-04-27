@@ -15,30 +15,42 @@ import javax.persistence.Table;
 	@NamedQuery(name = "LogUpdate",
 			query = "select l from LogUpdate l"),
 	@NamedQuery(name = "LogUpdate.date", 
-			query = "select l from LogUpdate l where l.data_log between ':data1' and ':data2'")
+			query = "select l from LogUpdate l where l.data_log between ':data1' and ':data2' where l.ativado = true")
 })
 
 public class LogUpdate extends Entidade{
 
-	@Column
-	private String antes_alteracao;
-	@Column
-	private String depois_alteracao;
-	@Column
-	private String responsavel_alteracao;
-	@Column
+	@Column(nullable = false)
+	private String tipo;
+	@Column(nullable = false)
+	private String tabela;
+	@Column(nullable = false)
+	private int id_tabela;
+	@Column(nullable = true, columnDefinition = "character varying[]")
+	private String[] antes;
+	@Column(nullable = false, columnDefinition = "character varying[]")
+	private String[] depois;
+	@Column(nullable = false)
+	private String responsavel;
+	@Column(nullable = false)
 	private Date data_log;
 	
 	public LogUpdate() {}
 
+	public String getTipo() {return tipo;}
+	public String getTabela() {return tabela;}
+	public int getId_tabela() {return id_tabela;}
+	public String[] getAntes() {return antes;}
+	public String[] getDepois() {return depois;}
+	public String getResponsavel() {return responsavel;}
 	public Date getData_log() {return data_log;}
-	public String getAntes_alteracao() {return antes_alteracao;}
-	public String getDepois_alteracao() {return depois_alteracao;}
-	public String getResponsavel_alteracao() {return responsavel_alteracao;}
 
+	public void setTipo(String tipo) {this.tipo = tipo;}
+	public void setTabela(String tabela) {this.tabela = tabela;}
+	public void setId_tabela(int id_tabela) {this.id_tabela = id_tabela;}
+	public void setAntes(String[] antes) {this.antes = antes;}
+	public void setDepois(String[] depois) {this.depois = depois;}
+	public void setResponsavel(String responsavel) {this.responsavel = responsavel;}
 	public void setData_log(Date data_log) {this.data_log = data_log;}
-	public void setAntes_alteracao(String antes_alteracao) {this.antes_alteracao = antes_alteracao;}
-	public void setDepois_alteracao(String depois_alteracao) {this.depois_alteracao = depois_alteracao;}
-	public void setResponsavel_alteracao(String responsavel_alteracao) {this.responsavel_alteracao = responsavel_alteracao;}
 	
 }
