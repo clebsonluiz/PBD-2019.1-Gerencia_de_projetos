@@ -73,4 +73,10 @@ public class CampoTexto extends JTextField implements FocusListener{
 			return getText();
 	}
 	
+	public void setTexto(String text)
+	{
+		this.setText(text);
+		setAtual();
+		this.setText(campoAtual);
+	}
 }

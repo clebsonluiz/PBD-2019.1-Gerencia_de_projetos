@@ -2,6 +2,7 @@ package br.com.pbd2019_1.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.beans.PropertyVetoException;
 
 public class JInternal_TelaInfoPessoa_Projetos extends JInternalAbstract {
 	
@@ -24,5 +25,9 @@ public class JInternal_TelaInfoPessoa_Projetos extends JInternalAbstract {
 	public TelaInfoPessoaProjetos getTelaInfoPessoaProjetos() {
 		return telaInfoPessoaProjetos;
 	}
-
+	
+	public void queroFoco() throws PropertyVetoException {
+		telaInfoPessoaProjetos.getTelaInfoPessoa().getTelaPessoa().getExibirSenhaChbx().setSelected(false);
+		super.queroFoco();
+	}
 }

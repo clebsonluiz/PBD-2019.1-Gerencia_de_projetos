@@ -13,6 +13,11 @@ public class TCaracteristicaExtra extends TGenerica<CaracteristicaExtra>{
 		super(new String[]{"Nome"});
 	}
 
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return true;
+	}
+	
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
 		if(columnIndex == 0) {
 			getList().get(rowIndex).setNome((String)value);

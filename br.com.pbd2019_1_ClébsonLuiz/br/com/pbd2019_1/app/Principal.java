@@ -9,6 +9,8 @@ import br.com.pbd2019_1.controll.Controlador_Principal;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
+import br.com.pbd2019_1.view.JInternal_TelaAlerta;
+import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Projeto;
@@ -28,68 +30,11 @@ public class Principal {
 	public static void main(String[] args) {
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
-		
-		
-		
-		
-		/*Etapa e = new Etapa();
-		e.setId(1);
-		
-		try {
-			Fachada.getInstance().carregarBo();
-			
-			
-			System.out.println(Fachada.getInstance().buscarHQL(Etapa.class, "select e from Etapa e where e.id = 1"));
-			
-			
-//			float f = Fachada.getInstance().getBoEtapa().recalcularPorcentagem(e);
-			
-//			System.out.println(f);
-		
-			List<Object[]> o = Fachada.getInstance().inserirSQLGenerica("select e.id from Etapa e where e.id = 2");
-			
-			System.out.println(o.toString());
-			
-			for(int i = 0; i < o.size(); i++) 
-			{
-				Object ob = o.get(i);
-				
-				if(ob instanceof Object[]) 
-				{
-					Object[] obV = (Object[])ob;
-					for(Object obj: obV)
-						System.out.println(obj.toString());
-				}
-				else
-					System.out.println(ob.toString());
-				
-				System.out.println(ob.toString());
-				
-				
-				if(o.get(i) instanceof Number[]) 
-				{
-					Number[] ov = (Number[]) o.get(i);
-					System.out.println(ov.toString());
-				}
-				else
-				{
-					Object[] ov = o.get(i);
-					System.out.println(ov.toString());
-				}
-				
-				
-			}
-			
-			System.exit(0);
-		} catch (DAOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
-		
-		
-		try {
+		try 
+		{
 			UIManager.setLookAndFeel(new NimbusLookAndFeel());
-		} catch (UnsupportedLookAndFeelException e) {
+		} catch (UnsupportedLookAndFeelException e) 
+		{
 			e.printStackTrace();
 		}
 		
@@ -160,6 +105,7 @@ public class Principal {
 		JInternal_TelaInfoProjeto_Etapas_Simples jInternal_TelaInfoProjeto_Etapas_Simples = new JInternal_TelaInfoProjeto_Etapas_Simples();
 		JInternal_TabelaPessoas jInternal_TabelaPessoas = new JInternal_TabelaPessoas();
 		JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores = new JInternal_TabelaPessoasColaboradores();
+		JInternal_TelaBackups jInternal_TelaBackups = new JInternal_TelaBackups();
 		
 		janelaLoading.etapaAtual("Restante das Telas Carregadas!", 70);
 		janelaLoading.etapaAtual("Área de Trabalho!", 70);
@@ -183,6 +129,8 @@ public class Principal {
 		jDesktopPane.add(jInternal_TelaInfoProjeto_Etapas_Simples);
 		jDesktopPane.add(jInternal_TabelaPessoas);
 		jDesktopPane.add(jInternal_TabelaPessoasColaboradores);
+		jDesktopPane.add(jInternal_TelaBackups);
+		jDesktopPane.add(JInternal_TelaAlerta.getInstance());
 		
 		janelaLoading.etapaAtual("Telas Incorporadas!", 80);
 		janelaLoading.etapaAtual("Controlador!", 80);
@@ -205,7 +153,8 @@ public class Principal {
 				jInternal_TelaInfoPessoa_Projetos,
 				jInternal_TelaInfoProjeto_Etapas_Simples,
 				jInternal_TabelaPessoas,
-				jInternal_TabelaPessoasColaboradores);
+				jInternal_TabelaPessoasColaboradores,
+				jInternal_TelaBackups);
 		
 		janelaLoading.etapaAtual("Parâmetros JInternals Carregado!", 90);
 		janelaLoading.etapaAtual("Adicionando TableModels!", 90);
@@ -222,7 +171,6 @@ public class Principal {
 		janelaLoading.dispose();
 		
 		janela.setVisible(true);
-		
 	}
 	
 }

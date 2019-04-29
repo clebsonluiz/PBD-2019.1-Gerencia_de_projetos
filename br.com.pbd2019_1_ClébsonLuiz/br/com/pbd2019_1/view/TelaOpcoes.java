@@ -12,6 +12,7 @@ public class TelaOpcoes extends JPanel {
 	private Botao btnPessoas;
 	private Botao btnSQL;
 	private Botao btnLog;
+	private Botao btnBackup;
 	private Botao btnSobre;
 	private Botao btnSair;
 
@@ -23,12 +24,14 @@ public class TelaOpcoes extends JPanel {
 		btnPessoas = new Botao("Pessoas");
 		btnSQL = new Botao("Query SQL");
 		btnLog = new Botao("Log");
+		btnBackup = new Botao("Backup");
 		btnSobre = new Botao("Sobre");
 		btnSair = new Botao("Sair");
 	}
 	
 	public void user_comum() {
 		add(btnInfo);
+		add(btnBackup);
 		add(btnSobre);
 		add(btnSair);
 	}
@@ -37,6 +40,7 @@ public class TelaOpcoes extends JPanel {
 		add(btnInfo);
 		add(btnPessoas);
 		add(btnLog);
+		add(btnBackup);
 		add(btnSobre);
 		add(btnSair);
 	}
@@ -46,6 +50,7 @@ public class TelaOpcoes extends JPanel {
 		add(btnPessoas);
 		add(btnSQL);
 		add(btnLog);
+		add(btnBackup);
 		add(btnSobre);
 		add(btnSair);
 	}
@@ -64,6 +69,10 @@ public class TelaOpcoes extends JPanel {
 
 	public Botao getBtnLog() {
 		return btnLog;
+	}
+	
+	public Botao getBtnBackup() {
+		return btnBackup;
 	}
 
 	public Botao getBtnSobre() {

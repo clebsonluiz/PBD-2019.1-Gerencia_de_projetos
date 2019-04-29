@@ -58,6 +58,12 @@ public interface ViewUtil {
 			public static final Font ARIAL_TITULO_B = new Font("Arial", Font.BOLD, 20);
 			public static final Font ARIAL_TITULO_B_I = new Font("Arial", Font.BOLD+Font.ITALIC, 20);
 			
+			public static final Font ARIAL_TITULO_GIGANTE = new Font("Arial", Font.PLAIN, 26);
+			public static final Font ARIAL_TITULO_GIGANTE_I = new Font("Arial", Font.ITALIC, 26);
+			public static final Font ARIAL_TITULO_GIGANTE_B = new Font("Arial", Font.BOLD, 26);
+			public static final Font ARIAL_TITULO_GIGANTE_B_I = new Font("Arial", Font.BOLD+Font.ITALIC, 26);
+			
+			
 		}
 		
 	} 
@@ -214,7 +220,7 @@ public interface ViewUtil {
 			public static final ImageIcon ICONE_SALVAR_ARQUIVO = getIcon("Freepik\\diskette");
 			public static final ImageIcon ICONE_ABRIR_ARQUIVO = getIcon("Freepik\\open-folder-with-document");
 			
-			
+			public static final ImageIcon ICONE_WARNING = getIcon("Freepik\\warning");
 			public static final ImageIcon IMAGEM_CARREGAMENTO = getIcon("Outros\\FundoTelaCarregamento");
 			
 	}

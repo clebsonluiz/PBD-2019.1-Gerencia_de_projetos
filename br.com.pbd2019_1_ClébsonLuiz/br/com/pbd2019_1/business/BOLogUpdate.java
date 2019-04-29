@@ -50,7 +50,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	{
 		return new String[]{pe.getNome(), pe.getCpf(),
 				DateUtil.getDateString("yyyy-MM-dd", pe.getData_nascimento()),
-				pe.getSexo(), pe.getUser_login(), pe.getUser_senha(),
+				pe.getSexo(), pe.getUser_login(), "USER_PASSWORD",
 				new Boolean(pe.isDisponibilidade()).toString(),
 				pe.getUser_type()};
 	}

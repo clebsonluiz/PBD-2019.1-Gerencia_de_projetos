@@ -6,9 +6,13 @@ import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.Tarefa;
+import br.com.pbd2019_1.view.JanelaEscolherCaminhoArquivo;
 
 public class Controlador_Statics {
 
+	public static JanelaEscolherCaminhoArquivo janelaEscolherCaminhoArquivo =
+			new JanelaEscolherCaminhoArquivo();
+	
 	public static Pessoa pessoa_static;
 	public static Pessoa pessoa_outrem_static;
 	public static Projeto projeto_static;
@@ -20,6 +24,7 @@ public class Controlador_Statics {
 	public static boolean bool_colaborador = false;
 	
 	/**
+	 * janelaEscolherCaminhoArquivo - JFileChooser para escolher os caminhos dos arquivos
 	 *
 	 * pessoa_static - Pessoa que está logada no sistema atualmente
 	 * pessoa_outrem_static - Quando a pessoa que está logado no sistema ver outra pessa

@@ -28,6 +28,7 @@ public abstract class JInternalAbstract extends JInternalFrame {
 	protected abstract void fechar();
 	
 	public void queroFoco() throws PropertyVetoException {
+		resetLocation();
 		toFront();
 		setSelected(true);
 		if(isIcon())
@@ -36,7 +37,7 @@ public abstract class JInternalAbstract extends JInternalFrame {
 		grabFocus();
 	}
 	
-	public void resetLocation() 
+	private void resetLocation() 
 	{
 		if(getDesktopPane() != null) 
 		{

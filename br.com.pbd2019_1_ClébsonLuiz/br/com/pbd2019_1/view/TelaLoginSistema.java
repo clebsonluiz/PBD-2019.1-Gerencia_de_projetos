@@ -24,11 +24,13 @@ private static final long serialVersionUID = 1L;
 	private JButton btnCadastrar;
 	private JLabel lblSistema;
 
+	private JLabel lblErro;
+
 	
 	public TelaLoginSistema() {
 		super(new BorderLayout());
 		
-		setPreferredSize(new Dimension(400, 400));
+		setPreferredSize(new Dimension(400, 450));
 		setMinimumSize(getPreferredSize());
 
 		contentPane = new JPanel(null);
@@ -87,6 +89,14 @@ private static final long serialVersionUID = 1L;
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.add(contentPane);
 		add(panel, BorderLayout.CENTER);
+		
+		JPanel panel_1 = new JPanel();
+		add(panel_1, BorderLayout.SOUTH);
+		
+		lblErro = new JLabel("");
+		lblErro.setForeground(Color.RED.darker());
+		lblErro.setFont(ViewUtil.Fonts.Arial.ARIAL_TITULO);
+		panel_1.add(lblErro);
 	}
 
 	
@@ -111,4 +121,8 @@ private static final long serialVersionUID = 1L;
 		return btnCadastrar;
 	}
 
+	public JLabel getLblErro() {
+		return lblErro;
+	}
+	
 }

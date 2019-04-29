@@ -64,4 +64,9 @@ public class CampoSenha extends JPasswordField implements FocusListener{
 			return new String(getPassword());
 	}
 	
+	public void setText(String text) {
+		super.setText(text);
+		this.setEchoChar('*');
+	}
+	
 }

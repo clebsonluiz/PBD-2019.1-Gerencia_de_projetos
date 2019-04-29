@@ -29,13 +29,15 @@ public class Controlador_Preenche_Tela {
 
 	private void preencherTelaPessoa(TelaPessoa telaPessoa, Pessoa pessoa) 
 	{
-		telaPessoa.getNomeField().setText(pessoa.getNome());
+		telaPessoa.getNomeField().setDescricao("Nome");
+		telaPessoa.getNomeField().setTexto(pessoa.getNome());
 		telaPessoa.getCampoFormatadoCPF().setText(pessoa.getCpf());
 		telaPessoa.getNascimentoDateChooser().setDate(DateUtil.getDate(pessoa.getData_nascimento()));
 		telaPessoa.getSexoComboBox().setSelectedItem(pessoa.getSexo());
-		telaPessoa.getLoginField().setText(pessoa.getUser_login());
-		telaPessoa.getSenhaField().setText(pessoa.getUser_senha());
-
+		telaPessoa.getLoginField().setTexto(pessoa.getUser_login());
+		telaPessoa.getSenhaField().setText("");
+		telaPessoa.getSenhaField().setDescricao("Nova Senha");
+		
 		telaPessoa.getRdbtnSim().setSelected(pessoa.isDisponibilidade());
 		telaPessoa.getRdbtnNo().setSelected(!pessoa.isDisponibilidade());
 	}

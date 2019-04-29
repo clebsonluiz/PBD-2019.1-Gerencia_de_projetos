@@ -15,14 +15,12 @@ public class BOCaracteristicaExtra extends BOGenerico<CaracteristicaExtra>{
 	}
 
 	protected void validacaoInsercao(CaracteristicaExtra t) throws BOException{
-		if(t == null || t.getPessoa() == null ||
-				t.getNome() == null || t.getNome().trim().equals(""))
+		if(t == null || t.getPessoa() == null || t.getNome() == null)
 			throw new BOException("Erro ao validar caracteristica");
 	}
 	
 	protected void validacaoAtualizacao(CaracteristicaExtra t) throws BOException{
-		if(t == null || t.getPessoa() == null ||
-				t.getNome() == null || t.getNome().trim().equals(""))
+		if(t == null || t.getPessoa() == null || t.getNome() == null )
 			throw new BOException("Erro ao validar caracteristica");
 	}
 
