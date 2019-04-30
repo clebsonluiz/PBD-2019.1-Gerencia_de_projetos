@@ -18,10 +18,18 @@ import javax.persistence.Table;
 	@NamedQuery(name = "Backup.ascALL",
 	query = "select b from Backup b  where b.ativado = true order by b.data_backup ASC"),
 	@NamedQuery(name = "Backup.descALL",
-	query = "select b from Backup b  where b.ativado = true order by b.data_backup DESC")
+	query = "select b from Backup b  where b.ativado = true order by b.data_backup DESC"),
+	@NamedQuery(name = "Backup.existe",
+	query = "select verifica_backup_existente()"),
+	@NamedQuery(name = "Backup.recente",
+	query = "select backup_recente()")
+	
 })
 public class Backup extends Entidade{
 
+	public static final String EFETUADO = "EFETUADO";
+	public static final String ERRO = "ERRO";
+	
 	@Column(nullable = false)
 	private Date data_backup;
 	@Column(nullable = false)

@@ -68,10 +68,12 @@ public class Controlador_Backup {
 				String arquivoNome = Controlador_Statics.janelaEscolherCaminhoArquivo.getSelectedFile().getName();
 				String arquivoPath = Controlador_Statics.janelaEscolherCaminhoArquivo.getSelectedFile().getPath();
 				String arquivoPath2 = Controlador_Statics.janelaEscolherCaminhoArquivo.getSelectedFile().getAbsolutePath();
+				String arquivoPath3 = Controlador_Statics.janelaEscolherCaminhoArquivo.getSelectedFile().getParent();
 				
 				System.out.println("Nome arquivo: "+arquivoNome);
 				System.out.println("Nome Path: "+arquivoPath);
 				System.out.println("Nome Path2: "+arquivoPath2);
+				System.out.println("Nome Path3: "+arquivoPath3);
 				
 				JInternal_TelaAlerta.showAlerta("Erro", "Mensagem de ALERTA");
 			}

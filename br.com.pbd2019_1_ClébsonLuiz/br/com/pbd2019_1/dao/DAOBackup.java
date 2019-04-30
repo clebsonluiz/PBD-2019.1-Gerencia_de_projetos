@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.exception.DAOException;
@@ -71,6 +72,28 @@ public class DAOBackup extends DAOGenerico<Backup>{
 			entityManager.close();
 		}
 		return backups;
+	}
+	
+	public boolean buscarExistente(String namedQuery) throws DAOException {
+		EntityManager entityManager = createEntityManager();
+		boolean isExistente;
+		try {
+			
+			TypedQuery<Boolean> query = entityManager.createNamedQuery(namedQuery,
+						Boolean.class);
+			isExistente = query.getSingleResult();
+			
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			isExistente = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			throw new DAOException("Erro de busca no banco de dados");
+		} finally {
+			entityManager.close();
+		}
+		return isExistente;
 	}
 	
 }
