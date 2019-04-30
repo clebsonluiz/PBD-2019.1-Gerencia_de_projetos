@@ -69,4 +69,11 @@ public class Horario extends JPanel {
 		cmboxSegundo.setSelectedItem(s);
 	}
 
+	public String toString() 
+	{
+		return new String(
+				(String)cmboxHora.getSelectedItem()+ ":" + 
+				(String)cmboxMinuto.getSelectedItem() + ":" + 
+				(String)cmboxSegundo.getSelectedItem());
+	}
 }

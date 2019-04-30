@@ -208,6 +208,17 @@ public interface ViewUtil {
 				ClassLoader classLoader = Image.class.getClassLoader();
 				return new ImageIcon(classLoader.getResource(caminho));
 			}
+			public static ImageIcon getIcon(String nome, String formato) {
+				String caminho = "br\\com\\pbd2019_1\\imagens\\" + nome +"."+formato;
+				ClassLoader classLoader = Image.class.getClassLoader();
+				return new ImageIcon(classLoader.getResource(caminho));
+			}
+			
+			public static ImageIcon getIconImage(String path) {
+				ClassLoader classLoader = Image.class.getClassLoader();
+				return new ImageIcon(classLoader.getResource(path));
+			}
+			
 			
 			//Inserir constantes de Icones aqui ex
 			public static final ImageIcon ICONE_CADASTRAR_USUARIO = getIcon("Freepik\\add-user");
@@ -222,6 +233,7 @@ public interface ViewUtil {
 			
 			public static final ImageIcon ICONE_WARNING = getIcon("Freepik\\warning");
 			public static final ImageIcon IMAGEM_CARREGAMENTO = getIcon("Outros\\FundoTelaCarregamento");
+			public static final ImageIcon IMAGEM_FUNDO = getIcon("Outros\\PhotoFunia", "jpg");
 			
 	}
 	

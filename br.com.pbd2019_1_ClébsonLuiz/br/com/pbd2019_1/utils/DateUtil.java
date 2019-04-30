@@ -7,9 +7,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DateUtil {
-
+	
 	public static LocalDateTime getDateTime(LocalDate localDate, LocalTime localTime) {
 		return LocalDateTime.of(localDate, localTime);
 	}
@@ -58,6 +60,78 @@ public class DateUtil {
 	
 	public static String getDateString(String format,Date date) {
 		return new SimpleDateFormat(format).format(date);
+	}
+	
+	public static Date getDateTime(java.util.Date date) {
+		return Date.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:MM:SS").format(date));
+	}
+	
+	public static java.util.Date getDateString(String format, String dateString) throws ParseException {
+		return new SimpleDateFormat(format).parse(dateString);
+	}
+	
+	public static interface TimeUtil{
+		
+		public static int[] horario(String horario) 
+		{
+			List<String> list = new ArrayList<>();
+			
+			for(int i = 0; i < 60; i++) 
+			{
+				if( i < 10)
+					list.add("0"+i);
+				else
+					list.add(""+i);
+			}
+			
+			int hora = 0;
+			int minuto = 0;
+			int segundo = 0;
+			
+			String[] s = horario.split(":"); 
+			
+			for(int i = 0; i < 60; i++) 
+				if(list.get(i).equals(s[0])) 
+				{
+					hora = i;
+					break;
+				}
+			
+			for(int i = 0; i < 60; i++) 
+				if(list.get(i).equals(s[1])) 
+				{
+					minuto = i;
+					break;
+				}
+			
+			for(int i = 0; i < 60; i++) 
+				if(list.get(i).equals(s[2])) 
+				{
+					segundo = i;
+					break;
+				}
+			
+			return new int[] {hora, minuto, segundo};
+		} 
+		
+		/**
+		 * Calcula se um determinado horario antecede o outro <br>
+		 * horario1 antecede horario2 ? <br>
+		 * @param horario1 Horario1
+		 * @param horario2 Horario2
+		 * */
+		public static boolean isAntes(String horario1, String horario2) 
+		{
+			
+			int[] hora1 = horario(horario1);
+			int[] hora2 = horario(horario2);
+			
+			LocalTime horario_1 = LocalTime.of(hora1[0], hora1[1], hora1[2]); 
+			LocalTime horario_2 = LocalTime.of(hora2[0], hora2[1], hora2[2]); 
+			
+			return horario_1.isBefore(horario_2);
+			
+		} 
 	}
 	
 	
