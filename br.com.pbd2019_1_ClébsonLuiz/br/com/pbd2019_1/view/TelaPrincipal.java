@@ -34,7 +34,7 @@ public class TelaPrincipal extends JPanel {
 		JPanel panel = new JPanel(new BorderLayout());
 		setLayout(card);
 		telaMenu = new TelaMenu();
-		jDesktopPane = new JDesktopPane();
+		jDesktopPane = new MeuJDesktopPane();
 		jDesktopPane.setToolTipText("Área de Trabalho");
 		jDesktopPane.setBackground(Color.BLACK);
 		

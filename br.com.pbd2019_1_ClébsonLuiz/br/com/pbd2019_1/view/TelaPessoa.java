@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.utils.ViewUtil;
 import br.com.pbd2019_1.utils.ViewUtil.Fonts.Arial;
 
@@ -29,10 +30,14 @@ public class TelaPessoa extends JPanel {
 	private JCheckBox exibirSenhaChbx;
 	private JRadioButton rdbtnSim;
 	private JRadioButton rdbtnNo;
+	private TelaCadastroEdicao telaCadastroEdicao;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JPanel panel_2;
 	
 	public TelaPessoa() {
-		setMinimumSize(new Dimension(300, 340));
-		setPreferredSize(new Dimension(300, 340));
+		setMinimumSize(new Dimension(300, 380));
+		setPreferredSize(new Dimension(300, 380));
 		setLayout(null);
 		
 		nomeField = new CampoTexto(Arial.ARIAL_MEDIO);
@@ -45,7 +50,7 @@ public class TelaPessoa extends JPanel {
 		campoFormatadoCPF.setMascara("###.###.###-##");
 		add(campoFormatadoCPF);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBorder(
 				BorderFactory.createTitledBorder("Sexo e Data de Nascimento")
 		);
@@ -66,7 +71,7 @@ public class TelaPessoa extends JPanel {
 		nascimentoDateChooser.setFont(Arial.ARIAL_MEDIO);
 		panel.add(nascimentoDateChooser);
 		
-		JPanel panel_1 = new JPanel();
+		panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		
 		panel_1.setBorder(ViewUtil.Bordas.criarBordaTitulo("Login e Senha",
@@ -98,7 +103,7 @@ public class TelaPessoa extends JPanel {
 				senhaField.setEchoChar('*');
 		});
 		
-		JPanel panel_2 = new JPanel();
+		panel_2 = new JPanel();
 		panel_2.setBorder(ViewUtil.Bordas.criarBordaTitulo("Disponível"));
 		panel_2.setBounds(10, 205, 75, 129);
 		panel_2.setToolTipText("Disponibilidade para participar de outros projetos");
@@ -123,8 +128,51 @@ public class TelaPessoa extends JPanel {
 		group.add(rdbtnSim);
 		group.add(rdbtnNo);
 		
+		telaCadastroEdicao = new TelaCadastroEdicao() {
+			private static final long serialVersionUID = 1L;
+
+			protected void abilitar() {
+				
+				getNomeField().setEnabled(true);
+				getLoginField().setEnabled(true);
+				getSenhaField().setEnabled(true);
+				getCampoFormatadoCPF().setEnabled(true);
+				getSexoComboBox().setEnabled(true);
+				getNascimentoDateChooser().setEnabled(true);
+				getRdbtnSim().setEnabled(true);
+				getRdbtnNo().setEnabled(true);
+				
+				super.abilitar();
+			}
+			
+			protected void desabilitar() {
+				getNomeField().setEnabled(false);
+				getLoginField().setEnabled(false);
+				getSenhaField().setEnabled(false);
+				getCampoFormatadoCPF().setEnabled(false);
+				getSexoComboBox().setEnabled(false);
+				getNascimentoDateChooser().setEnabled(false);
+				getRdbtnSim().setEnabled(false);
+				getRdbtnNo().setEnabled(false);
+				
+				super.desabilitar();
+			}
+		};
+		telaCadastroEdicao.setBounds(6, 336, 288, 38);
+		add(telaCadastroEdicao);
+		
 	}
 
+	public void limparCampos() {
+		getNomeField().setText("");
+		getLoginField().setText("");
+		getSenhaField().setText("");
+		getCampoFormatadoCPF().setText("");
+		getSexoComboBox().setSelectedIndex(0);
+		getNascimentoDateChooser().setDate(DateUtil.getDataAtual());
+		getRdbtnSim().setSelected(false);
+		getRdbtnNo().setSelected(true);
+	}
 	public CampoTexto getNomeField() {
 		return nomeField;
 	}
@@ -161,5 +209,24 @@ public class TelaPessoa extends JPanel {
 		return rdbtnNo;
 	}
 	
+	public Botao getBotao() {
+		return this.telaCadastroEdicao.getBtBotao1();
+	}
+
+	public TelaCadastroEdicao getTelaCadastroEdicao() {
+		return telaCadastroEdicao;
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public JPanel getPanel_1() {
+		return panel_1;
+	}
+
+	public JPanel getPanel_2() {
+		return panel_2;
+	}
 	
 }

@@ -19,6 +19,7 @@ import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.CellRenderer;
@@ -730,11 +731,11 @@ public class Controlador_Principal {
 	public void adicionarEventosTelaPrincipal() {
 		
 		telaPrincipal.getTelaCadastro_Pessoa()
-			.getBtBotao1().addActionListener(ActionEvent->{
+			.getBotao().addActionListener(ActionEvent->{
 				//TODO - 
 				try 
 				{
-					TelaPessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa().getTelaPessoa();
+					TelaPessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
 					String nome = telaPessoa.getNomeField().getTexto();
 					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
 					Date data = telaPessoa.getNascimentoDateChooser().getDate();
@@ -1028,7 +1029,7 @@ public class Controlador_Principal {
 
 	private void adicionarEventoJInternal(JInternal_TelaInfoPessoa telaInfoPessoa) {
 		
-		telaInfoPessoa.getTelaInfoPessoa().getBtBotao1()
+		telaInfoPessoa.getTelaInfoPessoa().getTelaPessoa().getBotao()
 			.addActionListener(ActionEvent->{
 				//TODO - Update Pessoa 
 				try 
@@ -1042,14 +1043,6 @@ public class Controlador_Principal {
 					String senha = telaPessoa.getSenhaField().getTexto();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
-					TelaContatoCaracteristica telaContato = telaInfoPessoa.getTelaInfoPessoa()
-							.getTelaContatoCaracteristica();
-
-					String email = telaContato.getEmailField().getTexto();
-					String celular = telaContato.getCelularField().getText();
-					String telef = telaContato.getTelefoneField().getText();
-
-
 					Controlador_Statics.pessoa_outrem_static.setNome(nome);
 					Controlador_Statics.pessoa_outrem_static.setCpf(cpf);
 					Controlador_Statics.pessoa_outrem_static.setData_nascimento(DateUtil.getDateSQL(data));
@@ -1060,21 +1053,6 @@ public class Controlador_Principal {
 					Fachada.getInstance().atualizar(Controlador_Statics.pessoa_outrem_static);
 					tPessoa.fireTableDataChanged();
 
-					Contato c = Controlador_Statics.pessoa_outrem_static.getContato();
-
-					if(c == null) {
-						c = new Contato();
-						c.setEmail(email);
-						c.setCelular(celular);
-						c.setTelefone(telef);
-						Fachada.getInstance().inserir(c);
-					}else {
-						c.setEmail(email);
-						c.setCelular(celular);
-						c.setTelefone(telef);
-						Fachada.getInstance().atualizar(c);
-					}
-
 				} 
 				catch (ValidacaoException e) 
 				{
@@ -1084,6 +1062,44 @@ public class Controlador_Principal {
 				
 				
 			});
+		
+		telaInfoPessoa.getTelaInfoPessoa().getTelaContatoCaracteristica().getBotao()
+		.addActionListener(ActionEvent->{
+			//TODO - Add Contato
+			try 
+			{
+				TelaContatoCaracteristica telaContato = telaInfoPessoa.getTelaInfoPessoa()
+						.getTelaContatoCaracteristica();
+
+				String email = telaContato.getEmailField().getTexto();
+				String celular = telaContato.getCelularField().getText();
+				String telef = telaContato.getTelefoneField().getText();
+
+				Contato c = Controlador_Statics.pessoa_outrem_static.getContato();
+
+				if(c == null) 
+					c = new Contato();
+				if(c.getId() <= 0)
+				{
+					c.setEmail(email);
+					c.setCelular(celular);
+					c.setTelefone(telef);
+					c.setPessoa(Controlador_Statics.pessoa_outrem_static);
+					Fachada.getInstance().inserir(c);
+				}
+				else 
+				{
+					c.setEmail(email);
+					c.setCelular(celular);
+					c.setTelefone(telef);
+					Fachada.getInstance().atualizar(c);
+				}
+			} 
+			catch (ValidacaoException e)
+			{
+				JInternal_TelaAlerta.showAlerta("Erro ao atualizar dados", e.getMessage());
+			}
+		});
 		
 		telaInfoPessoa.getTelaInfoPessoa().getTelaContatoCaracteristica()
 			.getBtAdicionar().addActionListener(ActionEvent->{
@@ -1237,7 +1253,7 @@ public class Controlador_Principal {
 
 	private void adicionarEventoJInternal(JInternal_TelaInfoPessoa_Projetos telaInfoPessoaProjetos) {
 		
-		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos().getTelaInfoPessoa().getBtBotao1()
+		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos().getTelaInfoPessoa().getTelaPessoa().getBotao()
 			.addActionListener(ActionEvent->{
 				//TODO - Update Pessoa
 				try 
@@ -1253,15 +1269,6 @@ public class Controlador_Principal {
 					String senha = telaPessoa.getSenhaField().getTexto();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
-					TelaContatoCaracteristica telaContato = telaInfoPessoaProjetos
-							.getTelaInfoPessoaProjetos()
-							.getTelaInfoPessoa()
-							.getTelaContatoCaracteristica();
-
-					String email = telaContato.getEmailField().getTexto();
-					String celular = telaContato.getCelularField().getText();
-					String telef = telaContato.getTelefoneField().getText();
-
 					Controlador_Statics.pessoa_static.setNome(nome);
 					Controlador_Statics.pessoa_static.setCpf(cpf);
 					Controlador_Statics.pessoa_static.setData_nascimento(DateUtil.getDateSQL(data));
@@ -1272,21 +1279,6 @@ public class Controlador_Principal {
 					Fachada.getInstance().atualizar(Controlador_Statics.pessoa_static);
 					tPessoa.fireTableDataChanged();
 
-					Contato c = Controlador_Statics.pessoa_static.getContato();
-
-					if(c == null) {
-						c = new Contato();
-						c.setEmail(email);
-						c.setCelular(celular);
-						c.setTelefone(telef);
-						Fachada.getInstance().inserir(c);
-					}else {
-						c.setEmail(email);
-						c.setCelular(celular);
-						c.setTelefone(telef);
-						Fachada.getInstance().atualizar(c);
-					}
-				
 				}
 				catch (ValidacaoException e) 
 				{
@@ -1294,6 +1286,48 @@ public class Controlador_Principal {
 				}
 				
 			});
+		
+		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos().getTelaInfoPessoa().getTelaContatoCaracteristica().getBotao()
+		.addActionListener(ActionEvent->{
+			//TODO - COntato
+			try 
+			{
+
+				TelaContatoCaracteristica telaContato = telaInfoPessoaProjetos
+						.getTelaInfoPessoaProjetos()
+						.getTelaInfoPessoa()
+						.getTelaContatoCaracteristica();
+
+				String email = telaContato.getEmailField().getTexto();
+				String celular = telaContato.getCelularField().getText();
+				String telef = telaContato.getTelefoneField().getText();
+
+
+				Contato c = Controlador_Statics.pessoa_static.getContato();
+
+				if(c == null) 
+					c = new Contato();
+				if(c.getId() <= 0)
+				{
+					c.setEmail(email);
+					c.setCelular(celular);
+					c.setTelefone(telef);
+					c.setPessoa(Controlador_Statics.pessoa_static);
+					Fachada.getInstance().inserir(c);
+				}
+				else 
+				{
+					c.setEmail(email);
+					c.setCelular(celular);
+					c.setTelefone(telef);
+					Fachada.getInstance().atualizar(c);
+				}
+			} 
+			catch (ValidacaoException e)
+			{
+				JInternal_TelaAlerta.showAlerta("Erro ao atualizar dados", e.getMessage());
+			}
+		});
 		
 		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
 			.getTelaInfoPessoa().getTelaContatoCaracteristica().getBtAdicionar()

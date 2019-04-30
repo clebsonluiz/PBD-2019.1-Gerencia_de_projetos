@@ -15,6 +15,7 @@ import br.com.pbd2019_1.tabelas.TPessoa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Projeto;
@@ -29,7 +30,8 @@ public class Controlador_Cadastro {
 	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Etapa telaCadastroEtapa, TEtapa tEtapa) {
 		telaCadastroEtapa.getTelaCadastro_Etapa().getBotao1()
 			.addActionListener(ActionEvent->{
-				try {
+				try 
+				{
 					TelaEtapa telaEtapa = telaCadastroEtapa.getTelaCadastro_Etapa();
 					String nome = telaEtapa.getNomeEtapaField().getText();
 					String descr = telaEtapa.getDescricaoTextArea().getText();
@@ -42,20 +44,22 @@ public class Controlador_Cadastro {
 					Fachada.getInstance().inserir(etapa);
 					tEtapa.addValor(etapa);
 					telaEtapa.limparCampos();
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
+				} 
+				catch (ValidacaoException e)
+				{
+					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
 				}
 				
 		});
 	}
 	
 	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Pessoa telaCadastroPessoa, TPessoa tPessoa) {
-		telaCadastroPessoa.getTelaCadastro_Pessoa().getBtBotao1()
+		telaCadastroPessoa.getTelaCadastro_Pessoa().getBotao()
 			.addActionListener(ActionEvent->{
 				//TODO - Cadastro Pessoa
-				try {
-					TelaPessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa().getTelaPessoa();
+				try 
+				{
+					TelaPessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa();
 					String nome = telaPessoa.getNomeField().getTexto();
 					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
 					Date data = telaPessoa.getNascimentoDateChooser().getDate();
@@ -83,9 +87,10 @@ public class Controlador_Cadastro {
 					Fachada.getInstance().inserir(pessoa);
 					tPessoa.addValor(pessoa);
 					telaCadastroPessoa.getTelaCadastro_Pessoa().limparCampos();
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
+				}
+				catch (ValidacaoException e) 
+				{
+					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
 				}
 		});
 	}
@@ -94,8 +99,8 @@ public class Controlador_Cadastro {
 		telaCadastroProjeto.getTelaCadastro_Projeto().getBotao1()
 			.addActionListener(ActionEvent->{
 				//TODO - Cadastro Projeto
-				try {
-
+				try 
+				{
 					TelaProjeto telaProjeto = telaCadastroProjeto.getTelaCadastro_Projeto();
 
 					String nome = telaProjeto.getNomeProjetoField().getTexto();
@@ -113,9 +118,10 @@ public class Controlador_Cadastro {
 					Fachada.getInstance().inserir(projeto);
 					tProjeto.addValor(projeto);
 					telaProjeto.limparCampos();
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
+				}
+				catch (ValidacaoException e)
+				{
+					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
 				}
 			
 				
@@ -128,8 +134,8 @@ public class Controlador_Cadastro {
 		telaCadastroTarefa.getTelaCadastro_Tarefa().getBotao1()
 			.addActionListener(ActionEvent->{
 				//TODO - Cadastro Tarefa
-				
-				try {
+				try 
+				{
 					TelaCadastro_Tarefa telaCadastro = telaCadastroTarefa.getTelaCadastro_Tarefa();
 
 					String nome = telaCadastro.getNomeTarefaField().getTexto();
@@ -167,9 +173,10 @@ public class Controlador_Cadastro {
 							Math.round(Controlador_Statics.etapa_static.getPorcentagem_andamento())
 							);
 					
-				} catch (ValidacaoException e) {
-					//TODO Auto-generated catch block
-					e.printStackTrace();
+				} 
+				catch (ValidacaoException e)
+				{
+					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
 				}
 		});
 	}

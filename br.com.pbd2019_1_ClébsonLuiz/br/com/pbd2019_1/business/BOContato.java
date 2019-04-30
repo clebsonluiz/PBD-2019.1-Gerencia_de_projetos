@@ -22,6 +22,9 @@ public class BOContato extends BOGenerico<Contato>{
 		if(!UserUtil.ContatoUtil.removerCaracteresEspeciais(t.getTelefone()).trim().equals(""))
 			if(!UserUtil.ContatoUtil.isTelefone(t.getTelefone()))
 				throw new BOException("Numero de telefone não é válido");
+		if(!t.getEmail().trim().equals(""))
+			if(!(t.getEmail().contains("@") && t.getEmail().contains(".") && t.getEmail().length() > 8))
+				throw new BOException("E-Mail não é valido");
 		t.setCelular(UserUtil.ContatoUtil.removerCaracteresEspeciais(t.getCelular()));
 		t.setTelefone(UserUtil.ContatoUtil.removerCaracteresEspeciais(t.getTelefone()));
 	}
@@ -35,6 +38,9 @@ public class BOContato extends BOGenerico<Contato>{
 		if(!UserUtil.ContatoUtil.removerCaracteresEspeciais(t.getTelefone()).trim().equals(""))
 			if(!UserUtil.ContatoUtil.isTelefone(t.getTelefone()))
 				throw new BOException("Numero de telefone não é válido");
+		if(!t.getEmail().trim().equals(""))
+			if(!(t.getEmail().contains("@") && t.getEmail().contains(".") && t.getEmail().length() > 8))
+				throw new BOException("E-Mail não é valido");
 		t.setCelular(UserUtil.ContatoUtil.removerCaracteresEspeciais(t.getCelular()));
 		t.setTelefone(UserUtil.ContatoUtil.removerCaracteresEspeciais(t.getTelefone()));
 	}
