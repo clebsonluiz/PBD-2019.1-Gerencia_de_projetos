@@ -1,5 +1,7 @@
 package br.com.pbd2019_1.app;
 
+import java.text.ParseException;
+
 import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -7,6 +9,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import br.com.pbd2019_1.controll.Controlador_Principal;
 import br.com.pbd2019_1.fachada.Fachada;
+import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAlerta;
@@ -26,8 +29,8 @@ import br.com.pbd2019_1.view.JanelaLoading;
 import br.com.pbd2019_1.view.JanelaPrincipal;
 
 public class Principal {
-
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) throws ParseException {
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
 		try 
@@ -131,12 +134,13 @@ public class Principal {
 		jDesktopPane.add(jInternal_TabelaPessoasColaboradores);
 		jDesktopPane.add(jInternal_TelaBackups);
 		jDesktopPane.add(JInternal_TelaAlerta.getInstance());
+		jDesktopPane.add(JInternal_Backup_Efetuando.getInstance());
+		
 		
 		janelaLoading.etapaAtual("Telas Incorporadas!", 80);
 		janelaLoading.etapaAtual("Controlador!", 80);
 		
 		Controlador_Principal controlador = new Controlador_Principal(janela.getTelaPrincipal());
-		
 		janelaLoading.etapaAtual("Controlador Carregado!", 85);
 		janelaLoading.etapaAtual("Parâmetros JInternals!", 85);
 		
@@ -165,6 +169,7 @@ public class Principal {
 		janelaLoading.etapaAtual("Adicionando Eventos!", 95);
 		
 		controlador.adicionarEventosTelaPrincipal();
+		controlador.adicionarEventoJFrame(janela);
 		
 		janelaLoading.etapaAtual("Eventos Adicionados!", 100);
 		janelaLoading.etapaAtual("Concluído!", 100);

@@ -63,7 +63,7 @@ public class DateUtil {
 	}
 	
 	public static Date getDateTime(java.util.Date date) {
-		return Date.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:MM:SS").format(date));
+		return Date.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
 	}
 	
 	public static java.util.Date getDateString(String format, String dateString) throws ParseException {

@@ -13,6 +13,7 @@ import br.com.pbd2019_1.business.BOPessoa;
 import br.com.pbd2019_1.business.BOProjeto;
 import br.com.pbd2019_1.business.BOTarefa;
 import br.com.pbd2019_1.dao.DAO;
+import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
@@ -78,6 +79,8 @@ public class Fachada {
 			return boProjeto.inserir((Projeto)t);
 		else if(t instanceof Tarefa)
 			return boTarefa.inserir((Tarefa)t);
+		else if(t instanceof Backup)
+			return boBackup.inserir((Backup)t);
 		else
 			return null;
 	}
@@ -99,6 +102,8 @@ public class Fachada {
 			return boProjeto.atualizar((Projeto)t);
 		else if(t instanceof Tarefa)
 			return boTarefa.atualizar((Tarefa)t);
+		else if(t instanceof Backup)
+			return boBackup.atualizar((Backup)t);
 		else
 			return null;
 	}
@@ -121,6 +126,8 @@ public class Fachada {
 			boProjeto.deletar((Projeto)t);
 		else if(t instanceof Tarefa)
 			boTarefa.deletar((Tarefa)t);
+		else if(t instanceof Backup)
+			boBackup.deletar((Backup)t);
 	}
 	
 	public <T extends Entidade> Entidade buscar(Class<T> classe, int id) throws BOException, DAOException{
@@ -140,6 +147,8 @@ public class Fachada {
 			return boProjeto.buscar(id);
 		else if(classe.getSimpleName().equals(Tarefa.class.getSimpleName()))
 			return boTarefa.buscar(id);
+		else if(classe.getSimpleName().equals(Backup.class.getSimpleName()))
+			return boBackup.buscar(id);
 		else
 			return null;
 	}

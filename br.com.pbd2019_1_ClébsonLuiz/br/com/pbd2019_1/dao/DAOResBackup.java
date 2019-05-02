@@ -6,12 +6,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.utils.DateUtil;
 
-public class DAOResBackup {
+public class DAOResBackup extends Observable{
 
+	public static final String BACKUP = "BACKUP";
+	public static final String RESTORE = "RESTORE";
+	
+	
+	private static DAOResBackup instance;
+	
+	private DAOResBackup() {}
+	
+	public static DAOResBackup getInstance() {
+		if(instance == null)
+			instance = new DAOResBackup();
+		return instance;
+	}
+	
 	private List<String> getCommandsBackup(String local_PgDump, String ip, String userName, File backupFile, String nomeFile){
 		
 		List<String> commands = new ArrayList<>();
@@ -57,7 +72,7 @@ public class DAOResBackup {
         return commands;
 	}
 	
-	public void executarBackup(String path, String nomeBackup, String userName, String password, String type) throws DAOException{
+	public void executarOperacaoBackup(String path, String nomeBackup, String userName, String password, String type) throws DAOException{
 
 		File backupFile = new File(path);
 		System.out.println(backupFile.toString());
@@ -79,10 +94,10 @@ public class DAOResBackup {
 
 		switch (type) 
 		{
-		case "BACKUP":
+		case BACKUP:
 			commands = getCommandsBackup(local_PgDump, "localhost", userName, backupFile, nomeFile);
 			break;
-		case "RESTORE":
+		case RESTORE:
 			commands = getCommandsRestore(local_PgRestore, "localhost", userName, backupFile);
 			break;
 		}
@@ -100,8 +115,12 @@ public class DAOResBackup {
 						new InputStreamReader(process.getErrorStream()))) {
 					String line = buf.readLine();
 					while (line != null) {
+						setChanged();
+						notifyObservers(line);
 						line = buf.readLine();
 					}
+					setChanged();
+					notifyObservers(line);
 				}
 
 				process.waitFor();

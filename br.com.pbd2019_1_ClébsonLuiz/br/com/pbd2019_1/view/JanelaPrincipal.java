@@ -13,7 +13,7 @@ public class JanelaPrincipal extends JFrame {
 	
 	public JanelaPrincipal() {
 		super("Principal");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(800, 500));
 		setPreferredSize(new Dimension(800, 500));
 		setSize(new Dimension(800, 500));

@@ -32,6 +32,7 @@ public class TelaBackups extends JPanel {
 		add(panel, BorderLayout.SOUTH);
 		
 		btnNovoBackup = new Botao("Criar novo Backup");
+		btnNovoBackup.setName("novo");
 		panel.add(btnNovoBackup);
 		
 	}

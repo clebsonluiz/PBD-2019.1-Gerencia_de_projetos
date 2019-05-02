@@ -27,6 +27,7 @@ public class TelaOpcoes extends JPanel {
 		btnBackup = new Botao("Backup");
 		btnSobre = new Botao("Sobre");
 		btnSair = new Botao("Sair");
+		btnSair.setName("sair");
 	}
 	
 	public void user_comum() {

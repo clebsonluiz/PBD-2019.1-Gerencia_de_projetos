@@ -30,27 +30,23 @@ public class BOBackup extends BOGenerico<Backup>{
 	public List<Backup> buscarAllRecentesPeriodo(Date data1, Date data2) throws BOException, DAOException {
 		if(data1 == null || data2 == null)
 			throw new BOException("Datas invalidas");
-		String date1 = DateUtil.getDateString("yyyy-MM-dd", DateUtil.getDateSQL(data1));
-		String date2 = DateUtil.getDateString("yyyy-MM-dd", DateUtil.getDateSQL(data2));
-		return ((DAOBackup)this.daoT).buscarAll("RECENTES", date1, date2);
+		return ((DAOBackup)this.daoT).buscarAll("RECENTES", data1, data2);
 	}
 	
 	public List<Backup> buscarAllAntigosPeriodo(Date data1, Date data2) throws BOException, DAOException {
 		if(data1 == null || data2 == null)
 			throw new BOException("Datas invalidas");
-		String date1 = DateUtil.getDateString("yyyy-MM-dd", DateUtil.getDateSQL(data1));
-		String date2 = DateUtil.getDateString("yyyy-MM-dd", DateUtil.getDateSQL(data2));
-		return ((DAOBackup)this.daoT).buscarAll("ANTIGOS", date1, date2);
+		return ((DAOBackup)this.daoT).buscarAll("ANTIGOS", data1, data2);
 	}
 	
 	public boolean buscarExistente() throws DAOException 
 	{
-		return ((DAOBackup)this.daoT).buscarExistente("Backup.existe");
+		return ((DAOBackup)this.daoT).buscarExistente("verifica_backup_existente");
 	}
 	
 	public boolean buscarMaisAntigo() throws DAOException 
 	{
-		return ((DAOBackup)this.daoT).buscarExistente("Backup.recente");
+		return ((DAOBackup)this.daoT).buscarExistente("backup_recente");
 	}
 
 	

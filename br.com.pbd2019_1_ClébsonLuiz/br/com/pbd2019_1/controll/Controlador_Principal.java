@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -19,7 +20,6 @@ import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
-import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.CellRenderer;
@@ -35,6 +35,7 @@ import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.JInternalAbstract;
+import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAlerta;
@@ -108,9 +109,14 @@ public class Controlador_Principal {
 		this.telaPrincipal = telaPrincipal;
 		this.preenche_Tela = new Controlador_Preenche_Tela();
 		this.controlador_Cadastro = new Controlador_Cadastro();
-		this.controlador_Backup = new Controlador_Backup();
+		this.controlador_Backup = new Controlador_Backup(this);
 	}
 
+	public void adicionarEventoJFrame(JFrame frame)
+	{
+		this.controlador_Backup.adicionarEvento(frame);
+	}
+	
 	public void adicionarJInternals(JInternal_TelaCadastro_Etapa jInternal_TelaCadastro_Etapa,
 			JInternal_TelaCadastro_Projeto jInternal_TelaCadastro_Projeto,
 			JInternal_TelaCadastro_Pessoa jInternal_TelaCadastro_Pessoa,
@@ -138,8 +144,6 @@ public class Controlador_Principal {
 		this.jInternal_TabelaPessoasColaboradores = jInternal_TabelaPessoasColaboradores;
 		this.jInternal_TelaBackups = jInternal_TelaBackups;
 	}
-
-
 
 	public void adicionarTableModels() {
 		tCaracteristicaExtra = new TCaracteristicaExtra();
@@ -831,7 +835,7 @@ public class Controlador_Principal {
 	private void adicionarEventoMenu(TelaOpcoes telaOpcoes) {
 		telaOpcoes.getBtnInfo().addActionListener(ActionEvent->{
 			//TODO - Inserir evento info usuario
-			if(!JInternal_TelaAlerta.isAtivado)
+			if(!JInternal_TelaAlerta.isAtivado || !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
 				TelaInfoPessoa tIP = jInternal_TelaInfoPessoa_Projetos
@@ -851,7 +855,7 @@ public class Controlador_Principal {
 		
 		telaOpcoes.getBtnLog().addActionListener(ActionEvent->{
 			//TODO - Inserir evento ADM de ver os logs dos usuarios
-			if(!JInternal_TelaAlerta.isAtivado)
+			if(!JInternal_TelaAlerta.isAtivado || !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
 				tLogUpdate.addAll((List<LogUpdate>) Fachada.getInstance().buscarAll(LogUpdate.class));
@@ -865,7 +869,7 @@ public class Controlador_Principal {
 		
 		telaOpcoes.getBtnPessoas().addActionListener(ActionEvent->{
 			//TODO - Inserir evento ADM ver pessoas
-			if(!JInternal_TelaAlerta.isAtivado)
+			if(!JInternal_TelaAlerta.isAtivado || !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
 				tPessoa.addAll((List<Pessoa>) Fachada.getInstance().buscarAll(Pessoa.class));
@@ -884,7 +888,7 @@ public class Controlador_Principal {
 		
 		telaOpcoes.getBtnBackup().addActionListener(ActionEvent->{
 			//TODO - Inserir evento Backups BD
-			if(!JInternal_TelaAlerta.isAtivado)
+			if(!JInternal_TelaAlerta.isAtivado || !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
 				jInternal_TelaBackups.queroFoco();
@@ -898,7 +902,7 @@ public class Controlador_Principal {
 		
 		telaOpcoes.getBtnSQL().addActionListener(ActionEvent->{
 			//TODO - Inserir evento SUPER USUARIO Inserir SQL
-			if(!JInternal_TelaAlerta.isAtivado)
+			if(!JInternal_TelaAlerta.isAtivado || !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
 				jInternal_TelaInserirSQL.queroFoco();
@@ -911,26 +915,12 @@ public class Controlador_Principal {
 		});
 		
 		telaOpcoes.getBtnSobre().addActionListener(ActionEvent->{
-			if(!JInternal_TelaAlerta.isAtivado);
+			if(!JInternal_TelaAlerta.isAtivado || !JInternal_Backup_Efetuando.isAtivado);
 			//TODO - Inserir evento Abrir tela Info Projeto
 			
 		});
 		
-		telaOpcoes.getBtnSair().addActionListener(ActionEvent->{
-			//TODO - Inserir evento deslogar
-			if(!JInternal_TelaAlerta.isAtivado)
-			try 
-			{
-				telaPrincipal.getTelaLoginSistema().getLoginField().setText("");
-				telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
-				telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
-				sair();
-			} 
-			catch (PropertyVetoException e)
-			{
-				JInternal_TelaAlerta.showAlerta("Erro ao sair do Sistema", e.getMessage());
-			}
-		});
+		telaOpcoes.getBtnSair().addActionListener(controlador_Backup);
 	}
 	
 	
@@ -1437,9 +1427,13 @@ public class Controlador_Principal {
 
 	}
 	
-	private void sair() throws PropertyVetoException {
+	public void sair() throws PropertyVetoException {
 		
-		JInternalAbstract jIA[] = new JInternalAbstract[15];
+		telaPrincipal.getTelaLoginSistema().getLoginField().setText("");
+		telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
+		telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
+		
+		JInternalAbstract jIA[] = new JInternalAbstract[16];
 		jIA[0] = jInternal_TelaCadastro_Etapa;
 		jIA[1] = jInternal_TelaCadastro_Projeto;
 		jIA[2] = jInternal_TelaCadastro_Pessoa;
@@ -1456,6 +1450,7 @@ public class Controlador_Principal {
 		jIA[12] = jInternal_TabelaPessoasColaboradores;
 		jIA[13] = jInternal_TelaBackups;
 		jIA[14] = JInternal_TelaAlerta.getInstance();
+		jIA[15] = JInternal_Backup_Efetuando.getInstance();
 		
 		for(JInternalAbstract jAbstract: jIA) {
 			jAbstract.setIcon(false);

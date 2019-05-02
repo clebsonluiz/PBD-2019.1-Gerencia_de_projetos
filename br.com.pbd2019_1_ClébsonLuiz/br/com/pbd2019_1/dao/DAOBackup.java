@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+import javax.persistence.StoredProcedureQuery;
 
 import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.exception.DAOException;
@@ -22,9 +22,11 @@ public class DAOBackup extends DAOGenerico<Backup>{
 			case "RECENTES":
 				backups = entityManager.createNamedQuery("Backup.ascALL",
 						Backup.class).getResultList();
+				break;
 			case "ANTIGOS":
 				backups = entityManager.createNamedQuery("Backup.descALL",
 						Backup.class).getResultList();
+				break;
 			}
 			
 		} catch (NoResultException e) {
@@ -40,7 +42,7 @@ public class DAOBackup extends DAOGenerico<Backup>{
 		return backups;
 	}
 	
-	public List<Backup> buscarAll(String ordem, String data1, String data2) throws DAOException {
+	public List<Backup> buscarAll(String ordem, java.util.Date data1, java.util.Date data2) throws DAOException {
 		EntityManager entityManager = createEntityManager();
 		List<Backup> backups = null;
 		try {
@@ -53,12 +55,14 @@ public class DAOBackup extends DAOGenerico<Backup>{
 				.setParameter("data1", data1)
 				.setParameter("data2", data2)
 				.getResultList();
+				break;
 			case "ANTIGOS":
 				backups = entityManager.createNamedQuery("Backup.desc",
 						Backup.class)
 				.setParameter("data1", data1)
 				.setParameter("data2", data2)
 				.getResultList();
+				break;
 			}
 			
 		} catch (NoResultException e) {
@@ -74,14 +78,14 @@ public class DAOBackup extends DAOGenerico<Backup>{
 		return backups;
 	}
 	
-	public boolean buscarExistente(String namedQuery) throws DAOException {
+	public boolean buscarExistente(String procedure) throws DAOException {
 		EntityManager entityManager = createEntityManager();
 		boolean isExistente;
 		try {
 			
-			TypedQuery<Boolean> query = entityManager.createNamedQuery(namedQuery,
-						Boolean.class);
-			isExistente = query.getSingleResult();
+			StoredProcedureQuery query = entityManager.createStoredProcedureQuery(procedure, Boolean.class);
+			
+			isExistente = (boolean) query.getSingleResult();
 			
 		} catch (NoResultException e) {
 			e.printStackTrace();
