@@ -27,6 +27,12 @@ import br.com.pbd2019_1.view.TelaProjeto;
 
 public class Controlador_Cadastro {
 	
+	private Controlador_Principal controlador_Principal;
+	
+	public Controlador_Cadastro(Controlador_Principal controlador_Principal) {
+		this.controlador_Principal = controlador_Principal;
+	}
+
 	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Etapa telaCadastroEtapa, TEtapa tEtapa) {
 		telaCadastroEtapa.getTelaCadastro_Etapa().getBotao1()
 			.addActionListener(ActionEvent->{
@@ -40,7 +46,7 @@ public class Controlador_Cadastro {
 					etapa.setNome(nome);
 					etapa.setDescricao(descr);
 					etapa.setPorcentagem_andamento(0);
-					etapa.setProjeto(Controlador_Statics.projeto_static);
+					etapa.setProjeto(controlador_Principal.getProjeto_Atual());
 					Fachada.getInstance().inserir(etapa);
 					tEtapa.addValor(etapa);
 					telaEtapa.limparCampos();
@@ -80,9 +86,9 @@ public class Controlador_Cadastro {
 					pessoa.setUser_senha(senha);
 					pessoa.setDisponibilidade(disponivel);
 
-					if(Controlador_Statics.type_user.equals(Pessoa.ADMIN_USER))
+					if(controlador_Principal.getType_User_Logado().equals(Pessoa.ADMIN_USER))
 						pessoa.setUser_type(Pessoa.COMUM_USER);
-					else if(Controlador_Statics.type_user.equals(Pessoa.SUPER_USER))
+					else if(controlador_Principal.getType_User_Logado().equals(Pessoa.SUPER_USER))
 						pessoa.setUser_type(Pessoa.ADMIN_USER);
 					Fachada.getInstance().inserir(pessoa);
 					tPessoa.addValor(pessoa);
@@ -113,8 +119,8 @@ public class Controlador_Cadastro {
 					projeto.setDescricao(descr);
 					projeto.setData_inicio(DateUtil.getDateSQL(dataI));
 					projeto.setData_fim(DateUtil.getDateSQL(dataF));
-					projeto.setPessoa(Controlador_Statics.pessoa_static);
-					projeto.setPrivilegio(!(Controlador_Statics.type_user.equals(Pessoa.COMUM_USER)));
+					projeto.setPessoa(controlador_Principal.getPessoa_Logada());
+					projeto.setPrivilegio(!(controlador_Principal.getType_User_Logado().equals(Pessoa.COMUM_USER)));
 					Fachada.getInstance().inserir(projeto);
 					tProjeto.addValor(projeto);
 					telaProjeto.limparCampos();
@@ -156,21 +162,21 @@ public class Controlador_Cadastro {
 					tarefa.setConcluida(finalizada);
 					tarefa.setPrioridade(prior);
 					tarefa.setHorario_tarefa(horario);
-					tarefa.setEtapa(Controlador_Statics.etapa_static);
+					tarefa.setEtapa(controlador_Principal.getEtapa_Atual());
 					Fachada.getInstance().inserir(tarefa);
 					tTarefa.addValor(tarefa);
 					telaCadastro.limparCampos();
 					
-					Controlador_Statics.etapa_static.setPorcentagem_andamento(
+					controlador_Principal.getEtapa_Atual().setPorcentagem_andamento(
 							Fachada.getInstance()
 								.getBoEtapa()
-								.recalcularPorcentagem(Controlador_Statics.etapa_static)
+								.recalcularPorcentagem(controlador_Principal.getEtapa_Atual())
 							);
 					
 					telaEtapa
 					.getBarraProgressBar()
 					.setValue(
-							Math.round(Controlador_Statics.etapa_static.getPorcentagem_andamento())
+							Math.round(controlador_Principal.getEtapa_Atual().getPorcentagem_andamento())
 							);
 					
 				} 

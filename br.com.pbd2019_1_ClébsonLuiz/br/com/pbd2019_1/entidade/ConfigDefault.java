@@ -8,7 +8,6 @@ public class ConfigDefault implements Serializable{
 
 	private String hora_bakup;
 	private String imagemFundoDefault;
-	private String pathImagemExterna;
 	
 	public String getHora_bakup() {
 		return hora_bakup;
@@ -22,11 +21,9 @@ public class ConfigDefault implements Serializable{
 	public void setImagemFundoDefault(String imagemFundoDefault) {
 		this.imagemFundoDefault = imagemFundoDefault;
 	}
-	public String getPathImagemExterna() {
-		return pathImagemExterna;
-	}
-	public void setPathImagemExterna(String pathImagemExterna) {
-		this.pathImagemExterna = pathImagemExterna;
+	@Override
+	public String toString() {
+		return "ConfigDefault [hora_bakup=" + hora_bakup + ", imagemFundoDefault=" + imagemFundoDefault + "]";
 	}
 	
 }

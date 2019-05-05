@@ -25,6 +25,8 @@ import br.com.pbd2019_1.view.Botao;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
+import br.com.pbd2019_1.view.JanelaPrincipal;
+import br.com.pbd2019_1.view.MeuJFileChooser;
 
 public class Controlador_Backup implements Observer, ActionListener{
 
@@ -71,22 +73,25 @@ public class Controlador_Backup implements Observer, ActionListener{
 			@Override
 			public void windowClosing(WindowEvent e) 
 			{
-				try 
-				{
-					if(Fachada.getInstance().getBoBackup().isBackupNecessario())
+				
+				if(!((JanelaPrincipal)frame).getTelaPrincipal().getTelaAtual().equals("3"))
+					System.exit(0);
+				else
+					try 
 					{
-						efetuarBackup(frame, frame);
+						if(Fachada.getInstance().getBoBackup().isBackupNecessario())
+						{
+							efetuarBackup(frame, frame);
+						}
+						else 
+						{
+							System.exit(0);
+						}
 					}
-					else 
+					catch (ValidacaoException | ClassNotFoundException | IOException e1) 
 					{
-						System.exit(0);
+						JInternal_TelaAlerta.showAlerta("ERRO AO FAZER BACKUP", e1.getMessage());
 					}
-				}
-				catch (ValidacaoException | ClassNotFoundException | IOException e1) 
-				{
-					JInternal_TelaAlerta.showAlerta("ERRO AO FAZER BACKUP", e1.getMessage());
-					
-				}
 			}
 			
 		});
@@ -165,7 +170,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 	
 	private void efetuarBackup(Component c, Object o) 
 	{
-		int retorno = Controlador_Statics.janelaEscolherCaminhoArquivo.exibirParaBackup(c);
+		int retorno = MeuJFileChooser.getInstance().exibirParaBackup(c);
 		if (retorno == JFileChooser.APPROVE_OPTION)
 		{
 			try {
@@ -187,12 +192,12 @@ public class Controlador_Backup implements Observer, ActionListener{
 				e.printStackTrace();
 			}
 			
-			String arquivoNome = Controlador_Statics.janelaEscolherCaminhoArquivo.getSelectedFile().getName();
-			String arquivoPathParent = Controlador_Statics.janelaEscolherCaminhoArquivo.getSelectedFile().getParent();
-			String arquivoPathAbsolute = Controlador_Statics.janelaEscolherCaminhoArquivo.getSelectedFile().getAbsolutePath();
+			String arquivoNome = MeuJFileChooser.getInstance().getSelectedFile().getName();
+			String arquivoPathParent = MeuJFileChooser.getInstance().getSelectedFile().getParent();
+			String arquivoPathAbsolute = MeuJFileChooser.getInstance().getSelectedFile().getAbsolutePath();
 			
 			Backup b = new Backup();
-			b.setAutor_backup(Controlador_Statics.pessoa_static.getCpf());
+			b.setAutor_backup(controlador_Principal.getPessoa_Logada().getCpf());
 			b.setData_backup(new Date());
 			b.setLocal_backup(arquivoPathAbsolute);
 			
@@ -238,26 +243,28 @@ public class Controlador_Backup implements Observer, ActionListener{
 			/*Se o botão for o de sair na TelaOpçoes*/
 			else if (botao.getName().equals("sair"))
 			{
-				if(!JInternal_TelaAlerta.isAtivado || !JInternal_Backup_Efetuando.isAtivado)
-				try 
+				if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado) 
 				{
-					if(Fachada.getInstance().getBoBackup().isBackupNecessario())
+					try 
 					{
-						efetuarBackup(null, botao);
-					}
-					else 
-					{
-						try 
+						if(Fachada.getInstance().getBoBackup().isBackupNecessario())
 						{
-							controlador_Principal.sair();
-						} 
-						catch (PropertyVetoException e1)
-						{
-							JInternal_TelaAlerta.showAlerta("Erro ao sair do Sistema", e1.getMessage());
+							efetuarBackup(null, botao);
 						}
+						else 
+						{
+							try 
+							{
+								controlador_Principal.sair();
+							} 
+							catch (PropertyVetoException e1)
+							{
+								JInternal_TelaAlerta.showAlerta("Erro ao sair do Sistema", e1.getMessage());
+							}
+						}
+					} catch (DAOException | ClassNotFoundException | IOException e1) {
+						JInternal_TelaAlerta.showAlerta("ERRO AO FAZER BACKUP", e1.getMessage());
 					}
-				} catch (DAOException | ClassNotFoundException | IOException e1) {
-					JInternal_TelaAlerta.showAlerta("ERRO AO FAZER BACKUP", e1.getMessage());
 				}
 			}
 		}

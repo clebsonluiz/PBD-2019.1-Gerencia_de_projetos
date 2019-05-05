@@ -28,19 +28,6 @@ public class JanelaPrincipal extends JFrame {
 			.addActionListener(	ActionEvent->{
 				telaPrincipal.exibirTela(TelaPrincipal.TELA_CADASTRO_PESSOA);
 				});
-		telaPrincipal.getTelaMenu().getTelaOpcoesAdmin().getBtnSair()
-		.addActionListener(
-				ActionEvent->{telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);}
-				);
-		telaPrincipal.getTelaMenu().getTelaOpcoesComum().getBtnSair()
-		.addActionListener(
-				ActionEvent->{telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);}
-				);
-		telaPrincipal.getTelaMenu().getTelaOpcoesSuper().getBtnSair()
-		.addActionListener(
-				ActionEvent->{telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);}
-				);
-		
 	}
 
 	public TelaPrincipal getTelaPrincipal() {

@@ -83,7 +83,7 @@ public class DAOBackup extends DAOGenerico<Backup>{
 		boolean isExistente;
 		try {
 			
-			StoredProcedureQuery query = entityManager.createStoredProcedureQuery(procedure, Boolean.class);
+			StoredProcedureQuery query = entityManager.createStoredProcedureQuery(procedure);
 			
 			isExistente = (boolean) query.getSingleResult();
 			

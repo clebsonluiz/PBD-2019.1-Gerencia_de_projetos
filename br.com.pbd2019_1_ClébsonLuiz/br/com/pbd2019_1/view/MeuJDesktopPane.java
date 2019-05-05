@@ -5,9 +5,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JDesktopPane;
+import javax.swing.SwingUtilities;
 
 import br.com.pbd2019_1.utils.ViewUtil;
 
@@ -15,19 +18,80 @@ public class MeuJDesktopPane extends JDesktopPane{
 	
 	private static final long serialVersionUID = 1L;
 	
+	private PopUp popUp = new PopUp(new String[] {
+			"FUNDO PBD 2019.1", "FUNDO LAMPADA 1", "FUNDO LAMPADA 2"
+	});
+	
 	private Image imagem;
 
 	public MeuJDesktopPane() {
 		try 
 		{
-			imagem = ViewUtil.Icones.IMAGEM_FUNDO.getImage();
+			imagem = ViewUtil.Icones.getImageDefault().getImage();
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}
+		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				if(SwingUtilities.isRightMouseButton(e))
+				{
+					popUp.show(getI(), e.getX(), e.getY());
+				}
+			}
+		});
+		
+		
+		popUp.getMenuItens()[0].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("1");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
+		
+		popUp.getMenuItens()[1].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO_LAMPADA_1.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("2");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
+		
+		popUp.getMenuItens()[2].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO_LAMPADA_2.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("3");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
+		
+		
 	}
 
+	MeuJDesktopPane getI(){
+		return this;
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

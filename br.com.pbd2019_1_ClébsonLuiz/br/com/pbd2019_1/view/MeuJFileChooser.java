@@ -6,15 +6,24 @@ import java.awt.Dimension;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class JanelaEscolherCaminhoArquivo extends JFileChooser{
+public class MeuJFileChooser extends JFileChooser{
 
 	private static final long serialVersionUID = 1L;
+	
+	private static MeuJFileChooser instance;
+	
+	public static MeuJFileChooser getInstance()
+	{
+		if(instance == null)
+			instance = new MeuJFileChooser();
+		return instance;
+	}
 	
 	private FileNameExtensionFilter filter1;
 	private FileNameExtensionFilter filter2; 
 	private FileNameExtensionFilter filter3; 
 	
-	public JanelaEscolherCaminhoArquivo() {
+	private MeuJFileChooser() {
 		
 		filter1 = new FileNameExtensionFilter( "Documentos PDF (*.pdf)", "pdf" );
 		filter2 = new FileNameExtensionFilter( "Arquivos de Backup (*.backup)", "backup" );

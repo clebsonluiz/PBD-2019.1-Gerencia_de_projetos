@@ -12,13 +12,11 @@ import br.com.pbd2019_1.utils.DateUtil;
 
 public class DAOConfigDefault {
 	
-	
 	public static void setConfigPadrao() {
 		ConfigDefault config = null;
 		try 
 		{
 			config = loadConfig();
-			
 		} 
 		catch (IOException e)
 		{
@@ -26,8 +24,7 @@ public class DAOConfigDefault {
 			{
 				config = new ConfigDefault();
 				config.setHora_bakup(null);
-				config.setImagemFundoDefault("IMAGEM_1");
-				config.setPathImagemExterna(null);
+				config.setImagemFundoDefault("1");
 				saveConfig(config);
 			} 
 			catch (IOException e1) 
@@ -44,36 +41,18 @@ public class DAOConfigDefault {
 	}
 
 	public static void saveConfig(ConfigDefault config) throws IOException {
-		FileOutputStream fos = new FileOutputStream("br\\com\\pbd2019_1\\config\\config.txt");
+		FileOutputStream fos = new FileOutputStream("config.txt");
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(config);
 		oos.close();
 	}
 	
 	public static ConfigDefault loadConfig() throws IOException, ClassNotFoundException {
-		FileInputStream fis = new FileInputStream("br\\com\\pbd2019_1\\config\\config.txt");
+		FileInputStream fis = new FileInputStream("config.txt");
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		ConfigDefault config = (ConfigDefault) ois.readObject();
 		ois.close();
 		return config;
-	}
-	
-	public static void setImagemPadraoExterna(String path) 
-	{
-		try 
-		{
-			ConfigDefault config = loadConfig();
-			config.setPathImagemExterna(path);
-			saveConfig(config);
-		} 
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		} 
-		catch (ClassNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	public static void setImagemPadrao(String imagem) 

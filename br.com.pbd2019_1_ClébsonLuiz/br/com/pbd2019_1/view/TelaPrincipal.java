@@ -19,7 +19,7 @@ public class TelaPrincipal extends JPanel {
 	public static final String TELA_PRINCIPAL = "2";
 	public static final String TELA_CADASTRO_PESSOA = "3";
 	
-	
+	private String atual = "1";
 	private CardLayout card;
 	
 	private TelaMenu telaMenu;
@@ -67,6 +67,7 @@ public class TelaPrincipal extends JPanel {
 	
 	public void exibirTela(String o){
 		card.show(this, o);
+		atual = o;
 	}
 
 	public TelaMenu getTelaMenu() {
@@ -85,4 +86,7 @@ public class TelaPrincipal extends JPanel {
 		return telaCadastro_Pessoa;
 	}
 	
+	public String getTelaAtual() {
+		return atual;
+	}
 }

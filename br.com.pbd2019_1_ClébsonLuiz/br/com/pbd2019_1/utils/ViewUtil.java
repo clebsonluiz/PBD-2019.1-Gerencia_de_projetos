@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,6 +22,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import com.itextpdf.text.Image;
+
+import br.com.pbd2019_1.dao.DAOConfigDefault;
+import br.com.pbd2019_1.entidade.ConfigDefault;
 
 public interface ViewUtil {
 	
@@ -219,6 +223,38 @@ public interface ViewUtil {
 				return new ImageIcon(classLoader.getResource(path));
 			}
 			
+			public static ImageIcon getImageDefault() {
+				
+				ImageIcon image = null;
+				
+				try {
+					ConfigDefault config = DAOConfigDefault.loadConfig();
+					
+					if(config!=null) 
+					{
+						if(config.getImagemFundoDefault().equals("1"))
+							image = IMAGEM_FUNDO;
+						else if(config.getImagemFundoDefault().equals("2"))
+							image = IMAGEM_FUNDO_LAMPADA_1;
+						else if(config.getImagemFundoDefault().equals("3"))
+							image = IMAGEM_FUNDO_LAMPADA_2;
+						else
+							image = getIconImage(config.getImagemFundoDefault());
+						return image;
+					}
+					else
+						return IMAGEM_FUNDO;
+					
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+					return IMAGEM_FUNDO;
+				}
+			}
+			
+			public static void setImageDefault(String imagem) 
+			{
+				DAOConfigDefault.setImagemPadrao(imagem);
+			}
 			
 			//Inserir constantes de Icones aqui ex
 			public static final ImageIcon ICONE_CADASTRAR_USUARIO = getIcon("Freepik\\add-user");
@@ -234,6 +270,10 @@ public interface ViewUtil {
 			public static final ImageIcon ICONE_WARNING = getIcon("Freepik\\warning");
 			public static final ImageIcon IMAGEM_CARREGAMENTO = getIcon("Outros\\FundoTelaCarregamento");
 			public static final ImageIcon IMAGEM_FUNDO = getIcon("Outros\\PhotoFunia", "jpg");
+			public static final ImageIcon IMAGEM_FUNDO_LAMPADA_1 = getIcon("Pixabay\\light-bulb-503881_1920", "jpg");
+			public static final ImageIcon IMAGEM_FUNDO_LAMPADA_2 = getIcon("Pixabay\\light-bulb-1246043_1920", "jpg");
+			
+			
 			
 	}
 	
