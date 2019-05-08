@@ -32,4 +32,29 @@ public class BOProjeto extends BOGenerico<Projeto>{
 			throw new BOException("Erro ao buscar Projetos por pessoa");
 		return ((DAOProjeto)this.daoT).buscarPorPessoa(pessoa);
 	}
+	
+	public int diferenca_Datas(java.sql.Date data1, java.sql.Date data2) throws BOException, DAOException
+	{
+		if(data1 == null || data2 == null)
+			throw new BOException("Alguma das datas estão vazias");
+		return ((DAOProjeto)this.daoT).diferenca_Datas(data1, data2);
+	}
+	
+	public int diferenca_Datas(Projeto projeto) throws BOException, DAOException
+	{
+		if(projeto == null) 
+			throw new BOException("Não pode ser valor null");
+		return diferenca_Datas(projeto.getData_inicio(), projeto.getData_fim());
+	}
+	
+	public int andamento_Projeto(Projeto projeto)  throws BOException, DAOException { 
+		if(projeto == null) 
+			throw new BOException("Não pode ser valor null");
+		Double double_value = ((DAOProjeto)this.daoT).andamento_Projeto(projeto);
+		
+		int porcentagem = double_value.intValue();
+		
+		if(porcentagem >= 100)	porcentagem = 100;
+		return porcentagem;
+	}
 }

@@ -1,11 +1,15 @@
 package br.com.pbd2019_1.controll;
 
 import java.beans.PropertyVetoException;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
+import com.itextpdf.text.DocumentException;
+
+import br.com.pbd2019_1.dao.DAOResRelatorio;
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
@@ -30,9 +34,11 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas_Simples;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
+import br.com.pbd2019_1.view.MeuJFileChooser;
 import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
 import br.com.pbd2019_1.view.TelaInfoPessoa;
+import br.com.pbd2019_1.view.TelaInfoProjeto;
 import br.com.pbd2019_1.view.TelaInfoTarefa;
 import br.com.pbd2019_1.view.TelaInserirSQL;
 import br.com.pbd2019_1.view.TelaPessoa;
@@ -335,6 +341,14 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.getProjeto_Atual().setData_fim(DateUtil.getDateSQL(dataF));
 					Fachada.getInstance().atualizar(controlador_Principal.getProjeto_Atual());
 					controlador_Principal.gettProjeto().fireTableDataChanged();
+					
+					int valorA = Fachada.getInstance()
+							.getBoProjeto()
+							.andamento_Projeto(
+								controlador_Principal.getProjeto_Atual()
+								);
+					
+					((TelaInfoProjeto)telaProjeto).getProgressBar().setValue(valorA);
 				}
 				catch (ValidacaoException e)
 				{
@@ -499,6 +513,40 @@ public class Controlador_Info_JInternal_Tela {
 			.getTelaProjetos().getBtnGerarRelatorio()
 			.addActionListener(ActionEvent->{
 				//TODO - Gerar Relatorio projeto
+				
+				int index = telaInfoPessoaProjetos
+						.getTelaInfoPessoaProjetos()
+						.getTelaProjetos()
+						.getTable()
+						.getSelectedRow();
+				
+				if(index >= 0)
+				{
+					int escolha = MeuJFileChooser.getInstance().exibirParaPDF(telaInfoPessoaProjetos);
+					if(escolha == MeuJFileChooser.APPROVE_OPTION)
+					{
+						try 
+						{
+							Projeto projeto = controlador_Principal.gettProjeto().getValor(index);
+							String path = MeuJFileChooser.getInstance().getSelectedFile().getAbsolutePath();
+						
+						
+							projeto.setColaboradores(Fachada.getInstance().getBoColaborador().buscarPorProjeto(projeto));
+						
+						
+							DAOResRelatorio.getInstance().gerarRelatorio(
+									projeto,
+									path
+									);
+						}
+						catch (ValidacaoException | FileNotFoundException | DocumentException e)
+						{
+							e.printStackTrace();
+							JInternal_TelaAlerta.showAlerta("Erro", e.getMessage());
+						}
+					}
+				}
+				
 			});
 		
 		
@@ -530,6 +578,16 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.getProjeto_Atual().setData_fim(DateUtil.getDateSQL(dataF));
 					Fachada.getInstance().atualizar(controlador_Principal.getProjeto_Atual());
 					controlador_Principal.gettProjeto().fireTableDataChanged();
+					
+					int valorA = Fachada.getInstance()
+							.getBoProjeto()
+							.andamento_Projeto(
+								controlador_Principal.getProjeto_Atual()
+								);
+					
+					((TelaInfoProjeto)telaProjeto).getProgressBar().setValue(valorA);
+					
+					
 				}
 				catch (ValidacaoException e) 
 				{
@@ -688,14 +746,21 @@ public class Controlador_Info_JInternal_Tela {
 		telaContato.getTelefoneField().setText(contato.getCelular());
 	}
 	
-	private void preencherTelaProjeto(TelaProjeto telaProjeto, Projeto projeto)
+	private void preencherTelaProjeto(TelaProjeto telaProjeto, Projeto projeto) throws ValidacaoException
 	{
 		
-		telaProjeto.getNomeProjetoField().setText(projeto.getNome());
+		telaProjeto.getNomeProjetoField().setTexto(projeto.getNome());
 		telaProjeto.getDescricaoTextArea().setText(projeto.getDescricao());
 		telaProjeto.getDataInicioDateChooser().setDate(DateUtil.getDate(projeto.getData_inicio()));
 		telaProjeto.getDataFimDateChooser().setDate(DateUtil.getDate(projeto.getData_fim()));
 		
+		int valorA = Fachada.getInstance()
+				.getBoProjeto()
+				.andamento_Projeto(
+						projeto
+						);
+		
+		((TelaInfoProjeto)telaProjeto).getProgressBar().setValue(valorA);
 	}
 	
 	private void preencherTelaEtapa(TelaEtapa telaEtapa, Etapa etapa)
