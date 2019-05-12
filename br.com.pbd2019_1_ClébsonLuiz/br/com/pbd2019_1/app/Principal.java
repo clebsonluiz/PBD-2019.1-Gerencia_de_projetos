@@ -1,13 +1,20 @@
 package br.com.pbd2019_1.app;
 
-import java.text.ParseException;
+import java.io.FileNotFoundException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
+import com.itextpdf.text.DocumentException;
+
 import br.com.pbd2019_1.controll.Controlador_Principal;
+import br.com.pbd2019_1.dao.DAOResRelatorio;
+import br.com.pbd2019_1.entidade.Pessoa;
+import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.exception.BOException;
+import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
@@ -30,7 +37,41 @@ import br.com.pbd2019_1.view.JanelaPrincipal;
 
 public class Principal {
 	
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws FileNotFoundException, DocumentException, BOException, DAOException {
+		
+		Fachada.getInstance().carregarBoProjeto();
+		Fachada.getInstance().carregarBoEtapa();
+		Fachada.getInstance().carregarBoTarefa();
+		Fachada.getInstance().carregarBoColaborador();
+		
+		
+		
+		Pessoa pessoa = new Pessoa();
+		pessoa.setId(1);
+		
+		Projeto projeto = Fachada.getInstance().getBoProjeto().buscarPorPessoa(pessoa).get(0);
+		
+		projeto.setColaboradores(
+				Fachada.getInstance().getBoColaborador().buscarPorProjeto(projeto)
+				);
+		projeto.setEtapas(
+				Fachada.getInstance().getBoEtapa().buscarPorProjeto(projeto)
+				);
+		
+		projeto.getEtapas().forEach(etapa->{
+			try 
+			{
+				etapa.setTarefas(					
+						Fachada.getInstance().getBoTarefa().buscarPorEtapa(etapa)
+						);
+			} catch (DAOException e) {e.printStackTrace();}
+		});
+		
+		
+		DAOResRelatorio.getInstance().gerarRelatorio(projeto, "C:\\Users\\Aluno.WIN-OT9K4KMKI2A\\Desktop\\TesteRelatorio.pdf");
+		
+		System.exit(0);
+		/*
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
 		try 
@@ -176,6 +217,7 @@ public class Principal {
 		janelaLoading.dispose();
 		
 		janela.setVisible(true);
+		*/
 	}
 	
 }

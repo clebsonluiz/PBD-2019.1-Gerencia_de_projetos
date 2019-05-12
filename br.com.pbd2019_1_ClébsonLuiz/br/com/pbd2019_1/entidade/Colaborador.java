@@ -1,6 +1,6 @@
 package br.com.pbd2019_1.entidade;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,19 +9,22 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "colaborador")
 @NamedQueries({
 	@NamedQuery(name = "Colaborador.pessoa",
-			query = "select c from Colaborador c where c.pessoa = :pessoa and c.ativado = true"),
+			query = "select c from Colaborador c where c.pessoa = :pessoa and c.ativado = true ORDER BY c.id ASC"),
 	@NamedQuery(name = "Colaborador.projeto",
-			query = "select c from Colaborador c where c.projeto = :projeto and c.ativado = true")
+			query = "select c from Colaborador c where c.projeto = :projeto and c.ativado = true ORDER BY c.id ASC")
 })
 public class Colaborador extends Entidade{
 
 	
 	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date data_ingresso;
 	@Column(nullable = false)
 	private String privilegio;

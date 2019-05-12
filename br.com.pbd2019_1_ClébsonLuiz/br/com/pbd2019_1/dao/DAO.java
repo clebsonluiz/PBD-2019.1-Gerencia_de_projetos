@@ -31,7 +31,7 @@ public abstract class DAO {
 		try {
 			t = entityManager.
 					createQuery("from "+classe.getSimpleName()+ 
-							" entidade where entidade.ativado = true",
+							" entidade where entidade.ativado = true ORDER BY entidade.id ASC",
 							classe).getResultList();
 		} catch (NoResultException e) {
 			e.printStackTrace();

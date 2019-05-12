@@ -14,6 +14,7 @@ public class TelaBackups extends JPanel {
 	private TelaPesquisaData telaPesquisaData;
 	private JTable table;
 	private Botao btnNovoBackup;
+	private Botao btnAgendarBackup;
 	
 	public TelaBackups() {
 		setMinimumSize(new Dimension(600, 320));
@@ -31,6 +32,10 @@ public class TelaBackups extends JPanel {
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		
+		btnAgendarBackup = new Botao();
+		btnAgendarBackup.setText("Agendar Backup");
+		panel.add(btnAgendarBackup);
+		
 		btnNovoBackup = new Botao("Criar novo Backup");
 		btnNovoBackup.setName("novo");
 		panel.add(btnNovoBackup);
@@ -47,6 +52,10 @@ public class TelaBackups extends JPanel {
 
 	public TelaPesquisaData getTelaPesquisaData() {
 		return telaPesquisaData;
+	}
+
+	public Botao getBtnAgendarBackup() {
+		return btnAgendarBackup;
 	}
 	
 }

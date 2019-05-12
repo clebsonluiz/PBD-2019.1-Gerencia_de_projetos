@@ -15,10 +15,10 @@ import javax.persistence.Transient;
 @Table(name = "etapa")
 @NamedQueries({
 	@NamedQuery(name = "Etapa.projeto",
-	query = "select e from Etapa e where e.projeto = :projeto and e.ativado = true"),
+	query = "select e from Etapa e where e.projeto = :projeto and e.ativado = true ORDER BY e.id ASC"),
 	
 	@NamedQuery(name = "Etapa.recalcula_porcentagem",
-	query = " select e.porcentagem_andamento from Etapa e where e.id = :etapa_id and e.ativado = true"),
+	query = " select e.porcentagem_andamento from Etapa e where e.id = :etapa_id and e.ativado = true ORDER BY e.id ASC"),
 })
 
 public class Etapa extends Entidade{

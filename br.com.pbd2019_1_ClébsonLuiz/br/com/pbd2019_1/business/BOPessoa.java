@@ -2,6 +2,7 @@ package br.com.pbd2019_1.business;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import br.com.pbd2019_1.dao.DAOPessoa;
 import br.com.pbd2019_1.entidade.Pessoa;
@@ -124,6 +125,18 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		if(senha == null || senha.trim().equals(""))
 			throw new BOException("Campo senha vazio");
 		return ((DAOPessoa)this.daoT).buscarPorUsuario(login, SecurityUtil.criptografarSHA2(senha));
+	}
+	
+	public int[] buscarRelacaoTarefas(Pessoa pessoa) throws BOException, DAOException
+	{
+		List<Object[]> list = ((DAOPessoa)this.daoT).buscaSQLGenerica("select * from tarefas_pessoa("+ pessoa.getId() +")");
+		
+		Object[] obj = list.get(0);
+		
+		int tarefas_finalizadas = (int) obj[0];
+		int tarefas_total = (int) obj[1];
+		
+		return new int[] { tarefas_finalizadas , tarefas_total};
 	}
 	
 }

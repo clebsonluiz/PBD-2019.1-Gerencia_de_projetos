@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "tarefa")
 @NamedQueries({
 	@NamedQuery(name = "Tarefa.etapa",
-			query = "select t from Tarefa t where t.etapa = :etapa and t.ativado = true"),
+			query = "select t from Tarefa t where t.etapa = :etapa and t.ativado = true ORDER BY t.id ASC"),
 })
 
 public class Tarefa extends Entidade{

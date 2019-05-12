@@ -13,9 +13,9 @@ import javax.persistence.Table;
 
 @NamedQueries({
 	@NamedQuery(name = "LogUpdate",
-			query = "select l from LogUpdate l"),
+			query = "select l from LogUpdate l ORDER BY l.id ASC"),
 	@NamedQuery(name = "LogUpdate.date", 
-			query = "select l from LogUpdate l where l.data_log between ':data1' and ':data2' and l.ativado = true")
+			query = "select l from LogUpdate l where l.data_log between ':data1' and ':data2' and l.ativado = true ORDER BY l.id ASC")
 })
 
 public class LogUpdate extends Entidade{

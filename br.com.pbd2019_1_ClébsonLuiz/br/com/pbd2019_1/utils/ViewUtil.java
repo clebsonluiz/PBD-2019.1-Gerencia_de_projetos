@@ -273,6 +273,7 @@ public interface ViewUtil {
 			public static final ImageIcon IMAGEM_FUNDO_LAMPADA_1 = getIcon("Pixabay\\light-bulb-503881_1920", "jpg");
 			public static final ImageIcon IMAGEM_FUNDO_LAMPADA_2 = getIcon("Pixabay\\light-bulb-1246043_1920", "jpg");
 			
+			public static final ImageIcon IMAGEM_LOGO_ITEXT = getIcon("Outros\\iText_placeholder");
 			
 			
 	}
