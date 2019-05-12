@@ -123,7 +123,7 @@ public interface RelatorioUtil {
 	            footer.getDefaultCell().setBorderColor(BaseColor.LIGHT_GRAY);
 
 	            // add copyright
-	            footer.addCell(new Phrase("Unidade Acadêmica de Serra Talhada - UFRPE", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+	            footer.addCell(new Phrase("Unidade Acadêmica de Serra Talhada - UFRPE", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.GRAY)));
 
 	            // add current page count
 	            footer.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);

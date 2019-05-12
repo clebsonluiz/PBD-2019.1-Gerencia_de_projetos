@@ -23,7 +23,7 @@ public interface ChartsUtil {
 			Color.ORANGE, Color.yellow, Color.pink, Color.MAGENTA,Color.LIGHT_GRAY };
 	
 	public static Paint[] CORES_2 = {
-			Color.CYAN, Color.GRAY, Color.ORANGE, Color.yellow, Color.blue,
+			Color.ORANGE, Color.GRAY, Color.CYAN, Color.DARK_GRAY, Color.yellow, Color.blue,
 			Color.RED, Color.pink, Color.MAGENTA, Color.GREEN, Color.LIGHT_GRAY }; 
 	
 	public static void changeColorsPiePlot(PiePlot piePlot, Paint[] cores)

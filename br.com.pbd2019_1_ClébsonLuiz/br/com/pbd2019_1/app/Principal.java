@@ -68,7 +68,7 @@ public class Principal {
 		});
 		
 		
-		DAOResRelatorio.getInstance().gerarRelatorio(projeto, "C:\\Users\\Aluno.WIN-OT9K4KMKI2A\\Desktop\\TesteRelatorio.pdf");
+		DAOResRelatorio.getInstance().gerarRelatorio(0 , projeto, "C:\\Users\\Aluno.WIN-OT9K4KMKI2A\\Desktop\\TesteRelatorio.pdf");
 		
 		System.exit(0);
 		/*
