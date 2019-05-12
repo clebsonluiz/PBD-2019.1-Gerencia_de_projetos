@@ -74,7 +74,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			public void windowClosing(WindowEvent e) 
 			{
 				
-				if(!((JanelaPrincipal)frame).getTelaPrincipal().getTelaAtual().equals("3"))
+				if(!((JanelaPrincipal)frame).getTelaPrincipal().getTelaAtual().equals("2"))
 					System.exit(0);
 				else
 					try 

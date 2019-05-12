@@ -532,9 +532,46 @@ public class Controlador_Info_JInternal_Tela {
 						
 						
 							projeto.setColaboradores(Fachada.getInstance().getBoColaborador().buscarPorProjeto(projeto));
-						
-						
+							
+							projeto.getColaboradores().forEach(colaborador->{
+								try
+								{
+									colaborador.setPessoa(
+											Fachada.getInstance()
+											.getBoPessoa()
+											.buscar(
+													colaborador.getPessoa().getId()
+													)
+									);
+								}
+								catch (ValidacaoException e)
+								{
+									e.printStackTrace();
+								}
+							});
+							
+							projeto.setEtapas(Fachada.getInstance().getBoEtapa().buscarPorProjeto(projeto));
+							
+							projeto.getEtapas().forEach(etapa->{
+								try
+								{
+									etapa.setTarefas(
+											Fachada.getInstance()
+											.getBoTarefa()
+											.buscarPorEtapa(etapa)
+									);
+								}
+								catch (ValidacaoException e)
+								{
+									e.printStackTrace();
+								}
+							});
+							
+							
+							
 							DAOResRelatorio.getInstance().gerarRelatorio(
+									telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
+									.getTelaProjetos().getComboBox().getSelectedIndex(),
 									projeto,
 									path
 									);

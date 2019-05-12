@@ -354,18 +354,19 @@ public class DAOResRelatorio {
 			documento.add(paragraph);
 		}else {
 			paragraph = addParagrafo("Não ouve colaboradores no projeto", SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+			addEmptyLine(paragraph, 1);
 			documento.add(paragraph);
 		}
 		
 		if(projeto.getEtapas().size() > 0) 
 		{
-			paragraph = addParagrafo("Etapas do Projeto", NORMAL_NEGRITO_FONT, Element.ALIGN_CENTER);
+			paragraph = addParagrafo("Etapas do Projeto", SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
 			addEmptyLine(paragraph, 1);
 			table = addTabelaEtapas(projeto.getEtapas());
 			paragraph.add(table);
 			documento.add(paragraph);
 		}else { 
-			paragraph = addParagrafo("Não se tem Etapas adicionadas neste Projeto", NORMAL_NEGRITO_FONT, Element.ALIGN_CENTER);
+			paragraph = addParagrafo("Não se tem Etapas adicionadas neste Projeto", SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
 			documento.add(paragraph);
 		}
 		

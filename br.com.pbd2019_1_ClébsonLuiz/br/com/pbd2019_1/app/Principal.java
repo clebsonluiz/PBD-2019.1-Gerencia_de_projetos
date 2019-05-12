@@ -10,9 +10,6 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import com.itextpdf.text.DocumentException;
 
 import br.com.pbd2019_1.controll.Controlador_Principal;
-import br.com.pbd2019_1.dao.DAOResRelatorio;
-import br.com.pbd2019_1.entidade.Pessoa;
-import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.fachada.Fachada;
@@ -39,7 +36,7 @@ public class Principal {
 	
 	public static void main(String[] args) throws FileNotFoundException, DocumentException, BOException, DAOException {
 		
-		Fachada.getInstance().carregarBoProjeto();
+		/*Fachada.getInstance().carregarBoProjeto();
 		Fachada.getInstance().carregarBoEtapa();
 		Fachada.getInstance().carregarBoTarefa();
 		Fachada.getInstance().carregarBoColaborador();
@@ -70,8 +67,8 @@ public class Principal {
 		
 		DAOResRelatorio.getInstance().gerarRelatorio(0 , projeto, "C:\\Users\\Aluno.WIN-OT9K4KMKI2A\\Desktop\\TesteRelatorio.pdf");
 		
-		System.exit(0);
-		/*
+		System.exit(0);*/
+
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
 		try 
@@ -217,7 +214,7 @@ public class Principal {
 		janelaLoading.dispose();
 		
 		janela.setVisible(true);
-		*/
+		
 	}
 	
 }
