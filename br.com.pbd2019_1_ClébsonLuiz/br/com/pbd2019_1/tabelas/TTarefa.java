@@ -47,7 +47,7 @@ public class TTarefa extends TGenerica<Tarefa>{
 			fireTableDataChanged();
 		}
 		else if(columnIndex == 3) {
-			getList().get(rowIndex).setConcluida((Boolean)value);
+			getList().get(rowIndex).setConcluida(((Boolean)value).booleanValue());
 			fireTableCellUpdated(rowIndex, columnIndex);
 			fireTableDataChanged();
 		}

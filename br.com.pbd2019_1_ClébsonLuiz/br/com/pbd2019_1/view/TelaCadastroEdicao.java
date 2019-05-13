@@ -19,6 +19,10 @@ public class TelaCadastroEdicao extends JPanel {
 		btBotao1.setVisible(false);
 		add(btBotao1);
 		
+		btBotao1.addActionListener(ActionEvent->{
+			
+		});
+		
 		tglbtnBotao = new JToggleButton("Editar");
 		
 		tglbtnBotao.addActionListener((ActionEvent)->{
@@ -30,8 +34,12 @@ public class TelaCadastroEdicao extends JPanel {
 		
 		add(tglbtnBotao);
 	}
-
 	
+	public void escondeBtn()
+	{
+		desabilitar();
+		tglbtnBotao.setSelected(false);
+	}
 	
 	protected void abilitar() {
 		btBotao1.setVisible(true);

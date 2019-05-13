@@ -83,6 +83,8 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.getEtapa_Atual().setDescricao(descr);
 					Fachada.getInstance().atualizar(controlador_Principal.getEtapa_Atual());
 					controlador_Principal.gettEtapa().fireTableDataChanged();
+					
+					telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa().getTelaCadastroEdicao().escondeBtn();
 				} 
 				catch (ValidacaoException e) 
 				{
@@ -180,7 +182,11 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.getPessoa_Outrem().setDisponibilidade(disponivel);
 					Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Outrem());
 					controlador_Principal.gettPessoa().fireTableDataChanged();
-
+					
+					telaInfoPessoa.getTelaInfoPessoa()
+					.getTelaPessoa()
+					.getTelaCadastroEdicao()
+					.escondeBtn();
 				} 
 				catch (ValidacaoException e) 
 				{
@@ -222,6 +228,12 @@ public class Controlador_Info_JInternal_Tela {
 					c.setTelefone(telef);
 					Fachada.getInstance().atualizar(c);
 				}
+				
+				telaInfoPessoa.getTelaInfoPessoa()
+				.getTelaContatoCaracteristica()
+				.getTelaCadastroEdicao()
+				.escondeBtn();
+				
 			} 
 			catch (ValidacaoException e)
 			{
@@ -271,6 +283,8 @@ public class Controlador_Info_JInternal_Tela {
 
 					Fachada.getInstance().atualizar(controlador_Principal.getTarefa_Atual());
 					controlador_Principal.gettTarefa().fireTableDataChanged();
+					
+					telaInfoTarefa.getTelaInfoTarefa().getTelaCadastroEdicao().escondeBtn();
 				} catch (ValidacaoException e) 
 				{
 					JInternal_TelaAlerta.showAlerta("Erro ao atualizar tarefa", e.getMessage());
@@ -349,6 +363,13 @@ public class Controlador_Info_JInternal_Tela {
 								);
 					
 					((TelaInfoProjeto)telaProjeto).getProgressBar().setValue(valorA);
+					
+					telaInfoProjetoEtapas
+					.getTelaProjeto_Etapas()
+					.getTelaProjeto()
+					.getTelaCadastroEdicao()
+					.escondeBtn();
+					
 				}
 				catch (ValidacaoException e)
 				{
@@ -415,7 +436,13 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.getPessoa_Logada().setDisponibilidade(disponivel);
 					Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Logada());
 					controlador_Principal.gettPessoa().fireTableDataChanged();
-
+					
+					telaInfoPessoaProjetos
+					.getTelaInfoPessoaProjetos()
+					.getTelaInfoPessoa()
+					.getTelaPessoa()
+					.getTelaCadastroEdicao()
+					.escondeBtn();
 				}
 				catch (ValidacaoException e) 
 				{
@@ -459,6 +486,15 @@ public class Controlador_Info_JInternal_Tela {
 					c.setTelefone(telef);
 					Fachada.getInstance().atualizar(c);
 				}
+				
+				telaInfoPessoaProjetos
+				.getTelaInfoPessoaProjetos()
+				.getTelaInfoPessoa()
+				.getTelaContatoCaracteristica()
+				.getTelaCadastroEdicao()
+				.escondeBtn();
+				
+				
 			} 
 			catch (ValidacaoException e)
 			{
@@ -786,6 +822,7 @@ public class Controlador_Info_JInternal_Tela {
 	private void preencherTelaProjeto(TelaProjeto telaProjeto, Projeto projeto) throws ValidacaoException
 	{
 		
+		telaProjeto.getNomeProjetoField().setDescricao("Nome do Projeto");
 		telaProjeto.getNomeProjetoField().setTexto(projeto.getNome());
 		telaProjeto.getDescricaoTextArea().setText(projeto.getDescricao());
 		telaProjeto.getDataInicioDateChooser().setDate(DateUtil.getDate(projeto.getData_inicio()));
@@ -802,14 +839,16 @@ public class Controlador_Info_JInternal_Tela {
 	
 	private void preencherTelaEtapa(TelaEtapa telaEtapa, Etapa etapa)
 	{
-		telaEtapa.getNomeEtapaField().setText(etapa.getNome());
+		telaEtapa.getNomeEtapaField().setDescricao("Nome da Etapa");
+		telaEtapa.getNomeEtapaField().setTexto(etapa.getNome());
 		telaEtapa.getDescricaoTextArea().setText(etapa.getDescricao());
 		telaEtapa.getBarraProgressBar().setValue(Math.round(etapa.getPorcentagem_andamento()));
 	}
 	
 	private void preencherTelaTarefa(TelaInfoTarefa telaTarefa, Tarefa tarefa) 
 	{
-		telaTarefa.getNomeTarefaField().setText(tarefa.getNome());
+		telaTarefa.getNomeTarefaField().setDescricao("Nome da Tarefa");
+		telaTarefa.getNomeTarefaField().setTexto(tarefa.getNome());
 		telaTarefa.getDescricaoTextArea().setText(tarefa.getDescricao());
 		telaTarefa.getChckbxFinalizada().setSelected(tarefa.isConcluida());
 		telaTarefa.getPrioridadeComboBox().setSelectedItem(tarefa.getPrioridade());

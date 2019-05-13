@@ -358,15 +358,17 @@ public class Controlador_Principal {
 									{
 										if(!colaborador_Atual.getPrivilegio().equals("Visitante"))
 										{
-											obj = !((Boolean)obj).booleanValue();
-											tTarefa.setValueAt(obj, linha, coluna);
+											boolean b = (((Boolean)obj).booleanValue());
+											tTarefa.setValueAt(b, linha, coluna);
 											Fachada.getInstance().atualizar(tTarefa.getValor(linha));
 										}
 									}
 									else 
 									{
-										obj = !((Boolean)obj).booleanValue();
-										tTarefa.setValueAt(obj, linha, coluna);
+										boolean b = (((Boolean)obj).booleanValue());
+										System.out.println(((Boolean)obj).booleanValue());
+										System.out.println(b);
+										tTarefa.setValueAt(b, linha, coluna);
 										Fachada.getInstance().atualizar(tTarefa.getValor(linha));
 										
 										etapa_Atual.setPorcentagem_andamento(
