@@ -41,7 +41,7 @@ public class TColaborador extends TGenerica<Colaborador>{
 		case 0:
 			return getList().get(linha).getPessoa().getNome();
 		case 1:
-			return DateUtil.getDateString("dd-MM-yyyy",
+			return DateUtil.getDateString("dd/MM/yyyy às HH:mm:ss",
 					getList().get(linha).getData_ingresso());
 		case 2:
 			return getList().get(linha).getPrivilegio();

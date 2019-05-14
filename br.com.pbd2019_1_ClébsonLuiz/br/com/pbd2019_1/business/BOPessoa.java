@@ -139,4 +139,12 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		return new int[] { tarefas_finalizadas , tarefas_total};
 	}
 	
+	public List<Pessoa> buscarPessoasDiferentesDe(Pessoa pessoa) throws BOException, DAOException
+	{
+		if(pessoa == null || pessoa.getId() < 0)
+			throw new BOException("Erro ao buscar pessoas");
+		List<Pessoa> list = ((DAOPessoa)this.daoT).buscarPessoasDiferentes(pessoa.getId());
+		return list;
+	}
+	
 }

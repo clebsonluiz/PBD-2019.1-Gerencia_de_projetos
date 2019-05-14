@@ -26,6 +26,8 @@ import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
+import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaInfoEtapa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa;
@@ -60,9 +62,65 @@ public class Controlador_Info_JInternal_Tela {
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoProjeto_Etapas_Simples());
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoTarefa());
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInserirSQL());
+		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoas());
+		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoasColaboradores());
 	}
 	
 	
+	private void adicionarEventoJInternal(JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores) {
+		
+		jInternal_TabelaPessoasColaboradores
+		.getTelaPessoas()
+		.getBtAdicionarPessoa()
+		.addActionListener(ActionEvent->{
+			
+			int index = jInternal_TabelaPessoasColaboradores
+					.getTelaPessoas()
+					.getTable()
+					.getSelectedRow();
+			if(index >= 0)
+			try
+			{
+				
+				Pessoa pessoa = controlador_Principal.gettPessoa().getValor(index);
+				
+				Colaborador colaborador = new Colaborador();
+				colaborador.setData_ingresso(DateUtil.getDataAtual());
+				colaborador.setPrivilegio("Visitante");
+				colaborador.setPessoa(pessoa);
+				colaborador.setProjeto(controlador_Principal.getProjeto_Atual());
+				
+				Fachada.getInstance().inserir(colaborador);
+			
+				controlador_Principal.gettColaborador().addValor(colaborador);
+			} 
+			catch (ValidacaoException e) 
+			{
+				JInternal_TelaAlerta.showAlerta("Erro ao consultar a lista de pessoas", e.getMessage());
+			}
+		});
+	}
+
+	private void adicionarEventoJInternal(JInternal_TabelaPessoas jInternal_TabelaPessoas) {
+
+		jInternal_TabelaPessoas
+		.getTelaPessoas()
+		.getBtAdicionarPessoa()
+		.addActionListener(ActionEvent->{
+			
+			try 
+			{
+				controlador_Principal.getjInternal_TelaCadastro_Pessoa().queroFoco();
+			}
+			catch (PropertyVetoException e) 
+			{
+				JInternal_TelaAlerta.showAlerta("Erro ao exibir tela de Cadastro", e.getMessage());
+			}
+			
+		});
+		
+	}
+
 	private void adicionarEventoJInternal(JInternal_TelaInfoEtapa telaInfoEtapa) {
 		
 		telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa().getBotao1()
@@ -403,7 +461,22 @@ public class Controlador_Info_JInternal_Tela {
 		
 		telaInfoProjetoEtapas.getTelaProjeto_Etapas().getTelaColaboradores()
 			.getBtAdicionarColaborador().addActionListener(ActionEvent->{
-				//TODO - Adicionar Colaborador
+				
+				
+				try
+				{
+					controlador_Principal.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(controlador_Principal.getPessoa_Logada()));
+					controlador_Principal.getjInternal_TabelaPessoasColaboradores().queroFoco();
+				} 
+				catch (ValidacaoException e) 
+				{
+					JInternal_TelaAlerta.showAlerta("Erro ao consultar a lista de pessoas", e.getMessage());
+				}
+				catch (PropertyVetoException e) 
+				{
+					JInternal_TelaAlerta.showAlerta("Erro ao exibir Tabela de Pessoas", e.getMessage());
+				}
+				
 			});
 		
 	}
@@ -622,7 +695,6 @@ public class Controlador_Info_JInternal_Tela {
 				
 			});
 		
-		
 	}
 	
 
@@ -660,7 +732,9 @@ public class Controlador_Info_JInternal_Tela {
 					
 					((TelaInfoProjeto)telaProjeto).getProgressBar().setValue(valorA);
 					
-					
+					telaInfoProjeto_Etapas_Simples
+					.getTelaProjeto_Etapas_Simples()
+					.getTelaProjeto().getTelaCadastroEdicao().escondeBtn();
 				}
 				catch (ValidacaoException e) 
 				{

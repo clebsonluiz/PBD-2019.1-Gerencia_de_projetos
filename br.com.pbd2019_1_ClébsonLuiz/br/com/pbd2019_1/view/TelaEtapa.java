@@ -76,12 +76,14 @@ public abstract class TelaEtapa extends JPanel {
 			protected void abilitar() {
 				nomeEtapaField.setEnabled(true);
 				descricaoTextArea.setEnabled(true);
+				super.abilitar();
 			}
 			
 			@Override
 			protected void desabilitar() {
 				nomeEtapaField.setEnabled(false);
 				descricaoTextArea.setEnabled(false);
+				super.desabilitar();
 			}
 		};
 		

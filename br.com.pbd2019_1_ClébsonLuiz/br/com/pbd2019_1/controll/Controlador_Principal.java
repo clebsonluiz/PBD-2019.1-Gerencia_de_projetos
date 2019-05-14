@@ -252,12 +252,17 @@ public class Controlador_Principal {
 		tableInserirSQL.setRowHeight(30);
 		
 		tableBackups.setModel(tBackup);
+		tableBackups.setRowHeight(30);
+		tableBackups.getColumnModel().getColumn(0).setPreferredWidth(70);
+		tableBackups.getColumnModel().getColumn(1).setPreferredWidth(70);
+		tableBackups.getColumnModel().getColumn(2).setPreferredWidth(70);
+//		tableBackups.getColumnModel().getColumn(3).setPreferredWidth(70);
+		
 		
 		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
 		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
 		tableCaracteristicas.setDefaultRenderer(Object.class, new CellRenderer());
 		tableEtapas.setDefaultRenderer(Object.class, new CellRenderer());
-		tableColaboradores.setDefaultRenderer(Object.class, new CellRenderer());
 		tableColaboradores.setDefaultRenderer(Object.class, new CellRenderer());
 		tableCaracteristicas2.setDefaultRenderer(Object.class, new CellRenderer());
 		tableProjetos.setDefaultRenderer(Object.class, new CellRenderer());
@@ -270,7 +275,6 @@ public class Controlador_Principal {
 		tableTarefas.setRowHeight(30);
 		tableCaracteristicas.setRowHeight(30);
 		tableEtapas.setRowHeight(30);
-		tableColaboradores.setRowHeight(30);
 		tableColaboradores.setRowHeight(30);
 		tableCaracteristicas2.setRowHeight(30);
 		tableProjetos.setRowHeight(30);
@@ -456,6 +460,27 @@ public class Controlador_Principal {
 							}
 						}
 					}
+					else if (table.getModel() instanceof TColaboracoes)
+					{
+						if(coluna == 3)
+						{
+							try 
+							{
+								bool_Colaborador_Ativado = true;
+								
+								controlador_Info_JInternal_Tela.exibirJInternalInfoColaboracoes(tColaboracoes.getValor(linha));
+								
+							} 
+							catch (ValidacaoException e1) 
+							{
+								JInternal_TelaAlerta.showAlerta("Erro ao carregar info. do projeto de colaborador", e1.getMessage());
+							} 
+							catch (PropertyVetoException e1) 
+							{
+								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoProjeto de Colaborador", e1.getMessage());
+							}
+						}
+					}
 					else if (table.getModel() instanceof TColaborador)
 					{
 						if(coluna == 3) 
@@ -476,27 +501,6 @@ public class Controlador_Principal {
 								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoPessoa do colaborador", e1.getMessage());
 							}
 							
-						}
-					}
-					else if (table.getModel() instanceof TColaboracoes)
-					{
-						if(coluna == 3)
-						{
-							try 
-							{
-								bool_Colaborador_Ativado = true;
-								
-								controlador_Info_JInternal_Tela.exibirJInternalInfoColaboracoes(tColaboracoes.getValor(linha));
-								
-							} 
-							catch (ValidacaoException e1) 
-							{
-								JInternal_TelaAlerta.showAlerta("Erro ao carregar info. do projeto de colaborador", e1.getMessage());
-							} 
-							catch (PropertyVetoException e1) 
-							{
-								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoProjeto de Colaborador", e1.getMessage());
-							}
 						}
 					}
 					else if (table.getModel() instanceof TLogUpdate)
@@ -838,7 +842,7 @@ public class Controlador_Principal {
 			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
-				tPessoa.addAll((List<Pessoa>) Fachada.getInstance().buscarAll(Pessoa.class));
+				tPessoa.addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(pessoa_Logada));
 				jInternal_TabelaPessoas.queroFoco();
 			} 
 			catch (ValidacaoException e) 

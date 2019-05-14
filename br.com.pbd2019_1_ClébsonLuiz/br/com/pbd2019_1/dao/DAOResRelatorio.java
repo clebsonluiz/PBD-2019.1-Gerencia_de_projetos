@@ -167,7 +167,7 @@ public class DAOResRelatorio {
 		plot.setLabelGenerator(new StandardPieSectionLabelGenerator( "({2})"));
 		plot.setLabelFont(font);
 		
-		
+		plot.setShadowPaint(Color.gray);
 		
 		plot.setBackgroundPaint(Color.WHITE);
 		chart.setBackgroundPaint(Color.white);
@@ -177,6 +177,7 @@ public class DAOResRelatorio {
 		
 		dataSet.setValue("Atual", porc_andamento);
 		dataSet.setValue("Restante", porc_restante);
+		plot.setExplodePercent("Atual", 0.15f);
 		
 		ChartsUtil.changeColorsPiePlot(plot, ChartsUtil.CORES_1);
 		
@@ -214,6 +215,9 @@ public class DAOResRelatorio {
 		
 		dataSet.setValue("Completado", porc_andamento);
 		dataSet.setValue("Restante", porc_restante);
+		
+		plot.setShadowPaint(Color.gray);
+		plot.setExplodePercent("Completado", 0.10f);
 		
 		ChartsUtil.changeColorsPiePlot(plot, ChartsUtil.CORES_2);
 		

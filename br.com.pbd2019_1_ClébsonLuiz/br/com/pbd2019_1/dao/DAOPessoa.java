@@ -1,5 +1,8 @@
 package br.com.pbd2019_1.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -100,6 +103,26 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 			entityManager.close();
 		}
 		return pessoa;
+	}
+	
+	public List<Pessoa> buscarPessoasDiferentes(int id) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		List<Pessoa> pessoas = null;
+		try {
+			pessoas = entityManager.
+					createNamedQuery("Pessoa.buscarPessoas", Pessoa.class)
+					.setParameter("id", id).getResultList();
+					
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			pessoas = new ArrayList<>();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DAOException("Erro ao buscar todos as Pessoas");
+		} finally {
+			entityManager.close();
+		}
+		return pessoas;
 	}
 	
 }

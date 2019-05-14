@@ -19,11 +19,11 @@ public class DAOBackup extends DAOGenerico<Backup>{
 			
 			switch(ordem)
 			{
-			case "RECENTES":
+			case "ANTIGOS":
 				backups = entityManager.createNamedQuery("Backup.ascALL",
 						Backup.class).getResultList();
 				break;
-			case "ANTIGOS":
+			case "RECENTES":
 				backups = entityManager.createNamedQuery("Backup.descALL",
 						Backup.class).getResultList();
 				break;
@@ -49,14 +49,14 @@ public class DAOBackup extends DAOGenerico<Backup>{
 			
 			switch(ordem)
 			{
-			case "RECENTES":
+			case "ANTIGOS":
 				backups = entityManager.createNamedQuery("Backup.asc",
 						Backup.class)
 				.setParameter("data1", data1)
 				.setParameter("data2", data2)
 				.getResultList();
 				break;
-			case "ANTIGOS":
+			case "RECENTES":
 				backups = entityManager.createNamedQuery("Backup.desc",
 						Backup.class)
 				.setParameter("data1", data1)
