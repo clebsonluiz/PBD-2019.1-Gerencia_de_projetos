@@ -14,6 +14,8 @@ import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
+import br.com.pbd2019_1.view.JInternal_InfoLog;
+import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAlerta;
@@ -147,6 +149,8 @@ public class Principal {
 		JInternal_TabelaPessoas jInternal_TabelaPessoas = new JInternal_TabelaPessoas();
 		JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores = new JInternal_TabelaPessoasColaboradores();
 		JInternal_TelaBackups jInternal_TelaBackups = new JInternal_TelaBackups();
+		JInternal_TabelaLogs jInternal_TabelaLogs = new JInternal_TabelaLogs();
+		JInternal_InfoLog jInternal_InfoLog = new JInternal_InfoLog();
 		
 		janelaLoading.etapaAtual("Restante das Telas Carregadas!", 70);
 		janelaLoading.etapaAtual("Área de Trabalho!", 70);
@@ -171,9 +175,10 @@ public class Principal {
 		jDesktopPane.add(jInternal_TabelaPessoas);
 		jDesktopPane.add(jInternal_TabelaPessoasColaboradores);
 		jDesktopPane.add(jInternal_TelaBackups);
+		jDesktopPane.add(jInternal_TabelaLogs);
+		jDesktopPane.add(jInternal_InfoLog);
 		jDesktopPane.add(JInternal_TelaAlerta.getInstance());
 		jDesktopPane.add(JInternal_Backup_Efetuando.getInstance());
-		
 		
 		janelaLoading.etapaAtual("Telas Incorporadas!", 80);
 		janelaLoading.etapaAtual("Controlador!", 80);
@@ -196,7 +201,9 @@ public class Principal {
 				jInternal_TelaInfoProjeto_Etapas_Simples,
 				jInternal_TabelaPessoas,
 				jInternal_TabelaPessoasColaboradores,
-				jInternal_TelaBackups);
+				jInternal_TelaBackups,
+				jInternal_TabelaLogs,
+				jInternal_InfoLog);
 		
 		janelaLoading.etapaAtual("Parâmetros JInternals Carregado!", 90);
 		janelaLoading.etapaAtual("Adicionando TableModels!", 90);

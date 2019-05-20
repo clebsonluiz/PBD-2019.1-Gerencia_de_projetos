@@ -58,7 +58,8 @@ public class TelaPesquisaData extends JPanel {
 		data2.setPreferredSize(new Dimension(120, 40));
 		data2.setMaximumSize(new Dimension(150, 40));
 		add(data2);
-		btnBuscar = new Botao("Buscar");
+		btnBuscar = new Botao();
+		btnBuscar.setIcon(ViewUtil.Icones.ICONE_LUPA);
 		btnBuscar.setToolTipText("Buscar");
 		add(btnBuscar);
 		

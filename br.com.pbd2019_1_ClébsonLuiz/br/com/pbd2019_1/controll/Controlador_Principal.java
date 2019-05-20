@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
+import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
@@ -35,6 +38,8 @@ import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.JInternalAbstract;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
+import br.com.pbd2019_1.view.JInternal_InfoLog;
+import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAlerta;
@@ -102,6 +107,8 @@ public class Controlador_Principal {
 	private JInternal_TabelaPessoas jInternal_TabelaPessoas;
 	private JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores;
 	private JInternal_TelaBackups jInternal_TelaBackups;
+	private JInternal_TabelaLogs jInternal_TabelaLogs;
+	private JInternal_InfoLog jInternal_InfoLog;
 	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
@@ -148,7 +155,9 @@ public class Controlador_Principal {
 			JInternal_TelaInfoProjeto_Etapas_Simples jInternal_TelaInfoProjeto_Etapas_Simples,
 			JInternal_TabelaPessoas jInternal_TabelaPessoas,
 			JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores,
-			JInternal_TelaBackups jInternal_TelaBackups) {
+			JInternal_TelaBackups jInternal_TelaBackups, 
+			JInternal_TabelaLogs jInternal_TabelaLogs,
+			JInternal_InfoLog jInternal_InfoLog) {
 		this.jInternal_TelaCadastro_Etapa = jInternal_TelaCadastro_Etapa;
 		this.jInternal_TelaCadastro_Projeto = jInternal_TelaCadastro_Projeto;
 		this.jInternal_TelaCadastro_Pessoa = jInternal_TelaCadastro_Pessoa;
@@ -163,6 +172,9 @@ public class Controlador_Principal {
 		this.jInternal_TabelaPessoas = jInternal_TabelaPessoas;
 		this.jInternal_TabelaPessoasColaboradores = jInternal_TabelaPessoasColaboradores;
 		this.jInternal_TelaBackups = jInternal_TelaBackups;
+		this.jInternal_TabelaLogs = jInternal_TabelaLogs;
+		this.jInternal_InfoLog = jInternal_InfoLog;
+		
 	}
 
 	public void adicionarTableModels() {
@@ -235,6 +247,20 @@ public class Controlador_Principal {
 				.getTelaBackups()
 				.getTable();
 		
+		JTable tableLogs = jInternal_TabelaLogs
+				.getTelaLogs()
+				.getTable();
+		
+		
+		JTable tableInfoLog = jInternal_InfoLog
+				.getTelaInfoLog()
+				.getTable();
+		
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.setColumnIdentifiers(new String[] {"Ordem", "Antes", "Depois"});
+		tableInfoLog.setModel(tableModel);
+		
+		tableLogs.setModel(tLogUpdate);
 		tableTarefas.setModel(tTarefa);
 		tableTarefas.getColumnModel().getColumn(2).setCellEditor(tTarefa.getCellEditor());
 		tableCaracteristicas.setModel(tCaracteristicaExtra);
@@ -251,6 +277,9 @@ public class Controlador_Principal {
 		tableInserirSQL.setModel(tObject);
 		tableInserirSQL.setRowHeight(30);
 		
+		tableLogs.setRowHeight(50);
+
+		
 		tableBackups.setModel(tBackup);
 		tableBackups.setRowHeight(30);
 		tableBackups.getColumnModel().getColumn(0).setPreferredWidth(70);
@@ -259,6 +288,7 @@ public class Controlador_Principal {
 //		tableBackups.getColumnModel().getColumn(3).setPreferredWidth(70);
 		
 		
+		tableLogs.setDefaultRenderer(Object.class, new CellRenderer());
 		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
 		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
 		tableCaracteristicas.setDefaultRenderer(Object.class, new CellRenderer());
@@ -294,6 +324,7 @@ public class Controlador_Principal {
 		adicionarMouseEventJTable(tableEtapas2);
 		adicionarMouseEventJTable(tablePessoas);
 		adicionarMouseEventJTable(tablePessoasDisponiveis);
+		adicionarMouseEventJTable(tableLogs);
 		
 		adicionarEventosPopUp();
 		
@@ -308,16 +339,7 @@ public class Controlador_Principal {
 		
 		controlador_Info_JInternal_Tela.adicionarEventosJInternals();
 		
-/*		adicionarEventoJInternal(jInternal_TelaInfoEtapa);
-		adicionarEventoJInternal(jInternal_TelaInfoPessoa);
-		adicionarEventoJInternal(jInternal_TelaInfoPessoa_Projetos);
-		adicionarEventoJInternal(jInternal_TelaInfoProjeto_Etapas);
-		adicionarEventoJInternal(jInternal_TelaInfoProjeto_Etapas_Simples);
-		adicionarEventoJInternal(jInternal_TelaInfoTarefa);
-		adicionarEventoJInternal(jInternal_TelaInserirSQL);*/
-		
 	}
-	
 	
 	/**
 	 * Eventos de Mouse das Tabelas mais importantes
@@ -342,7 +364,7 @@ public class Controlador_Principal {
 						popUpCaracteristica.setjTableAtual(table);
 						popUpCaracteristica.show(table, e.getX(), e.getY());
 					} 
-					else 
+					else if(!(table.getModel() instanceof TLogUpdate))
 					{
 						popUp.setjTableAtual(table);
 						popUp.show(table, e.getX(), e.getY());
@@ -505,10 +527,57 @@ public class Controlador_Principal {
 					}
 					else if (table.getModel() instanceof TLogUpdate)
 					{
-						if(coluna == 2)
+						if(coluna == 5)
 						{
-							//TODO - Abrir tela ver log update
-							logUpdate_Atual = tLogUpdate.getValor(linha);
+							try 
+							{
+								logUpdate_Atual = tLogUpdate.getValor(linha);
+							
+								String id_tabela = ""+logUpdate_Atual.getId_tabela();
+								String tabela = logUpdate_Atual.getTabela();
+								String tipo = logUpdate_Atual.getTipo();
+								String cpf = logUpdate_Atual.getResponsavel();
+								String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(logUpdate_Atual.getData_log());
+								String[] antes = logUpdate_Atual.getAntes();
+								String[] depois = logUpdate_Atual.getDepois();
+								
+								JTable table = jInternal_InfoLog.getTelaInfoLog().getTable();
+								
+								DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+								
+								for(int i = 0; i < tableModel.getRowCount(); i++)
+									tableModel.removeRow(i);
+								tableModel.fireTableDataChanged();
+								
+								String[] rowData;
+								
+								int indexMaximum = (antes != null)? antes.length :
+									(depois != null)? depois.length : 0;
+								
+								for(int i = 0; i < indexMaximum; i ++)
+								{
+									rowData = new String[] {
+											"" + (i+1),
+											(antes != null)? ((antes.length == indexMaximum)? antes[i] : "") : "",
+											(depois != null)? ((depois.length == indexMaximum)? depois[i] : "") : "",
+									};
+									
+									tableModel.addRow(rowData);
+									tableModel.fireTableDataChanged();
+								}
+								
+								jInternal_InfoLog.getTelaInfoLog().getCmptxtCod().setTexto(id_tabela);
+								jInternal_InfoLog.getTelaInfoLog().getCmptxtTabela().setTexto(tabela);
+								jInternal_InfoLog.getTelaInfoLog().getCmptxtTipo().setTexto(tipo);
+								jInternal_InfoLog.getTelaInfoLog().getCmptxtResponsavel().setTexto(cpf);
+								jInternal_InfoLog.getTelaInfoLog().getCmptxtDatalog().setTexto(data);
+								
+								jInternal_InfoLog.queroFoco();
+							} 
+							catch (PropertyVetoException e1) {
+								e1.printStackTrace();
+							}
+							
 						}
 					}
 					else if (table.getModel() instanceof TPessoa)
@@ -554,43 +623,91 @@ public class Controlador_Principal {
 				
 				if(popUp.getjTableAtual().getModel() instanceof TTarefa) 
 				{
-					Fachada.getInstance().deletar(tTarefa.getValor(linha));
+					
+					Tarefa t = tTarefa.getValor(linha);
+					Fachada.getInstance().deletar(t);
 					tTarefa.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TEtapa) 
 				{
-					Fachada.getInstance().deletar(tEtapa.getValor(linha));
+					Etapa t = tEtapa.getValor(linha);
+					Fachada.getInstance().deletar(t);
 					tEtapa.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TProjeto) 
 				{
-					Fachada.getInstance().deletar(tProjeto.getValor(linha));
+					Projeto t = tProjeto.getValor(linha);
+					Fachada.getInstance().deletar(t);
 					tProjeto.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TCaracteristicaExtra) 
 				{
-					Fachada.getInstance().deletar(tCaracteristicaExtra.getValor(linha));
+					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
+					Fachada.getInstance().deletar(t);
 					tCaracteristicaExtra.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TColaboracoes) 
 				{
-					Fachada.getInstance().deletar(tColaboracoes.getValor(linha));
+					
+					Colaborador t = tColaboracoes.getValor(linha);
+					
+					Fachada.getInstance().deletar(t);
 					tColaboracoes.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TColaborador) 
 				{
-					Fachada.getInstance().deletar(tColaborador.getValor(linha));
+					
+					Colaborador t = tColaborador.getValor(linha);
+					Fachada.getInstance().deletar(t);
 					tColaborador.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TLogUpdate) 
 				{
-					Fachada.getInstance().deletar(tLogUpdate.getValor(linha));
+					/*
+					LogUpdate t = tLogUpdate.getValor(linha);
+					
+					Fachada.getInstance().deletar(t);
 					tLogUpdate.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
+					*/
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TPessoa) 
 				{
-					Fachada.getInstance().deletar(tPessoa.getValor(linha));
+					
+					Pessoa t = tPessoa.getValor(linha);
+					Fachada.getInstance().deletar(t);
 					tPessoa.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 			} 
 			catch (ValidacaoException e) 
@@ -614,8 +731,13 @@ public class Controlador_Principal {
 				
 				if(popUpCaracteristica.getjTableAtual().getModel() instanceof TCaracteristicaExtra) 
 				{
-					Fachada.getInstance().deletar(tCaracteristicaExtra.getValor(linha));
+					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
+					Fachada.getInstance().deletar(t);
 					tCaracteristicaExtra.remover(linha);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 			} 
 			catch (ValidacaoException e) 
@@ -640,8 +762,17 @@ public class Controlador_Principal {
 				{
 					Object value = popUpCaracteristica.getjTableAtual().getValueAt(linha, 0);
 					
+					String[] antes = Fachada.getInstance().gerarLog(tCaracteristicaExtra.getValor(linha));
+					
 					tCaracteristicaExtra.setValueAt(value, linha, 0);
-					Fachada.getInstance().atualizar(tCaracteristicaExtra.getValor(linha));
+					
+					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
+					
+					Fachada.getInstance().atualizar(t);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogUpdate(antes, t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);
 				}
 			} 
 			catch (ValidacaoException e) 
@@ -742,6 +873,11 @@ public class Controlador_Principal {
 					pessoa.setUser_type(Pessoa.COMUM_USER);
 					Fachada.getInstance().inserir(pessoa);
 					telaPrincipal.getTelaCadastro_Pessoa().limparCampos();
+					
+					LogUpdate log = new LogUpdate();
+					
+					Fachada.getInstance().gerarLogInsercao(pessoa, pessoa, log);
+					tLogUpdate.addValor(log);
 				} 
 				catch (ValidacaoException e) 
 				{
@@ -828,10 +964,9 @@ public class Controlador_Principal {
 			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
-				tLogUpdate.addAll((List<LogUpdate>) Fachada.getInstance().buscarAll(LogUpdate.class));
-			} 
-			catch (ValidacaoException e) 
-			{
+				jInternal_TabelaLogs.queroFoco();
+			}
+			catch (PropertyVetoException e) {
 				JInternal_TelaAlerta.showAlerta("Erro ao consultar a lista de Logs", e.getMessage());
 			}
 			
@@ -899,7 +1034,7 @@ public class Controlador_Principal {
 		telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
 		telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
 		
-		JInternalAbstract jIA[] = new JInternalAbstract[16];
+		JInternalAbstract jIA[] = new JInternalAbstract[18];
 		jIA[0] = jInternal_TelaCadastro_Etapa;
 		jIA[1] = jInternal_TelaCadastro_Projeto;
 		jIA[2] = jInternal_TelaCadastro_Pessoa;
@@ -915,8 +1050,10 @@ public class Controlador_Principal {
 		jIA[11] = jInternal_TabelaPessoas;
 		jIA[12] = jInternal_TabelaPessoasColaboradores;
 		jIA[13] = jInternal_TelaBackups;
-		jIA[14] = JInternal_TelaAlerta.getInstance();
-		jIA[15] = JInternal_Backup_Efetuando.getInstance();
+		jIA[14] = jInternal_TabelaLogs;
+		jIA[15] = jInternal_InfoLog;
+		jIA[16] = JInternal_TelaAlerta.getInstance();
+		jIA[17] = JInternal_Backup_Efetuando.getInstance();
 		
 		for(JInternalAbstract jAbstract: jIA) {
 			jAbstract.setIcon(false);
@@ -938,6 +1075,8 @@ public class Controlador_Principal {
 	public JInternal_TelaInfoPessoa_Projetos getjInternal_TelaInfoPessoa_Projetos() {return jInternal_TelaInfoPessoa_Projetos;}
 	public JInternal_TelaInfoProjeto_Etapas_Simples getjInternal_TelaInfoProjeto_Etapas_Simples() {return jInternal_TelaInfoProjeto_Etapas_Simples;}
 	
+	public JInternal_InfoLog getjInternal_InfoLog() {return jInternal_InfoLog;}
+	public JInternal_TabelaLogs getjInternal_TabelaLogs() {return jInternal_TabelaLogs;}
 	public JInternal_TelaBackups getjInternal_TelaBackups() {return jInternal_TelaBackups;}
 	public JInternal_TabelaPessoas getjInternal_TabelaPessoas() {return jInternal_TabelaPessoas;}
 	public JInternal_TabelaPessoasColaboradores getjInternal_TabelaPessoasColaboradores() {return jInternal_TabelaPessoasColaboradores;}
@@ -973,5 +1112,7 @@ public class Controlador_Principal {
 	public void setColaborador_Atual(Colaborador colaborador_Atual) {this.colaborador_Atual = colaborador_Atual;}
 	public void setBool_Colaborador_Ativado(boolean bool_Colaborador_Ativado) {this.bool_Colaborador_Ativado = bool_Colaborador_Ativado;}
 
+	
+	
 }
 

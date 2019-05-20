@@ -14,6 +14,7 @@ import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.Etapa;
+import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.Tarefa;
@@ -26,6 +27,7 @@ import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAlerta;
@@ -64,9 +66,50 @@ public class Controlador_Info_JInternal_Tela {
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInserirSQL());
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoas());
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoasColaboradores());
+		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaLogs());
+		
 	}
 	
 	
+	private void adicionarEventoJInternal(JInternal_TabelaLogs jInternal_TabelaLogs) {
+		
+		jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getBuscarBtn()
+		.addActionListener(ActionEvent->
+		{
+			try
+			{
+			List<LogUpdate> logs = null;
+			
+			int index = jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getEspecificarComboBox().getSelectedIndex();
+			String tipo = (String) jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getTipoComboBox().getSelectedItem();
+			String tabela = (String) jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getTabelaComboBox().getSelectedItem();
+			String id = jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getIdTabelaCampoTexto().getTexto();
+			String cpf_responsavel = jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getResponsavelCampoTexto().getTexto();
+			Date data1 = jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getData1DateChooser().getDate();
+			Date data2 = jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getData2DateChooser().getDate();
+			
+			
+			switch (index) {
+				case 0:
+					logs = Fachada.getInstance().getBoLogUpdate().buscarALL();
+					break;
+				case 1:
+					String type = (tipo.equalsIgnoreCase("todos"))? "" : (tipo.equalsIgnoreCase("atualização"))? "UPDATE" : (tipo.equalsIgnoreCase("deleção"))? "DELETE" : tipo;
+					logs = Fachada.getInstance().getBoLogUpdate().buscarEspecificado(type, (tabela.equalsIgnoreCase("todas"))? "" : tabela, id, cpf_responsavel, data1, data2);
+					break;
+				}
+			controlador_Principal.gettLogUpdate().addAll(logs);
+			}
+			catch (ValidacaoException e)
+			{
+				//TODO 
+			}
+			
+			
+		});
+		
+	}
+
 	private void adicionarEventoJInternal(JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores) {
 		
 		jInternal_TabelaPessoasColaboradores
@@ -93,6 +136,11 @@ public class Controlador_Info_JInternal_Tela {
 				Fachada.getInstance().inserir(colaborador);
 			
 				controlador_Principal.gettColaborador().addValor(colaborador);
+				
+				LogUpdate log = new LogUpdate();
+				Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(colaborador, controlador_Principal.getPessoa_Logada(), log);
+				controlador_Principal.gettLogUpdate().addValor(log);
+				
 			} 
 			catch (ValidacaoException e) 
 			{
@@ -137,12 +185,22 @@ public class Controlador_Info_JInternal_Tela {
 					String nome = telaEtapa.getNomeEtapaField().getTexto();
 					String descr = telaEtapa.getDescricaoTextArea().getText();
 
+					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getEtapa_Atual());
+					
+					
 					controlador_Principal.getEtapa_Atual().setNome(nome);
 					controlador_Principal.getEtapa_Atual().setDescricao(descr);
 					Fachada.getInstance().atualizar(controlador_Principal.getEtapa_Atual());
 					controlador_Principal.gettEtapa().fireTableDataChanged();
 					
 					telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa().getTelaCadastroEdicao().escondeBtn();
+				
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
+							antes,
+							controlador_Principal.getEtapa_Atual(), controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
+					
 				} 
 				catch (ValidacaoException e) 
 				{
@@ -231,6 +289,8 @@ public class Controlador_Info_JInternal_Tela {
 					String senha = telaPessoa.getSenhaField().getTexto();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
+					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Outrem());
+					
 					controlador_Principal.getPessoa_Outrem().setNome(nome);
 					controlador_Principal.getPessoa_Outrem().setCpf(cpf);
 					controlador_Principal.getPessoa_Outrem().setData_nascimento(DateUtil.getDateSQL(data));
@@ -245,6 +305,13 @@ public class Controlador_Info_JInternal_Tela {
 					.getTelaPessoa()
 					.getTelaCadastroEdicao()
 					.escondeBtn();
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
+							antes,
+							controlador_Principal.getPessoa_Outrem(), controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
+					
 				} 
 				catch (ValidacaoException e) 
 				{
@@ -271,6 +338,8 @@ public class Controlador_Info_JInternal_Tela {
 
 				if(c == null) 
 					c = new Contato();
+				
+				
 				if(c.getId() <= 0)
 				{
 					c.setEmail(email);
@@ -278,13 +347,26 @@ public class Controlador_Info_JInternal_Tela {
 					c.setTelefone(telef);
 					c.setPessoa(controlador_Principal.getPessoa_Outrem());
 					Fachada.getInstance().inserir(c);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(
+							c, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				else 
 				{
+					String[] antes = Fachada.getInstance().gerarLog(c);
+					
 					c.setEmail(email);
 					c.setCelular(celular);
 					c.setTelefone(telef);
 					Fachada.getInstance().atualizar(c);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
+							antes,
+							c, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				
 				telaInfoPessoa.getTelaInfoPessoa()
@@ -298,13 +380,13 @@ public class Controlador_Info_JInternal_Tela {
 				JInternal_TelaAlerta.showAlerta("Erro ao atualizar dados", e.getMessage());
 			}
 		});
-		
+		/*
 		telaInfoPessoa.getTelaInfoPessoa().getTelaContatoCaracteristica()
 			.getBtAdicionar().addActionListener(ActionEvent->{
 				//TODO - Add Caracteristica Extra
 				
 			});
-		
+		*/
 	}
 	
 
@@ -333,6 +415,9 @@ public class Controlador_Info_JInternal_Tela {
 
 					String horario = localDateTime.toString();
 
+					
+					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getTarefa_Atual());
+					
 					controlador_Principal.getTarefa_Atual().setNome(nome);
 					controlador_Principal.getTarefa_Atual().setDescricao(descr);
 					controlador_Principal.getTarefa_Atual().setConcluida(finalizada);
@@ -343,6 +428,13 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.gettTarefa().fireTableDataChanged();
 					
 					telaInfoTarefa.getTelaInfoTarefa().getTelaCadastroEdicao().escondeBtn();
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogUpdate(
+							antes,
+							controlador_Principal.getTarefa_Atual(), controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
+					
 				} catch (ValidacaoException e) 
 				{
 					JInternal_TelaAlerta.showAlerta("Erro ao atualizar tarefa", e.getMessage());
@@ -407,6 +499,8 @@ public class Controlador_Info_JInternal_Tela {
 					Date dataI = telaProjeto.getDataInicioDateChooser().getDate();
 					Date dataF = telaProjeto.getDataFimDateChooser().getDate();
 
+					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getProjeto_Atual());
+					
 					controlador_Principal.getProjeto_Atual().setNome(nome);
 					controlador_Principal.getProjeto_Atual().setDescricao(descr);
 					controlador_Principal.getProjeto_Atual().setData_inicio(DateUtil.getDateSQL(dataI));
@@ -428,6 +522,11 @@ public class Controlador_Info_JInternal_Tela {
 					.getTelaCadastroEdicao()
 					.escondeBtn();
 					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
+							antes,
+							controlador_Principal.getProjeto_Atual(), controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e)
 				{
@@ -500,6 +599,8 @@ public class Controlador_Info_JInternal_Tela {
 					String senha = telaPessoa.getSenhaField().getTexto();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
+					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Logada());
+					
 					controlador_Principal.getPessoa_Logada().setNome(nome);
 					controlador_Principal.getPessoa_Logada().setCpf(cpf);
 					controlador_Principal.getPessoa_Logada().setData_nascimento(DateUtil.getDateSQL(data));
@@ -516,6 +617,13 @@ public class Controlador_Info_JInternal_Tela {
 					.getTelaPessoa()
 					.getTelaCadastroEdicao()
 					.escondeBtn();
+					
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogUpdate(
+							antes,
+							controlador_Principal.getPessoa_Logada(), controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e) 
 				{
@@ -551,13 +659,26 @@ public class Controlador_Info_JInternal_Tela {
 					c.setTelefone(telef);
 					c.setPessoa(controlador_Principal.getPessoa_Logada());
 					Fachada.getInstance().inserir(c);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogInsercao(
+							c, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				else 
 				{
+					String[] antes = Fachada.getInstance().gerarLog(c);
+					
 					c.setEmail(email);
 					c.setCelular(celular);
 					c.setTelefone(telef);
 					Fachada.getInstance().atualizar(c);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
+							antes,
+							c, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				
 				telaInfoPessoaProjetos
@@ -592,10 +713,11 @@ public class Controlador_Info_JInternal_Tela {
 					
 					controlador_Principal.gettCaracteristicaExtra().addValor(c);
 					
-					/*LogUpdate log = new LogUpdate();
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(
+							c, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 					
-					Fachada.getInstance().gerarLogInsercao(c, controlador_Principal.pessoa_static, log);
-					tLogUpdate.addValor(log);*/
 				} 
 				catch (ValidacaoException e)
 				{
@@ -717,6 +839,8 @@ public class Controlador_Info_JInternal_Tela {
 					Date dataI = telaProjeto.getDataInicioDateChooser().getDate();
 					Date dataF = telaProjeto.getDataFimDateChooser().getDate();
 
+					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getProjeto_Atual());
+					
 					controlador_Principal.getProjeto_Atual().setNome(nome);
 					controlador_Principal.getProjeto_Atual().setDescricao(descr);
 					controlador_Principal.getProjeto_Atual().setData_inicio(DateUtil.getDateSQL(dataI));
@@ -735,6 +859,12 @@ public class Controlador_Info_JInternal_Tela {
 					telaInfoProjeto_Etapas_Simples
 					.getTelaProjeto_Etapas_Simples()
 					.getTelaProjeto().getTelaCadastroEdicao().escondeBtn();
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
+							antes,
+							controlador_Principal.getProjeto_Atual(), controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e) 
 				{
@@ -869,6 +999,11 @@ public class Controlador_Info_JInternal_Tela {
 				controlador_Principal.gettColaboracoes()
 				);
 		controlador_Principal.getjInternal_TelaInfoPessoa_Projetos().queroFoco();
+	}
+	
+	public void exibirJInternalTabelaLog()
+	{
+		
 	}
 	
 	private void preencherTelaPessoa(TelaPessoa telaPessoa, Pessoa pessoa) 

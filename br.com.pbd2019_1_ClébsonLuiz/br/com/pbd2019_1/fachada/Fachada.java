@@ -185,10 +185,10 @@ public class Fachada {
 		boLogUpdate.gerarLogUpdate(antes, entidade, responsavel, log);
 	}
 	
-	public void gerarLogDelete(String[] antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
+	public void gerarLogDelete(Entidade entidade, Pessoa responsavel, LogUpdate log) 
 			throws BOException, DAOException
 	{
-		boLogUpdate.gerarLogDelete(antes, entidade, responsavel, log);
+		boLogUpdate.gerarLogDelete(gerarLog(entidade), entidade, responsavel, log);
 	}
 	
 	/*Metodos do Bo Basico*/

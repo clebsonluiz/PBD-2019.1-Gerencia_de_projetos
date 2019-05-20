@@ -11,21 +11,23 @@ public class TLogUpdate extends TGenerica<LogUpdate>{
 	private Botao btn = new Botao("Ver");
 	
 	public TLogUpdate() {
-		super(new String[] {"Tabela","Tipo","Responsavel", "Data Log", ""});
+		super(new String[] {"Cod. T >", "Tabela","Tipo","Responsavel", "Data Log", ""});
 	}
 
 	@Override
 	public Object getValueAt(int linha, int coluna) {
 		switch (coluna) {
 		case 0:
-			return getList().get(linha).getTabela();
+			return getList().get(linha).getId_tabela();
 		case 1:
-			return getList().get(linha).getTipo();
+			return getList().get(linha).getTabela();
 		case 2:
-			return getList().get(linha).getResponsavel();
+			return getList().get(linha).getTipo();
 		case 3:
-			return DateUtil.getDateString("dd-MM-yyyy", getList().get(linha).getData_log());
+			return getList().get(linha).getResponsavel();
 		case 4:
+			return DateUtil.getDateString("dd-MM-yyyy - HH:mm:ss ", getList().get(linha).getData_log());
+		case 5:
 			return btn;
 		}
 		return null;

@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.Date;
 
 import br.com.pbd2019_1.entidade.Etapa;
+import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.Tarefa;
@@ -50,6 +51,10 @@ public class Controlador_Cadastro {
 					Fachada.getInstance().inserir(etapa);
 					tEtapa.addValor(etapa);
 					telaEtapa.limparCampos();
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(etapa, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				} 
 				catch (ValidacaoException e)
 				{
@@ -93,6 +98,10 @@ public class Controlador_Cadastro {
 					Fachada.getInstance().inserir(pessoa);
 					tPessoa.addValor(pessoa);
 					telaCadastroPessoa.getTelaCadastro_Pessoa().limparCampos();
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(pessoa, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e) 
 				{
@@ -124,6 +133,10 @@ public class Controlador_Cadastro {
 					Fachada.getInstance().inserir(projeto);
 					tProjeto.addValor(projeto);
 					telaProjeto.limparCampos();
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(projeto, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e)
 				{
@@ -178,6 +191,10 @@ public class Controlador_Cadastro {
 					.setValue(
 							Math.round(controlador_Principal.getEtapa_Atual().getPorcentagem_andamento())
 							);
+					
+					LogUpdate log = new LogUpdate();
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(tarefa, controlador_Principal.getPessoa_Logada(), log);
+					controlador_Principal.gettLogUpdate().addValor(log);
 					
 				} 
 				catch (ValidacaoException e)

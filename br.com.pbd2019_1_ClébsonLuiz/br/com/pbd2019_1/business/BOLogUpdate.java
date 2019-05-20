@@ -41,6 +41,15 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 				DateUtil.getDateSQL(data2));
 	}
 	
+	public List<LogUpdate> buscarEspecificado(String tipo, String tabela, String id_tabela, String responsavel,Date data1, Date data2) throws BOException, DAOException{
+		if(data1 == null || data2 == null)
+			return ((DAOLogUpdate)this.daoT).buscarMiniEspecificada(tipo, tabela, id_tabela, responsavel);
+		else
+			return ((DAOLogUpdate)this.daoT).buscarEspecificada(tipo, tabela, id_tabela, responsavel,
+					DateUtil.getDateSQL(data1), 
+					DateUtil.getDateSQL(data2));
+	}
+	
 	public String[] gerarLog(CaracteristicaExtra ce)
 	{
 		return new String[]{ce.getNome()};
@@ -93,7 +102,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("CADASTRO");
-		log.setData_log(DateUtil.getDataAtual());
+		log.setData_log(new Date());
 		log.setResponsavel(responsavel.getCpf());
 		
 		if(entidade instanceof CaracteristicaExtra)
@@ -117,7 +126,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("UPDATE");
-		log.setData_log(DateUtil.getDataAtual());
+		log.setData_log(new Date());
 		log.setResponsavel(responsavel.getCpf());
 		log.setAntes(antes);
 		
@@ -142,7 +151,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("DELETE");
-		log.setData_log(DateUtil.getDataAtual());
+		log.setData_log(new Date());
 		log.setResponsavel(responsavel.getCpf());
 		log.setAntes(antes);
 		log.setDepois(new String[] {});
