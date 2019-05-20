@@ -42,7 +42,6 @@ import br.com.pbd2019_1.view.JInternal_InfoLog;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
-import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
@@ -55,6 +54,7 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas_Simples;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
+import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.PopUp;
 import br.com.pbd2019_1.view.TelaMenu;
 import br.com.pbd2019_1.view.TelaOpcoes;
@@ -415,7 +415,7 @@ public class Controlador_Principal {
 								} 
 								catch (ValidacaoException ve) 
 								{
-									JInternal_TelaAlerta.showAlerta("Erro ao alterar", ve.getMessage());
+									MeuJDialog.exibirAlertaErro(null, "Erro ao alterar", ve.getMessage());
 								}
 							}
 						}
@@ -429,7 +429,7 @@ public class Controlador_Principal {
 											);
 							} catch (PropertyVetoException e1) 
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoTarefa", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela", e1.getMessage());
 							}
 						}
 					} 
@@ -446,11 +446,11 @@ public class Controlador_Principal {
 							} 
 							catch (ValidacaoException e1) 
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao consultar dados da etapa", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados da etapa", e1.getMessage());
 							}
 							catch (PropertyVetoException e1)
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoEtapa", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoEtapa", e1.getMessage());
 							}
 						}
 					}
@@ -474,11 +474,11 @@ public class Controlador_Principal {
 							} 
 							catch (ValidacaoException e1)
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao consultar dados do projeto", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados do projeto", e1.getMessage());
 							} 
 							catch (PropertyVetoException e1) 
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoProjeto", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoProjeto", e1.getMessage());
 							}
 						}
 					}
@@ -495,11 +495,11 @@ public class Controlador_Principal {
 							} 
 							catch (ValidacaoException e1) 
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao carregar info. do projeto de colaborador", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao carregar info. do projeto de colaborador", e1.getMessage());
 							} 
 							catch (PropertyVetoException e1) 
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoProjeto de Colaborador", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoProjeto de Colaborador", e1.getMessage());
 							}
 						}
 					}
@@ -516,11 +516,11 @@ public class Controlador_Principal {
 							} 
 							catch (ValidacaoException e1)
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao carregar informações do colaborador", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao carregar informações do colaborador", e1.getMessage());
 							} 
 							catch (PropertyVetoException e1)
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoPessoa do colaborador", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoPessoa do colaborador", e1.getMessage());
 							}
 							
 						}
@@ -575,7 +575,7 @@ public class Controlador_Principal {
 								jInternal_InfoLog.queroFoco();
 							} 
 							catch (PropertyVetoException e1) {
-								e1.printStackTrace();
+								MeuJDialog.exibirAlertaErro(null, "Erro Ao Exibir Tela de Log", e1.getMessage());
 							}
 							
 						}
@@ -591,11 +591,11 @@ public class Controlador_Principal {
 							} 
 							catch (ValidacaoException e1) 
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao carregar dados de pessoa", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao carregar dados de pessoa", e1.getMessage());
 							}
 							catch (PropertyVetoException e1) 
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoTarefa", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoTarefa", e1.getMessage());
 							}
 						}
 					}
@@ -613,6 +613,10 @@ public class Controlador_Principal {
 		JMenuItem excluir = popUp.getMenuItens()[1];
 		
 		excluir.addActionListener(ActionEvent->{
+			
+			int decisao = MeuJDialog.exibirAlertaPergunta(null, "Opa!", "Tem a Certeza de que quer remover?");
+			
+			if(decisao == 1)
 			try 
 			{
 				if(bool_Colaborador_Ativado)
@@ -712,7 +716,7 @@ public class Controlador_Principal {
 			} 
 			catch (ValidacaoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro na remoção", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro na remoção", e.getMessage());
 			}
 		});
 		
@@ -742,7 +746,7 @@ public class Controlador_Principal {
 			} 
 			catch (ValidacaoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro na remoção", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro na remoção", e.getMessage());
 			}
 		});
 		
@@ -777,7 +781,7 @@ public class Controlador_Principal {
 			} 
 			catch (ValidacaoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro na remoção", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro na alteração", e.getMessage());
 			}
 		});
 		
@@ -809,7 +813,7 @@ public class Controlador_Principal {
 					} 
 					catch (ValidacaoException e) 
 					{
-						JInternal_TelaAlerta.showAlerta("Erro ao atualizar info. tarefa", e.getMessage());
+						MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar info. tarefa", e.getMessage());
 					}
 				}
 			}
@@ -834,7 +838,7 @@ public class Controlador_Principal {
 					} 
 					catch (ValidacaoException e) 
 					{
-						JInternal_TelaAlerta.showAlerta("Erro ao exibir atualizar info Colaborador", e.getMessage());
+						MeuJDialog.exibirAlertaErro(null, "Erro ao exibir atualizar info Colaborador", e.getMessage());
 					}
 				}
 			}
@@ -881,7 +885,7 @@ public class Controlador_Principal {
 				} 
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao cadastrar pessoa", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao cadastrar pessoa", e.getMessage());
 				}
 				
 			});
@@ -945,36 +949,39 @@ public class Controlador_Principal {
 	private void adicionarEventoMenu(TelaOpcoes telaOpcoes) {
 		telaOpcoes.getBtnInfo().addActionListener(ActionEvent->{
 			//TODO - Inserir evento info usuario
-			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
+			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
 				controlador_Info_JInternal_Tela.exibirJInternalInfoMinhaPessoa(pessoa_Logada);
 			} 
 			catch (ValidacaoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao Consultar Info de Pessoa", e.getMessage());
-			} catch (PropertyVetoException e) {
-				JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaInfoPessoa", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao Consultar Info de Pessoa", e.getMessage());
+			} 
+			catch (PropertyVetoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoPessoa", e.getMessage());
 			}
 			
 		});
 		
 		telaOpcoes.getBtnLog().addActionListener(ActionEvent->{
 			//TODO - Inserir evento ADM de ver os logs dos usuarios
-			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
+			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
 				jInternal_TabelaLogs.queroFoco();
 			}
-			catch (PropertyVetoException e) {
-				JInternal_TelaAlerta.showAlerta("Erro ao consultar a lista de Logs", e.getMessage());
+			catch (PropertyVetoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de Logs", e.getMessage());
 			}
 			
 		});
 		
 		telaOpcoes.getBtnPessoas().addActionListener(ActionEvent->{
 			//TODO - Inserir evento ADM ver pessoas
-			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
+			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
 				tPessoa.addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(pessoa_Logada));
@@ -982,45 +989,45 @@ public class Controlador_Principal {
 			} 
 			catch (ValidacaoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao consultar a lista de pessoas", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de pessoas", e.getMessage());
 			}
 			catch (PropertyVetoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaPessoas", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaPessoas", e.getMessage());
 			}
 			
 		});
 		
 		telaOpcoes.getBtnBackup().addActionListener(ActionEvent->{
 			//TODO - Inserir evento Backups BD
-			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
+			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
 				jInternal_TelaBackups.queroFoco();
 			} 
 			catch (PropertyVetoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao exibir TelaBackup", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaBackup", e.getMessage());
 			}
 			
 		});
 		
 		telaOpcoes.getBtnSQL().addActionListener(ActionEvent->{
 			//TODO - Inserir evento SUPER USUARIO Inserir SQL
-			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
+			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
 				jInternal_TelaInserirSQL.queroFoco();
 			} 
 			catch (PropertyVetoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao exibir tela de SQL", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela de SQL", e.getMessage());
 			}
 			
 		});
 		
 		telaOpcoes.getBtnSobre().addActionListener(ActionEvent->{
-			if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado);
+			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado);
 			//TODO - Inserir evento Abrir tela Info Projeto
 			
 		});
@@ -1034,7 +1041,7 @@ public class Controlador_Principal {
 		telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
 		telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
 		
-		JInternalAbstract jIA[] = new JInternalAbstract[18];
+		JInternalAbstract jIA[] = new JInternalAbstract[17];
 		jIA[0] = jInternal_TelaCadastro_Etapa;
 		jIA[1] = jInternal_TelaCadastro_Projeto;
 		jIA[2] = jInternal_TelaCadastro_Pessoa;
@@ -1052,8 +1059,7 @@ public class Controlador_Principal {
 		jIA[13] = jInternal_TelaBackups;
 		jIA[14] = jInternal_TabelaLogs;
 		jIA[15] = jInternal_InfoLog;
-		jIA[16] = JInternal_TelaAlerta.getInstance();
-		jIA[17] = JInternal_Backup_Efetuando.getInstance();
+		jIA[16] = JInternal_Backup_Efetuando.getInstance();
 		
 		for(JInternalAbstract jAbstract: jIA) {
 			jAbstract.setIcon(false);
@@ -1111,8 +1117,6 @@ public class Controlador_Principal {
 	public void setType_User_Logado(String type_User_Logado) {this.type_User_Logado = type_User_Logado;}
 	public void setColaborador_Atual(Colaborador colaborador_Atual) {this.colaborador_Atual = colaborador_Atual;}
 	public void setBool_Colaborador_Ativado(boolean bool_Colaborador_Ativado) {this.bool_Colaborador_Ativado = bool_Colaborador_Ativado;}
-
-	
 	
 }
 

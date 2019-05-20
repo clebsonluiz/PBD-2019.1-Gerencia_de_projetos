@@ -51,7 +51,7 @@ public class MeuJDialog extends JDialog {
 		return instance2;
 	}
 	
-	public static int exibirAlerta(Component c, String titulo, String msg)
+	public static int exibirAlertaPergunta(Component c, String titulo, String msg)
 	{
 		op = 0;
 		getInstance().exibirMensagem(titulo, msg, bordaWarning, c);

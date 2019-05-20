@@ -16,11 +16,11 @@ import br.com.pbd2019_1.tabelas.TPessoa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
-import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Projeto;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Tarefa;
+import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.TelaEtapa;
 import br.com.pbd2019_1.view.TelaPessoa;
@@ -58,7 +58,7 @@ public class Controlador_Cadastro {
 				} 
 				catch (ValidacaoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao Cadastrar", e.getMessage());
 				}
 				
 		});
@@ -105,7 +105,7 @@ public class Controlador_Cadastro {
 				}
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao Cadastrar", e.getMessage());
 				}
 		});
 	}
@@ -140,11 +140,8 @@ public class Controlador_Cadastro {
 				}
 				catch (ValidacaoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao Cadastrar", e.getMessage());
 				}
-			
-				
-				
 		});
 	}
 	
@@ -199,11 +196,8 @@ public class Controlador_Cadastro {
 				} 
 				catch (ValidacaoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao Cadastrar", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao Cadastrar", e.getMessage());
 				}
 		});
 	}
-
-	
-	
 }

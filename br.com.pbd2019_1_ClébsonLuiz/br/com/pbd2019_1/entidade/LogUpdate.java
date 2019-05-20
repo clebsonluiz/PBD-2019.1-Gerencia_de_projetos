@@ -18,14 +18,14 @@ import javax.persistence.TemporalType;
 	@NamedQuery(name = "LogUpdate",
 			query = "select l from LogUpdate l ORDER BY l.id ASC"),
 	@NamedQuery(name = "LogUpdate.date", 
-			query = "select l from LogUpdate l where l.data_log between ':data1' and ':data2' and l.ativado = true ORDER BY l.id ASC"),
+			query = "select l from LogUpdate l where l.data_log between :data1 and :data2 and l.ativado = true ORDER BY l.id ASC"),
 	@NamedQuery(name = "LogUpdate.dateEspecificado", 
 			query = "select l from LogUpdate l where "
 					+ "lower(l.tipo) like lower(:tipo) and "
 					+ "lower(l.tabela) like lower(:tabela) and "
 					+ "lower(cast(l.id_tabela as text)) like :id_tabela and "
 					+ "lower(l.responsavel) like lower(:responsavel) and "
-					+ "l.data_log between ':data1' and ':data2' and l.ativado = true ORDER BY l.id ASC"),
+					+ "l.data_log between :data1 and :data2 and l.ativado = true ORDER BY l.id ASC"),
 	@NamedQuery(name = "LogUpdate.dateMiniEspecificado", 
 			query = "select l from LogUpdate l where "
 					+ "lower(l.tipo) like lower(:tipo) and "

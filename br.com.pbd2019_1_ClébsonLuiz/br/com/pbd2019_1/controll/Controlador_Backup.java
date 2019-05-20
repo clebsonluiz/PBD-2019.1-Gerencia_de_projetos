@@ -23,9 +23,9 @@ import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.TBackup;
 import br.com.pbd2019_1.view.Botao;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
-import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JanelaPrincipal;
+import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.MeuJFileChooser;
 
 public class Controlador_Backup implements Observer, ActionListener{
@@ -56,7 +56,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			} 
 			catch (PropertyVetoException e)
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao sair do Sistema", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao sair do Sistema", e.getMessage());
 			}
 		});
 		/*Se o evento foi disparado ao fechar a Janela do Sistema*/
@@ -90,14 +90,11 @@ public class Controlador_Backup implements Observer, ActionListener{
 					}
 					catch (ValidacaoException | ClassNotFoundException | IOException e1) 
 					{
-						JInternal_TelaAlerta.showAlerta("ERRO AO FAZER BACKUP", e1.getMessage());
+						MeuJDialog.exibirAlertaErro(null, "ERRO AO FAZER BACKUP", e1.getMessage());
 					}
 			}
-			
 		});
 	}
-	
-	
 	
 	public void adicionarEvento(JInternal_TelaBackups telaBackups, TBackup tBackup)
 	{
@@ -145,7 +142,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			} 
 			catch (ValidacaoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao consultar Lista de BACKUPS", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar Lista de BACKUPS", e.getMessage());
 			}
 		});
 		
@@ -189,7 +186,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			} 
 			catch (PropertyVetoException e)
 			{
-				e.printStackTrace();
+				MeuJDialog.exibirAlertaErro(null, "Erro ao Exibir tela do Backup efetuado", e.getMessage());
 			}
 			
 			String arquivoNome = MeuJFileChooser.getInstance().getSelectedFile().getName();
@@ -218,10 +215,12 @@ public class Controlador_Backup implements Observer, ActionListener{
 					Fachada.getInstance().inserir(b);
 					tBackup.addValor(b);
 				} 
-				catch (ValidacaoException e1) {
-					e1.printStackTrace();
+				catch (ValidacaoException e1) 
+				{
+					MeuJDialog.exibirAlertaErro(null, "Erro", e1.getMessage());
 				}
-				JInternal_TelaAlerta.showAlerta("ERRO AO FAZER BACKUP", e.getMessage());
+				
+				MeuJDialog.exibirAlertaErro(null, "ERRO AO FAZER BACKUP", e.getMessage());
 			}
 		}
 	}
@@ -243,8 +242,8 @@ public class Controlador_Backup implements Observer, ActionListener{
 			/*Se o botão for o de sair na TelaOpçoes*/
 			else if (botao.getName().equals("sair"))
 			{
-				if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado) 
-				{
+				//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado) 
+				//{
 					try 
 					{
 						if(Fachada.getInstance().getBoBackup().isBackupNecessario())
@@ -259,13 +258,15 @@ public class Controlador_Backup implements Observer, ActionListener{
 							} 
 							catch (PropertyVetoException e1)
 							{
-								JInternal_TelaAlerta.showAlerta("Erro ao sair do Sistema", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao sair do Sistema", e1.getMessage());
 							}
 						}
-					} catch (DAOException | ClassNotFoundException | IOException e1) {
-						JInternal_TelaAlerta.showAlerta("ERRO AO FAZER BACKUP", e1.getMessage());
+					} 
+					catch (DAOException | ClassNotFoundException | IOException e1)
+					{
+						MeuJDialog.exibirAlertaErro(null, "ERRO AO FAZER BACKUP", e1.getMessage());
 					}
-				}
+				//}
 			}
 		}
 	}

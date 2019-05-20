@@ -18,7 +18,6 @@ import br.com.pbd2019_1.view.JInternal_InfoLog;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
-import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
@@ -177,7 +176,6 @@ public class Principal {
 		jDesktopPane.add(jInternal_TelaBackups);
 		jDesktopPane.add(jInternal_TabelaLogs);
 		jDesktopPane.add(jInternal_InfoLog);
-		jDesktopPane.add(JInternal_TelaAlerta.getInstance());
 		jDesktopPane.add(JInternal_Backup_Efetuando.getInstance());
 		
 		janelaLoading.etapaAtual("Telas Incorporadas!", 80);

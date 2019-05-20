@@ -30,7 +30,6 @@ import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
-import br.com.pbd2019_1.view.JInternal_TelaAlerta;
 import br.com.pbd2019_1.view.JInternal_TelaInfoEtapa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa_Projetos;
@@ -38,6 +37,7 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas_Simples;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
+import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.MeuJFileChooser;
 import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
@@ -102,10 +102,8 @@ public class Controlador_Info_JInternal_Tela {
 			}
 			catch (ValidacaoException e)
 			{
-				//TODO 
+				MeuJDialog.exibirAlertaErro(null, "Erro ao Buscar Logs", e.getMessage());
 			}
-			
-			
 		});
 		
 	}
@@ -144,7 +142,7 @@ public class Controlador_Info_JInternal_Tela {
 			} 
 			catch (ValidacaoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao consultar a lista de pessoas", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de pessoas", e.getMessage());
 			}
 		});
 	}
@@ -162,7 +160,7 @@ public class Controlador_Info_JInternal_Tela {
 			}
 			catch (PropertyVetoException e) 
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao exibir tela de Cadastro", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela de Cadastro", e.getMessage());
 			}
 			
 		});
@@ -174,7 +172,6 @@ public class Controlador_Info_JInternal_Tela {
 		telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa().getBotao1()
 			.addActionListener(ActionEvent->{
 			//TODO - Atualizar info Etapa
-				
 				try 
 				{
 					if(controlador_Principal.isBool_Colaborador_Ativado())
@@ -204,10 +201,8 @@ public class Controlador_Info_JInternal_Tela {
 				} 
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao Atualizar Etapa", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao Atualizar Etapa", e.getMessage());
 				}
-				
-				
 			});
 		
 		telaInfoEtapa.getTelaEtapa_Tarefas().getTelaTarefas().getBtNovaTarefa()
@@ -222,14 +217,13 @@ public class Controlador_Info_JInternal_Tela {
 				} 
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Não Tem permição", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Não Tem permição", e.getMessage());
 				} 
 				catch (PropertyVetoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao exibir ", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir ", e.getMessage());
 				}
 			});
-		
 	}
 	
 
@@ -315,11 +309,8 @@ public class Controlador_Info_JInternal_Tela {
 				} 
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao atualizar dados", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar dados", e.getMessage());
 				}
-				
-				
-				
 			});
 		
 		telaInfoPessoa.getTelaInfoPessoa().getTelaContatoCaracteristica().getBotao()
@@ -377,7 +368,7 @@ public class Controlador_Info_JInternal_Tela {
 			} 
 			catch (ValidacaoException e)
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao atualizar dados", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar dados", e.getMessage());
 			}
 		});
 		/*
@@ -437,9 +428,8 @@ public class Controlador_Info_JInternal_Tela {
 					
 				} catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao atualizar tarefa", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar tarefa", e.getMessage());
 				}
-				
 			});
 		
 		telaInfoTarefa.getTelaInfoTarefa().getChckbxFinalizada()
@@ -473,7 +463,7 @@ public class Controlador_Info_JInternal_Tela {
 								Math.round(controlador_Principal.getEtapa_Atual().getPorcentagem_andamento())
 								);
 				} catch (ValidacaoException e) {
-					JInternal_TelaAlerta.showAlerta("Erro ao atualizar tarefa", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar tarefa", e.getMessage());
 				}
 			});
 		
@@ -530,10 +520,8 @@ public class Controlador_Info_JInternal_Tela {
 				}
 				catch (ValidacaoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao atualizar info. projeto", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar info. projeto", e.getMessage());
 				}
-				
-				
 			});
 		
 		telaInfoProjetoEtapas.getTelaProjeto_Etapas().getTelaEtapas()
@@ -550,11 +538,11 @@ public class Controlador_Info_JInternal_Tela {
 				} 
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao exibir Tela de Cadastro", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tela de Cadastro", e.getMessage());
 				}
 				catch (PropertyVetoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao exibir Tela de Cadastro", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tela de Cadastro", e.getMessage());
 				}
 			});
 		
@@ -569,15 +557,13 @@ public class Controlador_Info_JInternal_Tela {
 				} 
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao consultar a lista de pessoas", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de pessoas", e.getMessage());
 				}
 				catch (PropertyVetoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao exibir Tabela de Pessoas", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
 				}
-				
 			});
-		
 	}
 	
 
@@ -627,7 +613,7 @@ public class Controlador_Info_JInternal_Tela {
 				}
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao Atualizar Info de Pessoas ", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao Atualizar Info de Pessoas ", e.getMessage());
 				}
 				
 			});
@@ -637,7 +623,6 @@ public class Controlador_Info_JInternal_Tela {
 			//TODO - COntato
 			try 
 			{
-
 				TelaContatoCaracteristica telaContato = telaInfoPessoaProjetos
 						.getTelaInfoPessoaProjetos()
 						.getTelaInfoPessoa()
@@ -692,7 +677,7 @@ public class Controlador_Info_JInternal_Tela {
 			} 
 			catch (ValidacaoException e)
 			{
-				JInternal_TelaAlerta.showAlerta("Erro ao atualizar dados", e.getMessage());
+				MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar dados", e.getMessage());
 			}
 		});
 		
@@ -721,7 +706,7 @@ public class Controlador_Info_JInternal_Tela {
 				} 
 				catch (ValidacaoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao Adicionar Caracteristica", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao Adicionar Caracteristica", e.getMessage());
 				}
 			});
 		
@@ -735,9 +720,8 @@ public class Controlador_Info_JInternal_Tela {
 				}
 				catch (PropertyVetoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao exibir Tela de Cadastro", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tela de Cadastro", e.getMessage());
 				}
-				
 			});
 		
 		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
@@ -777,7 +761,7 @@ public class Controlador_Info_JInternal_Tela {
 								}
 								catch (ValidacaoException e)
 								{
-									e.printStackTrace();
+									MeuJDialog.exibirAlertaErro(null, "Erro ao Consultar dados de colaborador", e.getMessage());
 								}
 							});
 							
@@ -794,7 +778,7 @@ public class Controlador_Info_JInternal_Tela {
 								}
 								catch (ValidacaoException e)
 								{
-									e.printStackTrace();
+									MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados de etapa", e.getMessage());
 								}
 							});
 							
@@ -809,8 +793,7 @@ public class Controlador_Info_JInternal_Tela {
 						}
 						catch (ValidacaoException | FileNotFoundException | DocumentException e)
 						{
-							e.printStackTrace();
-							JInternal_TelaAlerta.showAlerta("Erro", e.getMessage());
+							MeuJDialog.exibirAlertaErro(null, "Erro ao gerar Relatório", e.getMessage());
 						}
 					}
 				}
@@ -868,7 +851,7 @@ public class Controlador_Info_JInternal_Tela {
 				}
 				catch (ValidacaoException e) 
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao atualizar info. projeto", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar info. projeto", e.getMessage());
 				}
 			});
 	
@@ -885,11 +868,11 @@ public class Controlador_Info_JInternal_Tela {
 				} 
 				catch (ValidacaoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao exibir Tela de Cadastro", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tela de Cadastro", e.getMessage());
 				}
 				catch (PropertyVetoException e)
 				{
-					JInternal_TelaAlerta.showAlerta("Erro ao exibir Tela de Cadastro", e.getMessage());
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tela de Cadastro", e.getMessage());
 				}
 			});
 	}

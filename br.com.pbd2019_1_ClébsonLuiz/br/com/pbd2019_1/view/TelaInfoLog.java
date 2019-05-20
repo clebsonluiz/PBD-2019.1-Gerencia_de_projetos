@@ -36,7 +36,7 @@ public class TelaInfoLog extends MeuJPanel {
 		cmptxtCod.setBackground(panel.getBackground());
 		cmptxtCod.setEditable(false);
 		cmptxtCod.setBorder(ViewUtil.Bordas.criarBordaTituloField("Cod."));
-		cmptxtCod.setText("Cod");
+		cmptxtCod.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		cmptxtCod.setBounds(10, 11, 87, 50);
 		panel.add(cmptxtCod);
 		
@@ -44,7 +44,7 @@ public class TelaInfoLog extends MeuJPanel {
 		cmptxtTabela.setEditable(false);
 		cmptxtTabela.setBackground(panel.getBackground());
 		cmptxtTabela.setBorder(ViewUtil.Bordas.criarBordaTituloField("Tabela"));
-		cmptxtTabela.setText("tabela");
+		cmptxtTabela.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		cmptxtTabela.setBounds(109, 11, 140, 50);
 		panel.add(cmptxtTabela);
 		
@@ -52,7 +52,7 @@ public class TelaInfoLog extends MeuJPanel {
 		cmptxtTabela.setEditable(false);
 		cmptxtResponsavel.setBackground(panel.getBackground());
 		cmptxtResponsavel.setBorder(ViewUtil.Bordas.criarBordaTituloField("CPF Responsável"));
-		cmptxtResponsavel.setText("responsavel");
+		cmptxtResponsavel.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		cmptxtResponsavel.setBounds(10, 73, 158, 50);
 		panel.add(cmptxtResponsavel);
 		
@@ -60,7 +60,7 @@ public class TelaInfoLog extends MeuJPanel {
 		cmptxtTabela.setEditable(false);
 		cmptxtTipo.setBackground(panel.getBackground());
 		cmptxtTipo.setBorder(ViewUtil.Bordas.criarBordaTituloField("Tipo Log"));
-		cmptxtTipo.setText("tipo");
+		cmptxtTipo.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		cmptxtTipo.setBounds(261, 11, 119, 50);
 		panel.add(cmptxtTipo);
 		
@@ -68,7 +68,7 @@ public class TelaInfoLog extends MeuJPanel {
 		cmptxtTabela.setEditable(false);
 		cmptxtDatalog.setBackground(panel.getBackground());
 		cmptxtDatalog.setBorder(ViewUtil.Bordas.criarBordaTituloField("Data do Log"));
-		cmptxtDatalog.setText("DataLog");
+		cmptxtDatalog.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		cmptxtDatalog.setBounds(180, 73, 200, 50);
 		panel.add(cmptxtDatalog);
 		
