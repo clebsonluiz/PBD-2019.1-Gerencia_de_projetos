@@ -7,6 +7,7 @@ public class TelaColaboracoes extends TelaProjetos {
 	public TelaColaboracoes() {
 		getBtCriarUmNovo().setVisible(false);
 		getBtnGerarRelatorio().setVisible(false);
+		getComboBox().setVisible(false);
 	}
 
 }

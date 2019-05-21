@@ -1,5 +1,6 @@
 package br.com.pbd2019_1.view;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.LocalTime;
 
@@ -75,5 +76,12 @@ public class Horario extends JPanel {
 				(String)cmboxHora.getSelectedItem()+ ":" + 
 				(String)cmboxMinuto.getSelectedItem() + ":" + 
 				(String)cmboxSegundo.getSelectedItem());
+	}
+	
+	public void setFonte(Font font)
+	{
+		cmboxHora.setFont(font);
+		cmboxMinuto.setFont(font);
+		cmboxSegundo.setFont(font);
 	}
 }

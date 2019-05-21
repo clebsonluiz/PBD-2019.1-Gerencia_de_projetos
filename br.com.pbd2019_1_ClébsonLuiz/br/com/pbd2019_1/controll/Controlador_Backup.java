@@ -15,13 +15,16 @@ import java.util.Observer;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import br.com.pbd2019_1.dao.DAOConfigDefault;
 import br.com.pbd2019_1.dao.DAOResBackup;
 import br.com.pbd2019_1.entidade.Backup;
+import br.com.pbd2019_1.entidade.ConfigDefault;
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.TBackup;
 import br.com.pbd2019_1.view.Botao;
+import br.com.pbd2019_1.view.Horario;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JanelaPrincipal;
@@ -73,25 +76,28 @@ public class Controlador_Backup implements Observer, ActionListener{
 			@Override
 			public void windowClosing(WindowEvent e) 
 			{
-				
-				if(!((JanelaPrincipal)frame).getTelaPrincipal().getTelaAtual().equals("2"))
-					System.exit(0);
-				else
-					try 
+				int op = MeuJDialog.exibirAlertaPergunta(null, "?", "Tem certeza de que quer encerrar a aplicação?");
+				if(op != 0)
+				{
+					if(!((JanelaPrincipal)frame).getTelaPrincipal().getTelaAtual().equals("2"))
+						System.exit(0);
+					else
+						try 
 					{
-						if(Fachada.getInstance().getBoBackup().isBackupNecessario())
-						{
-							efetuarBackup(frame, frame);
-						}
-						else 
-						{
-							System.exit(0);
-						}
+							if(Fachada.getInstance().getBoBackup().isBackupNecessario())
+							{
+								efetuarBackup(frame, frame);
+							}
+							else 
+							{
+								System.exit(0);
+							}
 					}
 					catch (ValidacaoException | ClassNotFoundException | IOException e1) 
 					{
 						MeuJDialog.exibirAlertaErro(null, "ERRO AO FAZER BACKUP", e1.getMessage());
 					}
+				}
 			}
 		});
 	}
@@ -148,6 +154,32 @@ public class Controlador_Backup implements Observer, ActionListener{
 		
 		telaBackups.getTelaBackups().getBtnNovoBackup()
 		.addActionListener(this);
+		
+		telaBackups.getTelaBackups().getBtnAgendarBackup()
+		.addActionListener(ActionEvent->
+		{
+			try
+			{
+				ConfigDefault config = DAOConfigDefault.loadConfig();
+				Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+				
+				if(config != null && config.getHora_bakup() != null && config.getHora_bakup().length() == 8)
+				{
+					String[] hora = config.getHora_bakup().split(":");
+					horario.setLocalTime(hora[0], hora[1] , hora[2]);
+				}
+				else
+				{
+					horario.setLocalTime("00", "00", "00");
+				}
+				
+				controlador_Principal.getjInternal_TelaAgendarBackup().queroFoco();
+			}
+			catch (PropertyVetoException | ClassNotFoundException | IOException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro", e.getMessage());
+			}
+		});
 	}
 
 

@@ -574,7 +574,7 @@ public class DAOResRelatorio {
 		
 		paragraph.add(new Paragraph(addTab(tab) + "Nome: "+ colaborador.getPessoa().getNome()));
 		paragraph.add(new Paragraph(addTab(tab) + "Privilégio: "+ colaborador.getPrivilegio()));
-		paragraph.add(new Paragraph(addTab(tab) + "Estado: " + colaborador.getPessoa().getCpf()));
+		paragraph.add(new Paragraph(addTab(tab) + "CPF: " + colaborador.getPessoa().getCpf()));
 		paragraph.add(new Paragraph(addTab(tab) + "Data: "+ data));
 		
 		return paragraph;

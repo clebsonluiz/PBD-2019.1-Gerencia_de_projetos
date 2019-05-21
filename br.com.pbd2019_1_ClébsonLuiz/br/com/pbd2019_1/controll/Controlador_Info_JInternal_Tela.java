@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.itextpdf.text.DocumentException;
 
+import br.com.pbd2019_1.dao.DAOConfigDefault;
 import br.com.pbd2019_1.dao.DAOResRelatorio;
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
@@ -27,9 +28,11 @@ import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.Horario;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
+import br.com.pbd2019_1.view.JInternal_TelaAgendarBackup;
 import br.com.pbd2019_1.view.JInternal_TelaInfoEtapa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa_Projetos;
@@ -67,10 +70,29 @@ public class Controlador_Info_JInternal_Tela {
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoas());
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoasColaboradores());
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaLogs());
-		
+		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaAgendarBackup());
 	}
 	
 	
+	private void adicionarEventoJInternal(JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup)
+	{
+		jInternal_TelaAgendarBackup.getBtDefinirHorario()
+		.addActionListener(ActionEvent->
+		{
+			Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+			DAOConfigDefault.setHorarioAgenda(horario.toString());
+		});
+		
+		jInternal_TelaAgendarBackup.getBtResetarHorario()
+		.addActionListener(ActionEvent->
+		{
+			Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+			
+			DAOConfigDefault.setHorarioAgenda(null);
+			horario.setLocalTime("00", "00", "00");
+		});
+	}
+
 	private void adicionarEventoJInternal(JInternal_TabelaLogs jInternal_TabelaLogs) {
 		
 		jInternal_TabelaLogs.getTelaLogs().getTelaPesquisaLog().getBuscarBtn()

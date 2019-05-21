@@ -42,6 +42,7 @@ import br.com.pbd2019_1.view.JInternal_InfoLog;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
+import br.com.pbd2019_1.view.JInternal_TelaAgendarBackup;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
@@ -109,6 +110,7 @@ public class Controlador_Principal {
 	private JInternal_TelaBackups jInternal_TelaBackups;
 	private JInternal_TabelaLogs jInternal_TabelaLogs;
 	private JInternal_InfoLog jInternal_InfoLog;
+	private JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup;
 	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
@@ -157,7 +159,8 @@ public class Controlador_Principal {
 			JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores,
 			JInternal_TelaBackups jInternal_TelaBackups, 
 			JInternal_TabelaLogs jInternal_TabelaLogs,
-			JInternal_InfoLog jInternal_InfoLog) {
+			JInternal_InfoLog jInternal_InfoLog,
+			JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup) {
 		this.jInternal_TelaCadastro_Etapa = jInternal_TelaCadastro_Etapa;
 		this.jInternal_TelaCadastro_Projeto = jInternal_TelaCadastro_Projeto;
 		this.jInternal_TelaCadastro_Pessoa = jInternal_TelaCadastro_Pessoa;
@@ -174,7 +177,7 @@ public class Controlador_Principal {
 		this.jInternal_TelaBackups = jInternal_TelaBackups;
 		this.jInternal_TabelaLogs = jInternal_TabelaLogs;
 		this.jInternal_InfoLog = jInternal_InfoLog;
-		
+		this.jInternal_TelaAgendarBackup = jInternal_TelaAgendarBackup;
 	}
 
 	public void adicionarTableModels() {
@@ -546,7 +549,7 @@ public class Controlador_Principal {
 								DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 								
 								for(int i = 0; i < tableModel.getRowCount(); i++)
-									tableModel.removeRow(i);
+									tableModel.removeRow(0);
 								tableModel.fireTableDataChanged();
 								
 								String[] rowData;
@@ -1080,6 +1083,7 @@ public class Controlador_Principal {
 	public JInternal_TelaInfoProjeto_Etapas getjInternal_TelaInfoProjeto_Etapas() {return jInternal_TelaInfoProjeto_Etapas;}
 	public JInternal_TelaInfoPessoa_Projetos getjInternal_TelaInfoPessoa_Projetos() {return jInternal_TelaInfoPessoa_Projetos;}
 	public JInternal_TelaInfoProjeto_Etapas_Simples getjInternal_TelaInfoProjeto_Etapas_Simples() {return jInternal_TelaInfoProjeto_Etapas_Simples;}
+	public JInternal_TelaAgendarBackup getjInternal_TelaAgendarBackup() {return jInternal_TelaAgendarBackup;}
 	
 	public JInternal_InfoLog getjInternal_InfoLog() {return jInternal_InfoLog;}
 	public JInternal_TabelaLogs getjInternal_TabelaLogs() {return jInternal_TabelaLogs;}

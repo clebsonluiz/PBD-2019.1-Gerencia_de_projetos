@@ -1,6 +1,10 @@
 package br.com.pbd2019_1.app;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Date;
 
 import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
@@ -10,14 +14,21 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import com.itextpdf.text.DocumentException;
 
 import br.com.pbd2019_1.controll.Controlador_Principal;
+import br.com.pbd2019_1.dao.DAOConfigDefault;
+import br.com.pbd2019_1.dao.DAOResBackup;
+import br.com.pbd2019_1.entidade.Backup;
+import br.com.pbd2019_1.entidade.ConfigDefault;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
+import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
+import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_InfoLog;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
+import br.com.pbd2019_1.view.JInternal_TelaAgendarBackup;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
@@ -32,8 +43,16 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
 import br.com.pbd2019_1.view.JanelaLoading;
 import br.com.pbd2019_1.view.JanelaPrincipal;
+import br.com.pbd2019_1.view.MeuJDialog;
 
-public class Principal {
+public class Principal{
+	
+	static boolean isEfetuado = false;
+//	static Long tempoEntreVerificacao = (60000l * 30l); //30 min
+	static Long tempoEntreVerificacao = (60000l * 1l); //1 min
+	static Long tempo1dia = (60000l * 60l) * 24l;
+//	static Long tempo1dia = (60000l * 60l);
+	static Long tempoEspera = 0l;
 	
 	public static void main(String[] args) throws FileNotFoundException, DocumentException, BOException, DAOException {
 		
@@ -150,6 +169,7 @@ public class Principal {
 		JInternal_TelaBackups jInternal_TelaBackups = new JInternal_TelaBackups();
 		JInternal_TabelaLogs jInternal_TabelaLogs = new JInternal_TabelaLogs();
 		JInternal_InfoLog jInternal_InfoLog = new JInternal_InfoLog();
+		JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup = new JInternal_TelaAgendarBackup();
 		
 		janelaLoading.etapaAtual("Restante das Telas Carregadas!", 70);
 		janelaLoading.etapaAtual("Área de Trabalho!", 70);
@@ -176,6 +196,7 @@ public class Principal {
 		jDesktopPane.add(jInternal_TelaBackups);
 		jDesktopPane.add(jInternal_TabelaLogs);
 		jDesktopPane.add(jInternal_InfoLog);
+		jDesktopPane.add(jInternal_TelaAgendarBackup);
 		jDesktopPane.add(JInternal_Backup_Efetuando.getInstance());
 		
 		janelaLoading.etapaAtual("Telas Incorporadas!", 80);
@@ -201,7 +222,8 @@ public class Principal {
 				jInternal_TabelaPessoasColaboradores,
 				jInternal_TelaBackups,
 				jInternal_TabelaLogs,
-				jInternal_InfoLog);
+				jInternal_InfoLog,
+				jInternal_TelaAgendarBackup);
 		
 		janelaLoading.etapaAtual("Parâmetros JInternals Carregado!", 90);
 		janelaLoading.etapaAtual("Adicionando TableModels!", 90);
@@ -220,6 +242,71 @@ public class Principal {
 		
 		janela.setVisible(true);
 		
+		new Thread(()->
+		{
+			while(true)
+			{
+				try 
+				{
+					if(isEfetuado)
+					{
+						tempoEspera = (tempo1dia - tempoEntreVerificacao);
+						isEfetuado = false;
+					}
+					else
+					{
+						tempoEspera = tempoEntreVerificacao;
+					}
+
+					Thread.sleep(tempoEspera);
+
+					ConfigDefault config = DAOConfigDefault.loadConfig();
+
+					if(config != null && config.getHora_bakup() != null && config.getHora_bakup().length() == 8)
+					{
+						int[] hora = DateUtil.TimeUtil.horario(config.getHora_bakup());
+
+						if(LocalTime.now().isAfter(LocalTime.of(hora[0], hora[1], hora[2])))
+						{
+							String arquivoNome = "PBD_AUTO_BACKUP" + "_" + new SimpleDateFormat("HH-mm-ss").format(new Date());
+							String arquivoPathParent = "C:\\PBD_BACKUP\\PBD";
+							String arquivoPathAbsolute = arquivoPathParent + "\\" + arquivoNome;
+
+							Backup b = new Backup();
+							b.setAutor_backup("BACKUP AUTOMATICO");
+							b.setData_backup(new Date());
+							b.setLocal_backup(arquivoPathAbsolute);
+
+							try 
+							{
+								DAOResBackup.getInstance().executarOperacaoBackup(arquivoPathParent, arquivoNome, "postgres", "13111996", DAOResBackup.BACKUP);
+								b.setStatus_backup(Backup.EFETUADO);
+								Fachada.getInstance().inserir(b);
+								isEfetuado = true;
+							}
+							catch (ValidacaoException e) 
+							{
+								e.printStackTrace();
+								try 
+								{
+									b.setStatus_backup(Backup.ERRO);
+									Fachada.getInstance().inserir(b);
+								} 
+								catch (ValidacaoException e1) 
+								{
+									MeuJDialog.exibirAlertaErro(null, "Erro", e1.getMessage());
+								}
+								MeuJDialog.exibirAlertaErro(null, "ERRO AO FAZER BACKUP AUTOMATICO", e.getMessage());
+							}
+						}
+					}
+				}
+				catch (ClassNotFoundException | IOException | InterruptedException e) 
+				{
+					MeuJDialog.exibirAlertaErro(null, "ERRO AO FAZER BACKUP AUTOMATICO", e.getMessage());
+				}
+			}
+		}).start();
 	}
 	
 }

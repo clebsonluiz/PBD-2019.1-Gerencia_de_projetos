@@ -95,6 +95,7 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		} catch (NoResultException e) {
 			e.printStackTrace();
 			pessoa = null;
+			throw new DAOException("Não existe uma pessoa com esse login e senha");
 		} catch (Exception e) {
 			e.printStackTrace();
 			

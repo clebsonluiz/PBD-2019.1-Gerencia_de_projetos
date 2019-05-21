@@ -135,6 +135,17 @@ public class DateUtil {
 			
 			return horario_1.isBefore(horario_2);
 			
+		}
+		
+		/**
+		 * Calcula se um determinado horario antecede o outro <br>
+		 * horario1 antecede horario2 ? <br>
+		 * @param horario1 Horario1
+		 * @param horario2 Horario2
+		 * */
+		public static boolean isAntes(LocalTime horario1, LocalTime horario2) 
+		{
+			return horario1.isBefore(horario2);
 		} 
 	}
 	

@@ -94,4 +94,22 @@ public class DAOConfigDefault {
 		}
 	}
 	
+	public static void setHorarioAgenda(String hora_backup) 
+	{
+		try 
+		{
+			ConfigDefault config = loadConfig();
+			config.setHora_bakup(hora_backup);
+			saveConfig(config);
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		} 
+		catch (ClassNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 }
