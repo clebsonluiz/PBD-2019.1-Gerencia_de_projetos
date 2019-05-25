@@ -21,9 +21,9 @@ import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Projeto;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.MeuJDialog;
+import br.com.pbd2019_1.view.TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.TelaEtapa;
-import br.com.pbd2019_1.view.TelaPessoa;
 import br.com.pbd2019_1.view.TelaProjeto;
 
 public class Controlador_Cadastro {
@@ -70,7 +70,7 @@ public class Controlador_Cadastro {
 				//TODO - Cadastro Pessoa
 				try 
 				{
-					TelaPessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa();
+					TelaCadastro_Pessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa();
 					String nome = telaPessoa.getNomeField().getTexto();
 					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
 					Date data = telaPessoa.getNascimentoDateChooser().getDate();

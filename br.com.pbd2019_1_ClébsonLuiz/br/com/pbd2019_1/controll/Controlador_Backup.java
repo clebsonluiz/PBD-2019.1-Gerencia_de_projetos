@@ -255,6 +255,24 @@ public class Controlador_Backup implements Observer, ActionListener{
 				MeuJDialog.exibirAlertaErro(null, "ERRO AO FAZER BACKUP", e.getMessage());
 			}
 		}
+		else
+		{
+			if (o instanceof Botao)
+			{
+				try 
+				{
+					controlador_Principal.sair();
+				}
+				catch (PropertyVetoException e) 
+				{
+					MeuJDialog.exibirAlertaErro(null, "Erro ao deslogar", e.getMessage());
+				}
+			}
+			else if (o instanceof JFrame)
+			{
+				System.exit(0);
+			}
+		}
 	}
 	
 

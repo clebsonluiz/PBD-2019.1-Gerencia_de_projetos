@@ -12,9 +12,9 @@ public class JInternal_TelaInfoPessoa extends JInternalAbstract {
 	
 	public JInternal_TelaInfoPessoa() {
 		super("Info Pessoa");
-		setMinimumSize(new Dimension(350, 450));
-		setPreferredSize(new Dimension(350, 450));
-		setSize(getPreferredSize());
+		setMinimumSize(new Dimension(340, 460));
+		setPreferredSize(new Dimension(340, 460));
+		setSize(new Dimension(340, 460));
 		telaInfoPessoa = new TelaInfoPessoa();
 		
 		telaInfoPessoa.getTelaContatoCaracteristica().getBtAdicionar().setVisible(false);
@@ -30,7 +30,8 @@ public class JInternal_TelaInfoPessoa extends JInternalAbstract {
 	}
 
 	public void queroFoco() throws PropertyVetoException {
-		telaInfoPessoa.getTelaPessoa().getExibirSenhaChbx().setSelected(false);
+		telaInfoPessoa.getTelaMiniPessoa2().getExibirSenhaChbx().setSelected(false);
+//		telaInfoPessoa.getTelaPessoa().getExibirSenhaChbx().setSelected(false);
 		super.queroFoco();
 	}
 }

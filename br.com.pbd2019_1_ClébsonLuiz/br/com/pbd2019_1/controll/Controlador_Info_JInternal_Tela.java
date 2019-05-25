@@ -48,7 +48,8 @@ import br.com.pbd2019_1.view.TelaInfoPessoa;
 import br.com.pbd2019_1.view.TelaInfoProjeto;
 import br.com.pbd2019_1.view.TelaInfoTarefa;
 import br.com.pbd2019_1.view.TelaInserirSQL;
-import br.com.pbd2019_1.view.TelaPessoa;
+import br.com.pbd2019_1.view.TelaMiniPessoa1;
+import br.com.pbd2019_1.view.TelaMiniPessoa2;
 import br.com.pbd2019_1.view.TelaProjeto;
 
 public class Controlador_Info_JInternal_Tela {
@@ -291,18 +292,16 @@ public class Controlador_Info_JInternal_Tela {
 
 	private void adicionarEventoJInternal(JInternal_TelaInfoPessoa telaInfoPessoa) {
 		
-		telaInfoPessoa.getTelaInfoPessoa().getTelaPessoa().getBotao()
+		telaInfoPessoa.getTelaInfoPessoa().getTelaMiniPessoa1().getBotao()
 			.addActionListener(ActionEvent->{
 				//TODO - Update Pessoa 
 				try 
 				{
-					TelaPessoa telaPessoa = telaInfoPessoa.getTelaInfoPessoa().getTelaPessoa();
+					TelaMiniPessoa1 telaPessoa = telaInfoPessoa.getTelaInfoPessoa().getTelaMiniPessoa1();
 					String nome = telaPessoa.getNomeField().getTexto();
 					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
 					Date data = telaPessoa.getNascimentoDateChooser().getDate();
 					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
-					String login = telaPessoa.getLoginField().getTexto();
-					String senha = telaPessoa.getSenhaField().getTexto();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
 					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Outrem());
@@ -311,14 +310,12 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.getPessoa_Outrem().setCpf(cpf);
 					controlador_Principal.getPessoa_Outrem().setData_nascimento(DateUtil.getDateSQL(data));
 					controlador_Principal.getPessoa_Outrem().setSexo(sexo);
-					controlador_Principal.getPessoa_Outrem().setUser_login(login);
-					controlador_Principal.getPessoa_Outrem().setUser_senha(senha);
 					controlador_Principal.getPessoa_Outrem().setDisponibilidade(disponivel);
 					Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Outrem());
 					controlador_Principal.gettPessoa().fireTableDataChanged();
 					
 					telaInfoPessoa.getTelaInfoPessoa()
-					.getTelaPessoa()
+					.getTelaMiniPessoa1()
 					.getTelaCadastroEdicao()
 					.escondeBtn();
 					
@@ -334,6 +331,40 @@ public class Controlador_Info_JInternal_Tela {
 					MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar dados", e.getMessage());
 				}
 			});
+		
+		telaInfoPessoa.getTelaInfoPessoa().getTelaMiniPessoa2().getBotao1()
+		.addActionListener(ActionEvent->{
+			//TODO - Update Pessoa 
+			try 
+			{
+				TelaMiniPessoa2 telaPessoa = telaInfoPessoa.getTelaInfoPessoa().getTelaMiniPessoa2();
+				String login = telaPessoa.getLoginField().getTexto();
+				String senha = telaPessoa.getSenhaField().getTexto();
+
+				String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Outrem());
+				
+				controlador_Principal.getPessoa_Outrem().setUser_login(login);
+				controlador_Principal.getPessoa_Outrem().setUser_senha(senha);
+				Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Outrem());
+				controlador_Principal.gettPessoa().fireTableDataChanged();
+				
+				telaInfoPessoa.getTelaInfoPessoa().getTelaMiniPessoa2()
+				.getTelaCadastroEdicao()
+				.escondeBtn();
+				
+				LogUpdate log = new LogUpdate();
+				Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
+						antes,
+						controlador_Principal.getPessoa_Outrem(), controlador_Principal.getPessoa_Logada(), log);
+				controlador_Principal.gettLogUpdate().addValor(log);
+				
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar dados", e.getMessage());
+			}
+		});
+		
 		
 		telaInfoPessoa.getTelaInfoPessoa().getTelaContatoCaracteristica().getBotao()
 		.addActionListener(ActionEvent->{
@@ -591,20 +622,18 @@ public class Controlador_Info_JInternal_Tela {
 
 	private void adicionarEventoJInternal(JInternal_TelaInfoPessoa_Projetos telaInfoPessoaProjetos) {
 		
-		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos().getTelaInfoPessoa().getTelaPessoa().getBotao()
+		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos().getTelaInfoPessoa().getTelaMiniPessoa1().getBotao()
 			.addActionListener(ActionEvent->{
 				//TODO - Update Pessoa
 				try 
 				{
-					TelaPessoa telaPessoa = telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
-							.getTelaInfoPessoa().getTelaPessoa();
+					TelaMiniPessoa1 telaPessoa = telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
+							.getTelaInfoPessoa().getTelaMiniPessoa1();
 
 					String nome = telaPessoa.getNomeField().getTexto();
 					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
 					Date data = telaPessoa.getNascimentoDateChooser().getDate();
 					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
-					String login = telaPessoa.getLoginField().getTexto();
-					String senha = telaPessoa.getSenhaField().getTexto();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
 					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Logada());
@@ -613,8 +642,6 @@ public class Controlador_Info_JInternal_Tela {
 					controlador_Principal.getPessoa_Logada().setCpf(cpf);
 					controlador_Principal.getPessoa_Logada().setData_nascimento(DateUtil.getDateSQL(data));
 					controlador_Principal.getPessoa_Logada().setSexo(sexo);
-					controlador_Principal.getPessoa_Logada().setUser_login(login);
-					controlador_Principal.getPessoa_Logada().setUser_senha(senha);
 					controlador_Principal.getPessoa_Logada().setDisponibilidade(disponivel);
 					Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Logada());
 					controlador_Principal.gettPessoa().fireTableDataChanged();
@@ -622,7 +649,7 @@ public class Controlador_Info_JInternal_Tela {
 					telaInfoPessoaProjetos
 					.getTelaInfoPessoaProjetos()
 					.getTelaInfoPessoa()
-					.getTelaPessoa()
+					.getTelaMiniPessoa1()
 					.getTelaCadastroEdicao()
 					.escondeBtn();
 					
@@ -639,6 +666,45 @@ public class Controlador_Info_JInternal_Tela {
 				}
 				
 			});
+		
+		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos().getTelaInfoPessoa().getTelaMiniPessoa2().getBotao1()
+		.addActionListener(ActionEvent->{
+			//TODO - Update Pessoa
+			try 
+			{
+				TelaMiniPessoa2 telaPessoa = telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
+						.getTelaInfoPessoa().getTelaMiniPessoa2();
+
+				String login = telaPessoa.getLoginField().getTexto();
+				String senha = telaPessoa.getSenhaField().getTexto();
+
+				String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Logada());
+				
+				controlador_Principal.getPessoa_Logada().setUser_login(login);
+				controlador_Principal.getPessoa_Logada().setUser_senha(senha);
+				Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Logada());
+				controlador_Principal.gettPessoa().fireTableDataChanged();
+				
+				telaInfoPessoaProjetos
+				.getTelaInfoPessoaProjetos()
+				.getTelaInfoPessoa()
+				.getTelaMiniPessoa2()
+				.getTelaCadastroEdicao()
+				.escondeBtn();
+				
+				
+				LogUpdate log = new LogUpdate();
+				Fachada.getInstance().gerarLogUpdate(
+						antes,
+						controlador_Principal.getPessoa_Logada(), controlador_Principal.getPessoa_Logada(), log);
+				controlador_Principal.gettLogUpdate().addValor(log);
+			}
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao Atualizar Info de Pessoas ", e.getMessage());
+			}
+			
+		});
 		
 		telaInfoPessoaProjetos.getTelaInfoPessoaProjetos().getTelaInfoPessoa().getTelaContatoCaracteristica().getBotao()
 		.addActionListener(ActionEvent->{
@@ -1011,19 +1077,24 @@ public class Controlador_Info_JInternal_Tela {
 		
 	}
 	
-	private void preencherTelaPessoa(TelaPessoa telaPessoa, Pessoa pessoa) 
+	private void preencherTelaMiniPessoa1(TelaMiniPessoa1 telaPessoa, Pessoa pessoa) 
 	{
 		telaPessoa.getNomeField().setDescricao("Nome");
 		telaPessoa.getNomeField().setTexto(pessoa.getNome());
 		telaPessoa.getCampoFormatadoCPF().setText(pessoa.getCpf());
 		telaPessoa.getNascimentoDateChooser().setDate(DateUtil.getDate(pessoa.getData_nascimento()));
 		telaPessoa.getSexoComboBox().setSelectedItem(pessoa.getSexo());
+		
+		telaPessoa.getRdbtnSim().setSelected(pessoa.isDisponibilidade());
+		telaPessoa.getRdbtnNo().setSelected(!pessoa.isDisponibilidade());
+	}
+	
+	private void preencherTelaMiniPessoa2(TelaMiniPessoa2 telaPessoa, Pessoa pessoa) 
+	{
 		telaPessoa.getLoginField().setTexto(pessoa.getUser_login());
 		telaPessoa.getSenhaField().setText("");
 		telaPessoa.getSenhaField().setDescricao("Nova Senha");
 		
-		telaPessoa.getRdbtnSim().setSelected(pessoa.isDisponibilidade());
-		telaPessoa.getRdbtnNo().setSelected(!pessoa.isDisponibilidade());
 	}
 	
 	private void preencherTelaContato(TelaContatoCaracteristica telaContato, Contato contato) 
@@ -1101,8 +1172,11 @@ public class Controlador_Info_JInternal_Tela {
 	
 	private void atualizarDadoPessoa(TelaInfoPessoa tIP, Pessoa p, TCaracteristicaExtra tce) throws ValidacaoException
 	{
-		preencherTelaPessoa(tIP.getTelaPessoa(),p);
-	
+//		preencherTelaPessoa(tIP.getTelaPessoa(),p);
+		preencherTelaMiniPessoa1(tIP.getTelaMiniPessoa1(), p);
+		preencherTelaMiniPessoa2(tIP.getTelaMiniPessoa2(), p);
+		
+		
 		Contato c = Fachada.getInstance().getBoContato().buscarPorPessoa(p);
 		
 		if(c == null) c = new Contato();

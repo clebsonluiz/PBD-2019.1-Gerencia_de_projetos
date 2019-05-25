@@ -21,8 +21,8 @@ public class TelaInfoPessoaProjetos extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		telaInfoPessoa = new TelaInfoPessoa();
-		setMinimumSize(telaInfoPessoa.getMinimumSize());
-		setPreferredSize(telaInfoPessoa.getPreferredSize());
+		setMinimumSize(telaInfoPessoa.getPreferredSize());
+		setPreferredSize(new Dimension(330, 450));
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setResizeWeight(0.25);
 		add(splitPane);
@@ -38,7 +38,7 @@ public class TelaInfoPessoaProjetos extends JPanel {
 		telaColaboracoes = new TelaColaboracoes();
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setPreferredSize(new Dimension(400, 340));
+//		tabbedPane.setPreferredSize(new Dimension(400, 430));
 		
 		tabbedPane.addTab("Projetos", telaProjetos);
 		tabbedPane.addTab("Colaborações", telaColaboracoes);

@@ -3,6 +3,8 @@ package br.com.pbd2019_1.view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
@@ -44,18 +46,24 @@ public class TelaPrincipal extends JPanel {
 		telaLoginSistema = new TelaLoginSistema();
 		telaCadastro_Pessoa = new TelaCadastro_Pessoa();
 		
+		JPanel gridPanel = new JPanel(new GridBagLayout());
+		gridPanel.add(telaCadastro_Pessoa);
+		gridPanel.setBackground(telaCadastro_Pessoa.getBackground());
+
 		panel.add(telaMenu, BorderLayout.WEST);
 		panel.add(jDesktopPane, BorderLayout.CENTER);
 		
 		card.addLayoutComponent(panel, TELA_PRINCIPAL);
 		card.addLayoutComponent(telaLoginSistema, TELA_LOGIN);
-		card.addLayoutComponent(telaCadastro_Pessoa, TELA_CADASTRO_PESSOA);
+		card.addLayoutComponent(gridPanel, TELA_CADASTRO_PESSOA);
 		
 		add(panel);
 		add(telaLoginSistema);
-		add(telaCadastro_Pessoa);
+		add(gridPanel);
 		
 		Botao btn = new Botao("Cancelar", Color.RED.brighter());
+		btn.setPreferredSize(new Dimension(100, 40));
+		
 		btn.addActionListener(ActionEvent->{
 			exibirTela(TELA_LOGIN);
 			telaCadastro_Pessoa.limparCampos();

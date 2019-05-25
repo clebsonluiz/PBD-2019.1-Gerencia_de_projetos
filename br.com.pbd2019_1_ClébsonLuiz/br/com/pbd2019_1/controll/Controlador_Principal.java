@@ -57,9 +57,9 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
 import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.PopUp;
+import br.com.pbd2019_1.view.TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.TelaMenu;
 import br.com.pbd2019_1.view.TelaOpcoes;
-import br.com.pbd2019_1.view.TelaPessoa;
 import br.com.pbd2019_1.view.TelaPrincipal;
 
 public class Controlador_Principal {
@@ -856,7 +856,7 @@ public class Controlador_Principal {
 				//TODO - 
 				try 
 				{
-					TelaPessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
+					TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
 					String nome = telaPessoa.getNomeField().getTexto();
 					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
 					Date data = telaPessoa.getNascimentoDateChooser().getDate();

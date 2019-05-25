@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 
 import br.com.pbd2019_1.entidade.Pessoa;
@@ -124,6 +126,35 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 			entityManager.close();
 		}
 		return pessoas;
+	}
+	
+	public int[] buscarTotalTarefasPessoa(int id) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		
+		int totais[] = null;
+		
+		try 
+		{
+			StoredProcedureQuery query = entityManager.createStoredProcedureQuery("tarefas_pessoa");
+			query.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+			query.setParameter(0, id);
+			totais = (int[]) query.getSingleResult();
+		} 
+		catch (NoResultException e) 
+		{
+			e.printStackTrace();
+			totais = new int[] {0, 0};
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new DAOException("Erro ao buscar todos as Pessoas");
+		}
+		finally
+		{
+			entityManager.close();
+		}
+		return totais;
 	}
 	
 }

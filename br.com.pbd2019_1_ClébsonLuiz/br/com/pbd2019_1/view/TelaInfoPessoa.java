@@ -7,12 +7,16 @@ public class TelaInfoPessoa extends TelaPessoaContatoCaracteristica {
 	private static final long serialVersionUID = 1L;
 
 	public TelaInfoPessoa() {
-		getTelaPessoa().getTelaCadastroEdicao().desabilitar();
+		getTelaMiniPessoa1().getTelaCadastroEdicao().desabilitar();
+		getTelaMiniPessoa2().getTelaCadastroEdicao().desabilitar();
+		
+		getTelaMiniPessoa1().getTelaCadastroEdicao().getBtBotao1().setVisible(false);
+		getTelaMiniPessoa2().getTelaCadastroEdicao().getBtBotao1().setVisible(false);
+		
 		getTelaContatoCaracteristica().getTelaCadastroEdicao().desabilitar();
-		getTelaPessoa().getTelaCadastroEdicao().getBtBotao1().setVisible(false);
 		getTelaContatoCaracteristica().getTelaCadastroEdicao().getBtBotao1().setVisible(false);
-		setMinimumSize(new Dimension(300, 380));
-		//setPreferredSize(new Dimension(310, 420));
+		setMinimumSize(new Dimension(320, 420));
+		setPreferredSize(new Dimension(320, 420));
 		setMaximumSize(new Dimension(600, 420));
 	}
 
