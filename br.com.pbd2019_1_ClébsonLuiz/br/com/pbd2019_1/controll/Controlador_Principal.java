@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -987,13 +986,8 @@ public class Controlador_Principal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
-				tPessoa.addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(pessoa_Logada));
 				jInternal_TabelaPessoas.queroFoco();
 			} 
-			catch (ValidacaoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de pessoas", e.getMessage());
-			}
 			catch (PropertyVetoException e) 
 			{
 				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaPessoas", e.getMessage());

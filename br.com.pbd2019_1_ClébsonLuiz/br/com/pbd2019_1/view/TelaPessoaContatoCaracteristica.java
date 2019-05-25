@@ -13,7 +13,6 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 	private TelaMiniPessoa1 telaMiniPessoa1;
 	private TelaMiniPessoa2 telaMiniPessoa2;
 	
-	
 	private TelaContatoCaracteristica telaContatoCaracteristica;
 	private TelaGraficoPessoa telaGraficoPessoa;
 	private JTabbedPane tabbedPane;
@@ -100,6 +99,10 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 
 	public TelaMiniPessoa2 getTelaMiniPessoa2() {
 		return telaMiniPessoa2;
+	}
+
+	public TelaGraficoPessoa getTelaGraficoPessoa() {
+		return telaGraficoPessoa;
 	}
 	
 }

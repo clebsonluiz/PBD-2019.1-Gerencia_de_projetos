@@ -128,6 +128,29 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		return pessoas;
 	}
 	
+	public List<Pessoa> buscarPessoasDiferentes(int id, String nome, String cpf, String disponibilidade) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		List<Pessoa> pessoas = null;
+		try {
+			pessoas = entityManager.
+					createNamedQuery("Pessoa.buscarPessoasEspecificar", Pessoa.class)
+					.setParameter("id", id)
+					.setParameter("nome", "%" + nome + "%")
+					.setParameter("cpf", "%" + cpf + "%")
+					.setParameter("disponibilidade", "%" + disponibilidade + "%").getResultList();
+					
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			pessoas = new ArrayList<>();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DAOException("Erro ao buscar todos as Pessoas");
+		} finally {
+			entityManager.close();
+		}
+		return pessoas;
+	}
+	
 	public int[] buscarTotalTarefasPessoa(int id) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		
@@ -138,7 +161,8 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 			StoredProcedureQuery query = entityManager.createStoredProcedureQuery("tarefas_pessoa");
 			query.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
 			query.setParameter(0, id);
-			totais = (int[]) query.getSingleResult();
+			Object[] o = (Object[]) query.getSingleResult();
+			totais = new int[] {(int) o[0], (int) o[1]}; 
 		} 
 		catch (NoResultException e) 
 		{
@@ -157,4 +181,33 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		return totais;
 	}
 	
+	public int[] buscarTotalEtapasPessoa(int id) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		
+		int totais[] = null;
+		
+		try 
+		{
+			StoredProcedureQuery query = entityManager.createStoredProcedureQuery("etapas_pessoa");
+			query.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+			query.setParameter(0, id);
+			Object[] o = (Object[]) query.getSingleResult();
+			totais = new int[] {(int) o[0], (int) o[1]}; 
+		} 
+		catch (NoResultException e) 
+		{
+			e.printStackTrace();
+			totais = new int[] {0, 0};
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new DAOException("Erro ao buscar todos as Pessoas");
+		}
+		finally
+		{
+			entityManager.close();
+		}
+		return totais;
+	}
 }

@@ -102,7 +102,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("CADASTRO");
-		log.setData_log(new Date());
+		log.setData_log(new java.util.Date());
 		log.setResponsavel(responsavel.getCpf());
 		
 		if(entidade instanceof CaracteristicaExtra)
@@ -126,7 +126,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("UPDATE");
-		log.setData_log(new Date());
+		log.setData_log(new java.util.Date());
 		log.setResponsavel(responsavel.getCpf());
 		log.setAntes(antes);
 		
@@ -151,7 +151,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("DELETE");
-		log.setData_log(new Date());
+		log.setData_log(new java.util.Date());
 		log.setResponsavel(responsavel.getCpf());
 		log.setAntes(antes);
 		log.setDepois(new String[] {});

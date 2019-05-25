@@ -127,7 +127,7 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		return ((DAOPessoa)this.daoT).buscarPorUsuario(login, SecurityUtil.criptografarSHA2(senha));
 	}
 	
-	public int[] buscarRelacaoTarefas(Pessoa pessoa) throws BOException, DAOException
+/*	public int[] buscarRelacaoTarefas(Pessoa pessoa) throws BOException, DAOException
 	{
 		List<Object[]> list = ((DAOPessoa)this.daoT).buscaSQLGenerica("select * from tarefas_pessoa("+ pessoa.getId() +")");
 		
@@ -137,7 +137,7 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		int tarefas_total = (int) obj[1];
 		
 		return new int[] { tarefas_finalizadas , tarefas_total};
-	}
+	}*/
 	
 	public List<Pessoa> buscarPessoasDiferentesDe(Pessoa pessoa) throws BOException, DAOException
 	{
@@ -145,6 +145,34 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 			throw new BOException("Erro ao buscar pessoas");
 		List<Pessoa> list = ((DAOPessoa)this.daoT).buscarPessoasDiferentes(pessoa.getId());
 		return list;
+	}
+	
+	public List<Pessoa> buscarPessoasEspecificarDiferentesDe(
+			Pessoa pessoa,
+			String nome,
+			String cpf,
+			String disponibilidade
+			) throws BOException, DAOException
+	{
+		if(pessoa == null || pessoa.getId() < 0)
+			throw new BOException("Erro ao buscar pessoas");
+		List<Pessoa> list = ((DAOPessoa)this.daoT).buscarPessoasDiferentes(pessoa.getId(), nome, cpf, disponibilidade);
+		return list;
+	}
+	
+	public int[] buscarDesempenhoTarefas(Pessoa pessoa) throws BOException, DAOException
+	{
+		if(pessoa == null || pessoa.getId() <= 0)
+			throw new BOException("Erro ao desenpenho da pessoa");
+		
+		return ((DAOPessoa)this.daoT).buscarTotalTarefasPessoa(pessoa.getId());
+	}
+	
+	public int[] buscarDesempenhoEtapas(Pessoa pessoa) throws BOException, DAOException
+	{
+		if(pessoa == null || pessoa.getId() <= 0)
+			throw new BOException("Erro ao desenpenho da pessoa");
+		return ((DAOPessoa)this.daoT).buscarTotalEtapasPessoa(pessoa.getId());
 	}
 	
 }

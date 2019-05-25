@@ -40,8 +40,8 @@ public class TelaInfoPessoaProjetos extends JPanel {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 //		tabbedPane.setPreferredSize(new Dimension(400, 430));
 		
-		tabbedPane.addTab("Projetos", telaProjetos);
-		tabbedPane.addTab("Colaborações", telaColaboracoes);
+		tabbedPane.addTab("Meus Projetos", telaProjetos);
+		tabbedPane.addTab("Minhas Colaborações", telaColaboracoes);
 		
 		splitPane.setRightComponent(tabbedPane);
 		

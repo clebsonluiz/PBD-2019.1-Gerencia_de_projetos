@@ -11,6 +11,7 @@ import com.itextpdf.text.DocumentException;
 
 import br.com.pbd2019_1.dao.DAOConfigDefault;
 import br.com.pbd2019_1.dao.DAOResRelatorio;
+import br.com.pbd2019_1.dao.DAOResSQL;
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
@@ -44,6 +45,7 @@ import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.MeuJFileChooser;
 import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
+import br.com.pbd2019_1.view.TelaGraficoPessoa;
 import br.com.pbd2019_1.view.TelaInfoPessoa;
 import br.com.pbd2019_1.view.TelaInfoProjeto;
 import br.com.pbd2019_1.view.TelaInfoTarefa;
@@ -168,6 +170,41 @@ public class Controlador_Info_JInternal_Tela {
 				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de pessoas", e.getMessage());
 			}
 		});
+		
+		jInternal_TabelaPessoasColaboradores
+		.getTelaPessoas()
+		.getBotao()
+		.addActionListener(ActionEvent->
+		{
+			try
+			{
+				int index = jInternal_TabelaPessoasColaboradores.getTelaPessoas().getEspecificarComboBox().getSelectedIndex();
+
+				if(index == 0)
+				{
+					controlador_Principal.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(controlador_Principal.getPessoa_Logada()));
+				}
+				else
+				{
+					String nome = jInternal_TabelaPessoasColaboradores
+							.getTelaPessoas().getNomeCampoTexto().getTexto();
+					String cpf = jInternal_TabelaPessoasColaboradores
+							.getTelaPessoas().getCpfCampoTexto().getTexto();
+					int i = jInternal_TabelaPessoasColaboradores
+							.getTelaPessoas().getDisponivelComboBox().getSelectedIndex();
+
+					String disponibilidade = (i == 0)? "": (i == 1)? "true": "false";
+
+					controlador_Principal.gettPessoa().addAll(
+							(List<Pessoa>) Fachada.getInstance()
+							.getBoPessoa()
+							.buscarPessoasEspecificarDiferentesDe(controlador_Principal.getPessoa_Logada(), nome, cpf, disponibilidade)
+							);
+				}
+			} catch (ValidacaoException e) {
+				MeuJDialog.exibirAlertaErro(null, "Erro", e.getMessage());
+			}
+		});
 	}
 
 	private void adicionarEventoJInternal(JInternal_TabelaPessoas jInternal_TabelaPessoas) {
@@ -186,6 +223,41 @@ public class Controlador_Info_JInternal_Tela {
 				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela de Cadastro", e.getMessage());
 			}
 			
+		});
+		
+		jInternal_TabelaPessoas
+		.getTelaPessoas()
+		.getBotao()
+		.addActionListener(ActionEvent->
+		{
+			try
+			{
+				int index = jInternal_TabelaPessoas.getTelaPessoas().getEspecificarComboBox().getSelectedIndex();
+
+				if(index == 0)
+				{
+					controlador_Principal.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(controlador_Principal.getPessoa_Logada()));
+				}
+				else
+				{
+					String nome = jInternal_TabelaPessoas
+							.getTelaPessoas().getNomeCampoTexto().getTexto();
+					String cpf = jInternal_TabelaPessoas
+							.getTelaPessoas().getCpfCampoTexto().getTexto();
+					int i = jInternal_TabelaPessoas
+							.getTelaPessoas().getDisponivelComboBox().getSelectedIndex();
+
+					String disponibilidade = (i == 0)? "": (i == 1)? "true": "false";
+
+					controlador_Principal.gettPessoa().addAll(
+							(List<Pessoa>) Fachada.getInstance()
+							.getBoPessoa()
+							.buscarPessoasEspecificarDiferentesDe(controlador_Principal.getPessoa_Logada(), nome, cpf, disponibilidade)
+							);
+				}
+			} catch (ValidacaoException e) {
+				MeuJDialog.exibirAlertaErro(null, "Erro", e.getMessage());
+			}
 		});
 		
 	}
@@ -281,11 +353,38 @@ public class Controlador_Info_JInternal_Tela {
 		telaInserirSQL.getBtnSalvar()
 		.addActionListener(ActionEvent->{
 			//TODO - Botao Salvar
+			int op = MeuJFileChooser.getInstance().exibirParaSQL(jInternal_TelaInserirSQL);
+			if(op == MeuJFileChooser.APPROVE_OPTION)
+			{
+				try 
+				{
+					String caminho = MeuJFileChooser.getInstance().getSelectedFile().getAbsolutePath();
+					DAOResSQL.EscreverArquivo(caminho, telaInserirSQL.getTextArea().getText());
+				}
+				catch (ValidacaoException e) 
+				{
+					MeuJDialog.exibirAlertaErro(jInternal_TelaInserirSQL, "Erro", e.getMessage());
+				}
+			}
 		});
 
 		telaInserirSQL.getBtnAbrir()
 		.addActionListener(ActionEvent->{
 			//TODO - Botao abrir
+			int op = MeuJFileChooser.getInstance().exibirParaSQL(jInternal_TelaInserirSQL);
+			if(op == MeuJFileChooser.APPROVE_OPTION)
+			{
+				try 
+				{
+					String caminho = MeuJFileChooser.getInstance().getSelectedFile().getAbsolutePath();
+					String textoSQL = DAOResSQL.LerArquivo(caminho);
+					telaInserirSQL.getTextArea().setText(textoSQL);
+				}
+				catch (ValidacaoException e) 
+				{
+					MeuJDialog.exibirAlertaErro(jInternal_TelaInserirSQL, "Erro", e.getMessage());
+				}
+			}
 		});
 	}
 	
@@ -601,17 +700,10 @@ public class Controlador_Info_JInternal_Tela {
 		
 		telaInfoProjetoEtapas.getTelaProjeto_Etapas().getTelaColaboradores()
 			.getBtAdicionarColaborador().addActionListener(ActionEvent->{
-				
-				
 				try
 				{
-					controlador_Principal.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(controlador_Principal.getPessoa_Logada()));
 					controlador_Principal.getjInternal_TabelaPessoasColaboradores().queroFoco();
 				} 
-				catch (ValidacaoException e) 
-				{
-					MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de pessoas", e.getMessage());
-				}
 				catch (PropertyVetoException e) 
 				{
 					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
@@ -1170,9 +1262,15 @@ public class Controlador_Info_JInternal_Tela {
 		p.setColaboradores(lColaborador);
 	}
 	
+	private void atualizarDadoPessoaDesempenho(TelaGraficoPessoa tgp, Pessoa pessoa) throws ValidacaoException
+	{
+		int[] etapas = Fachada.getInstance().getBoPessoa().buscarDesempenhoEtapas(pessoa);
+		int[] tarefas = Fachada.getInstance().getBoPessoa().buscarDesempenhoTarefas(pessoa);
+		tgp.atualizarGrafico(tarefas, etapas);
+	}
+	
 	private void atualizarDadoPessoa(TelaInfoPessoa tIP, Pessoa p, TCaracteristicaExtra tce) throws ValidacaoException
 	{
-//		preencherTelaPessoa(tIP.getTelaPessoa(),p);
 		preencherTelaMiniPessoa1(tIP.getTelaMiniPessoa1(), p);
 		preencherTelaMiniPessoa2(tIP.getTelaMiniPessoa2(), p);
 		
@@ -1184,6 +1282,7 @@ public class Controlador_Info_JInternal_Tela {
 		List<CaracteristicaExtra> lc = Fachada.getInstance().getBoCaracteristicaExtra().buscaPorPessoa(p);
 		
 		preencherTelaContato(tIP.getTelaContatoCaracteristica(), c);
+		atualizarDadoPessoaDesempenho(tIP.getTelaGraficoPessoa(), p);
 		
 		p.setContato(c);
 		p.setCaracteristicas(lc);
