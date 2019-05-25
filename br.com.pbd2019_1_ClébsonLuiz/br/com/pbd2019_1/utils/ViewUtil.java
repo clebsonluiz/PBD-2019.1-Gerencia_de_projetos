@@ -373,6 +373,16 @@ public interface ViewUtil {
 							image = IMAGEM_FUNDO_LAMPADA_1;
 						else if(config.getImagemFundoDefault().equals("3"))
 							image = IMAGEM_FUNDO_LAMPADA_2;
+						else if(config.getImagemFundoDefault().equals("4"))
+							image = IMAGEM_FUNDO_CAFE;
+						else if(config.getImagemFundoDefault().equals("5"))
+							image = IMAGEM_FUNDO_COMPUTADOR_CAFE;
+						else if(config.getImagemFundoDefault().equals("6"))
+							image = IMAGEM_FUNDO_MARTE;
+						else if(config.getImagemFundoDefault().equals("7"))
+							image = IMAGEM_FUNDO_CIRCUITO;
+						else if(config.getImagemFundoDefault().equals("8"))
+							image = IMAGEM_FUNDO_FONES;
 						else
 							image = getIconImage(config.getImagemFundoDefault());
 						return image;
@@ -403,17 +413,36 @@ public interface ViewUtil {
 			public static final ImageIcon ICONE_ABRIR_ARQUIVO = getIcon("Freepik\\open-folder-with-document");
 			public static final ImageIcon ICONE_LUPA = getIcon("Freepik\\loupe");
 			
+			public static final ImageIcon ICONE_USER = getIcon("Smashicons\\user");
+			public static final ImageIcon ICONE_PEOPLE = getIcon("Freepik\\multiple-users-silhouette");
+			public static final ImageIcon ICONE_SQL = getIcon("Freepik\\sql-file-format-symbol (2)");
+			public static final ImageIcon ICONE_LOG = getIcon("FlatIcons\\log");
+			public static final ImageIcon ICONE_BACKUP = getIcon("Freepik\\databases-symbol");
+			public static final ImageIcon ICONE_SOBRE = getIcon("Eucalyp\\computer");
+			public static final ImageIcon ICONE_LOGOUT = getIcon("Freepik\\exit");
+			
+			
 			public static final ImageIcon ICONE_WARNING = getIcon("Freepik\\warning");
 			public static final ImageIcon ICONE_WARNING_MENOR = getIcon("Freepik\\warning (1)");
 			public static final ImageIcon ICONE_WARNING_MENORZINHO = getIcon("Freepik\\warning (2)");
 			public static final ImageIcon ICONE_PROBLEM = getIcon("Freepik\\problem (1)");
 			public static final ImageIcon ICONE_PROBLEM_MENOR = getIcon("Freepik\\problem");
 			public static final ImageIcon IMAGEM_CARREGAMENTO = getIcon("Outros\\FundoTelaCarregamento");
+			
 			public static final ImageIcon IMAGEM_FUNDO = getIcon("Outros\\PhotoFunia", "jpg");
 			public static final ImageIcon IMAGEM_FUNDO_LAMPADA_1 = getIcon("Pixabay\\light-bulb-503881_1920", "jpg");
 			public static final ImageIcon IMAGEM_FUNDO_LAMPADA_2 = getIcon("Pixabay\\light-bulb-1246043_1920", "jpg");
 			
+			public static final ImageIcon IMAGEM_FUNDO_CAFE = getIcon("Pixabay\\coffee-1869647_1920", "jpg");
+			public static final ImageIcon IMAGEM_FUNDO_COMPUTADOR_CAFE = getIcon("Pixabay\\beverage-3157395_1920", "jpg");
+			public static final ImageIcon IMAGEM_FUNDO_MARTE = getIcon("Pixabay\\mars-67522_1920", "jpg");
+			public static final ImageIcon IMAGEM_FUNDO_CIRCUITO = getIcon("Pixabay\\board-453758_1920", "jpg");
+			public static final ImageIcon IMAGEM_FUNDO_FONES = getIcon("Pixabay\\headphones-690685_1920", "jpg");
+			
+			
 			public static final ImageIcon IMAGEM_LOGO_ITEXT = getIcon("Outros\\iText_placeholder");
+			public static final ImageIcon IMAGEM_LOGO_UAST = getIcon("Outros\\ufrpe-uast-logos-200");
+			
 			
 			
 	}

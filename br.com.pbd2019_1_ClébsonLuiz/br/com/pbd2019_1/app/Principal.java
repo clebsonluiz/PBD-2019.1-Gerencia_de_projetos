@@ -25,6 +25,7 @@ import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_InfoLog;
+import br.com.pbd2019_1.view.JInternal_Sobre;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
@@ -171,6 +172,8 @@ public class Principal{
 		JInternal_InfoLog jInternal_InfoLog = new JInternal_InfoLog();
 		JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup = new JInternal_TelaAgendarBackup();
 		
+		JInternal_Sobre jInternal_Sobre = new JInternal_Sobre();
+		
 		janelaLoading.etapaAtual("Restante das Telas Carregadas!", 70);
 		janelaLoading.etapaAtual("Área de Trabalho!", 70);
 		
@@ -197,6 +200,7 @@ public class Principal{
 		jDesktopPane.add(jInternal_TabelaLogs);
 		jDesktopPane.add(jInternal_InfoLog);
 		jDesktopPane.add(jInternal_TelaAgendarBackup);
+		jDesktopPane.add(jInternal_Sobre);
 		jDesktopPane.add(JInternal_Backup_Efetuando.getInstance());
 		
 		janelaLoading.etapaAtual("Telas Incorporadas!", 80);
@@ -223,7 +227,8 @@ public class Principal{
 				jInternal_TelaBackups,
 				jInternal_TabelaLogs,
 				jInternal_InfoLog,
-				jInternal_TelaAgendarBackup);
+				jInternal_TelaAgendarBackup,
+				jInternal_Sobre);
 		
 		janelaLoading.etapaAtual("Parâmetros JInternals Carregado!", 90);
 		janelaLoading.etapaAtual("Adicionando TableModels!", 90);

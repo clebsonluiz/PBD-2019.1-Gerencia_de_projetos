@@ -48,7 +48,7 @@ public class TelaPessoas extends JPanel {
 		add(panel_1, BorderLayout.NORTH);
 		
 		especificarComboBox = new JComboBox<String>();
-		especificarComboBox.setModel(new DefaultComboBoxModel(new String[] {"TODOS", "ESPECIFICAR"}));
+		especificarComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TODOS", "ESPECIFICAR"}));
 		especificarComboBox.setSelectedIndex(0);
 		panel_1.add(especificarComboBox);
 		
@@ -73,7 +73,7 @@ public class TelaPessoas extends JPanel {
 		cpfCampoTexto.setPreferredSize(new Dimension(100, 40));
 		
 		disponivelComboBox = new JComboBox<String>();
-		disponivelComboBox.setModel(new DefaultComboBoxModel(new String[] {"TODOS", "DISPON\u00CDVEIS", "INDISPON\u00CDVEIS"}));
+		disponivelComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TODOS", "DISPON\u00CDVEIS", "INDISPON\u00CDVEIS"}));
 		disponivelComboBox.setSelectedIndex(0);
 		panel_1.add(disponivelComboBox);
 		

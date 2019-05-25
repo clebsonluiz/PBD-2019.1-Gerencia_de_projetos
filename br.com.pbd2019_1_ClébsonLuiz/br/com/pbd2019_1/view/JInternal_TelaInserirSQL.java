@@ -11,8 +11,8 @@ public class JInternal_TelaInserirSQL extends JInternalAbstract {
 	
 	public JInternal_TelaInserirSQL() {
 		super("Inserir SQL");
-		setMinimumSize(new Dimension(300, 350));
-		setPreferredSize(new Dimension(300, 350));
+		setMinimumSize(new Dimension(500, 400));
+		setPreferredSize(new Dimension(500, 400));
 		setSize(getPreferredSize());
 		telaInserirSQL = new TelaInserirSQL();
 		add(telaInserirSQL, BorderLayout.CENTER);

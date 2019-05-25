@@ -38,6 +38,7 @@ import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.JInternalAbstract;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_InfoLog;
+import br.com.pbd2019_1.view.JInternal_Sobre;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
@@ -110,6 +111,7 @@ public class Controlador_Principal {
 	private JInternal_TabelaLogs jInternal_TabelaLogs;
 	private JInternal_InfoLog jInternal_InfoLog;
 	private JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup;
+	private JInternal_Sobre jInternal_Sobre;
 	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
@@ -159,7 +161,8 @@ public class Controlador_Principal {
 			JInternal_TelaBackups jInternal_TelaBackups, 
 			JInternal_TabelaLogs jInternal_TabelaLogs,
 			JInternal_InfoLog jInternal_InfoLog,
-			JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup) {
+			JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup,
+			JInternal_Sobre jInternal_Sobre) {
 		this.jInternal_TelaCadastro_Etapa = jInternal_TelaCadastro_Etapa;
 		this.jInternal_TelaCadastro_Projeto = jInternal_TelaCadastro_Projeto;
 		this.jInternal_TelaCadastro_Pessoa = jInternal_TelaCadastro_Pessoa;
@@ -177,6 +180,7 @@ public class Controlador_Principal {
 		this.jInternal_TabelaLogs = jInternal_TabelaLogs;
 		this.jInternal_InfoLog = jInternal_InfoLog;
 		this.jInternal_TelaAgendarBackup = jInternal_TelaAgendarBackup;
+		this.jInternal_Sobre = jInternal_Sobre;
 	}
 
 	public void adicionarTableModels() {
@@ -547,14 +551,31 @@ public class Controlador_Principal {
 								
 								DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 								
-								for(int i = 0; i < tableModel.getRowCount(); i++)
+								int index = tableModel.getRowCount();
+								
+								System.out.println(index);
+								
+								for(int i = 0; i < index; i++)
+								{
+									System.out.println(i);
 									tableModel.removeRow(0);
-								tableModel.fireTableDataChanged();
+									tableModel.fireTableRowsDeleted(0, 0);
+									tableModel.fireTableDataChanged();
+								}
 								
 								String[] rowData;
 								
-								int indexMaximum = (antes != null)? antes.length :
-									(depois != null)? depois.length : 0;
+								int indexMaximum = 0;
+								
+								if(tipo.equals("CADASTRO"))
+								{
+									indexMaximum = (depois != null)? depois.length : 0;
+								}
+								else 
+								{
+									indexMaximum = (antes != null)? antes.length :
+										(depois != null)? depois.length : 0;
+								}
 								
 								for(int i = 0; i < indexMaximum; i ++)
 								{
@@ -1026,7 +1047,14 @@ public class Controlador_Principal {
 		telaOpcoes.getBtnSobre().addActionListener(ActionEvent->{
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado);
 			//TODO - Inserir evento Abrir tela Info Projeto
-			
+			try 
+			{
+				jInternal_Sobre.queroFoco();
+			} 
+			catch (PropertyVetoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela sobre o projeto", e.getMessage());
+			}
 		});
 		
 		telaOpcoes.getBtnSair().addActionListener(controlador_Backup);

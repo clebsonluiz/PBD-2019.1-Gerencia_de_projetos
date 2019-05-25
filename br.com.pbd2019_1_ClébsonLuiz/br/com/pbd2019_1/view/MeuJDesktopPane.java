@@ -19,7 +19,14 @@ public class MeuJDesktopPane extends JDesktopPane{
 	private static final long serialVersionUID = 1L;
 	
 	private PopUp popUp = new PopUp(new String[] {
-			"FUNDO PBD 2019.1", "FUNDO LAMPADA 1", "FUNDO LAMPADA 2"
+			"FUNDO PBD 2019.1", 
+			"FUNDO LAMPADA 1",
+			"FUNDO LAMPADA 2",
+			"FUNDO CHÁ",
+			"FUNDO COMPUTADOR CAFÉ",
+			"FUNDO MARTE",
+			"FUNDO CIRCUITO",
+			"FUNDO FONES"
 	});
 	
 	private Image imagem;
@@ -85,6 +92,70 @@ public class MeuJDesktopPane extends JDesktopPane{
 			}
 		});;
 		
+		popUp.getMenuItens()[3].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO_CAFE.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("4");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
+		
+		popUp.getMenuItens()[4].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO_COMPUTADOR_CAFE.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("5");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
+		
+		popUp.getMenuItens()[5].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO_MARTE.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("6");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
+		
+		popUp.getMenuItens()[6].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO_CIRCUITO.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("7");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
+		
+		popUp.getMenuItens()[7].addActionListener(ActionEvent->{
+			try 
+			{
+				imagem = ViewUtil.Icones.IMAGEM_FUNDO_FONES.getImage();
+				repaint();
+				ViewUtil.Icones.setImageDefault("8");
+			} 
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+		});;
 		
 	}
 

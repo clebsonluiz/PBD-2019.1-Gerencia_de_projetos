@@ -2,6 +2,7 @@ package br.com.pbd2019_1.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.beans.PropertyVetoException;
 
 public class JInternal_TabelaPessoas extends JInternalAbstract {
 
@@ -22,6 +23,12 @@ public class JInternal_TabelaPessoas extends JInternalAbstract {
 	@Override
 	protected void fechar() {}
 
+	@Override
+	public void queroFoco() throws PropertyVetoException {
+		setMaximum(true);
+		super.queroFoco();
+	}
+	
 	public TelaPessoas getTelaPessoas() {
 		return telaPessoas;
 	}
