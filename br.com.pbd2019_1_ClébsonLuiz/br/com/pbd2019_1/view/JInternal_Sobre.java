@@ -66,6 +66,7 @@ public class JInternal_Sobre extends JInternalAbstract {
 						+ "\n\t- Smashicons"
 						+ "\n\t- Flat Icons"
 						+ "\n\t- Eucalyp"
+						+ "\n\t- Prettycons"
 //						+ "\n\t-Pixabay"
 						+ "\n"
 						+ "\nLogo do IText PDF"

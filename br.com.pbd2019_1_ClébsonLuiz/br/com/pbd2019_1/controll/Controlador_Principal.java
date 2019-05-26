@@ -14,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Etapa;
@@ -331,6 +332,7 @@ public class Controlador_Principal {
 		adicionarMouseEventJTable(tablePessoas);
 		adicionarMouseEventJTable(tablePessoasDisponiveis);
 		adicionarMouseEventJTable(tableLogs);
+		adicionarMouseEventJTable(tableBackups);
 		
 		adicionarEventosPopUp();
 		
@@ -370,7 +372,8 @@ public class Controlador_Principal {
 						popUpCaracteristica.setjTableAtual(table);
 						popUpCaracteristica.show(table, e.getX(), e.getY());
 					} 
-					else if(!(table.getModel() instanceof TLogUpdate))
+					else 
+//						if(!(table.getModel() instanceof TLogUpdate))
 					{
 						popUp.setjTableAtual(table);
 						popUp.show(table, e.getX(), e.getY());
@@ -643,7 +646,9 @@ public class Controlador_Principal {
 			try 
 			{
 				if(bool_Colaborador_Ativado)
-					if(!colaborador_Atual.getPrivilegio().equals("Administrador"))
+					if(!colaborador_Atual.getPrivilegio().equals("Administrador")
+							&& (!(popUp.getjTableAtual().getModel() instanceof TColaboracoes)
+									&& !(popUp.getjTableAtual().getModel() instanceof TProjeto)))
 						throw new ValidacaoException("Não tem permição");
 					
 				int linha = popUp.getjTableAtual().getSelectedRow();
@@ -658,6 +663,20 @@ public class Controlador_Principal {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
 					tLogUpdate.addValor(log);
+					
+					etapa_Atual.setPorcentagem_andamento(
+							Fachada.getInstance()
+								.getBoEtapa()
+								.recalcularPorcentagem(etapa_Atual)
+							);
+					
+					jInternal_TelaInfoEtapa
+					.getTelaEtapa_Tarefas()
+					.getTelaEtapa()
+					.getBarraProgressBar()
+					.setValue(
+							Math.round(etapa_Atual.getPorcentagem_andamento())
+							);
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TEtapa) 
 				{
@@ -714,16 +733,16 @@ public class Controlador_Principal {
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TLogUpdate) 
 				{
-					/*
+					
 					LogUpdate t = tLogUpdate.getValor(linha);
 					
 					Fachada.getInstance().deletar(t);
 					tLogUpdate.remover(linha);
 					
-					LogUpdate log = new LogUpdate();
+/*					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-					*/
+					tLogUpdate.addValor(log);*/
+					
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TPessoa) 
 				{
@@ -735,6 +754,17 @@ public class Controlador_Principal {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
 					tLogUpdate.addValor(log);
+				}
+				else if(popUp.getjTableAtual().getModel() instanceof TBackup) 
+				{
+					
+					Backup t = tBackup.getValor(linha);
+					Fachada.getInstance().deletar(t);
+					tBackup.remover(linha);
+					
+					/*LogUpdate log = new LogUpdate();
+					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
+					tLogUpdate.addValor(log);*/
 				}
 			} 
 			catch (ValidacaoException e) 
@@ -993,6 +1023,7 @@ public class Controlador_Principal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
+				tLogUpdate.getList().clear();
 				jInternal_TabelaLogs.queroFoco();
 			}
 			catch (PropertyVetoException e) 
@@ -1066,7 +1097,7 @@ public class Controlador_Principal {
 		telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
 		telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
 		
-		JInternalAbstract jIA[] = new JInternalAbstract[17];
+		JInternalAbstract jIA[] = new JInternalAbstract[18];
 		jIA[0] = jInternal_TelaCadastro_Etapa;
 		jIA[1] = jInternal_TelaCadastro_Projeto;
 		jIA[2] = jInternal_TelaCadastro_Pessoa;
@@ -1084,7 +1115,8 @@ public class Controlador_Principal {
 		jIA[13] = jInternal_TelaBackups;
 		jIA[14] = jInternal_TabelaLogs;
 		jIA[15] = jInternal_InfoLog;
-		jIA[16] = JInternal_Backup_Efetuando.getInstance();
+		jIA[16] = jInternal_Sobre;
+		jIA[17] = JInternal_Backup_Efetuando.getInstance();
 		
 		for(JInternalAbstract jAbstract: jIA) {
 			jAbstract.setIcon(false);

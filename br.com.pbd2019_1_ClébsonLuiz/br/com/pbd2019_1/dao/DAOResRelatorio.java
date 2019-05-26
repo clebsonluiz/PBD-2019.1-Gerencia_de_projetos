@@ -238,7 +238,7 @@ public class DAOResRelatorio {
 		
 		Paragraph paragraph;
 		
-		if(projeto.getColaboradores().size() > 0)
+		/*if(projeto.getColaboradores().size() > 0)
 			paragraph = addParagrafo("Colaboradores do projeto", SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
 		else
 			paragraph = addParagrafo("Não se tem colaboradores neste o projeto", SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
@@ -251,6 +251,19 @@ public class DAOResRelatorio {
 			
 			Colaborador c = projeto.getColaboradores().get(i);
 			paragraph = gerarParaColaborador(c, (i + 1) + ". Colaborador", 1);
+			addEmptyLine(paragraph, 1);
+			documento.add(paragraph);
+		}*/
+		
+		if(projeto.getColaboradores().size() > 0) 
+		{
+			paragraph = addParagrafo("Colaboradores do Projeto", SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+			addEmptyLine(paragraph, 1);
+			PdfPTable table = addTabelaColaboradores(projeto.getColaboradores());
+			paragraph.add(table);
+			documento.add(paragraph);
+		}else {
+			paragraph = addParagrafo("Não ouve colaboradores no projeto", SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
 			addEmptyLine(paragraph, 1);
 			documento.add(paragraph);
 		}

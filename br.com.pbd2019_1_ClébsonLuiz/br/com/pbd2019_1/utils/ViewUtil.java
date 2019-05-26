@@ -443,6 +443,9 @@ public interface ViewUtil {
 			public static final ImageIcon IMAGEM_LOGO_ITEXT = getIcon("Outros\\iText_placeholder");
 			public static final ImageIcon IMAGEM_LOGO_UAST = getIcon("Outros\\ufrpe-uast-logos-200");
 			
+			public static final ImageIcon IMAGEM_LOGO_PROJETO_1 = getIcon("Outros\\logo");
+			public static final ImageIcon IMAGEM_LOGO_PROJETO_2 = getIcon("Outros\\logo1");
+			public static final ImageIcon IMAGEM_LOGO_PROJETO_3 = getIcon("Outros\\logo2");
 			
 			
 	}

@@ -76,17 +76,17 @@ public interface RelatorioUtil {
 	            header.getDefaultCell().setBorderColor(BaseColor.LIGHT_GRAY);
 
 	            // add image
-	            java.awt.Image imagem = ViewUtil.Icones.IMAGEM_LOGO_ITEXT.getImage();
+	            java.awt.Image imagem = ViewUtil.Icones.IMAGEM_LOGO_PROJETO_1.getImage();
 	            
 	            Image logo = Image.getInstance(imagem, Color.WHITE);
-
+	            logo.scalePercent(30);
 	            PdfPCell textLogo = new PdfPCell();
 	            textLogo.setPaddingBottom(10);
 	            textLogo.setPaddingLeft(10);
 	            textLogo.setBorder(Rectangle.BOTTOM);
 	            textLogo.setBorderColor(BaseColor.LIGHT_GRAY);
 	            textLogo.addElement(logo);
-	            textLogo.addElement(new Phrase("iText PDF Library for Java", new Font(Font.FontFamily.HELVETICA, 7)));
+//	            textLogo.addElement(new Phrase("iText PDF Library for Java", new Font(Font.FontFamily.HELVETICA, 7)));
 	            header.addCell(textLogo);
 	            
 	            // add text
@@ -101,7 +101,8 @@ public interface RelatorioUtil {
 	            header.addCell(text);
 
 	            // write content
-	            header.writeSelectedRows(0, -1, 34, 810, writer.getDirectContent());
+//	            header.writeSelectedRows(0, -1, 34, 810, writer.getDirectContent());
+	            header.writeSelectedRows(0, -1, 34, 830, writer.getDirectContent());
 	        } catch(DocumentException de) {
 	            throw new ExceptionConverter(de);
 	        } catch (MalformedURLException e) {
@@ -123,7 +124,22 @@ public interface RelatorioUtil {
 	            footer.getDefaultCell().setBorderColor(BaseColor.LIGHT_GRAY);
 
 	            // add copyright
-	            footer.addCell(new Phrase("Unidade Acadêmica de Serra Talhada - UFRPE", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.GRAY)));
+//	            footer.addCell(new Phrase("Unidade Acadêmica de Serra Talhada - UFRPE", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.GRAY)));
+	         
+	            // add image
+	            java.awt.Image imagem = ViewUtil.Icones.IMAGEM_LOGO_ITEXT.getImage();
+	            
+	            Image logo = Image.getInstance(imagem, Color.WHITE);
+	            logo.scalePercent(6);
+	            
+	            PdfPCell textLogo = new PdfPCell();
+	            textLogo.setPaddingBottom(10);
+	            textLogo.setPaddingLeft(10);
+	            textLogo.setBorder(Rectangle.TOP);
+	            textLogo.setBorderColor(BaseColor.LIGHT_GRAY);
+	            textLogo.addElement(logo);
+	            textLogo.addElement(new Phrase("iText PDF Library for Java", new Font(Font.FontFamily.HELVETICA, 7)));
+	            footer.addCell(textLogo);
 
 	            // add current page count
 	            footer.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -140,7 +156,7 @@ public interface RelatorioUtil {
 	            canvas.beginMarkedContentSequence(PdfName.ARTIFACT);
 	            footer.writeSelectedRows(0, -1, 34, 50, canvas);
 	            canvas.endMarkedContentSequence();
-	        } catch(DocumentException de) {
+	        } catch(DocumentException | IOException de) {
 	            throw new ExceptionConverter(de);
 	        }
 	    }

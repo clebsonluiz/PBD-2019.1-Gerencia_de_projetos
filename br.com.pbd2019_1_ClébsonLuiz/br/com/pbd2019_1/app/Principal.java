@@ -57,7 +57,8 @@ public class Principal{
 	
 	public static void main(String[] args) throws FileNotFoundException, DocumentException, BOException, DAOException {
 		
-		/*Fachada.getInstance().carregarBoProjeto();
+/*
+		Fachada.getInstance().carregarBoProjeto();
 		Fachada.getInstance().carregarBoEtapa();
 		Fachada.getInstance().carregarBoTarefa();
 		Fachada.getInstance().carregarBoColaborador();
@@ -67,7 +68,7 @@ public class Principal{
 		Pessoa pessoa = new Pessoa();
 		pessoa.setId(1);
 		
-		Projeto projeto = Fachada.getInstance().getBoProjeto().buscarPorPessoa(pessoa).get(0);
+		Projeto projeto = Fachada.getInstance().getBoProjeto().buscarPorPessoa(pessoa).get(4);
 		
 		projeto.setColaboradores(
 				Fachada.getInstance().getBoColaborador().buscarPorProjeto(projeto)
@@ -86,9 +87,10 @@ public class Principal{
 		});
 		
 		
-		DAOResRelatorio.getInstance().gerarRelatorio(0 , projeto, "C:\\Users\\Aluno.WIN-OT9K4KMKI2A\\Desktop\\TesteRelatorio.pdf");
+		DAOResRelatorio.getInstance().gerarRelatorio(2 , projeto, "C:\\Users\\Aluno.WIN-OT9K4KMKI2A\\Desktop\\TesteRelatorio.pdf");
 		
-		System.exit(0);*/
+		System.exit(0);
+*/
 
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
@@ -312,6 +314,7 @@ public class Principal{
 				}
 			}
 		}).start();
+
 	}
 	
 }
