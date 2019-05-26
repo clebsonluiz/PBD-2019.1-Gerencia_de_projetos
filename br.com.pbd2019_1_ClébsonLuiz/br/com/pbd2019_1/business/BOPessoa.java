@@ -27,9 +27,11 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 				|| t.getUser_login().trim().equals(""))
 				throw new BOException("Erro ao validar pessoa");
 			
-			if(!(t.getUser_senha().length() > 5 && t.getUser_senha().length() < 11))
-				throw new BOException("Numero de caracteres da senha deve ser maior que 5 e menor que 11");
+			if(!(t.getUser_senha().length() > 6 && t.getUser_senha().length() < 11))
+				throw new BOException("Numero de caracteres da senha deve estar entre 6 e 11");
 			
+			if(t.getUser_login().contains(UserUtil.TypeUtil.TAG_COMUM))
+				t.setUser_type(Pessoa.COMUM_USER);
 			if(t.getUser_login().contains(UserUtil.TypeUtil.TAG_ADMIN))
 				t.setUser_type(Pessoa.ADMIN_USER);
 			if(t.getUser_login().contains(UserUtil.TypeUtil.TAG_SUPER))
@@ -64,8 +66,12 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 
 			if(!UserUtil.DocumentoUtil.isCPF(t.getCpf()))
 				throw new BOException("Não é um cpf valido");
-			if(!(t.getUser_senha().length() > 5 && t.getUser_senha().length() < 11))
-				throw new BOException("Numero de caracteres da senha deve ser maior que 5 e menor que 11");
+			if(!buscarPorLoginSenhaID(t.getUser_login(), t.getUser_senha(), t.getId()))
+			{
+				if(!(t.getUser_senha().length() > 6 && t.getUser_senha().length() < 11))
+					throw new BOException("Numero de caracteres da senha deve ser maior que 5 e menor que 11");
+				t.setUser_senha(SecurityUtil.criptografarSHA2(t.getUser_senha()));
+			}			
 
 			t.setCpf(UserUtil.DocumentoUtil.removerCaracteresEspeciais(t.getCpf()));
 
@@ -74,7 +80,6 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 			if(buscarPorLoginID(t.getUser_login(), t.getId()))
 				throw new BOException("Já existe uma pessoa de mesmo Login");
 			
-			t.setUser_senha(SecurityUtil.criptografarSHA2(t.getUser_senha()));
 		}
 		catch (NoSuchAlgorithmException | UnsupportedEncodingException | DAOException e) 
 		{
@@ -173,6 +178,12 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		if(pessoa == null || pessoa.getId() <= 0)
 			throw new BOException("Erro ao desenpenho da pessoa");
 		return ((DAOPessoa)this.daoT).buscarTotalEtapasPessoa(pessoa.getId());
+	}
+	
+	public boolean buscarPorLoginSenhaID(String login, String senha, int id) throws DAOException {
+		if(login == null || senha == null || id == 0)
+			throw new BOException("Erro ao buscar dados de usuario");
+		return ((DAOPessoa)this.daoT).buscarPorLoginSenhaID(login, senha, id);
 	}
 	
 }

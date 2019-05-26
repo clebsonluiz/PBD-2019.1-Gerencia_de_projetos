@@ -38,6 +38,9 @@ import javax.persistence.TemporalType;
 public class LogUpdate extends Entidade{
 
 	@Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private java.util.Date data_log;
+	@Column(nullable = false)
 	private String tipo;
 	@Column(nullable = false)
 	private String tabela;
@@ -53,9 +56,6 @@ public class LogUpdate extends Entidade{
 	private String[] depois;
 	@Column(nullable = false)
 	private String responsavel;
-	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private java.util.Date data_log;
 	
 	public LogUpdate() {}
 

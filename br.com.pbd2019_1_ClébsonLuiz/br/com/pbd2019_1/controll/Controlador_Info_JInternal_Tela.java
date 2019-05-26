@@ -769,7 +769,7 @@ public class Controlador_Info_JInternal_Tela {
 
 				String login = telaPessoa.getLoginField().getTexto();
 				String senha = telaPessoa.getSenhaField().getTexto();
-
+				
 				String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Logada());
 				
 				controlador_Principal.getPessoa_Logada().setUser_login(login);

@@ -74,6 +74,11 @@ public class DateUtil {
 		return new SimpleDateFormat(format).parse(dateString);
 	}
 	
+	public static java.util.Date getDateTime()
+	{
+		return new java.util.Date();
+	}
+	
 	public static interface TimeUtil{
 		
 		public static int[] horario(String horario) 

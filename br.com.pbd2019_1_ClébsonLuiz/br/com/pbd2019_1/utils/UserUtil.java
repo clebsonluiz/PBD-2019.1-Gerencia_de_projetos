@@ -27,10 +27,13 @@ public interface UserUtil {
 	
 	public static interface TypeUtil{
 		
-		public static final String TAG_ADMIN = "<!ADMIN>";
-		public static final String TAG_SUPER = "<!!SUPER>";
+		public static final String TAG_COMUM = "<!c>";
+		public static final String TAG_ADMIN = "<!!a>";
+		public static final String TAG_SUPER = "<!!!s>";
 
 		public static String removerCaracteresEspeciais(String login) {
+			if(login.contains(TAG_COMUM))
+				login = login.replace(TAG_COMUM, "");
 			if(login.contains(TAG_ADMIN))
 				login = login.replace(TAG_ADMIN, "");
 			if(login.contains(TAG_SUPER))

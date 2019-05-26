@@ -1024,6 +1024,7 @@ public class Controlador_Principal {
 			try
 			{
 				tLogUpdate.getList().clear();
+				tLogUpdate.fireTableDataChanged();
 				jInternal_TabelaLogs.queroFoco();
 			}
 			catch (PropertyVetoException e) 
