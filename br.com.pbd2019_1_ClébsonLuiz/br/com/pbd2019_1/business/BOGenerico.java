@@ -35,6 +35,12 @@ public abstract class BOGenerico<T extends Entidade>{
 		return this.daoT.buscar(classe, id);
 	};
 	
+	public void remover(T t) throws BOException, DAOException {
+		if(t == null || t.getId() <= 0)
+			throw new BOException("Não foi possivel deletar "+ t.getClass().getSimpleName());
+		this.daoT.remover(t);
+	};
+	
 	public void deletar(T t) throws BOException, DAOException {
 		if(t == null || t.getId() <= 0)
 			throw new BOException("Não foi possivel deletar "+ t.getClass().getSimpleName());

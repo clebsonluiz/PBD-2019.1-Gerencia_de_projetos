@@ -109,6 +109,27 @@ public class Fachada {
 	}
 	
 	
+	public void remover(Object t) throws BOException, DAOException{
+		if(t instanceof CaracteristicaExtra)
+			boCaracteristicaExtra.remover((CaracteristicaExtra)t);
+		else if(t instanceof Colaborador)
+			boColaborador.remover((Colaborador)t);
+		else if(t instanceof Contato)
+			boContato.remover((Contato)t);
+		else if(t instanceof Etapa)
+			boEtapa.remover((Etapa)t);
+		else if(t instanceof LogUpdate)
+			boLogUpdate.remover((LogUpdate)t);
+		else if(t instanceof Pessoa)
+			boPessoa.remover((Pessoa)t);
+		else if(t instanceof Projeto)
+			boProjeto.remover((Projeto)t);
+		else if(t instanceof Tarefa)
+			boTarefa.remover((Tarefa)t);
+		else if(t instanceof Backup)
+			boBackup.remover((Backup)t);
+	}
+	
 	public void deletar(Object t) throws BOException, DAOException{
 		if(t instanceof CaracteristicaExtra)
 			boCaracteristicaExtra.deletar((CaracteristicaExtra)t);

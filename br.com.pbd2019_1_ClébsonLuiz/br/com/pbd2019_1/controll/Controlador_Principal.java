@@ -677,7 +677,7 @@ public class Controlador_Principal {
 				{
 					
 					Tarefa t = tTarefa.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tTarefa.remover(linha);
 					
 					LogUpdate log = new LogUpdate();
@@ -701,7 +701,7 @@ public class Controlador_Principal {
 				else if(popUp.getjTableAtual().getModel() instanceof TEtapa) 
 				{
 					Etapa t = tEtapa.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tEtapa.remover(linha);
 					
 					LogUpdate log = new LogUpdate();
@@ -711,7 +711,7 @@ public class Controlador_Principal {
 				else if(popUp.getjTableAtual().getModel() instanceof TProjeto) 
 				{
 					Projeto t = tProjeto.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tProjeto.remover(linha);
 					
 					LogUpdate log = new LogUpdate();
@@ -721,7 +721,7 @@ public class Controlador_Principal {
 				else if(popUp.getjTableAtual().getModel() instanceof TCaracteristicaExtra) 
 				{
 					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tCaracteristicaExtra.remover(linha);
 					
 					LogUpdate log = new LogUpdate();
@@ -733,7 +733,7 @@ public class Controlador_Principal {
 					
 					Colaborador t = tColaboracoes.getValor(linha);
 					
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tColaboracoes.remover(linha);
 					
 					LogUpdate log = new LogUpdate();
@@ -744,7 +744,7 @@ public class Controlador_Principal {
 				{
 					
 					Colaborador t = tColaborador.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tColaborador.remover(linha);
 					
 					LogUpdate log = new LogUpdate();
@@ -756,7 +756,7 @@ public class Controlador_Principal {
 					
 					LogUpdate t = tLogUpdate.getValor(linha);
 					
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tLogUpdate.remover(linha);
 					
 /*					LogUpdate log = new LogUpdate();
@@ -768,7 +768,7 @@ public class Controlador_Principal {
 				{
 					
 					Pessoa t = tPessoa.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tPessoa.remover(linha);
 					
 					LogUpdate log = new LogUpdate();
@@ -779,7 +779,7 @@ public class Controlador_Principal {
 				{
 					
 					Backup t = tBackup.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tBackup.remover(linha);
 					
 					/*LogUpdate log = new LogUpdate();
@@ -809,7 +809,7 @@ public class Controlador_Principal {
 				if(popUpCaracteristica.getjTableAtual().getModel() instanceof TCaracteristicaExtra) 
 				{
 					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
-					Fachada.getInstance().deletar(t);
+					Fachada.getInstance().remover(t);
 					tCaracteristicaExtra.remover(linha);
 					
 					LogUpdate log = new LogUpdate();

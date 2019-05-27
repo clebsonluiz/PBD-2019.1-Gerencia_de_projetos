@@ -64,12 +64,32 @@ public abstract class DAOGenerico <T extends Entidade> extends DAO{
 		return t;
 	}
 
-	public void deletar(T t) throws DAOException{
+	public void remover(T t) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		try {
 			t.setAtivado(false); //Desativa a entidade
 			entityManager.getTransaction().begin();
 			entityManager.merge(t); // Ao invéz de Remove eu dou um merge
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			
+			entityManager.getTransaction().rollback();
+			
+			throw new DAOException("Erro de remoção no banco de dados");
+			
+		} finally {
+			entityManager.close();
+		}
+	}
+	
+	public void deletar(T t) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		try {
+
+			entityManager.getTransaction().begin();
+			entityManager.remove(t); // Ao invéz de Remove eu dou um merge
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			
