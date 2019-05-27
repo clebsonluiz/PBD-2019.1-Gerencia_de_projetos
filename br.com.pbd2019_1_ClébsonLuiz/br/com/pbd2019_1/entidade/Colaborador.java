@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 	@NamedQuery(name = "Colaborador.pessoa",
 			query = "select c from Colaborador c where c.pessoa = :pessoa and c.ativado = true ORDER BY c.id ASC"),
 	@NamedQuery(name = "Colaborador.projeto",
-			query = "select c from Colaborador c where c.projeto = :projeto and c.ativado = true ORDER BY c.id ASC")
+			query = "select c from Colaborador c where c.projeto = :projeto and c.ativado = true and c.pessoa.ativado = true ORDER BY c.id ASC")
 })
 public class Colaborador extends Entidade{
 
