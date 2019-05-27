@@ -979,6 +979,8 @@ public class Controlador_Info_JInternal_Tela {
 									projeto,
 									path
 									);
+							
+							MeuJDialog.exibirAlertaInfo(null, "Relatório Gerado", "Gerado em: "+ path + ".pdf");
 						}
 						catch (ValidacaoException | FileNotFoundException | DocumentException e)
 						{

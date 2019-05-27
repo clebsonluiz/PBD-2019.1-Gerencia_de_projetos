@@ -30,12 +30,14 @@ public class MeuJDialog extends JDialog {
 	
 	private static final Border bordaWarning = ViewUtil.Bordas.criarBordaBalaoDialogo(Color.YELLOW.darker());
 	private static final Border bordaProblem = ViewUtil.Bordas.criarBordaBalaoDialogo(Color.RED);
+	private static final Border bordaInfo = ViewUtil.Bordas.criarBordaBalaoDialogo(Color.GREEN.darker().darker());
 	
 	private static int op = 0;
 	private static final long serialVersionUID = 1L;
 
 	private static MeuJDialog instance;
 	private static MeuJDialog instance2;
+	private static MeuJDialog instance3;
 	
 	private static MeuJDialog getInstance()
 	{
@@ -49,6 +51,13 @@ public class MeuJDialog extends JDialog {
 		if(instance2 == null)
 			instance2 = new MeuJDialog(MESSAGE_TYPE_PROBLEM);
 		return instance2;
+	}
+
+	private static MeuJDialog getInstance3()
+	{
+		if(instance3 == null)
+			instance3 = new MeuJDialog(MESSAGE_TYPE_INFORMATION);
+		return instance3;
 	}
 	
 	public static int exibirAlertaPergunta(Component c, String titulo, String msg)
@@ -67,13 +76,21 @@ public class MeuJDialog extends JDialog {
 		return op;
 	}
 	
+	public static int exibirAlertaInfo(Component c, String titulo, String msg)
+	{
+		op = 0;
+		getInstance3().exibirMensagem(titulo, msg, bordaInfo, c);
+		getInstance3().setVisible(true);
+		return op;
+	}
+	
 	
 	public static void main(String[] args) {
 		try {
 			
 			UIManager.setLookAndFeel(new NimbusLookAndFeel());
 			
-			System.out.println(MeuJDialog.exibirAlertaErro(null, "Titulo", "\"Descrição do Text Area que mostra o que ocorreu para que o evento fosse chamado"
+			System.out.println(MeuJDialog.exibirAlertaInfo(null, "Titulo", "\"Descrição do Text Area que mostra o que ocorreu para que o evento fosse chamado"
 //					+ "\\nDescrição do Text Area que mostra o que ocorreu para que o evento fosse chamado"
 					+ ""));
 		} catch (Exception e) {
@@ -161,7 +178,20 @@ public class MeuJDialog extends JDialog {
 		
 		switch (message_Type) {
 			case MESSAGE_TYPE_INFORMATION:
+				panel.setBackground(null);//NÂO MUDAR
+				scrollPane.setBackground(null);
+				scrollPane.getViewport().setBackground(Color.GREEN.darker().darker());
+				btnOK.setBackground(Color.GREEN.darker());
+				btnOK.setForeground(Color.WHITE);
+				btCancelar.setBackground(Color.RED);
+				btCancelar.setForeground(Color.WHITE);
+				btCancelar.setVisible(false);
+				textArea.setBackground(Color.GREEN.darker().darker());
+				textArea.setForeground(Color.WHITE);
 				
+				labelIcone.setIcon(ViewUtil.Icones.ICONE_NOTIFICATION);
+				labelIcone.setPreferredSize(new Dimension(labelIcone.getIcon().getIconWidth() + 15, labelIcone.getIcon().getIconHeight() + 10));
+				labelTitulo.setForeground(Color.GREEN.darker().darker());
 				break;
 			case MESSAGE_TYPE_PROBLEM:
 				panel.setBackground(null);//NÂO MUDAR

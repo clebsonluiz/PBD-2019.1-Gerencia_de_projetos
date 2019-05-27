@@ -427,6 +427,8 @@ public interface ViewUtil {
 			public static final ImageIcon ICONE_WARNING_MENORZINHO = getIcon("Freepik\\warning (2)");
 			public static final ImageIcon ICONE_PROBLEM = getIcon("Freepik\\problem (1)");
 			public static final ImageIcon ICONE_PROBLEM_MENOR = getIcon("Freepik\\problem");
+			public static final ImageIcon ICONE_NOTIFICATION = getIcon("Freepik\\notification (1)");
+			
 			public static final ImageIcon IMAGEM_CARREGAMENTO = getIcon("Outros\\FundoTelaCarregamento");
 			
 			public static final ImageIcon IMAGEM_FUNDO = getIcon("Outros\\PhotoFunia", "jpg");
