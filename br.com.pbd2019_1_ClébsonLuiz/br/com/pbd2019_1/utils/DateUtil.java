@@ -55,6 +55,7 @@ public class DateUtil {
 	}
 	
 	public static Date getDateSQL(java.util.Date date) {
+		if(date == null) date = new java.util.Date();
 		return Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(date));
 	}
 	

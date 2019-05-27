@@ -396,6 +396,26 @@ public class Controlador_Principal {
 											boolean b = (((Boolean)obj).booleanValue());
 											tTarefa.setValueAt(b, linha, coluna);
 											Fachada.getInstance().atualizar(tTarefa.getValor(linha));
+											
+											etapa_Atual.setPorcentagem_andamento(
+													Fachada.getInstance()
+														.getBoEtapa()
+														.recalcularPorcentagem(etapa_Atual)
+													);
+											
+											jInternal_TelaInfoEtapa
+												.getTelaEtapa_Tarefas()
+												.getTelaEtapa()
+												.getBarraProgressBar()
+												.setValue(
+														Math.round(etapa_Atual.getPorcentagem_andamento())
+														);
+											
+										}
+										else
+										{
+											boolean b = (((Boolean)obj).booleanValue());
+											tTarefa.setValueAt(!b, linha, coluna);
 										}
 									}
 									else 

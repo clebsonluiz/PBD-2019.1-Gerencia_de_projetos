@@ -124,9 +124,9 @@ public abstract class TelaTarefa extends JPanel {
 				nomeTarefaField.setEnabled(false);
 				descricaoTextArea.setEnabled(false);
 				prioridadeComboBox.setEnabled(false);
-				chckbxFinalizada.setEnabled(false);
+				chckbxFinalizada.setEnabled(true);
 				horario.setEnabled(false);
-				dateChooser.setEnabled(true);
+				dateChooser.setEnabled(false);
 				super.desabilitar();
 			}
 		};

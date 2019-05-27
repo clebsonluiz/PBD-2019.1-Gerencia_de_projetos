@@ -216,6 +216,7 @@ public class Controlador_Info_JInternal_Tela {
 			
 			try 
 			{
+				
 				controlador_Principal.getjInternal_TelaCadastro_Pessoa().queroFoco();
 			}
 			catch (PropertyVetoException e) 
@@ -585,13 +586,18 @@ public class Controlador_Info_JInternal_Tela {
 			});
 		
 		telaInfoTarefa.getTelaInfoTarefa().getChckbxFinalizada()
-			.addItemListener(ItemEvent->{
+			.addActionListener(ActionEvent->{
 				//TODO - Marcar/Desmarcar como finalizada
 				try
 				{
 					if(controlador_Principal.isBool_Colaborador_Ativado())
 						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+						{
+							TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
+							boolean b = telaTarefa.getChckbxFinalizada().isSelected();
+							telaTarefa.getChckbxFinalizada().setSelected(!b);
 							throw new ValidacaoException("Não tem permição");
+						}
 					
 					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
 					boolean finalizada = telaTarefa.getChckbxFinalizada().isSelected();
@@ -702,6 +708,8 @@ public class Controlador_Info_JInternal_Tela {
 			.getBtAdicionarColaborador().addActionListener(ActionEvent->{
 				try
 				{
+					controlador_Principal.gettPessoa().getList().clear();
+					controlador_Principal.gettPessoa().fireTableDataChanged();
 					controlador_Principal.getjInternal_TabelaPessoasColaboradores().queroFoco();
 				} 
 				catch (PropertyVetoException e) 
