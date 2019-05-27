@@ -831,6 +831,7 @@ public class Controlador_Info_JInternal_Tela {
 					c.setCelular(celular);
 					c.setTelefone(telef);
 					c.setPessoa(controlador_Principal.getPessoa_Logada());
+					
 					Fachada.getInstance().inserir(c);
 					
 					LogUpdate log = new LogUpdate();
@@ -1201,7 +1202,7 @@ public class Controlador_Info_JInternal_Tela {
 	{
 		telaContato.getEmailField().setText(contato.getEmail());
 		telaContato.getCelularField().setText(contato.getCelular());
-		telaContato.getTelefoneField().setText(contato.getCelular());
+		telaContato.getTelefoneField().setText(contato.getTelefone());
 	}
 	
 	private void preencherTelaProjeto(TelaProjeto telaProjeto, Projeto projeto) throws ValidacaoException

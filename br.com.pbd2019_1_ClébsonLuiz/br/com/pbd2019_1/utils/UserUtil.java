@@ -6,15 +6,17 @@ public interface UserUtil {
 		
 		public static boolean isTelefone(String telefone) {
 			String numero = removerCaracteresEspeciais(telefone);
-			return (numero.length() == 8);
+			return (numero.length() == 10);
 		}
 		
 		public static boolean isCelular(String celular) {
 			String numero = removerCaracteresEspeciais(celular);
-			return (numero.length() == 9);
+			return (numero.length() == 11);
 		}
 		
 		public static String removerCaracteresEspeciais(String numero) {
+			if (numero.contains(" "))
+				numero = numero.replace(" ", "");
 			if (numero.contains("(")) 
 				numero = numero.replace("(", "");
 			if (numero.contains(")")) 
