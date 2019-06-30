@@ -9,10 +9,15 @@
     	<class>entidade.CaracteristicaExtra</class>
     	<class>entidade.Colaborador</class>
     	<class>entidade.Etapa</class>
+    	<class>entidade.SubEtapa</class>
     	<class>entidade.LogUpdate</class>
     	<class>entidade.Pessoa</class>
     	<class>entidade.Projeto</class>
     	<class>entidade.Tarefa</class>
+    	<class>entidade.SubTarefa</class>
+    	<class>entidade.GerenteEtapa</class>
+    	<class>entidade.SubEtapaColaborador</class>
+    	<class>entidade.TarefaColaborador</class>
     	<class>entidade.Usuario</class>
      	
         

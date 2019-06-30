@@ -1,12 +1,16 @@
 package br.com.pbd2019_1.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -51,14 +55,48 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 		add(telaMiniPessoa1);
 		
 		telaMiniPessoa2 = new TelaMiniPessoa2();
+		telaMiniPessoa2.getExibirSenhaChbx0().setBounds(215, 22, 75, 41);
+		((TitledBorder)telaMiniPessoa2.getBorder()).setTitle("Senha e Confirmar senha");;
 		telaMiniPessoa2.getPanel().setBounds(6, 6, 300, 140);
 		telaMiniPessoa2.getExibirSenhaChbx().setLocation(217, 76);
-		telaMiniPessoa2.getSenhaField().setSize(202, 45);
-		telaMiniPessoa2.getSenhaField().setLocation(10, 80);
-		telaMiniPessoa2.getLoginField().setBounds(10, 25, 279, 45);
+		telaMiniPessoa2.getSenhaNovaField().setSize(202, 45);
+		telaMiniPessoa2.getSenhaNovaField().setLocation(10, 80);
+		telaMiniPessoa2.getSenhaAntigaField().setBounds(10, 25, 202, 45);
 		telaMiniPessoa2.setBounds(0, 147, 319, 150);
+		
+		telaMiniPessoa2.getSenhaAntigaField().setDescricao("Senha");
+		telaMiniPessoa2.getSenhaNovaField().setDescricao("Confirmar Senha");
+		
 		telaMiniPessoa1.add(telaMiniPessoa2);
 		
+		KeyAdapter kListener = new KeyAdapter() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				super.keyPressed(e);
+				String str1 = telaMiniPessoa2.getSenhaAntigaField().getTexto();
+				String str2 = telaMiniPessoa2.getSenhaNovaField().getTexto();
+				
+				if(str2.equals(str1) && !str1.trim().equals(""))
+				{
+					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.green.brighter());
+					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.WHITE);
+				}
+				else if(!str2.equals(str1) && !str1.trim().equals(""))
+				{
+					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.red.brighter());
+					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.WHITE);
+				}
+				else
+				{
+					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.white);
+					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.black);
+				}
+			}
+		};
+		
+		telaMiniPessoa2.getSenhaAntigaField().addKeyListener(kListener);
+		telaMiniPessoa2.getSenhaNovaField().addKeyListener(kListener);
 	}
 
 
@@ -82,12 +120,12 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 		return telaMiniPessoa1.getNascimentoDateChooser();
 	}
 
-	public CampoTexto getLoginField() {
-		return telaMiniPessoa2.getLoginField();
+	public CampoSenha getSenhaField() {
+		return telaMiniPessoa2.getSenhaAntigaField();
 	}
 
-	public CampoSenha getSenhaField() {
-		return telaMiniPessoa2.getSenhaField();
+	public CampoSenha getSenhaComfirmaField() {
+		return telaMiniPessoa2.getSenhaNovaField();
 	}
 
 	public JCheckBox getExibirSenhaChbx() {

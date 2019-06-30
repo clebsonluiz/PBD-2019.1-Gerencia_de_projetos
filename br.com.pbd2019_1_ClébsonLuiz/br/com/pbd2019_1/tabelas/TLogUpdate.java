@@ -1,7 +1,6 @@
 package br.com.pbd2019_1.tabelas;
 
 import br.com.pbd2019_1.entidade.LogUpdate;
-import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.Botao;
 
 public class TLogUpdate extends TGenerica<LogUpdate>{
@@ -26,7 +25,7 @@ public class TLogUpdate extends TGenerica<LogUpdate>{
 		case 3:
 			return getList().get(linha).getResponsavel();
 		case 4:
-			return DateUtil.getDateString("dd-MM-yyyy - HH:mm:ss ", getList().get(linha).getData_log());
+			return getList().get(linha).getData_log();
 		case 5:
 			return btn;
 		}

@@ -21,7 +21,7 @@ public class TEtapa extends TGenerica<Etapa>{
 		case 0:
 			return getList().get(linha).getNome();
 		case 1:
-			return getList().get(linha).getPorcentagem_andamento();
+			return getList().get(linha).getPorcentagem();
 		case 2:
 			return btn;
 		}

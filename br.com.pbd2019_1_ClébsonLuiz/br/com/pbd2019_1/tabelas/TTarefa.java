@@ -59,7 +59,7 @@ public class TTarefa extends TGenerica<Tarefa>{
 		case 0:
 			return getList().get(linha).getNome();
 		case 1:
-			return getList().get(linha).getHorario_tarefa();
+			return getList().get(linha).getHorario();
 		case 2:
 			return getList().get(linha).getPrioridade();
 		case 3:

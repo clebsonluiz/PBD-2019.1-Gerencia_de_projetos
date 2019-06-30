@@ -3,8 +3,12 @@ package br.com.pbd2019_1.app;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
@@ -18,6 +22,7 @@ import br.com.pbd2019_1.dao.DAOConfigDefault;
 import br.com.pbd2019_1.dao.DAOResBackup;
 import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.entidade.ConfigDefault;
+import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
@@ -57,6 +62,37 @@ public class Principal{
 	
 	public static void main(String[] args) throws FileNotFoundException, DocumentException, BOException, DAOException {
 		
+		
+/*		
+		List<String> antes = new ArrayList<>();
+		List<String> depois = new ArrayList<>();
+		List<String> coluna = new ArrayList<>();
+		
+		Collections.addAll(antes, "", "", "", "");
+		Collections.addAll(depois, "Novo 1", "Novo 2", "Novo 3", "Novo 4");
+		Collections.addAll(coluna, "coluna1", "coluna2", "coluna3", "coluna4");
+		
+		
+		LogUpdate log = new LogUpdate();
+		
+		
+		log.setAntes(antes);
+		log.setDepois(depois);
+		log.setColuna(coluna);
+		log.setData_log(LocalDateTime.now());
+		log.setTipo("Cadastro");
+		log.setTabela("Pessoa");
+		log.setId_tabela(1);
+		log.setResponsavel("11629633445");
+		
+		Fachada.getInstance().carregarBoLogUpdate();
+		Fachada.getInstance().getBoLogUpdate().inserir(log);
+		
+		
+		LogUpdate log2 = Fachada.getInstance().getBoLogUpdate().buscar(log.getId());
+		System.out.println("\n\nImprimir");
+		System.out.println(log2.toString());*/
+		
 /*
 		Fachada.getInstance().carregarBoProjeto();
 		Fachada.getInstance().carregarBoEtapa();
@@ -92,6 +128,7 @@ public class Principal{
 		System.exit(0);
 */
 
+		/*
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
 		try 
@@ -281,7 +318,7 @@ public class Principal{
 
 							Backup b = new Backup();
 							b.setAutor_backup("BACKUP AUTOMATICO");
-							b.setData_backup(new Date());
+							b.setData_backup(LocalDateTime.now());
 							b.setLocal_backup(arquivoPathAbsolute);
 
 							try 
@@ -314,7 +351,8 @@ public class Principal{
 				}
 			}
 		}).start();
-
+*/
+		
 	}
 	
 }

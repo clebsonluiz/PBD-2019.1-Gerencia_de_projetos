@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
@@ -227,7 +228,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			
 			Backup b = new Backup();
 			b.setAutor_backup(controlador_Principal.getPessoa_Logada().getCpf());
-			b.setData_backup(new Date());
+			b.setData_backup(LocalDateTime.now());
 			b.setLocal_backup(arquivoPathAbsolute);
 			
 			try 

@@ -1,15 +1,17 @@
 package br.com.pbd2019_1.entidade;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "log_update")
@@ -38,22 +40,25 @@ import javax.persistence.TemporalType;
 public class LogUpdate extends Entidade{
 
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private java.util.Date data_log;
+	private LocalDateTime data_log;
 	@Column(nullable = false)
 	private String tipo;
 	@Column(nullable = false)
 	private String tabela;
 	@Column(nullable = false)
 	private int id_tabela;
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@JoinTable
 	@OrderColumn(nullable = true)
-	private String[] antes;
-	@ElementCollection
+	private List<String> antes;
+	@ElementCollection(fetch=FetchType.EAGER)
 	@JoinTable
 	@OrderColumn(nullable = false)
-	private String[] depois;
+	private List<String> depois;
+	@ElementCollection(fetch=FetchType.EAGER)
+	@JoinTable
+	@OrderColumn(nullable = false)
+	private List<String> coluna;
 	@Column(nullable = false)
 	private String responsavel;
 	
@@ -62,17 +67,41 @@ public class LogUpdate extends Entidade{
 	public String getTipo() {return tipo;}
 	public String getTabela() {return tabela;}
 	public int getId_tabela() {return id_tabela;}
-	public String[] getAntes() {return antes;}
-	public String[] getDepois() {return depois;}
+	public List<String> getAntes() {return antes;}
+	public List<String> getDepois() {return depois;}
+	public List<String> getColuna() {return coluna;}
 	public String getResponsavel() {return responsavel;}
-	public java.util.Date getData_log() {return data_log;}
+	public LocalDateTime getData_log() {return data_log;}
 
 	public void setTipo(String tipo) {this.tipo = tipo;}
 	public void setTabela(String tabela) {this.tabela = tabela;}
 	public void setId_tabela(int id_tabela) {this.id_tabela = id_tabela;}
-	public void setAntes(String[] antes) {this.antes = antes;}
-	public void setDepois(String[] depois) {this.depois = depois;}
+	public void setAntes(List<String> antes) {this.antes = antes;}
+	public void setDepois(List<String> depois) {this.depois = depois;}
+	public void setColuna(List<String> coluna) {this.coluna = coluna;}
 	public void setResponsavel(String responsavel) {this.responsavel = responsavel;}
-	public void setData_log(java.util.Date data_log) {this.data_log = data_log;}
+	public void setData_log(LocalDateTime data_log) {this.data_log = data_log;}
+
+	@Override
+	public String toString() {
+		
+		String antesS = "";
+		String depoisS = "";
+		String colunasS = "";
+		
+		System.out.println(antes);
+		
+		for(String s: antes)
+			antesS += "|Str: " + s + "|";
+		for(String s: depois)
+			depoisS += "|Str: " + s + "|";
+		for(String s: coluna)
+			colunasS += "|Str: " + s + "|";
+		
+		
+		return  "LogUpdate [data_log=" + data_log + ", tipo=" + tipo + ", tabela=" + tabela + ", id_tabela=" + id_tabela
+				+ ", antes=" + antesS + ", depois=" + depoisS + ", coluna=" + colunasS + ", responsavel=" + responsavel
+				+ "]";
+	}
 	
 }

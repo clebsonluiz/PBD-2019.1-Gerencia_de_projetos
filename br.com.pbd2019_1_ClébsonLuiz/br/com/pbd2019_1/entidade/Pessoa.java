@@ -1,6 +1,6 @@
 package br.com.pbd2019_1.entidade;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -17,15 +17,15 @@ import javax.persistence.Transient;
 	@NamedQuery(name = "Pessoa.cpf",
 			query = "select cast(COUNT(p) as int) from Pessoa p where p.cpf like :cpf and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.loginSenhaId",
-	query = "select cast(COUNT(p) as int) from Pessoa p where p.user_login like :login and p.user_senha like :senha and p.id = :id and p.ativado = true"),
+			query = "select cast(COUNT(p) as int) from Pessoa p where p.cpf like :cpf and p.user_senha like :senha and p.id = :id and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.cpfID",
 			query = "select cast(COUNT(p) as int) from Pessoa p where p.cpf like :cpf and p.id <> :id and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.buscarUsuarioLogin",
-			query = "select cast(COUNT(p) as int) from Pessoa p where p.user_login like :login and p.ativado = true"),
+			query = "select cast(COUNT(p) as int) from Pessoa p where p.cpf like :cpf and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.buscarUsuarioLoginID",
-			query = "select cast(COUNT(p) as int) from Pessoa p where p.user_login like :login and p.id <> :id and p.ativado = true"),
+			query = "select cast(COUNT(p) as int) from Pessoa p where p.cpf like :cpf and p.id <> :id and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.buscarUsuario",
-			query = "select p from Pessoa as p where p.user_login like :login and p.user_senha like :senha and p.ativado = true"),
+			query = "select p from Pessoa as p where p.cpf like :cpf and p.user_senha like :senha and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.buscarPessoas",
 			query = "select p from Pessoa as p where p.id <> :id and p.ativado = true"),
 	@NamedQuery(name = "Pessoa.buscarPessoasEspecificar",
@@ -48,13 +48,13 @@ public class Pessoa extends Entidade{
 	@Column(nullable = false)
 	private String sexo;
 	@Column(nullable = false)
-	private Date data_nascimento;
+	private LocalDate data_nascimento;
 	@Column(nullable = false)
 	private boolean disponibilidade;
-	@Column(nullable = false, unique = true)
-	private String user_login;
 	@Column(nullable = false)
 	private String user_senha;
+	@Column(nullable = false)
+	private boolean reset_senha;
 	@Column(nullable = false)
 	private String user_type;
 	@Transient
@@ -73,7 +73,8 @@ public class Pessoa extends Entidade{
 	public String getNome() {return nome;}
 	public String getSexo() {return sexo;}
 	public Contato getContato() {return contato;}
-	public Date getData_nascimento() {return data_nascimento;}
+	public boolean isReset_senha() {return reset_senha;}
+	public LocalDate getData_nascimento() {return data_nascimento;}
 	public boolean isDisponibilidade() {return disponibilidade;}
 
 	public void setCpf(String cpf) {this.cpf = cpf;}
@@ -81,7 +82,8 @@ public class Pessoa extends Entidade{
 	public void setSexo(String sexo) {this.sexo = sexo;}
 	public void setContato(Contato contato) {this.contato = contato;}
 	public void setProjetos(List<Projeto> projetos) {this.projetos = projetos;}
-	public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
+	public void setReset_senha(boolean reset_senha) {this.reset_senha = reset_senha;}
+	public void setData_nascimento(LocalDate data_nascimento) {this.data_nascimento = data_nascimento;}
 	public void setDisponibilidade(boolean disponibilidade) {this.disponibilidade = disponibilidade;}
 	public void setColaboradores(List<Colaborador> colaboradores) {this.colaboradores = colaboradores;}
 	public void setMembro_equipes(List<Colaborador> membro_equipes) {this.colaboradores = membro_equipes;}
@@ -93,11 +95,9 @@ public class Pessoa extends Entidade{
 	public List<CaracteristicaExtra> getCaracteristicas() {return caracteristicas;}
 
 	public String getUser_type() {return user_type;}
-	public String getUser_login() {return user_login;}
 	public String getUser_senha() {return user_senha;}
 
 	public void setUser_type(String user_type) {this.user_type = user_type;}
-	public void setUser_login(String user_login) {this.user_login = user_login;}
 	public void setUser_senha(String user_senha) {this.user_senha = user_senha;}
-	
+
 }

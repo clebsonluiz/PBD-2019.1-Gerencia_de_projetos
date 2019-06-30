@@ -1,0 +1,21 @@
+package br.com.pbd2019_1.utils;
+
+import java.sql.Date;
+import java.time.LocalDate;
+
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
+
+@Converter(autoApply = true)
+public class LocalDateConversor implements AttributeConverter<LocalDate, Date> {
+	@Override
+	public Date convertToDatabaseColumn(LocalDate locDate) {
+		return (locDate == null ? null : Date.valueOf(locDate));
+	}
+
+	@Override
+	public LocalDate convertToEntityAttribute(Date sqlDate) {
+		return (sqlDate == null ? null : sqlDate.toLocalDate());
+	}
+
+}
