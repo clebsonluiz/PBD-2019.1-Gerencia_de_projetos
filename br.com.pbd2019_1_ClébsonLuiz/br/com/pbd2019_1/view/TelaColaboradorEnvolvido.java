@@ -88,6 +88,8 @@ public class TelaColaboradorEnvolvido extends MeuJPanel {
 	public void exibirComColaborador()
 	{
 		meuJPanel_1.setVisible(true);
+		btRemoverColaborador.setVisible(true);
+		btVerColaborador.setVisible(true);
 		meuJPanel.setVisible(false);
 	}
 	
@@ -95,6 +97,14 @@ public class TelaColaboradorEnvolvido extends MeuJPanel {
 	{
 		meuJPanel_1.setVisible(false);
 		meuJPanel.setVisible(true);
+	}
+	
+	public void exibirComColaboradorVisaoColaborador()
+	{
+		meuJPanel_1.setVisible(true);
+		btRemoverColaborador.setVisible(false);
+		btVerColaborador.setVisible(false);
+		meuJPanel.setVisible(false);
 	}
 	
 	public CampoTexto getCmptxtResponsavel() {
