@@ -22,10 +22,10 @@ public class TelaColaboradorEnvolvido extends MeuJPanel {
 	private MeuJPanel meuJPanel_1;
 	private Botao btVerColaborador;
 
-	public TelaColaboradorEnvolvido() {
+	public TelaColaboradorEnvolvido(String tipo) {
 		setLayout(new BorderLayout(10, 10));
 		
-		JLabel label = new JLabel("Tipo");
+		JLabel label = new JLabel(tipo);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(ViewUtil.Fonts.Arial.ARIAL_TITULO_B);
 		add(label, BorderLayout.NORTH);
@@ -85,6 +85,18 @@ public class TelaColaboradorEnvolvido extends MeuJPanel {
 
 	}
 
+	public void exibirComColaborador()
+	{
+		meuJPanel_1.setVisible(true);
+		meuJPanel.setVisible(false);
+	}
+	
+	public void exibirSemColaborador()
+	{
+		meuJPanel_1.setVisible(false);
+		meuJPanel.setVisible(true);
+	}
+	
 	public CampoTexto getCmptxtResponsavel() {
 		return cmptxtResponsavel;
 	}

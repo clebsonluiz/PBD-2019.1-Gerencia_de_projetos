@@ -7,17 +7,16 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-public class TelaEtapa_Tarefas extends MeuJPanel {
+public class TelaInfoSubEtapaSubTarefas extends MeuJPanel {
 
 	private static final long serialVersionUID = 1L;
-
-	private TelaEtapa telaEtapa;
+	private TelaInfoSubEtapa telaInfoSubEtapa;
 	private TelaTarefas telaTarefas;
-	
-	public TelaEtapa_Tarefas() {
-		setLayout(new BorderLayout(10, 10));
+
+	public TelaInfoSubEtapaSubTarefas() {
+		setLayout(new BorderLayout());
+		telaInfoSubEtapa = new TelaInfoSubEtapa();
 		
-		telaEtapa = new TelaInfoEtapa();
 		telaTarefas = new TelaTarefas();
 		
 		JSplitPane splitPane = new JSplitPane();
@@ -30,12 +29,11 @@ public class TelaEtapa_Tarefas extends MeuJPanel {
 		
 		
 		splitPane.setOneTouchExpandable(true);
-		splitPane.setDividerLocation(telaEtapa.getMinimumSize().width);
+		splitPane.setDividerLocation(telaInfoSubEtapa.getMinimumSize().width);
 		splitPane.setDividerSize(10);
 		splitPane.setAutoscrolls(false);
-		JPanel pGridBag = new JPanel(new GridBagLayout());
-		pGridBag.setBackground(getBackground());
-		pGridBag.add(telaEtapa);
+		JPanel pGridBag = new MeuJPanel(new GridBagLayout());
+		pGridBag.add(telaInfoSubEtapa);
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setMinimumSize(new Dimension(300, 320));
 		panel.setPreferredSize(new Dimension(300, 320));
@@ -43,13 +41,15 @@ public class TelaEtapa_Tarefas extends MeuJPanel {
 		
 		splitPane.setLeftComponent(panel);
 		splitPane.setRightComponent(telaTarefas);
+		
 	}
 
-	public TelaEtapa getTelaEtapa() {
-		return telaEtapa;
+	public TelaInfoSubEtapa getTelaInfoSubEtapa() {
+		return telaInfoSubEtapa;
 	}
 
 	public TelaTarefas getTelaTarefas() {
 		return telaTarefas;
 	}
+
 }

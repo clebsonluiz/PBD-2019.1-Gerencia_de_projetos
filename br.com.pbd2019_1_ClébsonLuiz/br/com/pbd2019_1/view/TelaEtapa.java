@@ -2,16 +2,18 @@ package br.com.pbd2019_1.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 import br.com.pbd2019_1.utils.ViewUtil;
 
-public abstract class TelaEtapa extends JPanel {
+public abstract class TelaEtapa extends MeuJPanel {
 
 	private static final long serialVersionUID = 1L;
 	private CampoTexto nomeEtapaField;
@@ -19,15 +21,46 @@ public abstract class TelaEtapa extends JPanel {
 	private JProgressBar barraProgressBar;
 
 	private TelaCadastroEdicao telaCadastroEdicao;
+	private TelaColaboradorEnvolvido telaColaboradorEnvolvido;
 	
-	public TelaEtapa() {
-		setMinimumSize(new Dimension(300, 320));
-		setPreferredSize(new Dimension(300, 320));
-		setLayout(new BorderLayout(10, 10));
+	public TelaEtapa(String tabEtapa, String tabColaborador) {
+		
+		setLayout(new BorderLayout(0, 0));
+		setMinimumSize(new Dimension(300, 360));
+		setPreferredSize(new Dimension(300, 360));
+		
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		add(tabbedPane, BorderLayout.CENTER);
+
+		JPanel p0 = new JPanel();
+		
+		
+		p0.setBackground(getBackground());
+		
+		p0.setMinimumSize(new Dimension(300, 320));
+		p0.setPreferredSize(new Dimension(300, 320));
+		p0.setLayout(new BorderLayout(5, 5));
+		
+		telaColaboradorEnvolvido = new TelaColaboradorEnvolvido(tabColaborador);
+		telaColaboradorEnvolvido.setMinimumSize(p0.getPreferredSize());
+		
+		
+		MeuJPanel panel1 = new MeuJPanel(new GridBagLayout());
+		MeuJPanel panel2 = new MeuJPanel(new GridBagLayout());
+		
+		panel1.add(p0);
+		panel2.add(telaColaboradorEnvolvido);
+		
+		
+		tabbedPane.addTab(tabEtapa, panel1);
+		tabbedPane.addTab(tabColaborador, panel2);
+		
 		
 		JPanel p = new JPanel(null);
-		
+		p.setBackground(getBackground());
 		JPanel panel = new JPanel();
+		panel.setBackground(getBackground());
 		panel.setBorder(BorderFactory.createTitledBorder("Etapa"));
 		panel.setBounds(6, 6, 288, 200);
 		p.add(panel);
@@ -53,6 +86,7 @@ public abstract class TelaEtapa extends JPanel {
 		panel_1.setBorder(ViewUtil.Bordas.criarBordaTitulo("Progresso"));
 		panel_1.setToolTipText("Progresso em andamanto da etapa");
 		panel_1.setBounds(6, 210, 288, 68);
+		panel_1.setBackground(getBackground());
 		p.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
@@ -64,6 +98,7 @@ public abstract class TelaEtapa extends JPanel {
 		panel_1.add(barraProgressBar, BorderLayout.CENTER);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(getBackground());
 		panel_2.setBounds(6, 218, 288, 60);
 		p.add(panel_2);
 		
@@ -86,9 +121,9 @@ public abstract class TelaEtapa extends JPanel {
 				super.desabilitar();
 			}
 		};
-		
-		add(p, BorderLayout.CENTER);
-		add(telaCadastroEdicao, BorderLayout.SOUTH);
+		telaCadastroEdicao.setBackground(getBackground());
+		p0.add(p, BorderLayout.CENTER);
+		p0.add(telaCadastroEdicao, BorderLayout.SOUTH);
 		
 	}
 

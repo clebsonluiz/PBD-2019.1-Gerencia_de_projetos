@@ -17,7 +17,7 @@ import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.utils.ViewUtil;
 import br.com.pbd2019_1.utils.ViewUtil.Bordas;
 
-public abstract class TelaTarefa extends JPanel {
+public abstract class TelaTarefa extends MeuJPanel {
 
 	private static final long serialVersionUID = 1L;
 	private CampoTexto nomeTarefaField;
@@ -36,10 +36,12 @@ public abstract class TelaTarefa extends JPanel {
 		
 		JPanel p = new JPanel(null);
 		
+		p.setBackground(getBackground());
 		p.setMinimumSize(new Dimension(300, 350));
 		p.setPreferredSize(new Dimension(300, 350));
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(getBackground());
 		panel.setLayout(null);
 		panel.setBorder(BorderFactory.createTitledBorder("Tarefa"));
 		panel.setBounds(6, 6, 288, 338);
@@ -54,7 +56,7 @@ public abstract class TelaTarefa extends JPanel {
 		descricaoTextArea.setWrapStyleWord(true);
 		descricaoTextArea.setLineWrap(true);
 		scrollPane.setViewportView(descricaoTextArea);
-		
+
 		nomeTarefaField = new CampoTexto();
 		nomeTarefaField.setDescricao("Nome da Tarefa");
 		nomeTarefaField.setBorder(Bordas.criarBordaArredondada(null));
@@ -62,22 +64,26 @@ public abstract class TelaTarefa extends JPanel {
 		panel.add(nomeTarefaField);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(getBackground());
 		panel_1.setBorder(BorderFactory.createTitledBorder("Configuração"));
 		panel_1.setBounds(6, 191, 276, 141);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		horario = new Horario();
+		horario.setBackground(getBackground());
 		horario.setBounds(17, 22, 160, 50);
 		panel_1.add(horario);
 		
 		dateChooser = new JDateChooser();
+		dateChooser.setBackground(getBackground());
 		dateChooser.setDate(DateUtil.getDataAtual());
 		dateChooser.setBorder(ViewUtil.Bordas.criarBordaTituloField("Data"));
 		dateChooser.setBounds(17, 72, 160, 59);
 		panel_1.add(dateChooser);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(getBackground());
 		panel_2.setBorder(ViewUtil.Bordas.criarBordaTitulo("Finalizada"));
 		panel_2.setBounds(189, 22, 70, 50);
 		panel_1.add(panel_2);
@@ -89,6 +95,7 @@ public abstract class TelaTarefa extends JPanel {
 		panel_2.add(chckbxFinalizada);
 		
 		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(getBackground());
 		panel_3.setBorder(ViewUtil.Bordas.criarBordaTituloField("Prioridade"));
 		panel_3.setBounds(180, 72, 88, 59);
 		panel_1.add(panel_3);
@@ -130,7 +137,7 @@ public abstract class TelaTarefa extends JPanel {
 				super.desabilitar();
 			}
 		};
-		
+		telaCadastroEdicao.setBackground(getBackground());
 		add(p, BorderLayout.CENTER);
 		add(telaCadastroEdicao, BorderLayout.SOUTH);
 	}
