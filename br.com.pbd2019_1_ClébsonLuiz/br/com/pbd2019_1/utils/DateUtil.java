@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,15 @@ public class DateUtil {
 		return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 	
+	public static String getLocalDateString(String format, LocalDate localDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return localDate.format(formatter);
+	}
+	
+	public static String getLocalDateTimeString(String format, LocalDateTime localDateTime) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		return localDateTime.format(formatter);
+	}
 	
 	public static Date getDataAtual(){
 		return getDateSQL(new java.util.Date());

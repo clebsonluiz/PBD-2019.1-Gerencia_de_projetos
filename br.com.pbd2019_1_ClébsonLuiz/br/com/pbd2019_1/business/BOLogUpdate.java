@@ -1,5 +1,7 @@
 package br.com.pbd2019_1.business;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,10 +14,13 @@ import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.entidade.SubEtapa;
+import br.com.pbd2019_1.entidade.SubTarefa;
 import br.com.pbd2019_1.entidade.Tarefa;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.utils.LogUpdateUtil;
 
 public class BOLogUpdate extends BOGenerico<LogUpdate>{
 
@@ -26,7 +31,7 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	protected void validacaoInsercao(LogUpdate t) throws BOException{
 		if(t == null)
 			throw new BOException("Erro ao inserir Log");
-		t.setData_log(DateUtil.getDataAtual());
+		t.setData_log(LocalDateTime.now());
 	}
 	
 	protected void validacaoAtualizacao(LogUpdate t) throws BOException{
@@ -50,60 +55,14 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 					DateUtil.getDateSQL(data2));
 	}
 	
-	public String[] gerarLog(CaracteristicaExtra ce)
-	{
-		return new String[]{ce.getNome()};
-	}
-	
-	public String[] gerarLog(Pessoa pe)
-	{
-		return new String[]{pe.getNome(), pe.getCpf(),
-				DateUtil.getDateString("yyyy-MM-dd", pe.getData_nascimento()),
-				pe.getSexo(), pe.getUser_login(), "USER_PASSWORD",
-				new Boolean(pe.isDisponibilidade()).toString(),
-				pe.getUser_type()};
-	}
-	
-	public String[] gerarLog(Colaborador cl)
-	{
-		return new String[]{cl.getPrivilegio(),
-				DateUtil.getDateString("yyyy-MM-dd", cl.getData_ingresso())};
-	}
-	
-	public String[] gerarLog(Contato co)
-	{
-		return new String[]{co.getEmail(), co.getCelular(), co.getTelefone()};
-	}
-	
-	public String[] gerarLog(Etapa e)
-	{
-		
-		return new String[]{e.getNome(), e.getDescricao(),
-				new Float(e.getPorcentagem_andamento()).toString()};
-	}
-	
-	public String[] gerarLog(Projeto pro)
-	{
-		return new String[]{pro.getNome(), pro.getDescricao(), 
-				DateUtil.getDateString("yyyy-MM-dd", pro.getData_inicio()),
-				DateUtil.getDateString("yyyy-MM-dd", pro.getData_fim()),
-				new Boolean(pro.isPrivilegio()).toString()};
-	}
-	
-	public String[] gerarLog(Tarefa ta)
-	{
-		return new String[]{ta.getNome(), ta.getDescricao(),
-				new Boolean(ta.isConcluida()).toString(),
-				ta.getPrioridade(), ta.getHorario_tarefa()};
-	}
-
 	public void gerarLogInsercao(Entidade entidade, Pessoa responsavel, LogUpdate log) 
 			throws BOException, DAOException 
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("CADASTRO");
-		log.setData_log(DateUtil.getDateTime());
+		log.setData_log(LocalDateTime.now());
 		log.setResponsavel(responsavel.getCpf());
+		log.setColuna(LogUpdateUtil.GerarColunas.gerarColunas(entidade));
 		
 		if(entidade instanceof CaracteristicaExtra)
 			inserirLogCaracteristicaExtra(log, (CaracteristicaExtra) entidade);
@@ -119,15 +78,20 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 			inserirLogProjeto(log, (Projeto) entidade);
 		else if(entidade instanceof Tarefa)
 			inserirLogTarefa(log, (Tarefa) entidade);
+		else if(entidade instanceof SubEtapa)
+			log.setTabela(SubEtapa.class.getSimpleName());
+		else if(entidade instanceof SubTarefa)
+			log.setTabela(SubTarefa.class.getSimpleName());
 	}
 	
-	public void gerarLogUpdate(String[] antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
+	public void gerarLogUpdate(List<String> antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
 			throws BOException, DAOException
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("UPDATE");
-		log.setData_log(DateUtil.getDateTime());
+		log.setData_log(LocalDateTime.now());
 		log.setResponsavel(responsavel.getCpf());
+		log.setColuna(LogUpdateUtil.GerarColunas.gerarColunas(entidade));
 		log.setAntes(antes);
 		
 		if(entidade instanceof CaracteristicaExtra)
@@ -144,17 +108,22 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 			updateLogProjeto(log, (Projeto) entidade);
 		else if(entidade instanceof Tarefa)
 			updateLogTarefa(log, (Tarefa) entidade);
+		else if(entidade instanceof SubEtapa)
+			log.setTabela(SubEtapa.class.getSimpleName());
+		else if(entidade instanceof SubTarefa)
+			log.setTabela(SubTarefa.class.getSimpleName());
 	}
 	
-	public void gerarLogDelete(String[] antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
+	public void gerarLogDelete(List<String> antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
 			throws BOException, DAOException
 	{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("DELETE");
-		log.setData_log(DateUtil.getDateTime());
+		log.setData_log(LocalDateTime.now());
 		log.setResponsavel(responsavel.getCpf());
+		log.setColuna(LogUpdateUtil.GerarColunas.gerarColunas(entidade));
 		log.setAntes(antes);
-		log.setDepois(new String[] {});
+		log.setDepois(new ArrayList<>());
 		
 		if(entidade instanceof CaracteristicaExtra)
 			log.setTabela(CaracteristicaExtra.class.getSimpleName());
@@ -170,97 +139,102 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 			log.setTabela(Projeto.class.getSimpleName());
 		else if(entidade instanceof Tarefa)
 			log.setTabela(Tarefa.class.getSimpleName());
+		else if(entidade instanceof SubEtapa)
+			log.setTabela(SubEtapa.class.getSimpleName());
+		else if(entidade instanceof SubTarefa)
+			log.setTabela(SubTarefa.class.getSimpleName());
+		
 		inserir(log);
 	}
 	
 	private void updateLogTarefa(LogUpdate log, Tarefa ta) throws BOException, DAOException {
 		log.setTabela(Tarefa.class.getSimpleName());
-		log.setDepois(gerarLog(ta));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(ta));
 		inserir(log);
 	}
 
 	private void updateLogProjeto(LogUpdate log, Projeto pro) throws BOException, DAOException {
 		log.setTabela(Projeto.class.getSimpleName());
-		log.setDepois(gerarLog(pro));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(pro));
 		inserir(log);
 	}
 
 	private void updateLogPessoa(LogUpdate log, Pessoa pe) throws BOException, DAOException {
 		log.setTabela(Pessoa.class.getSimpleName());
-		log.setDepois(gerarLog(pe));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(pe));
 		inserir(log);
 	}
 
 	private void updateLogEtapa(LogUpdate log, Etapa e) throws BOException, DAOException {
 		log.setTabela(Etapa.class.getSimpleName());
-		log.setDepois(gerarLog(e));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(e));
 		inserir(log);
 	}
 
 	private void updateLogContato(LogUpdate log, Contato co) throws BOException, DAOException {
 		log.setTabela(Contato.class.getSimpleName());
-		log.setDepois(gerarLog(co));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(co));
 		inserir(log);
 	}
 
 	private void updateLogColaborador(LogUpdate log, Colaborador cl) throws BOException, DAOException {
 		log.setTabela(Colaborador.class.getSimpleName());
-		log.setDepois(gerarLog(cl));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(cl));
 		inserir(log);
 	}
 
 	private void updateLogCaracteristicaExtra(LogUpdate log, CaracteristicaExtra ce) throws BOException, DAOException {
 		log.setTabela(CaracteristicaExtra.class.getSimpleName());
-		log.setDepois(gerarLog(ce));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(ce));
 		inserir(log);
 	}
 
 	private void inserirLogProjeto(LogUpdate log, Projeto pro) throws BOException, DAOException
 	{
 		log.setTabela(Projeto.class.getSimpleName());
-		log.setDepois(gerarLog(pro));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(pro));
 		inserir(log);
 	}
 	
 	private void inserirLogTarefa(LogUpdate log, Tarefa ta) throws BOException, DAOException
 	{
 		log.setTabela(Tarefa.class.getSimpleName());
-		log.setDepois(gerarLog(ta));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(ta));
 		inserir(log);
 	}
 	
 	private void inserirLogEtapa(LogUpdate log, Etapa e) throws BOException, DAOException
 	{
 		log.setTabela(Etapa.class.getSimpleName());
-		log.setDepois(gerarLog(e));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(e));
 		inserir(log);
 	}
 	
 	private void inserirLogContato(LogUpdate log, Contato co) throws BOException, DAOException
 	{
 		log.setTabela(Contato.class.getSimpleName());
-		log.setDepois(gerarLog(co));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(co));
 		inserir(log);
 	}
 	
 	private void inserirLogColaborador(LogUpdate log, Colaborador cl) throws BOException, DAOException
 	{
 		log.setTabela(Colaborador.class.getSimpleName());
-		log.setDepois(gerarLog(cl));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(cl));
 		inserir(log);
 	}
 	
 	private void inserirLogPessoa(LogUpdate log, Pessoa pe) throws BOException, DAOException
 	{
 		log.setTabela(Pessoa.class.getSimpleName());
-		log.setDepois(gerarLog(pe));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(pe));
 		inserir(log);
 	}
 	
 	private void inserirLogCaracteristicaExtra(LogUpdate log, CaracteristicaExtra ca) throws BOException, DAOException
 	{
 		log.setTabela(CaracteristicaExtra.class.getSimpleName());
-		log.setDepois(gerarLog(ca));
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(ca));
 		inserir(log);
 	}
 	

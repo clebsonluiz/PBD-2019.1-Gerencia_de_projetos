@@ -18,13 +18,15 @@ public abstract class BOGenerico<T extends Entidade>{
 	}
 	
 	public T inserir(T t) throws BOException, DAOException {
+		if(t == null) 
+			throw new BOException("Erro ao inserir " + classe.getSimpleName());
 		validacaoInsercao(t);
 		return this.daoT.inserir(t);
 	};
 	
 	public T atualizar(T t) throws BOException, DAOException {
 		if(t == null || t.getId() <= 0)
-			throw new BOException("Não é possivel atualizar "+ t.getClass().getSimpleName());
+			throw new BOException("Não é possivel atualizar "+ classe.getSimpleName());
 		validacaoAtualizacao(t);
 		return this.daoT.atualizar(t);
 	};
@@ -37,13 +39,13 @@ public abstract class BOGenerico<T extends Entidade>{
 	
 	public void remover(T t) throws BOException, DAOException {
 		if(t == null || t.getId() <= 0)
-			throw new BOException("Não foi possivel deletar "+ t.getClass().getSimpleName());
+			throw new BOException("Não foi possivel deletar "+ classe.getSimpleName());
 		this.daoT.remover(t);
 	};
 	
 	public void deletar(T t) throws BOException, DAOException {
 		if(t == null || t.getId() <= 0)
-			throw new BOException("Não foi possivel deletar "+ t.getClass().getSimpleName());
+			throw new BOException("Não foi possivel deletar "+ classe.getSimpleName());
 		this.daoT.deletar(t);
 	};
 	
