@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -111,6 +112,47 @@ public abstract class DAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			
+			throw new DAOException("Erro de busca lista SQL no banco de dados");
+		} finally {
+			entityManager.close();
+		}
+		return t;
+	}
+	
+	public <T extends Entidade> List<T> buscaNamedQueryGenericaListFK(Class<T> classe, String namedQuery, String parameter, Object obj) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		List<T> t = null;
+		try {
+			
+			TypedQuery<T> query =  entityManager.createNamedQuery(namedQuery, classe);
+			query.setParameter(parameter, obj);
+			t = query.getResultList();
+		
+		} catch (NoResultException e) {
+			e.printStackTrace();
+			t = new ArrayList<>();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new DAOException("Erro de busca lista SQL no banco de dados");
+		} finally {
+			entityManager.close();
+		}
+		return t;
+	}
+	
+	public <T extends Entidade> T buscaNamedQueryGenericaFK(Class<T> classe, String namedQuery, String parameter, Object obj) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		T t = null;
+		try {
+			
+			TypedQuery<T> query =  entityManager.createNamedQuery(namedQuery, classe);
+			query.setParameter(parameter, obj);
+			t = query.getSingleResult();
+		
+		} catch (NoResultException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DAOException("Erro de busca lista SQL no banco de dados");
 		} finally {
 			entityManager.close();

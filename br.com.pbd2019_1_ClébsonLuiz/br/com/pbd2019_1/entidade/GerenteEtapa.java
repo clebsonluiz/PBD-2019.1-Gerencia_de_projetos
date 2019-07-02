@@ -3,11 +3,21 @@ package br.com.pbd2019_1.entidade;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "GERENTE_ETAPA")
+@NamedQueries({
+	@NamedQuery(name = "Gerente.etapa",
+			query = "select g from GerenteEtapa g where g.ativado = true and g.etapa = :etapa"),
+	@NamedQuery(name = "Gerente.colaborador",
+			query = "select g from GerenteEtapa g where g.ativado = true and g.colaborador = :colaborador"),
+	@NamedQuery(name = "", 
+			query = "")
+})
 public class GerenteEtapa extends Entidade{
 
 	@ManyToOne
