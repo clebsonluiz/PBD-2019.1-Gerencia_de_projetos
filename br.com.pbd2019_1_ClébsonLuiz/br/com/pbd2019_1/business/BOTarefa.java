@@ -17,7 +17,7 @@ public class BOTarefa extends BOGenerico<Tarefa>{
 	protected void validacaoInsercao(Tarefa t) throws BOException {
 		if(t == null || t.getNome() == null || t.getNome().trim().equals("")
 				|| t.getPrioridade() == null ||t.getPrioridade().trim().equals("")
-				|| t.getHorario_tarefa() == null || t.getHorario_tarefa().trim().equals("")
+				|| t.getHorario() == null 
 				|| t.getEtapa() == null || t.getEtapa().getId() <= 0)
 			throw new BOException("Campos de Tarefa Invalidos");
 	}

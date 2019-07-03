@@ -22,29 +22,29 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 			if(t == null || t.getNome() == null || t.getNome().trim().equals("")
 				|| t.getNome().split(" ").length < 2 || t.getData_nascimento() == null
 				|| t.getSexo() == null || t.getSexo().trim().equals("")
-				||t.getUser_login() == null || t.getUser_senha() == null || t.getUser_type() == null
-				|| t.getUser_login().trim().equals("") || t.getUser_senha().trim().equals("") 
-				|| t.getUser_login().trim().equals(""))
+				|| t.getUser_senha() == null || t.getUser_type() == null
+				|| t.getUser_senha().trim().equals("") 
+				)
 				throw new BOException("Erro ao validar pessoa");
 			
 			if(!(t.getUser_senha().length() > 6 && t.getUser_senha().length() < 11))
 				throw new BOException("Numero de caracteres da senha deve estar entre 6 e 11");
 			
-			if(t.getUser_login().contains(UserUtil.TypeUtil.TAG_COMUM))
+			/*if(t.getUser_login().contains(UserUtil.TypeUtil.TAG_COMUM))
 				t.setUser_type(Pessoa.COMUM_USER);
 			if(t.getUser_login().contains(UserUtil.TypeUtil.TAG_ADMIN))
 				t.setUser_type(Pessoa.ADMIN_USER);
 			if(t.getUser_login().contains(UserUtil.TypeUtil.TAG_SUPER))
-				t.setUser_type(Pessoa.SUPER_USER);
+				t.setUser_type(Pessoa.SUPER_USER);*/
 			
-			t.setUser_login(UserUtil.TypeUtil.removerCaracteresEspeciais(t.getUser_login()));
+//			t.setUser_login(UserUtil.TypeUtil.removerCaracteresEspeciais(t.getUser_login()));
 			
 			t.setCpf(UserUtil.DocumentoUtil.removerCaracteresEspeciais(t.getCpf()));
 			
 			if(buscarPorCPF(t.getCpf()))
 				throw new BOException("Já existe uma pessoa de mesmo CPF");
-			if(buscarPorLogin(t.getUser_login()))
-				throw new BOException("Já existe uma pessoa de mesmo login");
+//			if(buscarPorLogin(t.getUser_login()))
+//				throw new BOException("Já existe uma pessoa de mesmo login");
 			
 			t.setUser_senha(SecurityUtil.criptografarSHA2(t.getUser_senha()));
 			
@@ -59,14 +59,13 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 			if(t == null || t.getId() <= 0 || t.getNome() == null || t.getNome().trim().equals("")
 					|| t.getNome().split(" ").length < 2 || t.getData_nascimento() == null
 					|| t.getSexo() == null || t.getSexo().trim().equals("")
-					|| t.getUser_login() == null || t.getUser_senha() == null || t.getUser_type() == null
-					|| t.getUser_login().trim().equals("") || t.getUser_login().trim().equals("") 
-					|| t.getUser_login().trim().equals(""))
+					|| t.getUser_senha() == null || t.getUser_type() == null
+					)
 				throw new BOException("Erro ao validar pessoa, algum campo está vazio");
 
 			if(!UserUtil.DocumentoUtil.isCPF(t.getCpf()))
 				throw new BOException("Não é um cpf valido");
-			if(!buscarPorLoginSenhaID(t.getUser_login(), t.getUser_senha(), t.getId()))
+			if(!buscarPorLoginSenhaID(t.getCpf(), t.getUser_senha(), t.getId()))
 			{
 				if(!(t.getUser_senha().length() > 6 && t.getUser_senha().length() < 11))
 					throw new BOException("Numero de caracteres da senha deve ser maior que 5 e menor que 11");
@@ -77,8 +76,8 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 
 			if(buscarPorCPFID(t.getCpf(), t.getId()))
 				throw new BOException("Já existe uma pessoa de mesmo CPF");
-			if(buscarPorLoginID(t.getUser_login(), t.getId()))
-				throw new BOException("Já existe uma pessoa de mesmo Login");
+//			if(buscarPorLoginID(t.getUser_login(), t.getId()))
+//				throw new BOException("Já existe uma pessoa de mesmo Login");
 			
 		}
 		catch (NoSuchAlgorithmException | UnsupportedEncodingException | DAOException e) 

@@ -30,9 +30,12 @@ public class Etapa extends AbstractEtapa{
 	
 	public Etapa() {}
 
+	public Projeto getProjeto() {return projeto;}
 	public List<Tarefa> getTarefas() {return tarefas;}
 
 	public void setProjeto(Projeto projeto) {this.projeto = projeto;}
 	public void setTarefas(List<Tarefa> tarefas) {this.tarefas = tarefas;}
+
+	
 	
 }

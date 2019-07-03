@@ -17,15 +17,13 @@ public class BOColaborador extends BOGenerico<Colaborador>{
 
 	protected void validacaoInsercao(Colaborador t) throws BOException{
 		if(t == null || t.getPessoa() == null 
-				|| t.getProjeto() == null || t.getData_ingresso() == null 
-				|| t.getPrivilegio().trim().equals(""))
+				|| t.getProjeto() == null || t.getData_ingresso() == null)
 			throw new BOException("Erro ao validar colaborador");
 	}
 	
 	protected void validacaoAtualizacao(Colaborador t) throws BOException {
 		if(t == null || t.getPessoa() == null 
-				|| t.getProjeto() == null || t.getData_ingresso() == null 
-				|| t.getPrivilegio().trim().equals(""))
+				|| t.getProjeto() == null || t.getData_ingresso() == null)
 			throw new BOException("Erro ao validar colaborador");
 	}
 	
