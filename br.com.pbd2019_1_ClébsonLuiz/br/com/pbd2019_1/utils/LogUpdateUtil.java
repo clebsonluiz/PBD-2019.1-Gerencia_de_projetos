@@ -130,6 +130,29 @@ public interface LogUpdateUtil {
 			return list;
 		}
 		
+		public static List<String> gerarLog(Entidade entidade)
+		{
+			if(entidade instanceof CaracteristicaExtra)
+				return gerarLog((CaracteristicaExtra) entidade);
+			else if(entidade instanceof Colaborador)
+				return gerarLog((Colaborador) entidade);
+			else if(entidade instanceof Contato)
+				return gerarLog((Contato) entidade);
+			else if(entidade instanceof Etapa)
+				return gerarLog((Etapa) entidade);
+			else if(entidade instanceof Pessoa)
+				return gerarLog((Pessoa) entidade);
+			else if(entidade instanceof Projeto)
+				return gerarLog((Projeto) entidade);
+			else if(entidade instanceof Tarefa)
+				return gerarLog((Tarefa) entidade);
+			else if(entidade instanceof SubTarefa)
+				return gerarLog((SubTarefa) entidade);
+			else if(entidade instanceof SubEtapa)
+				return gerarLog((SubEtapa) entidade);
+			return null;
+		}
+		
 	}
 	
 	public static abstract class GerarColunas

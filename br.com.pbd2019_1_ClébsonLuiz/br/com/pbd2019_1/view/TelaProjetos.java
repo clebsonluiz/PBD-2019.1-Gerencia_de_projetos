@@ -39,9 +39,9 @@ public class TelaProjetos extends JPanel {
 		panel.add(btnGerarRelatorio);
 		
 		comboBox = new JComboBox<String>();
-		comboBox.addItem("Resumido");
+		comboBox.addItem("SISTEMATICO");
 		comboBox.addItem("COMPLETO");
-		comboBox.addItem("COMPLETO COM TABELA");
+		comboBox.addItem("ANALITICO");
 		comboBox.setSelectedIndex(0);
 		
 		panel.add(comboBox);

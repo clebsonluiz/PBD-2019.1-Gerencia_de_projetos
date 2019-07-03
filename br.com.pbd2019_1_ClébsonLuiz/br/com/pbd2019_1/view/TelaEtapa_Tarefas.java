@@ -6,18 +6,21 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
 public class TelaEtapa_Tarefas extends MeuJPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private TelaEtapa telaEtapa;
+	private TelaEtapas telaEtapas;
 	private TelaTarefas telaTarefas;
 	
 	public TelaEtapa_Tarefas() {
 		setLayout(new BorderLayout(10, 10));
 		
 		telaEtapa = new TelaInfoEtapa();
+		telaEtapas = new TelaEtapas();
 		telaTarefas = new TelaTarefas();
 		
 		JSplitPane splitPane = new JSplitPane();
@@ -42,7 +45,12 @@ public class TelaEtapa_Tarefas extends MeuJPanel {
 		panel.add(pGridBag, BorderLayout.CENTER);
 		
 		splitPane.setLeftComponent(panel);
-		splitPane.setRightComponent(telaTarefas);
+		
+		JTabbedPane jTabbedPane = new JTabbedPane();
+		jTabbedPane.addTab("Tarefas", telaTarefas);
+		jTabbedPane.addTab("Sub Etapas", telaEtapas);
+		
+		splitPane.setRightComponent(jTabbedPane);
 	}
 
 	public TelaEtapa getTelaEtapa() {
@@ -52,4 +60,9 @@ public class TelaEtapa_Tarefas extends MeuJPanel {
 	public TelaTarefas getTelaTarefas() {
 		return telaTarefas;
 	}
+
+	public TelaEtapas getTelaEtapas() {
+		return telaEtapas;
+	}
+	
 }

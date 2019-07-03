@@ -8,10 +8,15 @@ import br.com.pbd2019_1.business.BOCaracteristicaExtra;
 import br.com.pbd2019_1.business.BOColaborador;
 import br.com.pbd2019_1.business.BOContato;
 import br.com.pbd2019_1.business.BOEtapa;
+import br.com.pbd2019_1.business.BOGerenteEtapa;
 import br.com.pbd2019_1.business.BOLogUpdate;
 import br.com.pbd2019_1.business.BOPessoa;
 import br.com.pbd2019_1.business.BOProjeto;
+import br.com.pbd2019_1.business.BOSubEtapa;
+import br.com.pbd2019_1.business.BOSubEtapaColaborador;
+import br.com.pbd2019_1.business.BOSubTarefa;
 import br.com.pbd2019_1.business.BOTarefa;
+import br.com.pbd2019_1.business.BOTarefaColaborador;
 import br.com.pbd2019_1.dao.DAO;
 import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
@@ -19,12 +24,18 @@ import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.Entidade;
 import br.com.pbd2019_1.entidade.Etapa;
+import br.com.pbd2019_1.entidade.GerenteEtapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.entidade.SubEtapa;
+import br.com.pbd2019_1.entidade.SubEtapaColaborador;
+import br.com.pbd2019_1.entidade.SubTarefa;
 import br.com.pbd2019_1.entidade.Tarefa;
+import br.com.pbd2019_1.entidade.TarefaColaborador;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
+import br.com.pbd2019_1.utils.LogUpdateUtil;
 
 public class Fachada {
 
@@ -38,6 +49,11 @@ public class Fachada {
 	private BOLogUpdate boLogUpdate;
 	private BOColaborador boColaborador;
 	private BOCaracteristicaExtra boCaracteristicaExtra;
+	private BOSubEtapa boSubEtapa;
+	private BOSubTarefa boSubTarefa;
+	private BOTarefaColaborador boTarefaColaborador;
+	private BOSubEtapaColaborador boSubEtapaColaborador;
+	private BOGerenteEtapa boGerenteEtapa;
 	
 	/*Loaders*/
 	public void carregarBo() {this.bo = new BO(new DAO() {}) {};}
@@ -50,7 +66,15 @@ public class Fachada {
 	public void carregarBoLogUpdate() {this.boLogUpdate = new BOLogUpdate();}
 	public void carregarBoColaborador() {this.boColaborador = new BOColaborador();}
 	public void carregarBoCaracteristicaExtra() {this.boCaracteristicaExtra = new BOCaracteristicaExtra();}
-
+	
+	public void carregarBoSubEtapa() {this.boSubEtapa = new BOSubEtapa();}
+	public void carregarBoSubTarefa() {this.boSubTarefa = new BOSubTarefa();}
+	public void carregarBoTarefaColaborador() {this.boTarefaColaborador = new BOTarefaColaborador();}
+	public void carregarBoSubEtapaColaborador() {this.boSubEtapaColaborador = new BOSubEtapaColaborador();}
+	public void carregarBoGerenteEtapa() {this.boGerenteEtapa = new BOGerenteEtapa();}
+	
+	
+	
 	private  Fachada() {}
 
 	private static Fachada fachada;
@@ -81,6 +105,16 @@ public class Fachada {
 			return boTarefa.inserir((Tarefa)t);
 		else if(t instanceof Backup)
 			return boBackup.inserir((Backup)t);
+		else if(t instanceof SubEtapa)
+			return boSubEtapa.inserir((SubEtapa)t);
+		else if(t instanceof SubEtapaColaborador)
+			return boSubEtapaColaborador.inserir((SubEtapaColaborador)t);
+		else if(t instanceof SubTarefa)
+			return boSubTarefa.inserir((SubTarefa)t);
+		else if(t instanceof TarefaColaborador)
+			return boTarefaColaborador.inserir((TarefaColaborador)t);
+		else if(t instanceof GerenteEtapa)
+			return boGerenteEtapa.inserir((GerenteEtapa)t);
 		else
 			return null;
 	}
@@ -104,6 +138,16 @@ public class Fachada {
 			return boTarefa.atualizar((Tarefa)t);
 		else if(t instanceof Backup)
 			return boBackup.atualizar((Backup)t);
+		else if(t instanceof SubEtapa)
+			return boSubEtapa.atualizar((SubEtapa)t);
+		else if(t instanceof SubEtapaColaborador)
+			return boSubEtapaColaborador.atualizar((SubEtapaColaborador)t);
+		else if(t instanceof SubTarefa)
+			return boSubTarefa.atualizar((SubTarefa)t);
+		else if(t instanceof TarefaColaborador)
+			return boTarefaColaborador.atualizar((TarefaColaborador)t);
+		else if(t instanceof GerenteEtapa)
+			return boGerenteEtapa.atualizar((GerenteEtapa)t);
 		else
 			return null;
 	}
@@ -128,6 +172,16 @@ public class Fachada {
 			boTarefa.remover((Tarefa)t);
 		else if(t instanceof Backup)
 			boBackup.remover((Backup)t);
+		else if(t instanceof SubEtapa)
+			boSubEtapa.remover((SubEtapa)t);
+		else if(t instanceof SubEtapaColaborador)
+			boSubEtapaColaborador.remover((SubEtapaColaborador)t);
+		else if(t instanceof SubTarefa)
+			boSubTarefa.remover((SubTarefa)t);
+		else if(t instanceof TarefaColaborador)
+			boTarefaColaborador.remover((TarefaColaborador)t);
+		else if(t instanceof GerenteEtapa)
+			boGerenteEtapa.remover((GerenteEtapa)t);
 	}
 	
 	public void deletar(Object t) throws BOException, DAOException{
@@ -149,6 +203,16 @@ public class Fachada {
 			boTarefa.deletar((Tarefa)t);
 		else if(t instanceof Backup)
 			boBackup.deletar((Backup)t);
+		else if(t instanceof SubEtapa)
+			boSubEtapa.deletar((SubEtapa)t);
+		else if(t instanceof SubEtapaColaborador)
+			boSubEtapaColaborador.deletar((SubEtapaColaborador)t);
+		else if(t instanceof SubTarefa)
+			boSubTarefa.deletar((SubTarefa)t);
+		else if(t instanceof TarefaColaborador)
+			boTarefaColaborador.deletar((TarefaColaborador)t);
+		else if(t instanceof GerenteEtapa)
+			boGerenteEtapa.deletar((GerenteEtapa)t);
 	}
 	
 	public <T extends Entidade> Entidade buscar(Class<T> classe, int id) throws BOException, DAOException{
@@ -170,28 +234,24 @@ public class Fachada {
 			return boTarefa.buscar(id);
 		else if(classe.getSimpleName().equals(Backup.class.getSimpleName()))
 			return boBackup.buscar(id);
+		else if(classe.getSimpleName().equals(SubEtapa.class.getSimpleName()))
+			return boSubEtapa.buscar(id);
+		else if(classe.getSimpleName().equals(SubTarefa.class.getSimpleName()))
+			return boSubTarefa.buscar(id);
+		else if(classe.getSimpleName().equals(SubEtapaColaborador.class.getSimpleName()))
+			return boSubEtapaColaborador.buscar(id);
+		else if(classe.getSimpleName().equals(TarefaColaborador.class.getSimpleName()))
+			return boTarefaColaborador.buscar(id);
+		else if(classe.getSimpleName().equals(GerenteEtapa.class.getSimpleName()))
+			return boGerenteEtapa.buscar(id);
 		else
 			return null;
 	}
 	
 	/*Metodos Do Log*/
-	public String[] gerarLog(Entidade e) 
+	public List<String> gerarLog(Entidade e) 
 	{
-		if(e instanceof CaracteristicaExtra)
-			return boLogUpdate.gerarLog((CaracteristicaExtra) e);
-		else if(e instanceof Colaborador)
-			return boLogUpdate.gerarLog((Colaborador) e);
-		else if(e instanceof Contato)
-			return boLogUpdate.gerarLog((Contato) e);
-		else if(e instanceof Etapa)
-			return boLogUpdate.gerarLog((Etapa) e);
-		else if(e instanceof Pessoa)
-			return boLogUpdate.gerarLog((Pessoa) e);
-		else if(e instanceof Projeto)
-			return boLogUpdate.gerarLog((Projeto) e);
-		else if(e instanceof Tarefa)
-			return boLogUpdate.gerarLog((Tarefa) e);
-		return null;
+		return LogUpdateUtil.GerarLog.gerarLog(e);
 	}
 	
 	public void gerarLogInsercao(Entidade entidade, Pessoa responsavel, LogUpdate log) 
@@ -200,7 +260,7 @@ public class Fachada {
 		boLogUpdate.gerarLogInsercao(entidade, responsavel, log);
 	}
 	
-	public void gerarLogUpdate(String[] antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
+	public void gerarLogUpdate(List<String> antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
 			throws BOException, DAOException
 	{
 		boLogUpdate.gerarLogUpdate(antes, entidade, responsavel, log);
@@ -240,5 +300,10 @@ public class Fachada {
 	public BOLogUpdate getBoLogUpdate() {return boLogUpdate;}
 	public BOColaborador getBoColaborador() {return boColaborador;}
 	public BOCaracteristicaExtra getBoCaracteristicaExtra() {return boCaracteristicaExtra;}
+	public BOSubEtapa getBoSubEtapa() {return boSubEtapa;}
+	public BOSubTarefa getBoSubTarefa() {return boSubTarefa;}
+	public BOTarefaColaborador getBoTarefaColaborador() {return boTarefaColaborador;}
+	public BOSubEtapaColaborador getBoSubEtapaColaborador() {return boSubEtapaColaborador;}
+	public BOGerenteEtapa getBoGerenteEtapa() {return boGerenteEtapa;}
 	
 }

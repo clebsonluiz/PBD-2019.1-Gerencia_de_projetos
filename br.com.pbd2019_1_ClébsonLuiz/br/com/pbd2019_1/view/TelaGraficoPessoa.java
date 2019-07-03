@@ -30,7 +30,7 @@ public class TelaGraficoPessoa extends JPanel {
 
 		setMinimumSize(new Dimension(300, 380));
 		setPreferredSize(new Dimension(300, 380));
-		graficoPizza = ChartsUtil.getPizza("Desenpenho Geral");
+		graficoPizza = ChartsUtil.getPizza("Desempenho Geral");
 		
 		ChartPanel chartPanel = ChartsUtil.getChartPanel(graficoPizza);
 		
