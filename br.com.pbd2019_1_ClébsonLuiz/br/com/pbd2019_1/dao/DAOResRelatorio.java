@@ -99,13 +99,13 @@ public class DAOResRelatorio {
 		switch (op) 
 		{
 			case 0:
-				gerarRelatorioResumido(projeto, documento);
+				gerarRelatorioSistematico(projeto, documento);
 				break;
 			case 1:
 				gerarRelatorioCompleto(projeto, documento);
 				break;
 			case 2:
-				gerarRelatorioCompletoTabelas(projeto, documento);
+				gerarRelatorioAnalitico(projeto, documento);
 				break;
 		}
 		documento.close();
@@ -141,7 +141,7 @@ public class DAOResRelatorio {
 		return imagem;
 	}
 	
-	public void gerarRelatorioResumido(Projeto projeto, Document documento) throws DocumentException {
+	public void gerarRelatorioSistematico(Projeto projeto, Document documento) throws DocumentException {
 		conteudoProjetoResumido(projeto, documento);
 	}
 	
@@ -149,7 +149,7 @@ public class DAOResRelatorio {
 		conteudoProjetoCompleto(projeto, documento);
 	}
 	
-	public void gerarRelatorioCompletoTabelas(Projeto projeto, Document documento) throws DocumentException {
+	public void gerarRelatorioAnalitico(Projeto projeto, Document documento) throws DocumentException {
 		conteudoProjetoCompletoTabelas(projeto, documento);
 	}
 	

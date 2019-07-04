@@ -108,4 +108,8 @@ public class TelaCadastro_Etapa extends MeuJPanel {
 		return telaCadastroEdicao;
 	}
 
+	public Botao getBotao()
+	{
+		return telaCadastroEdicao.getBtBotao1();
+	}
 }

@@ -27,6 +27,7 @@ import br.com.pbd2019_1.tabelas.TBackup;
 import br.com.pbd2019_1.view.Botao;
 import br.com.pbd2019_1.view.Horario;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
+import br.com.pbd2019_1.view.JInternal_TelaAgendarBackup;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
 import br.com.pbd2019_1.view.JanelaPrincipal;
 import br.com.pbd2019_1.view.MeuJDialog;
@@ -45,6 +46,30 @@ public class Controlador_Backup implements Observer, ActionListener{
 		this.controlador_Principal = controlador_Principal;
 	}
 
+	public void addEventJInternal()
+	{
+		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaAgendarBackup());
+	}
+	
+	private void adicionarEventoJInternal(JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup)
+	{
+		jInternal_TelaAgendarBackup.getBtDefinirHorario()
+		.addActionListener(ActionEvent->
+		{
+			Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+			DAOConfigDefault.setHorarioAgenda(horario.toString());
+		});
+		
+		jInternal_TelaAgendarBackup.getBtResetarHorario()
+		.addActionListener(ActionEvent->
+		{
+			Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+			
+			DAOConfigDefault.setHorarioAgenda(null);
+			horario.setLocalTime("00", "00", "00");
+		});
+	}
+	
 	public void adicionarEventoBotoes(JInternal_Backup_Efetuando jInternal)
 	{
 		/*Se o evento for para o backup normal */

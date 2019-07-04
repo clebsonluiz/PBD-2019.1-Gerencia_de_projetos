@@ -179,10 +179,25 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		return ((DAOPessoa)this.daoT).buscarTotalEtapasPessoa(pessoa.getId());
 	}
 	
-	public boolean buscarPorLoginSenhaID(String login, String senha, int id) throws DAOException {
-		if(login == null || senha == null || id == 0)
+	public boolean buscarPorLoginSenhaID(String cpf, String senha, int id) throws DAOException {
+		if(cpf == null || senha == null || id == 0)
 			throw new BOException("Erro ao buscar dados de usuario");
-		return ((DAOPessoa)this.daoT).buscarPorLoginSenhaID(login, senha, id);
+		cpf = UserUtil.DocumentoUtil.removerCaracteresEspeciais(cpf);
+		
+		
+		if(!(senha.length() > 6 && senha.length() < 11))
+		{
+			try
+			{
+				senha = SecurityUtil.criptografarSHA2(senha);
+			}
+			catch (NoSuchAlgorithmException | UnsupportedEncodingException e)
+			{
+				throw new DAOException("Erro ao criptografar senha");
+			}
+		}
+		
+		return ((DAOPessoa)this.daoT).buscarPorCpfSenhaID(cpf, senha, id);
 	}
 	
 }

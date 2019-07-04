@@ -31,12 +31,12 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		return (quantidade > 0)? true : false;
 	}
 	
-	public boolean buscarPorLoginSenhaID(String login, String senha, int id) throws DAOException {
+	public boolean buscarPorCpfSenhaID(String cpf, String senha, int id) throws DAOException {
 		EntityManager entityManager = createEntityManager();
 		int quantidade = 0;
 		try {
 			quantidade = entityManager.createNamedQuery("Pessoa.loginSenhaId", Integer.class)
-			.setParameter("login", login)
+			.setParameter("cpf", cpf)
 			.setParameter("senha", senha)
 			.setParameter("id", id).getSingleResult();
 		} catch (Exception e) {

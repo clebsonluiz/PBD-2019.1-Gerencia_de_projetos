@@ -2,6 +2,7 @@ package br.com.pbd2019_1.controll;
 
 import java.beans.PropertyVetoException;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
@@ -29,6 +30,7 @@ import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.utils.SecurityUtil;
 import br.com.pbd2019_1.view.Horario;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
@@ -56,28 +58,28 @@ import br.com.pbd2019_1.view.TelaProjeto;
 
 public class Controlador_Info_JInternal_Tela {
 
-	private Controlador_Principal controlador_Principal;
+	private Controlador_Principal ctrl_P;
 	
 	public Controlador_Info_JInternal_Tela(Controlador_Principal controlador_Principal) {
-		this.controlador_Principal = controlador_Principal;
+		this.ctrl_P = controlador_Principal;
 	}
 	
 	public void adicionarEventosJInternals() {
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoEtapa());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoPessoa());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoPessoa_Projetos());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoProjeto_Etapas());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoProjeto_Etapas_Simples());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInfoTarefa());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInserirSQL());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoas());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaPessoasColaboradores());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TabelaLogs());
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaAgendarBackup());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoEtapa());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoPessoa());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoPessoa_Projetos());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoProjeto_Etapas());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoProjeto_Etapas_Simples());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoTarefa());
+//		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInserirSQL());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TabelaPessoas());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TabelaPessoasColaboradores());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TabelaLogs());
+//		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaAgendarBackup());
 	}
 	
 	
-	private void adicionarEventoJInternal(JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup)
+/*	private void adicionarEventoJInternal(JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup)
 	{
 		jInternal_TelaAgendarBackup.getBtDefinirHorario()
 		.addActionListener(ActionEvent->
@@ -94,7 +96,7 @@ public class Controlador_Info_JInternal_Tela {
 			DAOConfigDefault.setHorarioAgenda(null);
 			horario.setLocalTime("00", "00", "00");
 		});
-	}
+	}*/
 
 	private void adicionarEventoJInternal(JInternal_TabelaLogs jInternal_TabelaLogs) {
 		
@@ -123,7 +125,7 @@ public class Controlador_Info_JInternal_Tela {
 					logs = Fachada.getInstance().getBoLogUpdate().buscarEspecificado(type, (tabela.equalsIgnoreCase("todas"))? "" : tabela, id, cpf_responsavel, data1, data2);
 					break;
 				}
-			controlador_Principal.gettLogUpdate().addAll(logs);
+			ctrl_P.gettLogUpdate().addAll(logs);
 			}
 			catch (ValidacaoException e)
 			{
@@ -148,21 +150,21 @@ public class Controlador_Info_JInternal_Tela {
 			try
 			{
 				
-				Pessoa pessoa = controlador_Principal.gettPessoa().getValor(index);
+				Pessoa pessoa = ctrl_P.gettPessoa().getValor(index);
 				
 				Colaborador colaborador = new Colaborador();
-				colaborador.setData_ingresso(DateUtil.getDataAtual());
-				colaborador.setPrivilegio("Visitante");
+				colaborador.setData_ingresso(LocalDateTime.now());
+//				colaborador.setPrivilegio("Visitante");
 				colaborador.setPessoa(pessoa);
-				colaborador.setProjeto(controlador_Principal.getProjeto_Atual());
+				colaborador.setProjeto(ctrl_P.getProjeto_Atual());
 				
 				Fachada.getInstance().inserir(colaborador);
 			
-				controlador_Principal.gettColaborador().addValor(colaborador);
+				ctrl_P.gettColaborador().addValor(colaborador);
 				
 				LogUpdate log = new LogUpdate();
-				Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(colaborador, controlador_Principal.getPessoa_Logada(), log);
-				controlador_Principal.gettLogUpdate().addValor(log);
+				Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(colaborador, ctrl_P.getPessoa_Logada(), log);
+				ctrl_P.gettLogUpdate().addValor(log);
 				
 			} 
 			catch (ValidacaoException e) 
@@ -182,7 +184,7 @@ public class Controlador_Info_JInternal_Tela {
 
 				if(index == 0)
 				{
-					controlador_Principal.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(controlador_Principal.getPessoa_Logada()));
+					ctrl_P.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(ctrl_P.getPessoa_Logada()));
 				}
 				else
 				{
@@ -195,10 +197,10 @@ public class Controlador_Info_JInternal_Tela {
 
 					String disponibilidade = (i == 0)? "": (i == 1)? "true": "false";
 
-					controlador_Principal.gettPessoa().addAll(
+					ctrl_P.gettPessoa().addAll(
 							(List<Pessoa>) Fachada.getInstance()
 							.getBoPessoa()
-							.buscarPessoasEspecificarDiferentesDe(controlador_Principal.getPessoa_Logada(), nome, cpf, disponibilidade)
+							.buscarPessoasEspecificarDiferentesDe(ctrl_P.getPessoa_Logada(), nome, cpf, disponibilidade)
 							);
 				}
 			} catch (ValidacaoException e) {
@@ -217,7 +219,7 @@ public class Controlador_Info_JInternal_Tela {
 			try 
 			{
 				
-				controlador_Principal.getjInternal_TelaCadastro_Pessoa().queroFoco();
+				ctrl_P.getjInternal_TelaCadastro_Pessoa().queroFoco();
 			}
 			catch (PropertyVetoException e) 
 			{
@@ -237,7 +239,7 @@ public class Controlador_Info_JInternal_Tela {
 
 				if(index == 0)
 				{
-					controlador_Principal.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(controlador_Principal.getPessoa_Logada()));
+					ctrl_P.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(ctrl_P.getPessoa_Logada()));
 				}
 				else
 				{
@@ -250,10 +252,10 @@ public class Controlador_Info_JInternal_Tela {
 
 					String disponibilidade = (i == 0)? "": (i == 1)? "true": "false";
 
-					controlador_Principal.gettPessoa().addAll(
+					ctrl_P.gettPessoa().addAll(
 							(List<Pessoa>) Fachada.getInstance()
 							.getBoPessoa()
-							.buscarPessoasEspecificarDiferentesDe(controlador_Principal.getPessoa_Logada(), nome, cpf, disponibilidade)
+							.buscarPessoasEspecificarDiferentesDe(ctrl_P.getPessoa_Logada(), nome, cpf, disponibilidade)
 							);
 				}
 			} catch (ValidacaoException e) {
@@ -270,29 +272,29 @@ public class Controlador_Info_JInternal_Tela {
 			//TODO - Atualizar info Etapa
 				try 
 				{
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaEtapa telaEtapa = telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa();
 					String nome = telaEtapa.getNomeEtapaField().getTexto();
 					String descr = telaEtapa.getDescricaoTextArea().getText();
 
-					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getEtapa_Atual());
+					List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getEtapa_Atual());
 					
 					
-					controlador_Principal.getEtapa_Atual().setNome(nome);
-					controlador_Principal.getEtapa_Atual().setDescricao(descr);
-					Fachada.getInstance().atualizar(controlador_Principal.getEtapa_Atual());
-					controlador_Principal.gettEtapa().fireTableDataChanged();
+					ctrl_P.getEtapa_Atual().setNome(nome);
+					ctrl_P.getEtapa_Atual().setDescricao(descr);
+					Fachada.getInstance().atualizar(ctrl_P.getEtapa_Atual());
+					ctrl_P.gettEtapa().fireTableDataChanged();
 					
 					telaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa().getTelaCadastroEdicao().escondeBtn();
 				
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
 							antes,
-							controlador_Principal.getEtapa_Atual(), controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							ctrl_P.getEtapa_Atual(), ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 					
 				} 
 				catch (ValidacaoException e) 
@@ -306,10 +308,10 @@ public class Controlador_Info_JInternal_Tela {
 			//TODO - Nova Tarefa
 				try 
 				{
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
-					controlador_Principal.getjInternal_TelaCadastro_Tarefa().queroFoco();
+					ctrl_P.getjInternal_TelaCadastro_Tarefa().queroFoco();
 				} 
 				catch (ValidacaoException e) 
 				{
@@ -323,7 +325,7 @@ public class Controlador_Info_JInternal_Tela {
 	}
 	
 
-	private void adicionarEventoJInternal(JInternal_TelaInserirSQL jInternal_TelaInserirSQL) {
+/*	private void adicionarEventoJInternal(JInternal_TelaInserirSQL jInternal_TelaInserirSQL) {
 		
 		TelaInserirSQL telaInserirSQL = jInternal_TelaInserirSQL.getTelaInserirSQL();
 		
@@ -387,7 +389,7 @@ public class Controlador_Info_JInternal_Tela {
 				}
 			}
 		});
-	}
+	}*/
 	
 
 	private void adicionarEventoJInternal(JInternal_TelaInfoPessoa telaInfoPessoa) {
@@ -404,15 +406,15 @@ public class Controlador_Info_JInternal_Tela {
 					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
-					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Outrem());
+					List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getPessoa_Outrem());
 					
-					controlador_Principal.getPessoa_Outrem().setNome(nome);
-					controlador_Principal.getPessoa_Outrem().setCpf(cpf);
-					controlador_Principal.getPessoa_Outrem().setData_nascimento(DateUtil.getDateSQL(data));
-					controlador_Principal.getPessoa_Outrem().setSexo(sexo);
-					controlador_Principal.getPessoa_Outrem().setDisponibilidade(disponivel);
-					Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Outrem());
-					controlador_Principal.gettPessoa().fireTableDataChanged();
+					ctrl_P.getPessoa_Outrem().setNome(nome);
+					ctrl_P.getPessoa_Outrem().setCpf(cpf);
+					ctrl_P.getPessoa_Outrem().setData_nascimento(DateUtil.parseToLocalDate(data));
+					ctrl_P.getPessoa_Outrem().setSexo(sexo);
+					ctrl_P.getPessoa_Outrem().setDisponibilidade(disponivel);
+					Fachada.getInstance().atualizar(ctrl_P.getPessoa_Outrem());
+					ctrl_P.gettPessoa().fireTableDataChanged();
 					
 					telaInfoPessoa.getTelaInfoPessoa()
 					.getTelaMiniPessoa1()
@@ -422,8 +424,8 @@ public class Controlador_Info_JInternal_Tela {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
 							antes,
-							controlador_Principal.getPessoa_Outrem(), controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							ctrl_P.getPessoa_Outrem(), ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 					
 				} 
 				catch (ValidacaoException e) 
@@ -438,15 +440,15 @@ public class Controlador_Info_JInternal_Tela {
 			try 
 			{
 				TelaMiniPessoa2 telaPessoa = telaInfoPessoa.getTelaInfoPessoa().getTelaMiniPessoa2();
-				String login = telaPessoa.getLoginField().getTexto();
-				String senha = telaPessoa.getSenhaField().getTexto();
+				String senhaAntiga = telaPessoa.getSenhaAntigaField().getTexto();
+				String senhaNova = telaPessoa.getSenhaNovaField().getTexto();
 
-				String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Outrem());
+				List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getPessoa_Outrem());
 				
-				controlador_Principal.getPessoa_Outrem().setUser_login(login);
-				controlador_Principal.getPessoa_Outrem().setUser_senha(senha);
-				Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Outrem());
-				controlador_Principal.gettPessoa().fireTableDataChanged();
+//				controlador_Principal.getPessoa_Outrem().setUser_login(login);
+				ctrl_P.getPessoa_Outrem().setUser_senha(senha);
+				Fachada.getInstance().atualizar(ctrl_P.getPessoa_Outrem());
+				ctrl_P.gettPessoa().fireTableDataChanged();
 				
 				telaInfoPessoa.getTelaInfoPessoa().getTelaMiniPessoa2()
 				.getTelaCadastroEdicao()
@@ -455,8 +457,8 @@ public class Controlador_Info_JInternal_Tela {
 				LogUpdate log = new LogUpdate();
 				Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
 						antes,
-						controlador_Principal.getPessoa_Outrem(), controlador_Principal.getPessoa_Logada(), log);
-				controlador_Principal.gettLogUpdate().addValor(log);
+						ctrl_P.getPessoa_Outrem(), ctrl_P.getPessoa_Logada(), log);
+				ctrl_P.gettLogUpdate().addValor(log);
 				
 			} 
 			catch (ValidacaoException e) 
@@ -478,7 +480,7 @@ public class Controlador_Info_JInternal_Tela {
 				String celular = telaContato.getCelularField().getText();
 				String telef = telaContato.getTelefoneField().getText();
 
-				Contato c = controlador_Principal.getPessoa_Outrem().getContato();
+				Contato c = ctrl_P.getPessoa_Outrem().getContato();
 
 				if(c == null) 
 					c = new Contato();
@@ -489,17 +491,17 @@ public class Controlador_Info_JInternal_Tela {
 					c.setEmail(email);
 					c.setCelular(celular);
 					c.setTelefone(telef);
-					c.setPessoa(controlador_Principal.getPessoa_Outrem());
+					c.setPessoa(ctrl_P.getPessoa_Outrem());
 					Fachada.getInstance().inserir(c);
 					
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(
-							c, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							c, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				else 
 				{
-					String[] antes = Fachada.getInstance().gerarLog(c);
+					List<String> antes = Fachada.getInstance().gerarLog(c);
 					
 					c.setEmail(email);
 					c.setCelular(celular);
@@ -509,8 +511,8 @@ public class Controlador_Info_JInternal_Tela {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
 							antes,
-							c, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							c, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				
 				telaInfoPessoa.getTelaInfoPessoa()
@@ -536,16 +538,16 @@ public class Controlador_Info_JInternal_Tela {
 
 	private void adicionarEventoJInternal(JInternal_TelaInfoTarefa telaInfoTarefa) {
 		
-		telaInfoTarefa.getTelaInfoTarefa().getBotao1()
+		telaInfoTarefa.getTelaInfoTarefa().getTelaInfoTarefa().getBotao1()
 			.addActionListener(ActionEvent->{
 				//TODO - Update tarefa
 				try 
 				{
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
-					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
+					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa().getTelaInfoTarefa();
 					
 					String nome = telaTarefa.getNomeTarefaField().getTexto();
 					String descr = telaTarefa.getDescricaoTextArea().getText();
@@ -557,27 +559,27 @@ public class Controlador_Info_JInternal_Tela {
 
 					LocalDateTime localDateTime = DateUtil.getDateTime(DateUtil.parseToLocalDate(date), time);
 
-					String horario = localDateTime.toString();
+//					String horario = localDateTime.toString();
 
 					
-					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getTarefa_Atual());
+					List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getTarefa_Atual());
 					
-					controlador_Principal.getTarefa_Atual().setNome(nome);
-					controlador_Principal.getTarefa_Atual().setDescricao(descr);
-					controlador_Principal.getTarefa_Atual().setConcluida(finalizada);
-					controlador_Principal.getTarefa_Atual().setPrioridade(prior);
-					controlador_Principal.getTarefa_Atual().setHorario_tarefa(horario);
+					ctrl_P.getTarefa_Atual().setNome(nome);
+					ctrl_P.getTarefa_Atual().setDescricao(descr);
+					ctrl_P.getTarefa_Atual().setConcluida(finalizada);
+					ctrl_P.getTarefa_Atual().setPrioridade(prior);
+					ctrl_P.getTarefa_Atual().setHorario(localDateTime);
 
-					Fachada.getInstance().atualizar(controlador_Principal.getTarefa_Atual());
-					controlador_Principal.gettTarefa().fireTableDataChanged();
+					Fachada.getInstance().atualizar(ctrl_P.getTarefa_Atual());
+					ctrl_P.gettTarefa().fireTableDataChanged();
 					
-					telaInfoTarefa.getTelaInfoTarefa().getTelaCadastroEdicao().escondeBtn();
+					telaInfoTarefa.getTelaInfoTarefa().getTelaInfoTarefa().getTelaCadastroEdicao().escondeBtn();
 					
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogUpdate(
 							antes,
-							controlador_Principal.getTarefa_Atual(), controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							ctrl_P.getTarefa_Atual(), ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 					
 				} catch (ValidacaoException e) 
 				{
@@ -585,40 +587,40 @@ public class Controlador_Info_JInternal_Tela {
 				}
 			});
 		
-		telaInfoTarefa.getTelaInfoTarefa().getChckbxFinalizada()
+		telaInfoTarefa.getTelaInfoTarefa().getTelaInfoTarefa().getChckbxFinalizada()
 			.addActionListener(ActionEvent->{
 				//TODO - Marcar/Desmarcar como finalizada
 				try
 				{
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 						{
-							TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
+							TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa().getTelaInfoTarefa();
 							boolean b = telaTarefa.getChckbxFinalizada().isSelected();
 							telaTarefa.getChckbxFinalizada().setSelected(!b);
 							throw new ValidacaoException("Não tem permição");
 						}
 					
-					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa();
+					TelaInfoTarefa telaTarefa = telaInfoTarefa.getTelaInfoTarefa().getTelaInfoTarefa();
 					boolean finalizada = telaTarefa.getChckbxFinalizada().isSelected();
-					controlador_Principal.getTarefa_Atual().setConcluida(finalizada);
-					Fachada.getInstance().atualizar(controlador_Principal.getTarefa_Atual());
-					controlador_Principal.gettTarefa().fireTableDataChanged();
+					ctrl_P.getTarefa_Atual().setConcluida(finalizada);
+					Fachada.getInstance().atualizar(ctrl_P.getTarefa_Atual());
+					ctrl_P.gettTarefa().fireTableDataChanged();
 					
 					
-					controlador_Principal.getEtapa_Atual().setPorcentagem_andamento(
+					ctrl_P.getEtapa_Atual().setPorcentagem(
 							Fachada.getInstance()
 								.getBoEtapa()
-								.recalcularPorcentagem(controlador_Principal.getEtapa_Atual())
+								.recalcularPorcentagem(ctrl_P.getEtapa_Atual())
 							);
 					
-					controlador_Principal
+					ctrl_P
 						.getjInternal_TelaInfoEtapa()
 						.getTelaEtapa_Tarefas()
 						.getTelaEtapa()
 						.getBarraProgressBar()
 						.setValue(
-								Math.round(controlador_Principal.getEtapa_Atual().getPorcentagem_andamento())
+								Math.round(ctrl_P.getEtapa_Atual().getPorcentagem())
 								);
 				} catch (ValidacaoException e) {
 					MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar tarefa", e.getMessage());
@@ -635,8 +637,8 @@ public class Controlador_Info_JInternal_Tela {
 				//TODO - Update Projeto
 				try 
 				{
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaProjeto telaProjeto = telaInfoProjetoEtapas.getTelaProjeto_Etapas()
@@ -647,19 +649,19 @@ public class Controlador_Info_JInternal_Tela {
 					Date dataI = telaProjeto.getDataInicioDateChooser().getDate();
 					Date dataF = telaProjeto.getDataFimDateChooser().getDate();
 
-					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getProjeto_Atual());
+					List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getProjeto_Atual());
 					
-					controlador_Principal.getProjeto_Atual().setNome(nome);
-					controlador_Principal.getProjeto_Atual().setDescricao(descr);
-					controlador_Principal.getProjeto_Atual().setData_inicio(DateUtil.getDateSQL(dataI));
-					controlador_Principal.getProjeto_Atual().setData_fim(DateUtil.getDateSQL(dataF));
-					Fachada.getInstance().atualizar(controlador_Principal.getProjeto_Atual());
-					controlador_Principal.gettProjeto().fireTableDataChanged();
+					ctrl_P.getProjeto_Atual().setNome(nome);
+					ctrl_P.getProjeto_Atual().setDescricao(descr);
+					ctrl_P.getProjeto_Atual().setData_inicio(DateUtil.getDateSQL(dataI));
+					ctrl_P.getProjeto_Atual().setData_fim(DateUtil.getDateSQL(dataF));
+					Fachada.getInstance().atualizar(ctrl_P.getProjeto_Atual());
+					ctrl_P.gettProjeto().fireTableDataChanged();
 					
 					int valorA = Fachada.getInstance()
 							.getBoProjeto()
 							.andamento_Projeto(
-								controlador_Principal.getProjeto_Atual()
+								ctrl_P.getProjeto_Atual()
 								);
 					
 					((TelaInfoProjeto)telaProjeto).getProgressBar().setValue(valorA);
@@ -673,8 +675,8 @@ public class Controlador_Info_JInternal_Tela {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
 							antes,
-							controlador_Principal.getProjeto_Atual(), controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							ctrl_P.getProjeto_Atual(), ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e)
 				{
@@ -687,11 +689,11 @@ public class Controlador_Info_JInternal_Tela {
 				//TODO - Adicionar etapa
 				try
 				{
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
-					controlador_Principal.getjInternal_TelaCadastro_Etapa().queroFoco();
+					ctrl_P.getjInternal_TelaCadastro_Etapa().queroFoco();
 					
 				} 
 				catch (ValidacaoException e) 
@@ -708,9 +710,9 @@ public class Controlador_Info_JInternal_Tela {
 			.getBtAdicionarColaborador().addActionListener(ActionEvent->{
 				try
 				{
-					controlador_Principal.gettPessoa().getList().clear();
-					controlador_Principal.gettPessoa().fireTableDataChanged();
-					controlador_Principal.getjInternal_TabelaPessoasColaboradores().queroFoco();
+					ctrl_P.gettPessoa().getList().clear();
+					ctrl_P.gettPessoa().fireTableDataChanged();
+					ctrl_P.getjInternal_TabelaPessoasColaboradores().queroFoco();
 				} 
 				catch (PropertyVetoException e) 
 				{
@@ -736,15 +738,15 @@ public class Controlador_Info_JInternal_Tela {
 					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
-					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Logada());
+					List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getPessoa_Logada());
 					
-					controlador_Principal.getPessoa_Logada().setNome(nome);
-					controlador_Principal.getPessoa_Logada().setCpf(cpf);
-					controlador_Principal.getPessoa_Logada().setData_nascimento(DateUtil.getDateSQL(data));
-					controlador_Principal.getPessoa_Logada().setSexo(sexo);
-					controlador_Principal.getPessoa_Logada().setDisponibilidade(disponivel);
-					Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Logada());
-					controlador_Principal.gettPessoa().fireTableDataChanged();
+					ctrl_P.getPessoa_Logada().setNome(nome);
+					ctrl_P.getPessoa_Logada().setCpf(cpf);
+					ctrl_P.getPessoa_Logada().setData_nascimento(DateUtil.parseToLocalDate(data));
+					ctrl_P.getPessoa_Logada().setSexo(sexo);
+					ctrl_P.getPessoa_Logada().setDisponibilidade(disponivel);
+					Fachada.getInstance().atualizar(ctrl_P.getPessoa_Logada());
+					ctrl_P.gettPessoa().fireTableDataChanged();
 					
 					telaInfoPessoaProjetos
 					.getTelaInfoPessoaProjetos()
@@ -757,8 +759,8 @@ public class Controlador_Info_JInternal_Tela {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogUpdate(
 							antes,
-							controlador_Principal.getPessoa_Logada(), controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							ctrl_P.getPessoa_Logada(), ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e) 
 				{
@@ -775,15 +777,22 @@ public class Controlador_Info_JInternal_Tela {
 				TelaMiniPessoa2 telaPessoa = telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
 						.getTelaInfoPessoa().getTelaMiniPessoa2();
 
-				String login = telaPessoa.getLoginField().getTexto();
-				String senha = telaPessoa.getSenhaField().getTexto();
+				String senhaAntiga = telaPessoa.getSenhaAntigaField().getTexto();
+				String senhaNova = telaPessoa.getSenhaNovaField().getTexto();
 				
-				String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getPessoa_Logada());
+				List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getPessoa_Logada());
 				
-				controlador_Principal.getPessoa_Logada().setUser_login(login);
-				controlador_Principal.getPessoa_Logada().setUser_senha(senha);
-				Fachada.getInstance().atualizar(controlador_Principal.getPessoa_Logada());
-				controlador_Principal.gettPessoa().fireTableDataChanged();
+//				controlador_Principal.getPessoa_Logada().setUser_login(login);
+				
+				Pessoa pessoa = ctrl_P.getPessoa_Logada();
+				
+				if(!Fachada.getInstance().getBoPessoa().buscarPorLoginSenhaID(pessoa.getCpf(), senhaAntiga, pessoa.getId()))
+					throw new ValidacaoException("A senha antiga informada não condiz");
+				
+				ctrl_P.getPessoa_Logada().setUser_senha(senhaNova);
+				
+				Fachada.getInstance().atualizar(ctrl_P.getPessoa_Logada());
+				ctrl_P.gettPessoa().fireTableDataChanged();
 				
 				telaInfoPessoaProjetos
 				.getTelaInfoPessoaProjetos()
@@ -796,8 +805,8 @@ public class Controlador_Info_JInternal_Tela {
 				LogUpdate log = new LogUpdate();
 				Fachada.getInstance().gerarLogUpdate(
 						antes,
-						controlador_Principal.getPessoa_Logada(), controlador_Principal.getPessoa_Logada(), log);
-				controlador_Principal.gettLogUpdate().addValor(log);
+						ctrl_P.getPessoa_Logada(), ctrl_P.getPessoa_Logada(), log);
+				ctrl_P.gettLogUpdate().addValor(log);
 			}
 			catch (ValidacaoException e) 
 			{
@@ -821,7 +830,7 @@ public class Controlador_Info_JInternal_Tela {
 				String telef = telaContato.getTelefoneField().getText();
 
 
-				Contato c = controlador_Principal.getPessoa_Logada().getContato();
+				Contato c = ctrl_P.getPessoa_Logada().getContato();
 
 				if(c == null) 
 					c = new Contato();
@@ -830,18 +839,18 @@ public class Controlador_Info_JInternal_Tela {
 					c.setEmail(email);
 					c.setCelular(celular);
 					c.setTelefone(telef);
-					c.setPessoa(controlador_Principal.getPessoa_Logada());
+					c.setPessoa(ctrl_P.getPessoa_Logada());
 					
 					Fachada.getInstance().inserir(c);
 					
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogInsercao(
-							c, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							c, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				else 
 				{
-					String[] antes = Fachada.getInstance().gerarLog(c);
+					List<String> antes = Fachada.getInstance().gerarLog(c);
 					
 					c.setEmail(email);
 					c.setCelular(celular);
@@ -851,8 +860,8 @@ public class Controlador_Info_JInternal_Tela {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
 							antes,
-							c, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							c, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				
 				telaInfoPessoaProjetos
@@ -876,21 +885,21 @@ public class Controlador_Info_JInternal_Tela {
 				//TODO - Adicionar caracteristica Extra
 				try 
 				{
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					CaracteristicaExtra c = new CaracteristicaExtra();
-					c.setPessoa(controlador_Principal.getPessoa_Logada());
+					c.setPessoa(ctrl_P.getPessoa_Logada());
 					c.setNome("");
 				
 					Fachada.getInstance().inserir(c);
 					
-					controlador_Principal.gettCaracteristicaExtra().addValor(c);
+					ctrl_P.gettCaracteristicaExtra().addValor(c);
 					
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(
-							c, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							c, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 					
 				} 
 				catch (ValidacaoException e)
@@ -905,7 +914,7 @@ public class Controlador_Info_JInternal_Tela {
 				//TODO - Cadastrar Novo projeto
 				try
 				{
-					controlador_Principal.getjInternal_TelaCadastro_Projeto().queroFoco();
+					ctrl_P.getjInternal_TelaCadastro_Projeto().queroFoco();
 				}
 				catch (PropertyVetoException e) 
 				{
@@ -931,7 +940,7 @@ public class Controlador_Info_JInternal_Tela {
 					{
 						try 
 						{
-							Projeto projeto = controlador_Principal.gettProjeto().getValor(index);
+							Projeto projeto = ctrl_P.gettProjeto().getValor(index);
 							String path = MeuJFileChooser.getInstance().getSelectedFile().getAbsolutePath();
 						
 						
@@ -1001,8 +1010,8 @@ public class Controlador_Info_JInternal_Tela {
 			.getBotao1().addActionListener(ActionEvent->{
 				//TODO - Update Projeto
 				try {
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
 					TelaProjeto telaProjeto = telaInfoProjeto_Etapas_Simples
@@ -1013,19 +1022,19 @@ public class Controlador_Info_JInternal_Tela {
 					Date dataI = telaProjeto.getDataInicioDateChooser().getDate();
 					Date dataF = telaProjeto.getDataFimDateChooser().getDate();
 
-					String[] antes = Fachada.getInstance().gerarLog(controlador_Principal.getProjeto_Atual());
+					List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getProjeto_Atual());
 					
-					controlador_Principal.getProjeto_Atual().setNome(nome);
-					controlador_Principal.getProjeto_Atual().setDescricao(descr);
-					controlador_Principal.getProjeto_Atual().setData_inicio(DateUtil.getDateSQL(dataI));
-					controlador_Principal.getProjeto_Atual().setData_fim(DateUtil.getDateSQL(dataF));
-					Fachada.getInstance().atualizar(controlador_Principal.getProjeto_Atual());
-					controlador_Principal.gettProjeto().fireTableDataChanged();
+					ctrl_P.getProjeto_Atual().setNome(nome);
+					ctrl_P.getProjeto_Atual().setDescricao(descr);
+					ctrl_P.getProjeto_Atual().setData_inicio(DateUtil.getDateSQL(dataI));
+					ctrl_P.getProjeto_Atual().setData_fim(DateUtil.getDateSQL(dataF));
+					Fachada.getInstance().atualizar(ctrl_P.getProjeto_Atual());
+					ctrl_P.gettProjeto().fireTableDataChanged();
 					
 					int valorA = Fachada.getInstance()
 							.getBoProjeto()
 							.andamento_Projeto(
-								controlador_Principal.getProjeto_Atual()
+								ctrl_P.getProjeto_Atual()
 								);
 					
 					((TelaInfoProjeto)telaProjeto).getProgressBar().setValue(valorA);
@@ -1037,8 +1046,8 @@ public class Controlador_Info_JInternal_Tela {
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().getBoLogUpdate().gerarLogUpdate(
 							antes,
-							controlador_Principal.getProjeto_Atual(), controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+							ctrl_P.getProjeto_Atual(), ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e) 
 				{
@@ -1051,11 +1060,11 @@ public class Controlador_Info_JInternal_Tela {
 			//TODO - Adicionar etapa
 				try {
 					
-					if(controlador_Principal.isBool_Colaborador_Ativado())
-						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
+					if(ctrl_P.isBool_Colaborador_Ativado())
+//						if(controlador_Principal.getColaborador_Atual().getPrivilegio().equals("Visitante"))
 							throw new ValidacaoException("Não tem permição");
 					
-					controlador_Principal.getjInternal_TelaCadastro_Etapa().queroFoco();
+					ctrl_P.getjInternal_TelaCadastro_Etapa().queroFoco();
 				} 
 				catch (ValidacaoException e)
 				{
@@ -1069,10 +1078,11 @@ public class Controlador_Info_JInternal_Tela {
 	}
 	
 	
-	public void exibirJInternalInfoTarefa(Tarefa t) throws PropertyVetoException 
+/*	
+ * public void exibirJInternalInfoTarefa(Tarefa t) throws PropertyVetoException 
 	{
 			controlador_Principal.setTarefa_Atual(t);
-			preencherTelaTarefa(controlador_Principal.getjInternal_TelaInfoTarefa().getTelaInfoTarefa(), controlador_Principal.getTarefa_Atual());
+			preencherTelaTarefa(controlador_Principal.getjInternal_TelaInfoTarefa().getTelaInfoTarefa().getTelaInfoTarefa(), controlador_Principal.getTarefa_Atual());
 			controlador_Principal.getjInternal_TelaInfoTarefa().queroFoco();
 	}
 	
@@ -1185,7 +1195,7 @@ public class Controlador_Info_JInternal_Tela {
 		telaPessoa.getNomeField().setDescricao("Nome");
 		telaPessoa.getNomeField().setTexto(pessoa.getNome());
 		telaPessoa.getCampoFormatadoCPF().setText(pessoa.getCpf());
-		telaPessoa.getNascimentoDateChooser().setDate(DateUtil.getDate(pessoa.getData_nascimento()));
+		telaPessoa.getNascimentoDateChooser().setDate(DateUtil.parseToDate(pessoa.getData_nascimento()));
 		telaPessoa.getSexoComboBox().setSelectedItem(pessoa.getSexo());
 		
 		telaPessoa.getRdbtnSim().setSelected(pessoa.isDisponibilidade());
@@ -1230,7 +1240,7 @@ public class Controlador_Info_JInternal_Tela {
 		telaEtapa.getNomeEtapaField().setDescricao("Nome da Etapa");
 		telaEtapa.getNomeEtapaField().setTexto(etapa.getNome());
 		telaEtapa.getDescricaoTextArea().setText(etapa.getDescricao());
-		telaEtapa.getBarraProgressBar().setValue(Math.round(etapa.getPorcentagem_andamento()));
+		telaEtapa.getBarraProgressBar().setValue(Math.round(etapa.getPorcentagem()));
 	}
 	
 	private void preencherTelaTarefa(TelaInfoTarefa telaTarefa, Tarefa tarefa) 
@@ -1241,18 +1251,21 @@ public class Controlador_Info_JInternal_Tela {
 		telaTarefa.getChckbxFinalizada().setSelected(tarefa.isConcluida());
 		telaTarefa.getPrioridadeComboBox().setSelectedItem(tarefa.getPrioridade());
 
-		String[] horaData = tarefa.getHorario_tarefa().split("T");
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
 		
-		System.out.println("Horario "+ tarefa.getHorario_tarefa());
-		System.out.println("HoraData " + horaData.toString());
+		String data = format1.format(tarefa.getHorario());
+		String horario = format2.format(tarefa.getHorario());
 		
-		String[] hora = horaData[1].split(":");
+		System.out.println("Horario "+ tarefa.getHorario());
+		
+		String[] hora = horario.split(":");
 		
 		if(hora.length < 3)
 			hora = new String[]{hora[0], hora[1], "00"};
 		
 		telaTarefa.getHorario().setLocalTime(hora[0], hora[1], hora[2]);
-		telaTarefa.getDateChooser().setDate(DateUtil.getDate(horaData[0]));
+		telaTarefa.getDateChooser().setDate(DateUtil.getDate(data));
 		
 	}
 	
@@ -1318,6 +1331,6 @@ public class Controlador_Info_JInternal_Tela {
 		List<Tarefa> t = Fachada.getInstance().getBoTarefa().buscarPorEtapa(e);
 		tT.addAll(t);
 		e.setTarefas(t);
-	}
+	}*/
 	
 }

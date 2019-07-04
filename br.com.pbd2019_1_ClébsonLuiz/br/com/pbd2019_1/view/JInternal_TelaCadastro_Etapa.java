@@ -29,5 +29,10 @@ public class JInternal_TelaCadastro_Etapa extends JInternalAbstract {
 	public TelaCadastro_Etapa getTelaCadastro_Etapa() {
 		return telaCadastro_Etapa;
 	}
+	
+	public Botao getBotao()
+	{
+		return telaCadastro_Etapa.getBotao();
+	}
 
 }

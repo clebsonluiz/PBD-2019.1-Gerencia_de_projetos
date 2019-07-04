@@ -1,26 +1,21 @@
 package br.com.pbd2019_1.controll;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.pbd2019_1.entidade.Backup;
-import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.entidade.SubEtapa;
+import br.com.pbd2019_1.entidade.SubTarefa;
 import br.com.pbd2019_1.entidade.Tarefa;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
@@ -45,15 +40,21 @@ import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAgendarBackup;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
+import br.com.pbd2019_1.view.JInternal_TelaCadastroSubEtapa;
+import br.com.pbd2019_1.view.JInternal_TelaCadastroSubTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Projeto;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoEtapa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa;
+import br.com.pbd2019_1.view.JInternal_TelaInfoPessoaOutrem;
+import br.com.pbd2019_1.view.JInternal_TelaInfoPessoaOutremSimples;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa_Projetos;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas_Simples;
+import br.com.pbd2019_1.view.JInternal_TelaInfoSubEtapa;
+import br.com.pbd2019_1.view.JInternal_TelaInfoSubTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
 import br.com.pbd2019_1.view.MeuJDialog;
@@ -92,12 +93,23 @@ public class Controlador_Principal {
 	private String type_User_Logado = "";
 	private boolean bool_Colaborador_Ativado = false;
 	
+	private SubEtapa subEtapa_Atual;
+	private SubTarefa subTarefa_Atual;
+	
 	private TelaPrincipal telaPrincipal;
 	
 	private JInternal_TelaCadastro_Etapa jInternal_TelaCadastro_Etapa;
 	private JInternal_TelaCadastro_Projeto jInternal_TelaCadastro_Projeto;
 	private JInternal_TelaCadastro_Pessoa jInternal_TelaCadastro_Pessoa;
 	private JInternal_TelaCadastro_Tarefa jInternal_TelaCadastro_Tarefa;
+	
+	private JInternal_TelaCadastroSubEtapa jInternal_TelaCadastroSubEtapa;
+	private JInternal_TelaCadastroSubTarefa jInternal_TelaCadastroSubTarefa;
+	
+	private JInternal_TelaInfoPessoaOutrem jInternal_TelaInfoPessoaOutrem;
+	private JInternal_TelaInfoPessoaOutremSimples jInternal_TelaInfoPessoaOutremSimples;
+	private JInternal_TelaInfoSubEtapa jInternal_TelaInfoSubEtapa;
+	private JInternal_TelaInfoSubTarefa jInternal_TelaInfoSubTarefa;
 	
 	private JInternal_TelaInfoEtapa jInternal_TelaInfoEtapa;
 	private JInternal_TelaInserirSQL jInternal_TelaInserirSQL;
@@ -163,7 +175,16 @@ public class Controlador_Principal {
 			JInternal_TabelaLogs jInternal_TabelaLogs,
 			JInternal_InfoLog jInternal_InfoLog,
 			JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup,
-			JInternal_Sobre jInternal_Sobre) {
+			JInternal_Sobre jInternal_Sobre,
+			
+			JInternal_TelaCadastroSubEtapa jInternal_TelaCadastroSubEtapa,
+			JInternal_TelaCadastroSubTarefa jInternal_TelaCadastroSubTarefa,
+			JInternal_TelaInfoPessoaOutrem jInternal_TelaInfoPessoaOutrem,
+			JInternal_TelaInfoPessoaOutremSimples jInternal_TelaInfoPessoaOutremSimples,
+			JInternal_TelaInfoSubEtapa jInternal_TelaInfoSubEtapa,
+			JInternal_TelaInfoSubTarefa jInternal_TelaInfoSubTarefa
+			
+			) {
 		this.jInternal_TelaCadastro_Etapa = jInternal_TelaCadastro_Etapa;
 		this.jInternal_TelaCadastro_Projeto = jInternal_TelaCadastro_Projeto;
 		this.jInternal_TelaCadastro_Pessoa = jInternal_TelaCadastro_Pessoa;
@@ -182,6 +203,12 @@ public class Controlador_Principal {
 		this.jInternal_InfoLog = jInternal_InfoLog;
 		this.jInternal_TelaAgendarBackup = jInternal_TelaAgendarBackup;
 		this.jInternal_Sobre = jInternal_Sobre;
+		this.jInternal_TelaCadastroSubEtapa = jInternal_TelaCadastroSubEtapa;
+		this.jInternal_TelaCadastroSubTarefa = jInternal_TelaCadastroSubTarefa;
+		this.jInternal_TelaInfoPessoaOutrem =  jInternal_TelaInfoPessoaOutrem;
+		this.jInternal_TelaInfoPessoaOutremSimples = jInternal_TelaInfoPessoaOutremSimples;
+		this.jInternal_TelaInfoSubEtapa = jInternal_TelaInfoSubEtapa;
+		this.jInternal_TelaInfoSubTarefa = jInternal_TelaInfoSubTarefa;
 	}
 
 	public void adicionarTableModels() {
@@ -273,7 +300,7 @@ public class Controlador_Principal {
 		tableCaracteristicas.setModel(tCaracteristicaExtra);
 		tableEtapas.setModel(tEtapa);
 		tableColaboradores.setModel(tColaborador);
-		tableColaboradores.getColumnModel().getColumn(2).setCellEditor(tColaborador.getCellEditor());
+//		tableColaboradores.getColumnModel().getColumn(2).setCellEditor(tColaborador.getCellEditor());
 		tableCaracteristicas2.setModel(tCaracteristicaExtra2);
 		tableProjetos.setModel(tProjeto);
 		tableColaboracoes.setModel(tColaboracoes);
@@ -349,10 +376,10 @@ public class Controlador_Principal {
 		
 	}
 	
-	/**
+/*	*//**
 	 * Eventos de Mouse das Tabelas mais importantes
 	 * 
-	 * */
+	 * *//*
 	private void adicionarMouseEventJTable(JTable table) {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -650,10 +677,10 @@ public class Controlador_Principal {
 		});
 	}
 	
-	/**
+	*//**
 	 * Eventos do Popup<br>
 	 * TODO
-	 * */
+	 * *//*
 	private void adicionarEventosPopUp() 
 	{
 		JMenuItem excluir = popUp.getMenuItens()[1];
@@ -759,9 +786,9 @@ public class Controlador_Principal {
 					Fachada.getInstance().remover(t);
 					tLogUpdate.remover(linha);
 					
-/*					LogUpdate log = new LogUpdate();
+					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);*/
+					tLogUpdate.addValor(log);
 					
 				}
 				else if(popUp.getjTableAtual().getModel() instanceof TPessoa) 
@@ -782,9 +809,9 @@ public class Controlador_Principal {
 					Fachada.getInstance().remover(t);
 					tBackup.remover(linha);
 					
-					/*LogUpdate log = new LogUpdate();
+					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);*/
+					tLogUpdate.addValor(log);
 				}
 			} 
 			catch (ValidacaoException e) 
@@ -918,6 +945,7 @@ public class Controlador_Principal {
 		});
 	}
 	
+	*/
 	
 	public void adicionarEventosTelaPrincipal() {
 		
@@ -931,19 +959,19 @@ public class Controlador_Principal {
 					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
 					Date data = telaPessoa.getNascimentoDateChooser().getDate();
 					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
-					String login = telaPessoa.getLoginField().getTexto();
+//					String login = telaPessoa.getLoginField().getTexto();
 					String senha = telaPessoa.getSenhaField().getTexto();
 					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
 
 					Fachada.getInstance().getBoPessoa().buscarPorCPF(cpf);
-					Fachada.getInstance().getBoPessoa().buscarPorLogin(login);
+//					Fachada.getInstance().getBoPessoa().buscarPorLogin(login);
 
 					Pessoa pessoa = new Pessoa();
 					pessoa.setNome(nome);
 					pessoa.setCpf(cpf);
-					pessoa.setData_nascimento(DateUtil.getDateSQL(data));
+					pessoa.setData_nascimento(DateUtil.parseToLocalDate(data));
 					pessoa.setSexo(sexo);
-					pessoa.setUser_login(login);
+//					pessoa.setUser_login(login);
 					pessoa.setUser_senha(senha);
 					pessoa.setDisponibilidade(disponivel);
 
@@ -1166,6 +1194,56 @@ public class Controlador_Principal {
 	public JInternal_TabelaPessoas getjInternal_TabelaPessoas() {return jInternal_TabelaPessoas;}
 	public JInternal_TabelaPessoasColaboradores getjInternal_TabelaPessoasColaboradores() {return jInternal_TabelaPessoasColaboradores;}
 
+	
+	
+	public JInternal_TelaCadastroSubEtapa getjInternal_TelaCadastroSubEtapa() {
+		return jInternal_TelaCadastroSubEtapa;
+	}
+
+	public JInternal_TelaCadastroSubTarefa getjInternal_TelaCadastroSubTarefa() {
+		return jInternal_TelaCadastroSubTarefa;
+	}
+
+	public JInternal_TelaInfoPessoaOutrem getjInternal_TelaInfoPessoaOutrem() {
+		return jInternal_TelaInfoPessoaOutrem;
+	}
+
+	public JInternal_TelaInfoPessoaOutremSimples getjInternal_TelaInfoPessoaOutremSimples() {
+		return jInternal_TelaInfoPessoaOutremSimples;
+	}
+
+	public JInternal_TelaInfoSubEtapa getjInternal_TelaInfoSubEtapa() {
+		return jInternal_TelaInfoSubEtapa;
+	}
+
+	public JInternal_TelaInfoSubTarefa getjInternal_TelaInfoSubTarefa() {
+		return jInternal_TelaInfoSubTarefa;
+	}
+
+	public JInternal_Sobre getjInternal_Sobre() {
+		return jInternal_Sobre;
+	}
+
+	public Controlador_Info_JInternal_Tela getControlador_Info_JInternal_Tela() {
+		return controlador_Info_JInternal_Tela;
+	}
+
+	public Controlador_Cadastro getControlador_Cadastro() {
+		return controlador_Cadastro;
+	}
+
+	public Controlador_Backup getControlador_Backup() {
+		return controlador_Backup;
+	}
+
+	public SubEtapa getSubEtapa_Atual() {
+		return subEtapa_Atual;
+	}
+
+	public SubTarefa getSubTarefa_Atual() {
+		return subTarefa_Atual;
+	}
+
 	public TEtapa gettEtapa() {return tEtapa;}
 	public TTarefa gettTarefa() {return tTarefa;}
 	public TPessoa gettPessoa() {return tPessoa;}
@@ -1196,6 +1274,15 @@ public class Controlador_Principal {
 	public void setType_User_Logado(String type_User_Logado) {this.type_User_Logado = type_User_Logado;}
 	public void setColaborador_Atual(Colaborador colaborador_Atual) {this.colaborador_Atual = colaborador_Atual;}
 	public void setBool_Colaborador_Ativado(boolean bool_Colaborador_Ativado) {this.bool_Colaborador_Ativado = bool_Colaborador_Ativado;}
+
+	public static PopUp getPopUpCaracteristica() {
+		return popUpCaracteristica;
+	}
+
+	public static PopUp getPopUp() {
+		return popUp;
+	}
+	
 	
 }
 
