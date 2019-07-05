@@ -61,7 +61,7 @@ public class TelaEtapa_Tarefas extends MeuJPanel {
 		return telaTarefas;
 	}
 
-	public TelaEtapas getTelaEtapas() {
+	public TelaEtapas getTelaSubEtapas() {
 		return telaEtapas;
 	}
 	

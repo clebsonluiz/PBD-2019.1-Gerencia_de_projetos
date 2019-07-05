@@ -446,7 +446,23 @@ public class Controlador_Info_JInternal_Tela {
 				List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getPessoa_Outrem());
 				
 //				controlador_Principal.getPessoa_Outrem().setUser_login(login);
-				ctrl_P.getPessoa_Outrem().setUser_senha(senha);
+//				ctrl_P.getPessoa_Outrem().setUser_senha(senha);
+				
+//				String senhaAntiga = telaPessoa.getSenhaAntigaField().getTexto();
+//				String senhaNova = telaPessoa.getSenhaNovaField().getTexto();
+				
+//				List<String> antes = Fachada.getInstance().gerarLog(ctrl_P.getPessoa_Logada());
+				
+//				controlador_Principal.getPessoa_Logada().setUser_login(login);
+				
+				Pessoa pessoa = ctrl_P.getPessoa_Logada();
+				
+				if(!Fachada.getInstance().getBoPessoa().buscarPorLoginSenhaID(pessoa.getCpf(), senhaAntiga, pessoa.getId()))
+					throw new ValidacaoException("A senha antiga informada não condiz");
+				
+				ctrl_P.getPessoa_Logada().setUser_senha(senhaNova);
+				
+				
 				Fachada.getInstance().atualizar(ctrl_P.getPessoa_Outrem());
 				ctrl_P.gettPessoa().fireTableDataChanged();
 				

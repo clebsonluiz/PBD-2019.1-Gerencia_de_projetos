@@ -151,4 +151,9 @@ public abstract class TelaEtapa extends MeuJPanel {
 	public Botao getBotao1() {
 		return telaCadastroEdicao.getBtBotao1();
 	}
+
+	public TelaColaboradorEnvolvido getTelaColaboradorEnvolvido() {
+		return telaColaboradorEnvolvido;
+	}
+	
 }
