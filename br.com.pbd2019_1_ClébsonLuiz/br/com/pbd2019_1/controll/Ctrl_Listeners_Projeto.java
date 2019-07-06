@@ -669,7 +669,7 @@ public class Ctrl_Listeners_Projeto {
 		btAddColaboradorSubEtapa.addActionListener((ActionEvent)->
 		{
 			int index = ctrl_P
-					.getjInternal_ColaboradoresEtapa()
+					.getjInternal_ColaboradoresSubEtapa()
 					.getTelaPessoas()
 					.getTable()
 					.getSelectedRow();
@@ -706,7 +706,7 @@ public class Ctrl_Listeners_Projeto {
 		btAddColaboradorTarefa.addActionListener((ActionEvent)->
 		{
 			int index = ctrl_P
-					.getjInternal_ColaboradoresEtapa()
+					.getjInternal_ColaboradoresTarefa()
 					.getTelaPessoas()
 					.getTable()
 					.getSelectedRow();
