@@ -383,67 +383,9 @@ public class Controlador_JTable {
 								
 								LogUpdate logUpdate_Atual = controlador_Principal.getLogUpdate_Atual();
 								
-								String id_tabela = ""+logUpdate_Atual.getId_tabela();
-								String tabela = logUpdate_Atual.getTabela();
-								String tipo = logUpdate_Atual.getTipo();
-								String cpf = logUpdate_Atual.getResponsavel();
-								String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(logUpdate_Atual.getData_log());
-								List<String> antes = logUpdate_Atual.getAntes();
-								List<String> depois = logUpdate_Atual.getDepois();
-								List<String> colunas = logUpdate_Atual.getColuna();
+								controlador_Principal.getCtrl_Preenchimento().exibirJInternalTabelaLog(logUpdate_Atual);
 								
 								
-								
-								
-								JTable table = jInternal_InfoLog.getTelaInfoLog().getTable();
-								
-								DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-								
-								int index = tableModel.getRowCount();
-								
-								System.out.println(index);
-								
-								for(int i = 0; i < index; i++)
-								{
-									System.out.println(i);
-									tableModel.removeRow(0);
-									tableModel.fireTableRowsDeleted(0, 0);
-									tableModel.fireTableDataChanged();
-								}
-								
-								String[] rowData;
-								
-								int indexMaximum = 0;
-								
-								if(tipo.equals("CADASTRO"))
-								{
-									indexMaximum = (depois != null)? depois.size() : 0;
-								}
-								else 
-								{
-									indexMaximum = (antes != null)? antes.size() :
-										(depois != null)? depois.size() : 0;
-								}
-								
-								for(int i = 0; i < indexMaximum; i ++)
-								{
-									rowData = new String[] {
-											(colunas != null)? ((depois.size() == indexMaximum)? colunas.get(i) : "") : "",
-											(antes != null)? ((antes.size() == indexMaximum)? antes.get(i) : "") : "",
-											(depois != null)? ((depois.size() == indexMaximum)? depois.get(i) : "") : "",
-									};
-									
-									tableModel.addRow(rowData);
-									tableModel.fireTableDataChanged();
-								}
-								
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtCod().setTexto(id_tabela);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtTabela().setTexto(tabela);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtTipo().setTexto(tipo);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtResponsavel().setTexto(cpf);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtDatalog().setTexto(data);
-								
-								jInternal_InfoLog.queroFoco();
 							} 
 							catch (PropertyVetoException e1) {
 								MeuJDialog.exibirAlertaErro(null, "Erro Ao Exibir Tela de Log", e1.getMessage());

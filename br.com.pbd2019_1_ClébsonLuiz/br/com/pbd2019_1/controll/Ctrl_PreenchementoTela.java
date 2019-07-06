@@ -4,13 +4,19 @@ import java.beans.PropertyVetoException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.Etapa;
+import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.Tarefa;
+import br.com.pbd2019_1.exception.BOException;
+import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.TCaracteristicaExtra;
@@ -23,7 +29,9 @@ import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaEtapa;
 import br.com.pbd2019_1.view.TelaGraficoPessoa;
+import br.com.pbd2019_1.view.TelaInfoLog;
 import br.com.pbd2019_1.view.TelaInfoPessoa;
+import br.com.pbd2019_1.view.TelaInfoPessoaContatoOutremSimples;
 import br.com.pbd2019_1.view.TelaInfoProjeto;
 import br.com.pbd2019_1.view.TelaInfoTarefa;
 import br.com.pbd2019_1.view.TelaMiniPessoa1;
@@ -147,14 +155,90 @@ public class Ctrl_PreenchementoTela {
 		ctrl_P.getjInternal_TelaInfoPessoa_Projetos().queroFoco();
 	}
 	
-	public void exibirJInternalTabelaLog()
+	public void exibirJInternalInfoPessoaOutremSimples(Pessoa p) throws ValidacaoException, PropertyVetoException
 	{
+		TelaInfoPessoaContatoOutremSimples tIP = ctrl_P.getjInternal_TelaInfoPessoaOutremSimples().getTelaInfoPessoaContatoOutremSimples();
 		
+		atualizarDadoPessoaColaboradorSimples(tIP, p, ctrl_P.gettCaracteristicaExtra());
+		
+		ctrl_P.getjInternal_TelaInfoPessoaOutremSimples().queroFoco();
+	}
+	
+	public void exibirJInternalTabelaLog(LogUpdate log) throws PropertyVetoException
+	{
+		preencherTelaLog(ctrl_P.getjInternal_InfoLog().getTelaInfoLog(), log);
+		
+		ctrl_P.getjInternal_InfoLog().queroFoco();
 	}
 	
 	/*
 	 * TODO - A partir daqui é só preenchimento de Tela
 	 */
+	
+	private void preencherTelaLog(TelaInfoLog telaLog, LogUpdate log)
+	{
+		String id_tabela = ""+log.getId_tabela();
+		String tabela = log.getTabela();
+		String tipo = log.getTipo();
+		String cpf = log.getResponsavel();
+		
+		String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(log.getData_log());
+		
+		List<String> antes = log.getAntes();
+		List<String> depois = log.getDepois();
+		List<String> colunas = log.getColuna();
+		
+		JTable table = telaLog.getTable();
+		
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		
+		int index = tableModel.getRowCount();
+		
+		System.out.println(index);
+		
+		for(int i = 0; i < index; i++)
+		{
+			System.out.println(i);
+			tableModel.removeRow(0);
+			tableModel.fireTableRowsDeleted(0, 0);
+			tableModel.fireTableDataChanged();
+		}
+		
+		String[] rowData;
+		
+		int indexMaximum = 0;
+		
+		if(tipo.equals("CADASTRO"))
+		{
+			indexMaximum = (depois != null)? depois.size() : 0;
+		}
+		else 
+		{
+			indexMaximum = (antes != null)? antes.size() :
+				(depois != null)? depois.size() : 0;
+		}
+		
+		for(int i = 0; i < indexMaximum; i ++)
+		{
+			rowData = new String[] {
+					(colunas != null)? ((depois.size() == indexMaximum)? colunas.get(i) : "") : "",
+					(antes != null)? ((antes.size() == indexMaximum)? antes.get(i) : "") : "",
+					(depois != null)? ((depois.size() == indexMaximum)? depois.get(i) : "") : "",
+			};
+			
+			tableModel.addRow(rowData);
+			tableModel.fireTableDataChanged();
+		}
+		
+		telaLog.getCmptxtCod().setTexto(id_tabela);
+		telaLog.getCmptxtTabela().setTexto(tabela);
+		telaLog.getCmptxtTipo().setTexto(tipo);
+		telaLog.getCmptxtResponsavel().setTexto(cpf);
+		telaLog.getCmptxtDatalog().setTexto(data);
+		
+		
+	}
+	
 	private void preencherTelaMiniPessoa1(TelaMiniPessoa1 telaPessoa, Pessoa pessoa) 
 	{
 		telaPessoa.getNomeField().setDescricao("Nome");
@@ -298,5 +382,22 @@ public class Ctrl_PreenchementoTela {
 		e.setTarefas(t);
 	}
 	
-	
+	private void atualizarDadoPessoaColaboradorSimples(TelaInfoPessoaContatoOutremSimples tIP, Pessoa p, TCaracteristicaExtra tce) throws ValidacaoException
+	{
+		preencherTelaMiniPessoa1(tIP.getTelaMiniPessoa1(), p);
+		
+		Contato c = Fachada.getInstance().getBoContato().buscarPorPessoa(p);
+		
+		if(c == null) c = new Contato();
+		
+		List<CaracteristicaExtra> lc = Fachada.getInstance().getBoCaracteristicaExtra().buscaPorPessoa(p);
+		
+		preencherTelaContato(tIP.getTelaContatoCaracteristica(), c);
+		atualizarDadoPessoaDesempenho(tIP.getTelaGraficoPessoa(), p);
+		
+		p.setContato(c);
+		p.setCaracteristicas(lc);
+		
+		tce.addAll(lc);
+	}
 }

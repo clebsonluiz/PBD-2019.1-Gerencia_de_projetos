@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "TAREFA")
@@ -19,11 +20,21 @@ public class Tarefa extends AbstractTarefa{
 	@ManyToOne
 	@JoinColumn(name = "etapa_id")
 	private Etapa etapa;
+	@Transient
+	private TarefaColaborador tarefaColaborador;
 	
 	public Tarefa() {}
 
 	public Etapa getEtapa() {return etapa;}
 
 	public void setEtapa(Etapa etapa) {this.etapa = etapa;}
+
+	public TarefaColaborador getTarefaColaborador() {
+		return tarefaColaborador;
+	}
+
+	public void setTarefaColaborador(TarefaColaborador tarefaColaborador) {
+		this.tarefaColaborador = tarefaColaborador;
+	}
 	
 }

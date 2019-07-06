@@ -17,7 +17,9 @@ import javax.persistence.Transient;
 			query = "select s from SubEtapa s where s.ativado = true and s.etapa = :etapa ORDER BY s.id ASC"),
 	@NamedQuery(name = "SubEtapa.colaborador", 
 			query = "select s from SubEtapa s where s.ativado = true and s.subEtapaColaborador = :subEtapaColaborador ORDER BY s.id ASC"),
-	@NamedQuery(name = "", query = "")
+	@NamedQuery(name = "SubEtapa.recalcula_porcentagem",
+			query = " select e.porcentagem from SubEtapa e where e.id = :sub_etapa_id and e.ativado = true ORDER BY e.id ASC"),
+
 })
 public class SubEtapa extends AbstractEtapa{
 

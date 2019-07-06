@@ -27,6 +27,8 @@ public class Etapa extends AbstractEtapa{
 	private Projeto projeto;
 	@Transient
 	private List<Tarefa> tarefas;
+	@Transient
+	private GerenteEtapa gerenteEtapa;
 	
 	public Etapa() {}
 
@@ -36,6 +38,12 @@ public class Etapa extends AbstractEtapa{
 	public void setProjeto(Projeto projeto) {this.projeto = projeto;}
 	public void setTarefas(List<Tarefa> tarefas) {this.tarefas = tarefas;}
 
-	
-	
+	public GerenteEtapa getGerenteEtapa() {
+		return gerenteEtapa;
+	}
+
+	public void setGerenteEtapa(GerenteEtapa gerenteEtapa) {
+		this.gerenteEtapa = gerenteEtapa;
+	}
+
 }

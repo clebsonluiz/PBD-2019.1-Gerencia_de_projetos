@@ -29,10 +29,15 @@ import br.com.pbd2019_1.tabelas.TLogUpdate;
 import br.com.pbd2019_1.tabelas.TObject;
 import br.com.pbd2019_1.tabelas.TPessoa;
 import br.com.pbd2019_1.tabelas.TProjeto;
+import br.com.pbd2019_1.tabelas.TSubEtapa;
+import br.com.pbd2019_1.tabelas.TSubTarefa;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
 import br.com.pbd2019_1.view.JInternalAbstract;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
+import br.com.pbd2019_1.view.JInternal_ColaboradoresEtapa;
+import br.com.pbd2019_1.view.JInternal_ColaboradoresSubEtapa;
+import br.com.pbd2019_1.view.JInternal_ColaboradoresTarefa;
 import br.com.pbd2019_1.view.JInternal_InfoLog;
 import br.com.pbd2019_1.view.JInternal_Sobre;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
@@ -98,6 +103,10 @@ public class Controlador_Principal {
 	
 	private TelaPrincipal telaPrincipal;
 	
+	private JInternal_ColaboradoresEtapa jInternal_ColaboradoresEtapa;
+	private JInternal_ColaboradoresSubEtapa jInternal_ColaboradoresSubEtapa;
+	private JInternal_ColaboradoresTarefa jInternal_ColaboradoresTarefa;
+	
 	private JInternal_TelaCadastro_Etapa jInternal_TelaCadastro_Etapa;
 	private JInternal_TelaCadastro_Projeto jInternal_TelaCadastro_Projeto;
 	private JInternal_TelaCadastro_Pessoa jInternal_TelaCadastro_Pessoa;
@@ -138,11 +147,20 @@ public class Controlador_Principal {
 	private TObject tObject;
 	private TBackup tBackup;
 	
+	private TPessoa tPessoaProjeto;
+	private TPessoa tPessoaEtapa;
+	private TPessoa tPessoaSubEtapa;
+	private TPessoa tPessoaTarefa;
+	
+	
+	private TSubEtapa tSubEtapa;
+	private TSubTarefa tSubTarefa;
 	
 	private Controlador_Info_JInternal_Tela controlador_Info_JInternal_Tela;
 	private Controlador_Cadastro controlador_Cadastro;
 	private Controlador_Backup controlador_Backup;
 
+	private Ctrl_PreenchementoTela ctrl_PreenchementoTela;
 	
 	private static PopUp popUpCaracteristica = new PopUp(new String[]{"Salvar", "Excluir"});
 	private static PopUp popUp = new PopUp(new String[]{"", "Excluir", ""});
@@ -153,6 +171,7 @@ public class Controlador_Principal {
 		this.controlador_Info_JInternal_Tela = new Controlador_Info_JInternal_Tela(this);
 		this.controlador_Cadastro = new Controlador_Cadastro(this);
 		this.controlador_Backup = new Controlador_Backup(this);
+		this.ctrl_PreenchementoTela = new Ctrl_PreenchementoTela(this);
 	}
 
 	public void adicionarEventoJFrame(JFrame frame)
@@ -223,6 +242,9 @@ public class Controlador_Principal {
 		tTarefa = new TTarefa();
 		tObject = new TObject();
 		tBackup = new TBackup();
+		
+		tSubEtapa = new TSubEtapa();
+		tSubTarefa = new TSubTarefa();
 		
 		JTable tableTarefas = jInternal_TelaInfoEtapa
 				.getTelaEtapa_Tarefas()
@@ -1235,6 +1257,10 @@ public class Controlador_Principal {
 	public Controlador_Backup getControlador_Backup() {
 		return controlador_Backup;
 	}
+	
+	public Ctrl_PreenchementoTela getCtrl_PreenchementoTela() {
+		return ctrl_PreenchementoTela;
+	}
 
 	public SubEtapa getSubEtapa_Atual() {
 		return subEtapa_Atual;
@@ -1244,12 +1270,42 @@ public class Controlador_Principal {
 		return subTarefa_Atual;
 	}
 
+	public JInternal_ColaboradoresEtapa getjInternal_ColaboradoresEtapa() {
+		return jInternal_ColaboradoresEtapa;
+	}
+
+	public JInternal_ColaboradoresSubEtapa getjInternal_ColaboradoresSubEtapa() {
+		return jInternal_ColaboradoresSubEtapa;
+	}
+
+	public JInternal_ColaboradoresTarefa getjInternal_ColaboradoresTarefa() {
+		return jInternal_ColaboradoresTarefa;
+	}
+
+	public TPessoa gettPessoaProjeto() {
+		return tPessoaProjeto;
+	}
+
+	public TPessoa gettPessoaEtapa() {
+		return tPessoaEtapa;
+	}
+
+	public TPessoa gettPessoaSubEtapa() {
+		return tPessoaSubEtapa;
+	}
+
+	public TPessoa gettPessoaTarefa() {
+		return tPessoaTarefa;
+	}
+
 	public TEtapa gettEtapa() {return tEtapa;}
 	public TTarefa gettTarefa() {return tTarefa;}
 	public TPessoa gettPessoa() {return tPessoa;}
 	public TObject gettObject() {return tObject;}
 	public TBackup gettBackup() {return tBackup;}
 	public TProjeto gettProjeto() {return tProjeto;}
+	public TSubEtapa gettSubEtapa() {return tSubEtapa;}
+	public TSubTarefa gettSubTarefa() {return tSubTarefa;}
 	public TLogUpdate gettLogUpdate() {return tLogUpdate;}
 	public TColaborador gettColaborador() {return tColaborador;}
 	public TColaboracoes gettColaboracoes() {return tColaboracoes;}
