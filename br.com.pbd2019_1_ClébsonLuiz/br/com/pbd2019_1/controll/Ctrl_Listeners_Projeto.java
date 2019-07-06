@@ -6,17 +6,17 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
-import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
-import br.com.pbd2019_1.entidade.Contato;
 import br.com.pbd2019_1.entidade.GerenteEtapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
+import br.com.pbd2019_1.entidade.SubEtapa;
 import br.com.pbd2019_1.entidade.SubEtapaColaborador;
 import br.com.pbd2019_1.entidade.TarefaColaborador;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.Botao;
 import br.com.pbd2019_1.view.JInternal_TelaInfoEtapa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas;
 import br.com.pbd2019_1.view.JInternal_TelaInfoSubEtapa;
@@ -401,8 +401,8 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettPessoaProjeto().getList().clear();
-				ctrl_P.gettPessoaProjeto().fireTableDataChanged();
+				ctrl_P.gettColaboradorProjeto().getList().clear();
+				ctrl_P.gettColaboradorProjeto().fireTableDataChanged();
 				ctrl_P.getjInternal_TabelaPessoasColaboradores().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
@@ -421,8 +421,8 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettPessoaEtapa().getList().clear();
-				ctrl_P.gettPessoaEtapa().fireTableDataChanged();
+				ctrl_P.gettColaboradorEtapa().getList().clear();
+				ctrl_P.gettColaboradorEtapa().fireTableDataChanged();
 				ctrl_P.getjInternal_ColaboradoresEtapa().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
@@ -480,8 +480,8 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettPessoaSubEtapa().getList().clear();
-				ctrl_P.gettPessoaSubEtapa().fireTableDataChanged();
+				ctrl_P.gettColaboradorSubEtapa().getList().clear();
+				ctrl_P.gettColaboradorSubEtapa().fireTableDataChanged();
 				ctrl_P.getjInternal_ColaboradoresSubEtapa().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
@@ -538,8 +538,8 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettPessoaTarefa().getList().clear();
-				ctrl_P.gettPessoaTarefa().fireTableDataChanged();
+				ctrl_P.gettColaboradorTarefa().getList().clear();
+				ctrl_P.gettColaboradorTarefa().fireTableDataChanged();
 				ctrl_P.getjInternal_ColaboradoresTarefa().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
@@ -588,5 +588,158 @@ public class Ctrl_Listeners_Projeto {
 		});
 	}
 	
+	/**TODO - Eventos para adicionar colaboradores no Projeto, Etapa, Sub.Etapa e Tarefa*/
+	
+	public void adicionarEventosBotaoAddColaborador()
+	{
+		Botao btAddColaboradorProjeto = ctrl_P.getjInternal_TabelaPessoasColaboradores().getTelaPessoas().getBtAdicionarPessoa();
+		Botao btAddGerenteEtapa = ctrl_P.getjInternal_ColaboradoresEtapa().getTelaPessoas().getBtAdicionarPessoa();
+		Botao btAddColaboradorSubEtapa = ctrl_P.getjInternal_ColaboradoresSubEtapa().getTelaPessoas().getBtAdicionarPessoa();
+		Botao btAddColaboradorTarefa = ctrl_P.getjInternal_ColaboradoresTarefa().getTelaPessoas().getBtAdicionarPessoa();
+		
+		btAddColaboradorProjeto.addActionListener((ActionEvent)->
+		{
+			int index = ctrl_P
+					.getjInternal_TabelaPessoasColaboradores()
+					.getTelaPessoas()
+					.getTable()
+					.getSelectedRow();
+			
+			if(index >= 0)
+			try
+			{
+				Pessoa pessoa = ctrl_P.gettPessoa().getValor(index);
+				
+				Colaborador colaborador = new Colaborador();
+				colaborador.setData_ingresso(LocalDateTime.now());
+				colaborador.setPessoa(pessoa);
+				colaborador.setProjeto(ctrl_P.getProjeto_Atual());
+				
+				Fachada.getInstance().inserir(colaborador);
+			
+				ctrl_P.gettColaborador().addValor(colaborador);
+				
+				LogUpdate log = new LogUpdate();
+				Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(colaborador, ctrl_P.getPessoa_Logada(), log);
+				ctrl_P.gettLogUpdate().addValor(log);
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao adicionar colaborador", e.getMessage());
+			}
+		});
+		
+		btAddGerenteEtapa.addActionListener((ActionEvent)->
+		{
+			int index = ctrl_P
+					.getjInternal_ColaboradoresEtapa()
+					.getTelaPessoas()
+					.getTable()
+					.getSelectedRow();
+			
+			if(index >= 0)
+			try
+			{
+				Colaborador colaborador = ctrl_P.gettColaboradorEtapa().getValor(index);
+				
+				GerenteEtapa gerenteEtapa = new GerenteEtapa();
+				
+				gerenteEtapa.setEtapa(ctrl_P.getEtapa_Atual());
+				gerenteEtapa.setColaborador(colaborador);
+				
+				Fachada.getInstance().inserir(gerenteEtapa);
+			
+				TelaColaboradorEnvolvido tce = ctrl_P.getjInternal_TelaInfoEtapa().getTelaEtapa_Tarefas().getTelaEtapa().getTelaColaboradorEnvolvido();
+				
+				tce.getCmptxtResponsavel().setText(colaborador.getPessoa().getNome());
+				tce.getCmptxtDatalog().setText(colaborador.getData_ingresso().toString());
+				
+				tce.exibirComColaborador();
+				
+				LogUpdate log = new LogUpdate();
+				Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(gerenteEtapa, ctrl_P.getPessoa_Logada(), log);
+				ctrl_P.gettLogUpdate().addValor(log);
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao adicionar a colaborador", e.getMessage());
+			}
+		});
+		
+		btAddColaboradorSubEtapa.addActionListener((ActionEvent)->
+		{
+			int index = ctrl_P
+					.getjInternal_ColaboradoresEtapa()
+					.getTelaPessoas()
+					.getTable()
+					.getSelectedRow();
+			
+			if(index >= 0)
+			try
+			{
+				Colaborador colaborador = ctrl_P.gettColaboradorSubEtapa().getValor(index);
+				
+				SubEtapaColaborador subEtapaColaborador = new SubEtapaColaborador();
+				
+				subEtapaColaborador.setSub_etapa(ctrl_P.getSubEtapa_Atual());
+				subEtapaColaborador.setColaborador(colaborador);
+				
+				Fachada.getInstance().inserir(subEtapaColaborador);
+			
+				TelaColaboradorEnvolvido tce = ctrl_P.getjInternal_TelaInfoSubEtapa().getTelaInfoSubEtapaSubTarefas().getTelaInfoSubEtapa().getTelaColaboradorEnvolvido();
+				
+				tce.getCmptxtResponsavel().setText(colaborador.getPessoa().getNome());
+				tce.getCmptxtDatalog().setText(colaborador.getData_ingresso().toString());
+				
+				tce.exibirComColaborador();
+				
+				LogUpdate log = new LogUpdate();
+				Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(subEtapaColaborador, ctrl_P.getPessoa_Logada(), log);
+				ctrl_P.gettLogUpdate().addValor(log);
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao adicionar a colaborador", e.getMessage());
+			}
+		});
+		
+		btAddColaboradorTarefa.addActionListener((ActionEvent)->
+		{
+			int index = ctrl_P
+					.getjInternal_ColaboradoresEtapa()
+					.getTelaPessoas()
+					.getTable()
+					.getSelectedRow();
+			
+			if(index >= 0)
+			try
+			{
+				Colaborador colaborador = ctrl_P.gettColaboradorTarefa().getValor(index);
+				
+				TarefaColaborador tarefaColaborador = new TarefaColaborador();
+				
+				tarefaColaborador.setTarefa(ctrl_P.getTarefa_Atual());
+				tarefaColaborador.setColaborador(colaborador);
+				
+				Fachada.getInstance().inserir(tarefaColaborador);
+			
+				TelaColaboradorEnvolvido tce = ctrl_P.getjInternal_TelaInfoTarefa().getTelaInfoTarefa().getTelaColaboradorEnvolvido();
+				
+				tce.getCmptxtResponsavel().setText(colaborador.getPessoa().getNome());
+				tce.getCmptxtDatalog().setText(colaborador.getData_ingresso().toString());
+				
+				tce.exibirComColaborador();
+				
+				LogUpdate log = new LogUpdate();
+				Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(tarefaColaborador, ctrl_P.getPessoa_Logada(), log);
+				ctrl_P.gettLogUpdate().addValor(log);
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao adicionar a colaborador", e.getMessage());
+			}
+		});
+		
+	}
 	
 }

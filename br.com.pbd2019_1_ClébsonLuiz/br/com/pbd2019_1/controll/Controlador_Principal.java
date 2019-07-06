@@ -147,10 +147,10 @@ public class Controlador_Principal {
 	private TObject tObject;
 	private TBackup tBackup;
 	
-	private TPessoa tPessoaProjeto;
-	private TPessoa tPessoaEtapa;
-	private TPessoa tPessoaSubEtapa;
-	private TPessoa tPessoaTarefa;
+	private TColaborador tColaboradorProjeto;
+	private TColaborador tColaboradorEtapa;
+	private TColaborador tColaboradorSubEtapa;
+	private TColaborador tColaboradorTarefa;
 	
 	
 	private TSubEtapa tSubEtapa;
@@ -1282,20 +1282,20 @@ public class Controlador_Principal {
 		return jInternal_ColaboradoresTarefa;
 	}
 
-	public TPessoa gettPessoaProjeto() {
-		return tPessoaProjeto;
+	public TColaborador gettColaboradorProjeto() {
+		return tColaboradorProjeto;
 	}
 
-	public TPessoa gettPessoaEtapa() {
-		return tPessoaEtapa;
+	public TColaborador gettColaboradorEtapa() {
+		return tColaboradorEtapa;
 	}
 
-	public TPessoa gettPessoaSubEtapa() {
-		return tPessoaSubEtapa;
+	public TColaborador gettColaboradorSubEtapa() {
+		return tColaboradorSubEtapa;
 	}
 
-	public TPessoa gettPessoaTarefa() {
-		return tPessoaTarefa;
+	public TColaborador gettColaboradorTarefa() {
+		return tColaboradorTarefa;
 	}
 
 	public TEtapa gettEtapa() {return tEtapa;}
