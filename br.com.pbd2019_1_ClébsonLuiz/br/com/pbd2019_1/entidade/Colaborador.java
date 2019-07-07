@@ -16,7 +16,14 @@ import javax.persistence.Table;
 	@NamedQuery(name = "Colaborador.pessoa",
 			query = "select c from Colaborador c where c.pessoa = :pessoa and c.ativado = true ORDER BY c.id ASC"),
 	@NamedQuery(name = "Colaborador.projeto",
-			query = "select c from Colaborador c where c.projeto = :projeto and c.ativado = true and c.pessoa.ativado = true ORDER BY c.id ASC")
+			query = "select c from Colaborador c where c.projeto = :projeto and c.ativado = true and c.pessoa.ativado = true ORDER BY c.id ASC"),
+	@NamedQuery(name = "Colaborador.gerenteEtapa",
+			query = "select c from Colaborador c inner join GerenteEtapa g on(c.id = g.colaborador.id and c.ativado = true and g = :g ) "),
+	@NamedQuery(name = "Colaborador.sub_etapa_colaborador",
+			query = "select c from Colaborador c inner join SubEtapaColaborador sb on(c.id = sb.colaborador.id and c.ativado = true and sb = :sb )"),
+	@NamedQuery(name = "Colaborador.tarefa_colaborador",
+			query = "select c from Colaborador c inner join TarefaColaborador tc on(c.id = tc.colaborador.id and c.ativado = true and tc = :tc )"),
+
 })
 public class Colaborador extends Entidade{
 

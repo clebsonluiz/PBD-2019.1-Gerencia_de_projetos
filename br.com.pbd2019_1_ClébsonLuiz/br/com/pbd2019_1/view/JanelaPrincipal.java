@@ -23,11 +23,6 @@ public class JanelaPrincipal extends JFrame {
 		telaPrincipal = new TelaPrincipal();
 		add(telaPrincipal, BorderLayout.CENTER);
 		
-		
-		telaPrincipal.getTelaLoginSistema().getBtnCadastrar()
-			.addActionListener(	ActionEvent->{
-				telaPrincipal.exibirTela(TelaPrincipal.TELA_CADASTRO_PESSOA);
-				});
 	}
 
 	public TelaPrincipal getTelaPrincipal() {

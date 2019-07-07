@@ -14,8 +14,10 @@ public class JInternal_TelaCadastro_Pessoa extends JInternalAbstract {
 		setMaximizable(false);
 		
 		telaCadastro_Pessoa = new TelaCadastro_Pessoa();
+		telaCadastro_Pessoa.getBtCadastrarComoSuper().setVisible(false);
+		telaCadastro_Pessoa.getBtCadastrarComoSuper().setEnabled(false);
 		getContentPane().add(telaCadastro_Pessoa, BorderLayout.CENTER);
-
+		
 		setMinimumSize(new Dimension(520, 400));
 		setPreferredSize(new Dimension(520, 400));
 		setSize(new Dimension(520, 400));

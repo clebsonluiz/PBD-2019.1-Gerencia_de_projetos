@@ -263,7 +263,7 @@ public class Controlador_JTable {
 						{
 							try 
 							{
-								controlador_Principal.getControlador_Info_JInternal_Tela()
+								controlador_Principal.getCtrl_PreenchementoTela()
 									.exibirJInternalInfoTarefa(
 											tTarefa.getValor(linha)
 											);
@@ -279,7 +279,7 @@ public class Controlador_JTable {
 						{
 							try 
 							{
-								controlador_Principal.getControlador_Info_JInternal_Tela()
+								controlador_Principal.getCtrl_PreenchementoTela()
 									.exibirJInternalInfoEtapa(
 											tEtapa.getValor(linha)
 											);
@@ -310,11 +310,11 @@ public class Controlador_JTable {
 								
 								if(!controlador_Principal.getType_User_Logado().equals(Pessoa.COMUM_USER))
 								{
-									controlador_Principal.getControlador_Info_JInternal_Tela().exibirJInternalInfoProjetoEtapa(projeto_Atual);
+									controlador_Principal.getCtrl_PreenchementoTela().exibirJInternalInfoProjetoEtapa(projeto_Atual);
 								}
 								else
 								{
-									controlador_Principal.getControlador_Info_JInternal_Tela().exibirJInternalInfoProjetoEtapaSimples(projeto_Atual);
+									controlador_Principal.getCtrl_PreenchementoTela().exibirJInternalInfoProjetoEtapaSimples(projeto_Atual);
 								}
 							} 
 							catch (ValidacaoException e1)
@@ -335,7 +335,7 @@ public class Controlador_JTable {
 							{
 								controlador_Principal.setBool_Colaborador_Ativado(true);
 								
-								controlador_Principal.getControlador_Info_JInternal_Tela()
+								controlador_Principal.getCtrl_PreenchementoTela()
 									.exibirJInternalInfoColaboracoes(tColaboracoes.getValor(linha));
 								
 							} 
@@ -355,7 +355,7 @@ public class Controlador_JTable {
 						{
 							try 
 							{
-								controlador_Principal.getControlador_Info_JInternal_Tela()
+								controlador_Principal.getCtrl_PreenchementoTela()
 									.exibirJInternalInfoColaborador(
 											tColaborador.getValor(linha)
 											);
@@ -383,7 +383,7 @@ public class Controlador_JTable {
 								
 								LogUpdate logUpdate_Atual = controlador_Principal.getLogUpdate_Atual();
 								
-								controlador_Principal.getCtrl_Preenchimento().exibirJInternalTabelaLog(logUpdate_Atual);
+								controlador_Principal.getCtrl_PreenchementoTela().exibirJInternalTabelaLog(logUpdate_Atual);
 								
 								
 							} 
@@ -401,7 +401,7 @@ public class Controlador_JTable {
 							try
 							{
 								controlador_Principal.
-									getControlador_Info_JInternal_Tela().exibirJInternalInfoPessoa(tPessoa.getValor(linha));
+								getCtrl_PreenchementoTela().exibirJInternalInfoPessoa(tPessoa.getValor(linha));
 							} 
 							catch (ValidacaoException e1) 
 							{

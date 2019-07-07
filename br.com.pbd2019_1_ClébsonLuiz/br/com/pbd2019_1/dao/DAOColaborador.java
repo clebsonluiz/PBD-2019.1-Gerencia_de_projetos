@@ -7,8 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import br.com.pbd2019_1.entidade.Colaborador;
+import br.com.pbd2019_1.entidade.GerenteEtapa;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.entidade.SubEtapaColaborador;
+import br.com.pbd2019_1.entidade.TarefaColaborador;
 import br.com.pbd2019_1.exception.DAOException;
 
 public class DAOColaborador extends DAOGenerico<Colaborador>{
@@ -49,5 +52,36 @@ public class DAOColaborador extends DAOGenerico<Colaborador>{
 		}
 		return colaboradores;
 	}
+	
+	public Colaborador buscarPorTarefaColaborador(TarefaColaborador tc) throws DAOException
+	{
+		return buscaNamedQueryGenericaFK(
+				Colaborador.class,
+				"Colaborador.tarefa_colaborador",
+				"tc",
+				tc
+				);
+	}
+	
+	public Colaborador buscarPorSubEtapaColaborador(SubEtapaColaborador sb) throws DAOException
+	{
+		return buscaNamedQueryGenericaFK(
+				Colaborador.class,
+				"Colaborador.sub_etapa_colaborador",
+				"sb",
+				sb
+				);
+	}
+	
+	public Colaborador buscarPorGerenteEtapa(GerenteEtapa ge) throws DAOException
+	{
+		return buscaNamedQueryGenericaFK(
+				Colaborador.class,
+				"Colaborador.gerenteEtapa",
+				"g",
+				ge
+				);
+	}
+	
 	
 }

@@ -73,7 +73,7 @@ public class TelaColaboradorEnvolvido extends MeuJPanel {
 		btVerColaborador = new Botao();
 		btVerColaborador.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		btVerColaborador.setBackground(new Color(50, 205, 50));
-		btVerColaborador.setText("Ver ");
+		btVerColaborador.setText("Ver");
 		meuJPanel_1.add(btVerColaborador, BorderLayout.EAST);
 
 		btRemoverColaborador = new Botao();

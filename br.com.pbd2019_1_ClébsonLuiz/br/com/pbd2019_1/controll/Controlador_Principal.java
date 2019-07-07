@@ -33,6 +33,11 @@ import br.com.pbd2019_1.tabelas.TSubEtapa;
 import br.com.pbd2019_1.tabelas.TSubTarefa;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.JIF_Inf_Etp_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_Proj_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_SbEtp_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_SbTarf_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_Tarf_Colab;
 import br.com.pbd2019_1.view.JInternalAbstract;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_ColaboradoresEtapa;
@@ -101,6 +106,13 @@ public class Controlador_Principal {
 	private SubEtapa subEtapa_Atual;
 	private SubTarefa subTarefa_Atual;
 	
+	private Pessoa pessoa_Atual_Colab;
+	private Projeto projeto_Atual_Colab;
+	private Etapa etapa_Atual_Colab;
+	private Tarefa tarefa_Atual_Colab;
+	private SubEtapa subEtapa_Atual_Colab;
+	private SubTarefa subTarefa_Atual_Colab;
+	
 	private TelaPrincipal telaPrincipal;
 	
 	private JInternal_ColaboradoresEtapa jInternal_ColaboradoresEtapa;
@@ -135,6 +147,14 @@ public class Controlador_Principal {
 	private JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup;
 	private JInternal_Sobre jInternal_Sobre;
 	
+	
+	private JIF_Inf_Proj_Colab jif_Inf_Proj_Colab;
+	private JIF_Inf_Etp_Colab jif_Inf_Etp_Colab;
+	private JIF_Inf_SbEtp_Colab jif_Inf_SbEtp_Colab;
+	private JIF_Inf_SbTarf_Colab jif_Inf_SbTarf_Colab;
+	private JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab;
+	
+	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
 	private TColaborador tColaborador;
@@ -155,6 +175,14 @@ public class Controlador_Principal {
 	
 	private TSubEtapa tSubEtapa;
 	private TSubTarefa tSubTarefa;
+	
+	/**TableModels para as JInternals na visão de Colab*/
+	private TColaborador tColab;
+	private TProjeto tProjetoColab;
+	private TEtapa tEtapaColab;
+	private TTarefa tTarefaColab;
+	private TSubEtapa tSubEtapaColab;
+	private TSubTarefa tSubTarefaColab;
 	
 	private Controlador_Info_JInternal_Tela controlador_Info_JInternal_Tela;
 	private Controlador_Cadastro controlador_Cadastro;
@@ -201,7 +229,12 @@ public class Controlador_Principal {
 			JInternal_TelaInfoPessoaOutrem jInternal_TelaInfoPessoaOutrem,
 			JInternal_TelaInfoPessoaOutremSimples jInternal_TelaInfoPessoaOutremSimples,
 			JInternal_TelaInfoSubEtapa jInternal_TelaInfoSubEtapa,
-			JInternal_TelaInfoSubTarefa jInternal_TelaInfoSubTarefa
+			JInternal_TelaInfoSubTarefa jInternal_TelaInfoSubTarefa,
+			JIF_Inf_Proj_Colab jif_Inf_Proj_Colab,
+			JIF_Inf_Etp_Colab jif_Inf_Etp_Colab,
+			JIF_Inf_SbEtp_Colab jif_Inf_SbEtp_Colab,
+			JIF_Inf_SbTarf_Colab jif_Inf_SbTarf_Colab,
+			JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab
 			
 			) {
 		this.jInternal_TelaCadastro_Etapa = jInternal_TelaCadastro_Etapa;
@@ -228,6 +261,11 @@ public class Controlador_Principal {
 		this.jInternal_TelaInfoPessoaOutremSimples = jInternal_TelaInfoPessoaOutremSimples;
 		this.jInternal_TelaInfoSubEtapa = jInternal_TelaInfoSubEtapa;
 		this.jInternal_TelaInfoSubTarefa = jInternal_TelaInfoSubTarefa;
+		this.jif_Inf_Proj_Colab = jif_Inf_Proj_Colab;
+		this.jif_Inf_Etp_Colab = jif_Inf_Etp_Colab;
+		this.jif_Inf_SbEtp_Colab = jif_Inf_SbEtp_Colab;
+		this.jif_Inf_SbTarf_Colab = jif_Inf_SbTarf_Colab;
+		this.jif_Inf_Tarf_Colab = jif_Inf_Tarf_Colab;
 	}
 
 	public void adicionarTableModels() {
@@ -398,577 +436,6 @@ public class Controlador_Principal {
 		
 	}
 	
-/*	*//**
-	 * Eventos de Mouse das Tabelas mais importantes
-	 * 
-	 * *//*
-	private void adicionarMouseEventJTable(JTable table) {
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int linha = table.rowAtPoint(e.getPoint());
-				int coluna = table.columnAtPoint(e.getPoint());
-				
-				table.setRowSelectionInterval(linha, linha);
-				table.setColumnSelectionInterval(coluna, coluna);
-				
-				Object obj = table.getValueAt(linha, coluna);
-				
-				if(SwingUtilities.isRightMouseButton(e)) 
-				{
-					if(table.getModel() instanceof TCaracteristicaExtra) 
-					{
-						popUpCaracteristica.setjTableAtual(table);
-						popUpCaracteristica.show(table, e.getX(), e.getY());
-					} 
-					else 
-//						if(!(table.getModel() instanceof TLogUpdate))
-					{
-						popUp.setjTableAtual(table);
-						popUp.show(table, e.getX(), e.getY());
-					}
-				} 
-				else 
-				{
-					if(table.getModel() instanceof TTarefa) 
-					{
-						if(coluna == 3) 
-						{
-							if(obj instanceof Boolean)
-							{
-								try 
-								{
-									if(bool_Colaborador_Ativado)
-									{
-										if(!colaborador_Atual.getPrivilegio().equals("Visitante"))
-										{
-											boolean b = (((Boolean)obj).booleanValue());
-											tTarefa.setValueAt(b, linha, coluna);
-											Fachada.getInstance().atualizar(tTarefa.getValor(linha));
-											
-											etapa_Atual.setPorcentagem_andamento(
-													Fachada.getInstance()
-														.getBoEtapa()
-														.recalcularPorcentagem(etapa_Atual)
-													);
-											
-											jInternal_TelaInfoEtapa
-												.getTelaEtapa_Tarefas()
-												.getTelaEtapa()
-												.getBarraProgressBar()
-												.setValue(
-														Math.round(etapa_Atual.getPorcentagem_andamento())
-														);
-											
-										}
-										else
-										{
-											boolean b = (((Boolean)obj).booleanValue());
-											tTarefa.setValueAt(!b, linha, coluna);
-										}
-									}
-									else 
-									{
-										boolean b = (((Boolean)obj).booleanValue());
-										System.out.println(((Boolean)obj).booleanValue());
-										System.out.println(b);
-										tTarefa.setValueAt(b, linha, coluna);
-										Fachada.getInstance().atualizar(tTarefa.getValor(linha));
-										
-										etapa_Atual.setPorcentagem_andamento(
-												Fachada.getInstance()
-													.getBoEtapa()
-													.recalcularPorcentagem(etapa_Atual)
-												);
-										
-										jInternal_TelaInfoEtapa
-											.getTelaEtapa_Tarefas()
-											.getTelaEtapa()
-											.getBarraProgressBar()
-											.setValue(
-													Math.round(etapa_Atual.getPorcentagem_andamento())
-													);
-										
-									}
-								} 
-								catch (ValidacaoException ve) 
-								{
-									MeuJDialog.exibirAlertaErro(null, "Erro ao alterar", ve.getMessage());
-								}
-							}
-						}
-						else if (coluna == 4)
-						{
-							try 
-							{
-								controlador_Info_JInternal_Tela
-									.exibirJInternalInfoTarefa(
-											tTarefa.getValor(linha)
-											);
-							} catch (PropertyVetoException e1) 
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela", e1.getMessage());
-							}
-						}
-					} 
-					else if (table.getModel() instanceof TEtapa)
-					{
-						if(coluna == 2) 
-						{
-							try 
-							{
-								controlador_Info_JInternal_Tela
-									.exibirJInternalInfoEtapa(
-											tEtapa.getValor(linha)
-											);
-							} 
-							catch (ValidacaoException e1) 
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados da etapa", e1.getMessage());
-							}
-							catch (PropertyVetoException e1)
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoEtapa", e1.getMessage());
-							}
-						}
-					}
-					else if (table.getModel() instanceof TProjeto)
-					{
-						if(coluna == 3)
-						{
-							try
-							{
-								bool_Colaborador_Ativado = false;
-								projeto_Atual = tProjeto.getValor(linha);
-								
-								if(!type_User_Logado.equals(Pessoa.COMUM_USER))
-								{
-									controlador_Info_JInternal_Tela.exibirJInternalInfoProjetoEtapa(projeto_Atual);
-								}
-								else
-								{
-									controlador_Info_JInternal_Tela.exibirJInternalInfoProjetoEtapaSimples(projeto_Atual);
-								}
-							} 
-							catch (ValidacaoException e1)
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados do projeto", e1.getMessage());
-							} 
-							catch (PropertyVetoException e1) 
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoProjeto", e1.getMessage());
-							}
-						}
-					}
-					else if (table.getModel() instanceof TColaboracoes)
-					{
-						if(coluna == 3)
-						{
-							try 
-							{
-								bool_Colaborador_Ativado = true;
-								
-								controlador_Info_JInternal_Tela.exibirJInternalInfoColaboracoes(tColaboracoes.getValor(linha));
-								
-							} 
-							catch (ValidacaoException e1) 
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao carregar info. do projeto de colaborador", e1.getMessage());
-							} 
-							catch (PropertyVetoException e1) 
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoProjeto de Colaborador", e1.getMessage());
-							}
-						}
-					}
-					else if (table.getModel() instanceof TColaborador)
-					{
-						if(coluna == 3) 
-						{
-							try 
-							{
-								controlador_Info_JInternal_Tela
-									.exibirJInternalInfoColaborador(
-											tColaborador.getValor(linha)
-											);
-							} 
-							catch (ValidacaoException e1)
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao carregar informações do colaborador", e1.getMessage());
-							} 
-							catch (PropertyVetoException e1)
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoPessoa do colaborador", e1.getMessage());
-							}
-							
-						}
-					}
-					else if (table.getModel() instanceof TLogUpdate)
-					{
-						if(coluna == 5)
-						{
-							try 
-							{
-								logUpdate_Atual = tLogUpdate.getValor(linha);
-							
-								String id_tabela = ""+logUpdate_Atual.getId_tabela();
-								String tabela = logUpdate_Atual.getTabela();
-								String tipo = logUpdate_Atual.getTipo();
-								String cpf = logUpdate_Atual.getResponsavel();
-								String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(logUpdate_Atual.getData_log());
-								String[] antes = logUpdate_Atual.getAntes();
-								String[] depois = logUpdate_Atual.getDepois();
-								
-								JTable table = jInternal_InfoLog.getTelaInfoLog().getTable();
-								
-								DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-								
-								int index = tableModel.getRowCount();
-								
-								System.out.println(index);
-								
-								for(int i = 0; i < index; i++)
-								{
-									System.out.println(i);
-									tableModel.removeRow(0);
-									tableModel.fireTableRowsDeleted(0, 0);
-									tableModel.fireTableDataChanged();
-								}
-								
-								String[] rowData;
-								
-								int indexMaximum = 0;
-								
-								if(tipo.equals("CADASTRO"))
-								{
-									indexMaximum = (depois != null)? depois.length : 0;
-								}
-								else 
-								{
-									indexMaximum = (antes != null)? antes.length :
-										(depois != null)? depois.length : 0;
-								}
-								
-								for(int i = 0; i < indexMaximum; i ++)
-								{
-									rowData = new String[] {
-											"" + (i+1),
-											(antes != null)? ((antes.length == indexMaximum)? antes[i] : "") : "",
-											(depois != null)? ((depois.length == indexMaximum)? depois[i] : "") : "",
-									};
-									
-									tableModel.addRow(rowData);
-									tableModel.fireTableDataChanged();
-								}
-								
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtCod().setTexto(id_tabela);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtTabela().setTexto(tabela);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtTipo().setTexto(tipo);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtResponsavel().setTexto(cpf);
-								jInternal_InfoLog.getTelaInfoLog().getCmptxtDatalog().setTexto(data);
-								
-								jInternal_InfoLog.queroFoco();
-							} 
-							catch (PropertyVetoException e1) {
-								MeuJDialog.exibirAlertaErro(null, "Erro Ao Exibir Tela de Log", e1.getMessage());
-							}
-							
-						}
-					}
-					else if (table.getModel() instanceof TPessoa)
-					{
-						if(coluna == 3)
-						{
-							//TODO - Abrir tela ver Pessoa outrem 
-							try
-							{
-								controlador_Info_JInternal_Tela.exibirJInternalInfoPessoa(tPessoa.getValor(linha));
-							} 
-							catch (ValidacaoException e1) 
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao carregar dados de pessoa", e1.getMessage());
-							}
-							catch (PropertyVetoException e1) 
-							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoTarefa", e1.getMessage());
-							}
-						}
-					}
-				}
-			}
-		});
-	}
-	
-	*//**
-	 * Eventos do Popup<br>
-	 * TODO
-	 * *//*
-	private void adicionarEventosPopUp() 
-	{
-		JMenuItem excluir = popUp.getMenuItens()[1];
-		
-		excluir.addActionListener(ActionEvent->{
-			
-			int decisao = MeuJDialog.exibirAlertaPergunta(null, "Opa!", "Tem a Certeza de que quer remover?");
-			
-			if(decisao == 1)
-			try 
-			{
-				if(bool_Colaborador_Ativado)
-					if(!colaborador_Atual.getPrivilegio().equals("Administrador")
-							&& (!(popUp.getjTableAtual().getModel() instanceof TColaboracoes)
-									&& !(popUp.getjTableAtual().getModel() instanceof TProjeto)))
-						throw new ValidacaoException("Não tem permição");
-					
-				int linha = popUp.getjTableAtual().getSelectedRow();
-				
-				if(popUp.getjTableAtual().getModel() instanceof TTarefa) 
-				{
-					
-					Tarefa t = tTarefa.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tTarefa.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-					
-					etapa_Atual.setPorcentagem_andamento(
-							Fachada.getInstance()
-								.getBoEtapa()
-								.recalcularPorcentagem(etapa_Atual)
-							);
-					
-					jInternal_TelaInfoEtapa
-					.getTelaEtapa_Tarefas()
-					.getTelaEtapa()
-					.getBarraProgressBar()
-					.setValue(
-							Math.round(etapa_Atual.getPorcentagem_andamento())
-							);
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TEtapa) 
-				{
-					Etapa t = tEtapa.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tEtapa.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TProjeto) 
-				{
-					Projeto t = tProjeto.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tProjeto.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TCaracteristicaExtra) 
-				{
-					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tCaracteristicaExtra.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TColaboracoes) 
-				{
-					
-					Colaborador t = tColaboracoes.getValor(linha);
-					
-					Fachada.getInstance().remover(t);
-					tColaboracoes.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TColaborador) 
-				{
-					
-					Colaborador t = tColaborador.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tColaborador.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TLogUpdate) 
-				{
-					
-					LogUpdate t = tLogUpdate.getValor(linha);
-					
-					Fachada.getInstance().remover(t);
-					tLogUpdate.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-					
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TPessoa) 
-				{
-					
-					Pessoa t = tPessoa.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tPessoa.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-				else if(popUp.getjTableAtual().getModel() instanceof TBackup) 
-				{
-					
-					Backup t = tBackup.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tBackup.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-			} 
-			catch (ValidacaoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro na remoção", e.getMessage());
-			}
-		});
-		
-		JMenuItem excluirCaracteristica = popUpCaracteristica.getMenuItens()[1];
-		
-		
-		excluirCaracteristica.addActionListener(ActionEvent->
-		{
-			try 
-			{
-				if(bool_Colaborador_Ativado)
-					if(!colaborador_Atual.getPrivilegio().equals("Administrador"))
-						throw new ValidacaoException("Não tem permição");
-					
-				int linha = popUpCaracteristica.getjTableAtual().getSelectedRow();
-				
-				if(popUpCaracteristica.getjTableAtual().getModel() instanceof TCaracteristicaExtra) 
-				{
-					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
-					Fachada.getInstance().remover(t);
-					tCaracteristicaExtra.remover(linha);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogDelete(t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-			} 
-			catch (ValidacaoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro na remoção", e.getMessage());
-			}
-		});
-		
-		JMenuItem salvarCaracteristica = popUpCaracteristica.getMenuItens()[0];
-		
-		salvarCaracteristica.addActionListener((ItemEvent)->
-		{
-			try 
-			{
-				if(bool_Colaborador_Ativado)
-					if(!colaborador_Atual.getPrivilegio().equals("Administrador"))
-						throw new ValidacaoException("Não tem permição");
-					
-				int linha = popUpCaracteristica.getjTableAtual().getSelectedRow();
-				
-				if(popUpCaracteristica.getjTableAtual().getModel() instanceof TCaracteristicaExtra) 
-				{
-					Object value = popUpCaracteristica.getjTableAtual().getValueAt(linha, 0);
-					
-					String[] antes = Fachada.getInstance().gerarLog(tCaracteristicaExtra.getValor(linha));
-					
-					tCaracteristicaExtra.setValueAt(value, linha, 0);
-					
-					CaracteristicaExtra t = tCaracteristicaExtra.getValor(linha);
-					
-					Fachada.getInstance().atualizar(t);
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().gerarLogUpdate(antes, t, pessoa_Logada, log);
-					tLogUpdate.addValor(log);
-				}
-			} 
-			catch (ValidacaoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro na alteração", e.getMessage());
-			}
-		});
-		
-	}
-	
-	
-	private void adicionarEventosComboBox(JTable tarefaTable, JTable colaboradorTable) 
-	{
-		tTarefa.getCombo().addActionListener(ActionEvent->{
-			
-			if(tTarefa.getCombo().getSelectedItem() != null) 
-			{
-				int linha = tarefaTable.getSelectedRow();
-				int coluna = tarefaTable.getSelectedColumn();
-				
-				if(linha >= 0 && coluna >= 0) 
-				{ 
-					try 
-					{
-						if(bool_Colaborador_Ativado)
-							if(colaborador_Atual.getPrivilegio().equals("Visitante"))
-								throw new ValidacaoException("Não tem permição");
-						
-						tTarefa.setValueAt(tTarefa.getCombo().getSelectedItem(),
-								linha,
-								coluna
-								);
-						Fachada.getInstance().atualizar(tTarefa.getValor(linha));
-					} 
-					catch (ValidacaoException e) 
-					{
-						MeuJDialog.exibirAlertaErro(null, "Erro ao atualizar info. tarefa", e.getMessage());
-					}
-				}
-			}
-		});
-		
-		tColaborador.getCombo().addActionListener(ActionEvent->{
-			
-			if(tColaborador.getCombo().getSelectedItem() != null) 
-			{
-				int linha = colaboradorTable.getSelectedRow();
-				int coluna = colaboradorTable.getSelectedColumn();
-				
-				if(linha >= 0 && coluna >= 0) 
-				{ 
-					try 
-					{
-						tColaborador.setValueAt(tColaborador.getCombo().getSelectedItem(),
-								linha,
-								coluna
-								);
-						Fachada.getInstance().atualizar(tColaborador.getValor(linha));
-					} 
-					catch (ValidacaoException e) 
-					{
-						MeuJDialog.exibirAlertaErro(null, "Erro ao exibir atualizar info Colaborador", e.getMessage());
-					}
-				}
-			}
-		});
-	}
-	
-	*/
-	
 	public void adicionarEventosTelaPrincipal() {
 		
 		telaPrincipal.getTelaCadastro_Pessoa()
@@ -1075,7 +542,7 @@ public class Controlador_Principal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
-				controlador_Info_JInternal_Tela.exibirJInternalInfoMinhaPessoa(pessoa_Logada);
+				ctrl_PreenchementoTela.exibirJInternalInfoMinhaPessoa(pessoa_Logada);
 			} 
 			catch (ValidacaoException e) 
 			{
@@ -1215,88 +682,47 @@ public class Controlador_Principal {
 	public JInternal_TelaBackups getjInternal_TelaBackups() {return jInternal_TelaBackups;}
 	public JInternal_TabelaPessoas getjInternal_TabelaPessoas() {return jInternal_TabelaPessoas;}
 	public JInternal_TabelaPessoasColaboradores getjInternal_TabelaPessoasColaboradores() {return jInternal_TabelaPessoasColaboradores;}
-
 	
+	public JInternal_TelaCadastroSubEtapa getjInternal_TelaCadastroSubEtapa() {return jInternal_TelaCadastroSubEtapa;}
+	public JInternal_TelaCadastroSubTarefa getjInternal_TelaCadastroSubTarefa() {return jInternal_TelaCadastroSubTarefa;}
+	public JInternal_TelaInfoPessoaOutrem getjInternal_TelaInfoPessoaOutrem() {return jInternal_TelaInfoPessoaOutrem;}
+	public JInternal_TelaInfoPessoaOutremSimples getjInternal_TelaInfoPessoaOutremSimples() {return jInternal_TelaInfoPessoaOutremSimples;}
+	public JInternal_TelaInfoSubEtapa getjInternal_TelaInfoSubEtapa() {return jInternal_TelaInfoSubEtapa;}
+	public JInternal_TelaInfoSubTarefa getjInternal_TelaInfoSubTarefa() {return jInternal_TelaInfoSubTarefa;}
+	public JInternal_Sobre getjInternal_Sobre() {return jInternal_Sobre;}
+
+	public Controlador_Info_JInternal_Tela getControlador_Info_JInternal_Tela() {return controlador_Info_JInternal_Tela;}
+	public Controlador_Cadastro getControlador_Cadastro() {return controlador_Cadastro;}
+	public Controlador_Backup getControlador_Backup() {return controlador_Backup;}
+	public Ctrl_PreenchementoTela getCtrl_PreenchementoTela() {return ctrl_PreenchementoTela;}
+
+	public SubEtapa getSubEtapa_Atual() {return subEtapa_Atual;}
+	public SubTarefa getSubTarefa_Atual() {return subTarefa_Atual;}
 	
-	public JInternal_TelaCadastroSubEtapa getjInternal_TelaCadastroSubEtapa() {
-		return jInternal_TelaCadastroSubEtapa;
-	}
+	public void setSubEtapa_Atual(SubEtapa subEtapa_Atual) {this.subEtapa_Atual = subEtapa_Atual;}
+	public void setSubTarefa_Atual(SubTarefa subTarefa_Atual) {this.subTarefa_Atual = subTarefa_Atual;}
 
-	public JInternal_TelaCadastroSubTarefa getjInternal_TelaCadastroSubTarefa() {
-		return jInternal_TelaCadastroSubTarefa;
-	}
+	public JInternal_ColaboradoresEtapa getjInternal_ColaboradoresEtapa() {return jInternal_ColaboradoresEtapa;}
+	public JInternal_ColaboradoresSubEtapa getjInternal_ColaboradoresSubEtapa() {return jInternal_ColaboradoresSubEtapa;}
+	public JInternal_ColaboradoresTarefa getjInternal_ColaboradoresTarefa() {return jInternal_ColaboradoresTarefa;}
 
-	public JInternal_TelaInfoPessoaOutrem getjInternal_TelaInfoPessoaOutrem() {
-		return jInternal_TelaInfoPessoaOutrem;
-	}
+	public JIF_Inf_Proj_Colab getJif_Inf_Proj_Colab() {return jif_Inf_Proj_Colab;}
+	public JIF_Inf_Etp_Colab getJif_Inf_Etp_Colab() {return jif_Inf_Etp_Colab;}
+	public JIF_Inf_SbEtp_Colab getJif_Inf_SbEtp_Colab() {return jif_Inf_SbEtp_Colab;}
+	public JIF_Inf_SbTarf_Colab getJif_Inf_SbTarf_Colab() {return jif_Inf_SbTarf_Colab;}
+	public JIF_Inf_Tarf_Colab getJif_Inf_Tarf_Colab() {return jif_Inf_Tarf_Colab;}
 
-	public JInternal_TelaInfoPessoaOutremSimples getjInternal_TelaInfoPessoaOutremSimples() {
-		return jInternal_TelaInfoPessoaOutremSimples;
-	}
+	public TColaborador gettColaboradorProjeto() {return tColaboradorProjeto;}
+	public TColaborador gettColaboradorEtapa() {return tColaboradorEtapa;}
+	public TColaborador gettColaboradorSubEtapa() {return tColaboradorSubEtapa;}
+	public TColaborador gettColaboradorTarefa() {return tColaboradorTarefa;}
 
-	public JInternal_TelaInfoSubEtapa getjInternal_TelaInfoSubEtapa() {
-		return jInternal_TelaInfoSubEtapa;
-	}
-
-	public JInternal_TelaInfoSubTarefa getjInternal_TelaInfoSubTarefa() {
-		return jInternal_TelaInfoSubTarefa;
-	}
-
-	public JInternal_Sobre getjInternal_Sobre() {
-		return jInternal_Sobre;
-	}
-
-	public Controlador_Info_JInternal_Tela getControlador_Info_JInternal_Tela() {
-		return controlador_Info_JInternal_Tela;
-	}
-
-	public Controlador_Cadastro getControlador_Cadastro() {
-		return controlador_Cadastro;
-	}
-
-	public Controlador_Backup getControlador_Backup() {
-		return controlador_Backup;
-	}
-	
-	public Ctrl_PreenchementoTela getCtrl_PreenchementoTela() {
-		return ctrl_PreenchementoTela;
-	}
-
-	public SubEtapa getSubEtapa_Atual() {
-		return subEtapa_Atual;
-	}
-
-	public SubTarefa getSubTarefa_Atual() {
-		return subTarefa_Atual;
-	}
-
-	public JInternal_ColaboradoresEtapa getjInternal_ColaboradoresEtapa() {
-		return jInternal_ColaboradoresEtapa;
-	}
-
-	public JInternal_ColaboradoresSubEtapa getjInternal_ColaboradoresSubEtapa() {
-		return jInternal_ColaboradoresSubEtapa;
-	}
-
-	public JInternal_ColaboradoresTarefa getjInternal_ColaboradoresTarefa() {
-		return jInternal_ColaboradoresTarefa;
-	}
-
-	public TColaborador gettColaboradorProjeto() {
-		return tColaboradorProjeto;
-	}
-
-	public TColaborador gettColaboradorEtapa() {
-		return tColaboradorEtapa;
-	}
-
-	public TColaborador gettColaboradorSubEtapa() {
-		return tColaboradorSubEtapa;
-	}
-
-	public TColaborador gettColaboradorTarefa() {
-		return tColaboradorTarefa;
-	}
+	public TColaborador gettColab() {return tColab;}
+	public TProjeto gettProjetoColab() {return tProjetoColab;}
+	public TEtapa gettEtapaColab() {return tEtapaColab;}
+	public TTarefa gettTarefaColab() {return tTarefaColab;}
+	public TSubEtapa gettSubEtapaColab() {return tSubEtapaColab;}
+	public TSubTarefa gettSubTarefaColab() {return tSubTarefaColab;}
 
 	public TEtapa gettEtapa() {return tEtapa;}
 	public TTarefa gettTarefa() {return tTarefa;}
@@ -1330,6 +756,54 @@ public class Controlador_Principal {
 	public void setType_User_Logado(String type_User_Logado) {this.type_User_Logado = type_User_Logado;}
 	public void setColaborador_Atual(Colaborador colaborador_Atual) {this.colaborador_Atual = colaborador_Atual;}
 	public void setBool_Colaborador_Ativado(boolean bool_Colaborador_Ativado) {this.bool_Colaborador_Ativado = bool_Colaborador_Ativado;}
+	
+	public Pessoa getPessoa_Atual_Colab() {
+		return pessoa_Atual_Colab;
+	}
+
+	public void setPessoa_Atual_Colab(Pessoa pessoa_Atual_Colab) {
+		this.pessoa_Atual_Colab = pessoa_Atual_Colab;
+	}
+
+	public Projeto getProjeto_Atual_Colab() {
+		return projeto_Atual_Colab;
+	}
+
+	public void setProjeto_Atual_Colab(Projeto projeto_Atual_Colab) {
+		this.projeto_Atual_Colab = projeto_Atual_Colab;
+	}
+
+	public Etapa getEtapa_Atual_Colab() {
+		return etapa_Atual_Colab;
+	}
+
+	public void setEtapa_Atual_Colab(Etapa etapa_Atual_Colab) {
+		this.etapa_Atual_Colab = etapa_Atual_Colab;
+	}
+
+	public Tarefa getTarefa_Atual_Colab() {
+		return tarefa_Atual_Colab;
+	}
+
+	public void setTarefa_Atual_Colab(Tarefa tarefa_Atual_Colab) {
+		this.tarefa_Atual_Colab = tarefa_Atual_Colab;
+	}
+
+	public SubEtapa getSubEtapa_Atual_Colab() {
+		return subEtapa_Atual_Colab;
+	}
+
+	public void setSubEtapa_Atual_Colab(SubEtapa subEtapa_Atual_Colab) {
+		this.subEtapa_Atual_Colab = subEtapa_Atual_Colab;
+	}
+
+	public SubTarefa getSubTarefa_Atual_Colab() {
+		return subTarefa_Atual_Colab;
+	}
+
+	public void setSubTarefa_Atual_Colab(SubTarefa subTarefa_Atual_Colab) {
+		this.subTarefa_Atual_Colab = subTarefa_Atual_Colab;
+	}
 
 	public static PopUp getPopUpCaracteristica() {
 		return popUpCaracteristica;

@@ -118,7 +118,7 @@ public class Controlador_Info_JInternal_Tela {
 
 	private void adicionarEventoJInternal(JInternal_TabelaPessoasColaboradores jInternal_TabelaPessoasColaboradores) {
 		
-		jInternal_TabelaPessoasColaboradores
+		/*jInternal_TabelaPessoasColaboradores
 		.getTelaPessoas()
 		.getBtAdicionarPessoa()
 		.addActionListener(ActionEvent->{
@@ -152,7 +152,7 @@ public class Controlador_Info_JInternal_Tela {
 			{
 				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de pessoas", e.getMessage());
 			}
-		});
+		});*/
 		
 		jInternal_TabelaPessoasColaboradores
 		.getTelaPessoas()
@@ -932,7 +932,8 @@ public class Controlador_Info_JInternal_Tela {
 	}
 	
 
-/*	private void adicionarEventoJInternal(
+/*
+	private void adicionarEventoJInternal(
 			JInternal_TelaInfoProjeto_Etapas_Simples telaInfoProjeto_Etapas_Simples) {
 		
 		telaInfoProjeto_Etapas_Simples.getTelaProjeto_Etapas_Simples().getTelaProjeto()

@@ -77,7 +77,7 @@ public interface ViewUtil {
 	public static interface Bordas{
 		
 		/** https://stackoverflow.com/questions/15025092/border-with-rounded-corners-transparency*/
-		public class TextBubbleBorder extends AbstractBorder {
+		public static class TextBubbleBorder extends AbstractBorder {
 
 			private static final long serialVersionUID = 1L;
 
@@ -92,12 +92,12 @@ public interface ViewUtil {
 		    private boolean left = true;
 		    RenderingHints hints;
 
-		    TextBubbleBorder(
+		    public TextBubbleBorder(
 		            Color color) {
 		        this(color, 4, 8, 7);
 		    }
 
-		    TextBubbleBorder(
+		    public TextBubbleBorder(
 		            Color color, int thickness, int radii, int pointerSize) {
 		        this.thickness = thickness;
 		        this.radii = radii;
@@ -116,7 +116,7 @@ public interface ViewUtil {
 		        insets = new Insets(pad, pad, bottomPad, pad);
 		    }
 
-		    TextBubbleBorder(
+		    public TextBubbleBorder(
 		            Color color, int thickness, int radii, int pointerSize, boolean left) {
 		        this(color, thickness, radii, pointerSize);
 		        this.left = left;

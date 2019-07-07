@@ -21,6 +21,8 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 	private static final long serialVersionUID = 1L;
 	private TelaMiniPessoa1 telaMiniPessoa1;
 	private TelaMiniPessoa2 telaMiniPessoa2;
+	private Botao btCadastrarComoAdmin;
+	private Botao btCadastrarComoSuper;
 	
 	public TelaCadastro_Pessoa() {
 		setLayout(null);
@@ -35,6 +37,26 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 		telaMiniPessoa1.getTelaCadastroEdicao().abilitar();
 		telaMiniPessoa1.getTelaCadastroEdicao().esconderTglbtnBotao();
 		telaMiniPessoa1.getTelaCadastroEdicao().getBtBotao1().setPreferredSize(new Dimension(100, 40));
+		
+		telaMiniPessoa1.getTelaCadastroEdicao().getBtBotao1().setText("Comum");
+		
+		btCadastrarComoAdmin = new Botao();
+		btCadastrarComoAdmin.setBackground(new Color(152, 251, 152));
+		btCadastrarComoAdmin.setText("ADMIN");
+		telaMiniPessoa1.getTelaCadastroEdicao().add(btCadastrarComoAdmin);
+		
+		btCadastrarComoSuper = new Botao();
+		
+		btCadastrarComoSuper.setBackground(new Color(135, 206, 235));
+		btCadastrarComoSuper.setText("Super usu\u00E1rio");
+		
+		btCadastrarComoAdmin.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
+		btCadastrarComoSuper.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
+		
+		btCadastrarComoAdmin.setPreferredSize(new Dimension(100, 40));
+		btCadastrarComoSuper.setPreferredSize(new Dimension(130, 40));
+		
+		telaMiniPessoa1.getTelaCadastroEdicao().add(btCadastrarComoSuper);
 		telaMiniPessoa1.getRdbtnNo().setText("N\u00E3o estou dispon\u00EDvel");
 		telaMiniPessoa1.getRdbtnSim().setHorizontalAlignment(SwingConstants.CENTER);
 		telaMiniPessoa1.getRdbtnSim().setHorizontalTextPosition(SwingConstants.CENTER);
@@ -158,6 +180,16 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 
 	public JPanel getPanel_2() {
 		return telaMiniPessoa1.getPanel_2();
+	}
+
+
+	public Botao getBtCadastrarComoAdmin() {
+		return btCadastrarComoAdmin;
+	}
+
+
+	public Botao getBtCadastrarComoSuper() {
+		return btCadastrarComoSuper;
 	}
 	
 }

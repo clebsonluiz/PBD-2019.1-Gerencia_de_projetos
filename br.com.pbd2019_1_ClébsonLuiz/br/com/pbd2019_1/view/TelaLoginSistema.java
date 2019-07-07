@@ -46,13 +46,13 @@ private static final long serialVersionUID = 1L;
 		contentPane.add(lblSistema);
 		
 		JLabel lblLogin = new JLabel(ViewUtil.Icones.ICONE_LOGIN_USUARIO);
-		lblLogin.setToolTipText("Login de Usuário");
+		lblLogin.setToolTipText("CPF é o Login de Usuário");
 		lblLogin.setBounds(10, 140, 98, 85);
 		lblLogin.setFont(Arial.ARIAL_TITULO_B);
 		contentPane.add(lblLogin);
 		
 		loginField = new CampoTexto();
-		loginField.setDescricao("Login");
+		loginField.setDescricao("Digite seu CPF aqui!");
 		loginField.setBounds(131, 155, 237, 50);
 		loginField.setFont(Arial.ARIAL_TITULO_B);
 		contentPane.add(loginField);

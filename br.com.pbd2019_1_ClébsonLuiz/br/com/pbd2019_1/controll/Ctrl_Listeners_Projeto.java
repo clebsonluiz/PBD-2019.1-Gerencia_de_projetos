@@ -10,7 +10,6 @@ import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.GerenteEtapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
-import br.com.pbd2019_1.entidade.SubEtapa;
 import br.com.pbd2019_1.entidade.SubEtapaColaborador;
 import br.com.pbd2019_1.entidade.TarefaColaborador;
 import br.com.pbd2019_1.exception.ValidacaoException;
@@ -117,6 +116,8 @@ public class Ctrl_Listeners_Projeto {
 				}
 			});
 
+		adicionarEventoJInternalColaborador(telaInfoProjetoEtapas);
+		
 	}
 	
 	/**TODO - ETAPA*/
@@ -169,6 +170,9 @@ public class Ctrl_Listeners_Projeto {
 					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir ", e.getMessage());
 				}
 			});
+		
+		adicionarEventoJInternalColaborador(telaInfoEtapa);
+		
 	}
 	
 	/**TODO - SUB. ETAPA*/
@@ -220,6 +224,9 @@ public class Ctrl_Listeners_Projeto {
 					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir ", e.getMessage());
 				}
 			});
+		
+		adicionarEventoJInternalColaborador(telaInfoSubEtapa);
+		
 	}
 	
 	/**TODO - TAREFA*/
@@ -303,11 +310,10 @@ public class Ctrl_Listeners_Projeto {
 				}
 			});
 		
+		adicionarEventoJInternalColaborador(telaInfoTarefa);
 	}
 	
 	/**TODO - SUB. TAREFA*/
-	
-	/**TODO - TAREFA*/
 	private void adicionarEventoJInternal(JInternal_TelaInfoSubTarefa telaInfoSubTarefa) {
 		
 		telaInfoSubTarefa.getTelaInfoSubTarefa().getBotao1()

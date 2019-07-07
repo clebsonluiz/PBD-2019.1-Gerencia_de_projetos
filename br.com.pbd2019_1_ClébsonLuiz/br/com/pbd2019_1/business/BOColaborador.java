@@ -4,8 +4,11 @@ import java.util.List;
 
 import br.com.pbd2019_1.dao.DAOColaborador;
 import br.com.pbd2019_1.entidade.Colaborador;
+import br.com.pbd2019_1.entidade.GerenteEtapa;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.entidade.SubEtapaColaborador;
+import br.com.pbd2019_1.entidade.TarefaColaborador;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
 
@@ -39,4 +42,18 @@ public class BOColaborador extends BOGenerico<Colaborador>{
 		return ((DAOColaborador)this.daoT).buscarPorProjeto(projeto);
 	}
 	
+	public Colaborador buscarPorTarefaColaborador(TarefaColaborador tc) throws DAOException
+	{
+		return ((DAOColaborador)this.daoT).buscarPorTarefaColaborador(tc);
+	}
+	
+	public Colaborador buscarPorSubEtapaColaborador(SubEtapaColaborador sb) throws DAOException
+	{
+		return ((DAOColaborador)this.daoT).buscarPorSubEtapaColaborador(sb);
+	}
+	
+	public Colaborador buscarPorGerenteEtapa(GerenteEtapa ge) throws DAOException
+	{
+		return ((DAOColaborador)this.daoT).buscarPorGerenteEtapa(ge);
+	}
 }
