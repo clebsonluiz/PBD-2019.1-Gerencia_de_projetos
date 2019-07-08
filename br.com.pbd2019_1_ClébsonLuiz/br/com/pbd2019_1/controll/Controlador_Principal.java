@@ -101,7 +101,6 @@ public class Controlador_Principal {
 	 * 
 	 * */
 	
-	
 	private Pessoa pessoa_Logada;
 	private Pessoa pessoa_Outrem;
 	private Projeto projeto_Atual;

@@ -8,6 +8,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import br.com.pbd2019_1.exception.ValidacaoException;
+import br.com.pbd2019_1.tabelas.CellRenderer;
 import br.com.pbd2019_1.tabelas.TColaborador;
 import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TSubEtapa;
@@ -23,6 +24,55 @@ public class Ctrl_JTable_Colab {
 		super();
 		this.ctrl_P = ctrl_P;
 	}
+	
+	public void adicionarEventos()
+	{
+		JTable tableTarefas = ctrl_P.getJif_Inf_Etp_Colab()
+				.getTelaEtapa_Tarefas()
+				.getTelaTarefas()
+				.getTable();
+		JTable tableSubEtapas = ctrl_P.getJif_Inf_Etp_Colab()
+				.getTelaEtapa_Tarefas()
+				.getTelaSubEtapas()
+				.getTable();
+		JTable tableEtapas = ctrl_P.getJif_Inf_Proj_Colab()
+				.getTelaProjeto_Etapas()
+				.getTelaEtapas()
+				.getTable();
+		JTable tableColaboradores = ctrl_P.getJif_Inf_Proj_Colab()
+				.getTelaProjeto_Etapas()
+				.getTelaColaboradores()
+				.getTable();
+		JTable tableSubTarefas = ctrl_P.getJif_Inf_SbEtp_Colab()
+				.getTelaInfoSubEtapaSubTarefas()
+				.getTelaTarefas()
+				.getTable();
+		
+		tableTarefas.setModel(ctrl_P.gettTarefaColab());
+		tableSubEtapas.setModel(ctrl_P.gettSubEtapaColab());
+		tableEtapas.setModel(ctrl_P.gettEtapaColab());
+		tableColaboradores.setModel(ctrl_P.gettColab());
+		tableSubTarefas.setModel(ctrl_P.gettSubTarefaColab());
+		
+		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
+		tableSubEtapas.setDefaultRenderer(Object.class, new CellRenderer());
+		tableEtapas.setDefaultRenderer(Object.class, new CellRenderer());
+		tableColaboradores.setDefaultRenderer(Object.class, new CellRenderer());
+		tableSubTarefas.setDefaultRenderer(Object.class, new CellRenderer());
+		
+		tableTarefas.setRowHeight(30);
+		tableSubEtapas.setRowHeight(30);
+		tableEtapas.setRowHeight(30);
+		tableColaboradores.setRowHeight(30);
+		tableSubTarefas.setRowHeight(30);
+		
+		adicionarMouseEventJTable(tableTarefas);
+		adicionarMouseEventJTable(tableSubEtapas);
+		adicionarMouseEventJTable(tableEtapas);
+		adicionarMouseEventJTable(tableColaboradores);
+		adicionarMouseEventJTable(tableSubTarefas);
+	}
+	
 	
 	/**
 	 * Eventos de Mouse das Tabelas mais importantes da visão de colab

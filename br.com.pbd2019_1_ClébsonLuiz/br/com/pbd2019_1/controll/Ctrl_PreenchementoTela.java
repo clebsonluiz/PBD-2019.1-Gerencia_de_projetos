@@ -35,6 +35,7 @@ import br.com.pbd2019_1.view.TelaEtapa;
 import br.com.pbd2019_1.view.TelaGraficoPessoa;
 import br.com.pbd2019_1.view.TelaInfoLog;
 import br.com.pbd2019_1.view.TelaInfoPessoa;
+import br.com.pbd2019_1.view.TelaInfoPessoaContatoOutrem;
 import br.com.pbd2019_1.view.TelaInfoPessoaContatoOutremSimples;
 import br.com.pbd2019_1.view.TelaInfoProjeto;
 import br.com.pbd2019_1.view.TelaInfoSubEtapa;
@@ -230,6 +231,15 @@ public class Ctrl_PreenchementoTela {
 		ctrl_P.getjInternal_TelaInfoPessoaOutremSimples().queroFoco();
 	}
 	
+	public void exibirJInternalInfoPessoaSimples(Pessoa pessoa) throws ValidacaoException, PropertyVetoException
+	{
+		ctrl_P.setPessoa_Outrem(pessoa);
+		
+		TelaInfoPessoaContatoOutremSimples tIP = ctrl_P.getjInternal_TelaInfoPessoaOutremSimples().getTelaInfoPessoaContatoOutremSimples();
+		atualizarDadoPessoaColaboradorSimples(tIP, ctrl_P.getPessoa_Outrem(), ctrl_P.gettCaracteristicaExtra2());
+		ctrl_P.getjInternal_TelaInfoPessoaOutremSimples().queroFoco();
+	}
+	
 	public void exibirJInternalInfoColaboracoes(Colaborador c) throws ValidacaoException, PropertyVetoException
 	{
 		ctrl_P.setColaborador_Atual(c);
@@ -260,6 +270,16 @@ public class Ctrl_PreenchementoTela {
 		ctrl_P.getjInternal_TelaInfoPessoa().queroFoco();
 	}
 
+	public void exibirJInternalInfoPessoaOutrem(Pessoa p) throws ValidacaoException, PropertyVetoException
+	{
+		ctrl_P.setPessoa_Outrem(p);
+		
+		TelaInfoPessoaContatoOutrem tIP = ctrl_P.getjInternal_TelaInfoPessoaOutrem().getTelaInfoPessoaContatoOutrem();
+		
+		atualizarDadoPessoaContatoOutrem(tIP, ctrl_P.getPessoa_Outrem(), ctrl_P.gettCaracteristicaExtra2());
+		ctrl_P.getjInternal_TelaInfoPessoa().queroFoco();
+	}
+	
 	public void exibirJInternalInfoMinhaPessoa(Pessoa p) throws ValidacaoException, PropertyVetoException
 	{
 		TelaInfoPessoa tIP = ctrl_P.getjInternal_TelaInfoPessoa_Projetos()
@@ -562,6 +582,27 @@ public class Ctrl_PreenchementoTela {
 		p.setCaracteristicas(lc);
 		
 		tce.addAll(lc);
+	}
+	
+	private void atualizarDadoPessoaContatoOutrem(TelaInfoPessoaContatoOutrem tIP, Pessoa p, TCaracteristicaExtra tce) throws ValidacaoException
+	{
+		preencherTelaMiniPessoa1(tIP.getTelaMiniPessoa1(), p);
+		
+		Contato c = Fachada.getInstance().getBoContato().buscarPorPessoa(p);
+		
+		if(c == null) c = new Contato();
+		
+		List<CaracteristicaExtra> lc = Fachada.getInstance().getBoCaracteristicaExtra().buscaPorPessoa(p);
+		
+		preencherTelaContato(tIP.getTelaContatoCaracteristica(), c);
+		atualizarDadoPessoaDesempenho(tIP.getTelaGraficoPessoa(), p);
+		
+		p.setContato(c);
+		p.setCaracteristicas(lc);
+		tce.addAll(lc);
+		
+		tIP.getTelaMiniPessoa3().getResetarSenhaChbx().setSelected(p.isReset_senha());
+		
 	}
 	
 	private void atualizarDadoColaborador(TelaColaboradorEnvolvido tCE, Tarefa t, boolean b_colab) throws ValidacaoException

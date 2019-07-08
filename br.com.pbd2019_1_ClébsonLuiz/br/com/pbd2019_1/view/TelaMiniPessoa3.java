@@ -70,7 +70,7 @@ public class TelaMiniPessoa3 extends MeuJPanel {
 		return panel;
 	}
 
-	public JCheckBox getExibirSenhaChbx() {
+	public JCheckBox getResetarSenhaChbx() {
 		return resetarSenhaChbx;
 	}
 }

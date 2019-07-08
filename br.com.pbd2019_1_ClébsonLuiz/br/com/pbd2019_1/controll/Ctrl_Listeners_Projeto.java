@@ -50,6 +50,15 @@ public class Ctrl_Listeners_Projeto {
 	 * TODO - Eventos de Projeto
 	 */
 	
+	public void adicionarEventos()
+	{
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoProjeto_Etapas());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoEtapa());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoTarefa());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoSubEtapa());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoSubTarefa());
+	}
+	
 	/**TODO - Projeto*/
 	private void adicionarEventoJInternal(JInternal_TelaInfoProjeto_Etapas telaInfoProjetoEtapas) {
 		
