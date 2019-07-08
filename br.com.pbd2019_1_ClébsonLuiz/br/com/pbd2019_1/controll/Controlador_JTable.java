@@ -267,9 +267,14 @@ public class Controlador_JTable {
 									.exibirJInternalInfoTarefa(
 											tTarefa.getValor(linha)
 											);
-							} catch (PropertyVetoException e1) 
+							}
+							catch (PropertyVetoException e1) 
 							{
 								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela", e1.getMessage());
+							} 
+							catch (ValidacaoException e1)
+							{
+								MeuJDialog.exibirAlertaErro(null, "Erro ao carregar informações para tela", e1.getMessage());
 							}
 						}
 					} 

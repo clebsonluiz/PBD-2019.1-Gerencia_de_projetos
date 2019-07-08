@@ -33,11 +33,13 @@ import br.com.pbd2019_1.tabelas.TSubEtapa;
 import br.com.pbd2019_1.tabelas.TSubTarefa;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.utils.UserUtil;
 import br.com.pbd2019_1.view.JIF_Inf_Etp_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_Proj_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_SbEtp_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_SbTarf_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_Tarf_Colab;
+import br.com.pbd2019_1.view.JIF_Reset_Senha;
 import br.com.pbd2019_1.view.JInternalAbstract;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_ColaboradoresEtapa;
@@ -73,9 +75,16 @@ import br.com.pbd2019_1.view.TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.TelaMenu;
 import br.com.pbd2019_1.view.TelaOpcoes;
 import br.com.pbd2019_1.view.TelaPrincipal;
+import br.com.pbd2019_1.view.Tela_CadastroSuperUsuario;
 
 public class Controlador_Principal {
 
+	public static final String SUPER_USER_PORTA_BANCO = "5432";
+	public static final String SUPER_USER_NOME_BANCO = "PBD_GESTAO";
+	public static final String SUPER_USER_QT_ENTIDADE_BANCO = "17";
+	public static final String SUPER_USER_USUARIO_BANCO = "postegres";
+	public static final String SUPER_USER_SENHA_BANCO = "13111996";
+	
 	
 	/**
 	 * janelaEscolherCaminhoArquivo - JFileChooser para escolher os caminhos dos arquivos
@@ -147,13 +156,13 @@ public class Controlador_Principal {
 	private JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup;
 	private JInternal_Sobre jInternal_Sobre;
 	
-	
 	private JIF_Inf_Proj_Colab jif_Inf_Proj_Colab;
 	private JIF_Inf_Etp_Colab jif_Inf_Etp_Colab;
 	private JIF_Inf_SbEtp_Colab jif_Inf_SbEtp_Colab;
 	private JIF_Inf_SbTarf_Colab jif_Inf_SbTarf_Colab;
 	private JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab;
 	
+	private JIF_Reset_Senha jif_Reset_Senha;
 	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
@@ -171,7 +180,6 @@ public class Controlador_Principal {
 	private TColaborador tColaboradorEtapa;
 	private TColaborador tColaboradorSubEtapa;
 	private TColaborador tColaboradorTarefa;
-	
 	
 	private TSubEtapa tSubEtapa;
 	private TSubTarefa tSubTarefa;
@@ -234,7 +242,8 @@ public class Controlador_Principal {
 			JIF_Inf_Etp_Colab jif_Inf_Etp_Colab,
 			JIF_Inf_SbEtp_Colab jif_Inf_SbEtp_Colab,
 			JIF_Inf_SbTarf_Colab jif_Inf_SbTarf_Colab,
-			JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab
+			JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab,
+			JIF_Reset_Senha jif_Reset_Senha
 			
 			) {
 		this.jInternal_TelaCadastro_Etapa = jInternal_TelaCadastro_Etapa;
@@ -266,6 +275,7 @@ public class Controlador_Principal {
 		this.jif_Inf_SbEtp_Colab = jif_Inf_SbEtp_Colab;
 		this.jif_Inf_SbTarf_Colab = jif_Inf_SbTarf_Colab;
 		this.jif_Inf_Tarf_Colab = jif_Inf_Tarf_Colab;
+		this.jif_Reset_Senha = jif_Reset_Senha;
 	}
 
 	public void adicionarTableModels() {
@@ -440,52 +450,68 @@ public class Controlador_Principal {
 		
 		telaPrincipal.getTelaCadastro_Pessoa()
 			.getBotao().addActionListener(ActionEvent->{
-				//TODO - 
 				try 
 				{
 					TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
-					String nome = telaPessoa.getNomeField().getTexto();
-					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
-					Date data = telaPessoa.getNascimentoDateChooser().getDate();
-					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
-//					String login = telaPessoa.getLoginField().getTexto();
-					String senha = telaPessoa.getSenhaField().getTexto();
-					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
-
-					Fachada.getInstance().getBoPessoa().buscarPorCPF(cpf);
-//					Fachada.getInstance().getBoPessoa().buscarPorLogin(login);
-
-					Pessoa pessoa = new Pessoa();
-					pessoa.setNome(nome);
-					pessoa.setCpf(cpf);
-					pessoa.setData_nascimento(DateUtil.parseToLocalDate(data));
-					pessoa.setSexo(sexo);
-//					pessoa.setUser_login(login);
-					pessoa.setUser_senha(senha);
-					pessoa.setDisponibilidade(disponivel);
-
-					pessoa.setUser_type(Pessoa.COMUM_USER);
-					Fachada.getInstance().inserir(pessoa);
-					telaPrincipal.getTelaCadastro_Pessoa().limparCampos();
 					
-					LogUpdate log = new LogUpdate();
-					
-					Fachada.getInstance().gerarLogInsercao(pessoa, pessoa, log);
-					tLogUpdate.addValor(log);
+					controlador_Cadastro.cadastrarPessoa(telaPessoa, Pessoa.COMUM_USER, tPessoa, null);
 				} 
 				catch (ValidacaoException e) 
 				{
 					MeuJDialog.exibirAlertaErro(null, "Erro ao cadastrar pessoa", e.getMessage());
 				}
-				
 			});
+		
+		telaPrincipal.getTelaCadastro_Pessoa()
+		.getBtCadastrarComoAdmin().addActionListener(ActionEvent->{
+			try 
+			{
+				TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
+				
+				controlador_Cadastro.cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, null);
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao cadastrar pessoa", e.getMessage());
+			}
+		});
+		
+		telaPrincipal.getTela_CadastroSuperUsuario().getBtMeCadastre().addActionListener((ActionEvent)->
+		{
+			try 
+			{
+				Tela_CadastroSuperUsuario telaS = telaPrincipal.getTela_CadastroSuperUsuario();
+				
+				if(!telaS.getCmptxtNomebanco().getTexto().trim().equals(SUPER_USER_NOME_BANCO))
+					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
+				else if(!telaS.getCmptxtNomeusuariobanco().getTexto().trim().equals(SUPER_USER_USUARIO_BANCO))
+					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
+				else if(!telaS.getCmptxtNumeroentidades().getTexto().trim().equals(SUPER_USER_QT_ENTIDADE_BANCO))
+					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
+				else if(!telaS.getCmptxtPortabanco().getTexto().trim().equals(SUPER_USER_PORTA_BANCO))
+					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
+				else if(!telaS.getCmptxtSenhabanco().getTexto().trim().equals(SUPER_USER_SENHA_BANCO))
+					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
+				
+				TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
+				
+				controlador_Cadastro.cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, null);
+				
+				telaS.limparCampos();
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao cadastrar pessoa", e.getMessage());
+			}
+		});
+		
 		
 		telaPrincipal.getTelaLoginSistema()
 			.getBtnLogar().addActionListener(ActionEvent->{
 				//TODO - Inserir aqui o login
 				try 
 				{
-					String login = telaPrincipal
+					String login_cpf = telaPrincipal
 							.getTelaLoginSistema()
 							.getLoginField()
 							.getTexto();
@@ -494,16 +520,26 @@ public class Controlador_Principal {
 							.getSenhaField()
 							.getTexto();
 					
+					
 					pessoa_Logada = Fachada
 							.getInstance()
 							.getBoPessoa()
-							.buscarUsuario(
-									login,
-									senha
-									);
+							.buscarUsuarioResetado(login_cpf);
 					
-					if(pessoa_Logada != null) 
+					if(pessoa_Logada != null)
 					{
+						
+						String senhaNova = UserUtil.PasswordUtil.sugerirSenha();
+						
+						
+						pessoa_Logada.setReset_senha(false);
+						pessoa_Logada.setUser_senha(senhaNova);
+						
+						Fachada.getInstance().atualizar(pessoa_Logada);
+						
+						jif_Reset_Senha.getLblSenha().setText(senhaNova);
+						jif_Reset_Senha.queroFoco();
+						
 						type_User_Logado = pessoa_Logada.getUser_type();
 						
 						if(type_User_Logado.equals(Pessoa.COMUM_USER))
@@ -516,6 +552,33 @@ public class Controlador_Principal {
 						telaPrincipal.exibirTela(TelaPrincipal.TELA_PRINCIPAL);
 						
 						telaPrincipal.getTelaLoginSistema().getLblErro().setText("");
+					
+					}
+					else
+					{
+						pessoa_Logada = Fachada
+								.getInstance()
+								.getBoPessoa()
+								.buscarUsuario(
+										login_cpf,
+										senha
+										);
+						
+						if(pessoa_Logada != null) 
+						{
+							type_User_Logado = pessoa_Logada.getUser_type();
+							
+							if(type_User_Logado.equals(Pessoa.COMUM_USER))
+								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_COMUM);
+							else if(type_User_Logado.equals(Pessoa.ADMIN_USER))
+								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_ADMIN);
+							else if(type_User_Logado.equals(Pessoa.SUPER_USER))
+								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_SUPER);
+							
+							telaPrincipal.exibirTela(TelaPrincipal.TELA_PRINCIPAL);
+							
+							telaPrincipal.getTelaLoginSistema().getLblErro().setText("");
+						}
 					}
 					
 					
@@ -523,6 +586,10 @@ public class Controlador_Principal {
 				catch (ValidacaoException | NoSuchAlgorithmException | UnsupportedEncodingException e) 
 				{
 					telaPrincipal.getTelaLoginSistema().getLblErro().setText(e.getMessage());
+				} 
+				catch (PropertyVetoException e) 
+				{
+					e.printStackTrace();
 				}
 				
 			});
@@ -576,6 +643,8 @@ public class Controlador_Principal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
+				tPessoa.getList().clear();
+				tPessoa.fireTableDataChanged();
 				jInternal_TabelaPessoas.queroFoco();
 			} 
 			catch (PropertyVetoException e) 
@@ -712,6 +781,8 @@ public class Controlador_Principal {
 	public JIF_Inf_SbTarf_Colab getJif_Inf_SbTarf_Colab() {return jif_Inf_SbTarf_Colab;}
 	public JIF_Inf_Tarf_Colab getJif_Inf_Tarf_Colab() {return jif_Inf_Tarf_Colab;}
 
+	public JIF_Reset_Senha getJif_Reset_Senha() {return jif_Reset_Senha;}
+
 	public TColaborador gettColaboradorProjeto() {return tColaboradorProjeto;}
 	public TColaborador gettColaboradorEtapa() {return tColaboradorEtapa;}
 	public TColaborador gettColaboradorSubEtapa() {return tColaboradorSubEtapa;}
@@ -757,62 +828,21 @@ public class Controlador_Principal {
 	public void setColaborador_Atual(Colaborador colaborador_Atual) {this.colaborador_Atual = colaborador_Atual;}
 	public void setBool_Colaborador_Ativado(boolean bool_Colaborador_Ativado) {this.bool_Colaborador_Ativado = bool_Colaborador_Ativado;}
 	
-	public Pessoa getPessoa_Atual_Colab() {
-		return pessoa_Atual_Colab;
-	}
+	public Pessoa getPessoa_Atual_Colab() {return pessoa_Atual_Colab;}
+	public Projeto getProjeto_Atual_Colab() {return projeto_Atual_Colab;}
+	public Etapa getEtapa_Atual_Colab() {return etapa_Atual_Colab;}
+	public Tarefa getTarefa_Atual_Colab() {return tarefa_Atual_Colab;}
+	public SubEtapa getSubEtapa_Atual_Colab() {return subEtapa_Atual_Colab;}
+	public SubTarefa getSubTarefa_Atual_Colab() {return subTarefa_Atual_Colab;}
 
-	public void setPessoa_Atual_Colab(Pessoa pessoa_Atual_Colab) {
-		this.pessoa_Atual_Colab = pessoa_Atual_Colab;
-	}
+	public void setPessoa_Atual_Colab(Pessoa pessoa_Atual_Colab) {this.pessoa_Atual_Colab = pessoa_Atual_Colab;}
+	public void setProjeto_Atual_Colab(Projeto projeto_Atual_Colab) {this.projeto_Atual_Colab = projeto_Atual_Colab;}
+	public void setEtapa_Atual_Colab(Etapa etapa_Atual_Colab) {this.etapa_Atual_Colab = etapa_Atual_Colab;}
+	public void setTarefa_Atual_Colab(Tarefa tarefa_Atual_Colab) {this.tarefa_Atual_Colab = tarefa_Atual_Colab;}
+	public void setSubEtapa_Atual_Colab(SubEtapa subEtapa_Atual_Colab) {this.subEtapa_Atual_Colab = subEtapa_Atual_Colab;}
+	public void setSubTarefa_Atual_Colab(SubTarefa subTarefa_Atual_Colab) {this.subTarefa_Atual_Colab = subTarefa_Atual_Colab;}
 
-	public Projeto getProjeto_Atual_Colab() {
-		return projeto_Atual_Colab;
-	}
-
-	public void setProjeto_Atual_Colab(Projeto projeto_Atual_Colab) {
-		this.projeto_Atual_Colab = projeto_Atual_Colab;
-	}
-
-	public Etapa getEtapa_Atual_Colab() {
-		return etapa_Atual_Colab;
-	}
-
-	public void setEtapa_Atual_Colab(Etapa etapa_Atual_Colab) {
-		this.etapa_Atual_Colab = etapa_Atual_Colab;
-	}
-
-	public Tarefa getTarefa_Atual_Colab() {
-		return tarefa_Atual_Colab;
-	}
-
-	public void setTarefa_Atual_Colab(Tarefa tarefa_Atual_Colab) {
-		this.tarefa_Atual_Colab = tarefa_Atual_Colab;
-	}
-
-	public SubEtapa getSubEtapa_Atual_Colab() {
-		return subEtapa_Atual_Colab;
-	}
-
-	public void setSubEtapa_Atual_Colab(SubEtapa subEtapa_Atual_Colab) {
-		this.subEtapa_Atual_Colab = subEtapa_Atual_Colab;
-	}
-
-	public SubTarefa getSubTarefa_Atual_Colab() {
-		return subTarefa_Atual_Colab;
-	}
-
-	public void setSubTarefa_Atual_Colab(SubTarefa subTarefa_Atual_Colab) {
-		this.subTarefa_Atual_Colab = subTarefa_Atual_Colab;
-	}
-
-	public static PopUp getPopUpCaracteristica() {
-		return popUpCaracteristica;
-	}
-
-	public static PopUp getPopUp() {
-		return popUp;
-	}
-	
+	public static PopUp getPopUpCaracteristica() {return popUpCaracteristica;}
+	public static PopUp getPopUp() {return popUp;}
 	
 }
-

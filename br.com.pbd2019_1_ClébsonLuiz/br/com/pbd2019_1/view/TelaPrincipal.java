@@ -86,6 +86,7 @@ public class TelaPrincipal extends JPanel {
 		Botao btn1 = telaCadastro_Pessoa.getBtCadastrarComoSuper();
 		
 		btn1.addActionListener(ActionEvent->{
+			telaCadastro_Pessoa.limparCampos();
 			exibirTela(TELA_CADASTRO_SUPER);
 			});
 		

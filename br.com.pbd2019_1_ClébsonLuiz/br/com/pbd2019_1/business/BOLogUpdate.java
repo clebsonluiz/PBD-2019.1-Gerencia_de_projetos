@@ -61,7 +61,10 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 		log.setId_tabela(entidade.getId());
 		log.setTipo("CADASTRO");
 		log.setData_log(LocalDateTime.now());
-		log.setResponsavel(responsavel.getCpf());
+		if(responsavel != null)
+			log.setResponsavel(responsavel.getCpf());
+		else
+			log.setResponsavel("");
 		log.setColuna(LogUpdateUtil.GerarColunas.gerarColunas(entidade));
 		
 		if(entidade instanceof CaracteristicaExtra)
@@ -226,6 +229,8 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 	
 	private void inserirLogPessoa(LogUpdate log, Pessoa pe) throws BOException, DAOException
 	{
+		if(log.getResponsavel().trim().equals(""))
+			log.setResponsavel(pe.getCpf());
 		log.setTabela(Pessoa.class.getSimpleName());
 		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(pe));
 		inserir(log);

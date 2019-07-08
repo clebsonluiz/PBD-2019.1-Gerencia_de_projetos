@@ -123,6 +123,11 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		return false;
 	}
 	
+	public Pessoa buscarUsuarioResetado(String cpf) throws DAOException
+	{
+		return ((DAOPessoa)this.daoT).buscarPorUsuarioResetado(cpf);
+	}
+	
 	public Pessoa buscarUsuario(String login, String senha) throws BOException, DAOException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		if(login == null || login.trim().equals(""))
 			throw new BOException("Campo login vazio");

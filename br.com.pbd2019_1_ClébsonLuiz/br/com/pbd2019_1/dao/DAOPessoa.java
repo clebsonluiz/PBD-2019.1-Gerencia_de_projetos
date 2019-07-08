@@ -126,6 +126,15 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		return pessoa;
 	}
 	
+	public Pessoa buscarPorUsuarioResetado(String login) throws DAOException {
+		return buscaNamedQueryGenericaFK(
+				Pessoa.class,
+				"Pessoa.buscarUsuarioReseted",
+				"cpf",
+				login
+				);
+	}
+	
 	public List<Pessoa> buscarPessoasDiferentes(int id) throws DAOException{
 		EntityManager entityManager = createEntityManager();
 		List<Pessoa> pessoas = null;

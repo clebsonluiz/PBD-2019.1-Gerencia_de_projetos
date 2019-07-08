@@ -108,46 +108,26 @@ public class Controlador_Cadastro {
 				try 
 				{
 					TelaCadastro_Pessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa();
-					String nome = telaPessoa.getNomeField().getTexto();
-					String cpf = telaPessoa.getCampoFormatadoCPF().getText();
-					Date data = telaPessoa.getNascimentoDateChooser().getDate();
-					String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
-					String senha = telaPessoa.getSenhaField().getTexto();
-					String senhaConfirma = telaPessoa.getSenhaComfirmaField().getTexto();
-					boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
-
-					if(!senha.equals(senhaConfirma))
-						throw new ValidacaoException("As senhas não batem");
-					
-					Fachada.getInstance().getBoPessoa().buscarPorCPF(cpf);
-//					Fachada.getInstance().getBoPessoa().buscarPorLogin(login);
-
-					Pessoa pessoa = new Pessoa();
-					pessoa.setNome(nome);
-					pessoa.setCpf(cpf);
-					pessoa.setData_nascimento(DateUtil.parseToLocalDate(data));
-					pessoa.setSexo(sexo);
-//					pessoa.setUser_login(login);
-					pessoa.setUser_senha(senha);
-					pessoa.setDisponibilidade(disponivel);
-
-					if(controlador_Principal.getType_User_Logado().equals(Pessoa.ADMIN_USER))
-						pessoa.setUser_type(Pessoa.COMUM_USER);
-					else if(controlador_Principal.getType_User_Logado().equals(Pessoa.SUPER_USER))
-						pessoa.setUser_type(Pessoa.ADMIN_USER);
-					Fachada.getInstance().inserir(pessoa);
-					tPessoa.addValor(pessoa);
-					telaCadastroPessoa.getTelaCadastro_Pessoa().limparCampos();
-					
-					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(pessoa, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+					cadastrarPessoa(telaPessoa, Pessoa.COMUM_USER, tPessoa, controlador_Principal.getPessoa_Logada());
 				}
 				catch (ValidacaoException e) 
 				{
 					MeuJDialog.exibirAlertaErro(null, "Erro ao Cadastrar", e.getMessage());
 				}
 		});
+		
+		telaCadastroPessoa.getTelaCadastro_Pessoa().getBtCadastrarComoAdmin()
+		.addActionListener(ActionEvent->{
+			try 
+			{
+				TelaCadastro_Pessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa();
+				cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, controlador_Principal.getPessoa_Logada());
+			}
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao Cadastrar", e.getMessage());
+			}
+	});
 	}
 	
 	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Projeto telaCadastroProjeto, TProjeto tProjeto) {
@@ -289,5 +269,39 @@ public class Controlador_Cadastro {
 					MeuJDialog.exibirAlertaErro(null, "Erro ao Cadastrar", e.getMessage());
 				}
 		});
+	}
+
+	
+	public void cadastrarPessoa(TelaCadastro_Pessoa telaPessoa, String type_user, TPessoa tPessoa, Pessoa responsavelLog) throws ValidacaoException
+	{
+		String nome = telaPessoa.getNomeField().getTexto();
+		String cpf = telaPessoa.getCampoFormatadoCPF().getText();
+		Date data = telaPessoa.getNascimentoDateChooser().getDate();
+		String sexo = (String) telaPessoa.getSexoComboBox().getSelectedItem();
+		String senha = telaPessoa.getSenhaField().getTexto();
+		String senhaConfirma = telaPessoa.getSenhaComfirmaField().getTexto();
+		boolean disponivel = telaPessoa.getRdbtnSim().isSelected();
+
+		if(!senha.equals(senhaConfirma))
+			throw new ValidacaoException("As senhas não batem");
+		
+		Fachada.getInstance().getBoPessoa().buscarPorCPF(cpf);
+
+		Pessoa pessoa = new Pessoa();
+		pessoa.setNome(nome);
+		pessoa.setCpf(cpf);
+		pessoa.setData_nascimento(DateUtil.parseToLocalDate(data));
+		pessoa.setSexo(sexo);
+		pessoa.setUser_senha(senha);
+		pessoa.setDisponibilidade(disponivel);
+
+		pessoa.setUser_type(type_user);
+		Fachada.getInstance().inserir(pessoa);
+		tPessoa.addValor(pessoa);
+		telaPessoa.limparCampos();
+		
+		LogUpdate log = new LogUpdate();
+		Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(pessoa, responsavelLog, log);
+		controlador_Principal.gettLogUpdate().addValor(log);
 	}
 }

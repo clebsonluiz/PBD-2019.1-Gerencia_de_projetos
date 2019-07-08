@@ -6,7 +6,6 @@ import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import br.com.pbd2019_1.utils.ViewUtil;
 
@@ -18,14 +17,13 @@ public class Tela_CadastroSuperUsuario extends MeuJPanel {
 	private CampoTexto cmptxtNomebanco;
 	private CampoTexto cmptxtNomeusuariobanco;
 	private CampoTexto cmptxtNumeroentidades;
-	private CampoTextoArea txtrNomeentidades;
 	private CampoTexto cmptxtPortabanco;
 	private CampoTexto cmptxtSenhabanco;
 
 	public Tela_CadastroSuperUsuario()
 	{
-		setMinimumSize(new Dimension(510, 370));
-		setPreferredSize(new Dimension(510, 370));
+		setMinimumSize(new Dimension(510, 270));
+		setPreferredSize(new Dimension(510, 270));
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new MeuJPanel();
@@ -73,19 +71,6 @@ public class Tela_CadastroSuperUsuario extends MeuJPanel {
 		cmptxtNumeroentidades.setBounds(6, 68, 300, 50);
 		panel_2.add(cmptxtNumeroentidades);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(getBackground());
-		scrollPane.setBorder(new ViewUtil.Bordas.TextBubbleBorder(Color.gray, 1, 5, 0));
-		scrollPane.setBounds(6, 184, 498, 108);
-		panel_2.add(scrollPane);
-		
-		txtrNomeentidades = new CampoTextoArea();
-		txtrNomeentidades.setDescricao("Separe por virgulas os nomes");
-//		txtrNomeentidades.setBorder(ViewUtil.Bordas.criarBordaArredondada(Color.gray));
-		txtrNomeentidades.setBorder(new ViewUtil.Bordas.TextBubbleBorder(Color.gray, 1, 5, 0));
-		txtrNomeentidades.setFont(ViewUtil.Fonts.Arial.ARIAL_TITULO_B);
-		scrollPane.setViewportView(txtrNomeentidades);
-		
 		cmptxtPortabanco = new CampoTexto();
 		cmptxtPortabanco.setBorder(ViewUtil.Bordas.criarBordaArredondada(Color.gray));
 		cmptxtPortabanco.setDescricao("Nº. da Porta do Banco");
@@ -106,7 +91,6 @@ public class Tela_CadastroSuperUsuario extends MeuJPanel {
 		cmptxtNomebanco.setTexto("");
 		cmptxtNomeusuariobanco.setTexto("");
 		cmptxtNumeroentidades.setTexto("");
-		txtrNomeentidades.setTexto("");
 		cmptxtPortabanco.setTexto("");
 		cmptxtSenhabanco.setTexto("");
 	}
@@ -129,10 +113,6 @@ public class Tela_CadastroSuperUsuario extends MeuJPanel {
 
 	public CampoTexto getCmptxtNumeroentidades() {
 		return cmptxtNumeroentidades;
-	}
-
-	public CampoTextoArea getTxtrNomeentidades() {
-		return txtrNomeentidades;
 	}
 
 	public CampoTexto getCmptxtPortabanco() {

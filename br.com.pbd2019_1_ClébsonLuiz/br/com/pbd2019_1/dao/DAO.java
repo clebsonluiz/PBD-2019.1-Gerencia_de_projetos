@@ -150,7 +150,8 @@ public abstract class DAO {
 			t = query.getSingleResult();
 		
 		} catch (NoResultException e) {
-			e.printStackTrace();
+			t = null;
+//			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new DAOException("Erro de busca lista SQL no banco de dados");
