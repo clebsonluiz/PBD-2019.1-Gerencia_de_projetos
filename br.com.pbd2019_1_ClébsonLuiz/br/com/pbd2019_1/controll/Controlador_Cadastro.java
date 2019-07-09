@@ -36,13 +36,23 @@ import br.com.pbd2019_1.view.TelaProjeto;
 
 public class Controlador_Cadastro {
 	
-	private Controlador_Principal controlador_Principal;
+	private Controlador_Principal ctrl_P;
 	
-	public Controlador_Cadastro(Controlador_Principal controlador_Principal) {
-		this.controlador_Principal = controlador_Principal;
+	public Controlador_Cadastro(Controlador_Principal ctrl_P) {
+		this.ctrl_P = ctrl_P;
+	}
+	
+	public void adicionarEventos()
+	{
+		adicionarEventoJInternalCadastro(ctrl_P.getjInternal_TelaCadastro_Etapa(), ctrl_P.gettEtapa());
+		adicionarEventoJInternalCadastro(ctrl_P.getjInternal_TelaCadastroSubEtapa(), ctrl_P.gettSubEtapa());
+		adicionarEventoJInternalCadastro(ctrl_P.getjInternal_TelaCadastro_Pessoa(), ctrl_P.gettPessoa());
+		adicionarEventoJInternalCadastro(ctrl_P.getjInternal_TelaCadastro_Projeto(), ctrl_P.gettProjeto());
+		adicionarEventoJInternalCadastro(ctrl_P.getjInternal_TelaCadastro_Tarefa(), ctrl_P.gettTarefa(), ctrl_P.getjInternal_TelaInfoEtapa().getTelaEtapa_Tarefas().getTelaEtapa());
+		adicionarEventoJInternalCadastro(ctrl_P.getjInternal_TelaCadastroSubTarefa(), ctrl_P.gettSubTarefa(), ctrl_P.getjInternal_TelaInfoSubEtapa().getTelaInfoSubEtapaSubTarefas().getTelaInfoSubEtapa());
 	}
 
-	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Etapa telaCadastroEtapa, TEtapa tEtapa) {
+	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Etapa telaCadastroEtapa, TEtapa tEtapa) {
 		telaCadastroEtapa.getTelaCadastro_Etapa().getBotao()
 			.addActionListener(ActionEvent->{
 				try 
@@ -55,14 +65,14 @@ public class Controlador_Cadastro {
 					etapa.setNome(nome);
 					etapa.setDescricao(descr);
 					etapa.setPorcentagem(0);
-					etapa.setProjeto(controlador_Principal.getProjeto_Atual());
+					etapa.setProjeto(ctrl_P.getProjeto_Atual());
 					Fachada.getInstance().inserir(etapa);
 					tEtapa.addValor(etapa);
 					telaEtapa.limparCampos();
 					
 					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(etapa, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(etapa, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				} 
 				catch (ValidacaoException e)
 				{
@@ -72,7 +82,7 @@ public class Controlador_Cadastro {
 		});
 	}
 	
-	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastroSubEtapa telaCadastroSubEtapa, TSubEtapa tSubEtapa) {
+	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastroSubEtapa telaCadastroSubEtapa, TSubEtapa tSubEtapa) {
 		telaCadastroSubEtapa.getTelaCadastro_Etapa().getBotao()
 			.addActionListener(ActionEvent->{
 				try 
@@ -85,14 +95,14 @@ public class Controlador_Cadastro {
 					etapa.setNome(nome);
 					etapa.setDescricao(descr);
 					etapa.setPorcentagem(0);
-					etapa.setEtapa(controlador_Principal.getEtapa_Atual());
+					etapa.setEtapa(ctrl_P.getEtapa_Atual());
 					Fachada.getInstance().inserir(etapa);
 					tSubEtapa.addValor(etapa);
 					telaEtapa.limparCampos();
 					
 					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(etapa, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(etapa, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				} 
 				catch (ValidacaoException e)
 				{
@@ -102,13 +112,13 @@ public class Controlador_Cadastro {
 		});
 	}
 	
-	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Pessoa telaCadastroPessoa, TPessoa tPessoa) {
+	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Pessoa telaCadastroPessoa, TPessoa tPessoa) {
 		telaCadastroPessoa.getTelaCadastro_Pessoa().getBotao()
 			.addActionListener(ActionEvent->{
 				try 
 				{
 					TelaCadastro_Pessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa();
-					cadastrarPessoa(telaPessoa, Pessoa.COMUM_USER, tPessoa, controlador_Principal.getPessoa_Logada());
+					cadastrarPessoa(telaPessoa, Pessoa.COMUM_USER, tPessoa, ctrl_P.getPessoa_Logada());
 				}
 				catch (ValidacaoException e) 
 				{
@@ -121,7 +131,7 @@ public class Controlador_Cadastro {
 			try 
 			{
 				TelaCadastro_Pessoa telaPessoa = telaCadastroPessoa.getTelaCadastro_Pessoa();
-				cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, controlador_Principal.getPessoa_Logada());
+				cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, ctrl_P.getPessoa_Logada());
 			}
 			catch (ValidacaoException e) 
 			{
@@ -130,7 +140,7 @@ public class Controlador_Cadastro {
 	});
 	}
 	
-	public void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Projeto telaCadastroProjeto, TProjeto tProjeto) {
+	private void adicionarEventoJInternalCadastro(JInternal_TelaCadastro_Projeto telaCadastroProjeto, TProjeto tProjeto) {
 		telaCadastroProjeto.getTelaCadastro_Projeto().getBotao1()
 			.addActionListener(ActionEvent->{
 				try 
@@ -147,15 +157,15 @@ public class Controlador_Cadastro {
 					projeto.setDescricao(descr);
 					projeto.setData_inicio(DateUtil.getDateSQL(dataI));
 					projeto.setData_fim(DateUtil.getDateSQL(dataF));
-					projeto.setPessoa(controlador_Principal.getPessoa_Logada());
-					projeto.setPrivilegio(!(controlador_Principal.getType_User_Logado().equals(Pessoa.COMUM_USER)));
+					projeto.setPessoa(ctrl_P.getPessoa_Logada());
+					projeto.setPrivilegio(!(ctrl_P.getType_User_Logado().equals(Pessoa.COMUM_USER)));
 					Fachada.getInstance().inserir(projeto);
 					tProjeto.addValor(projeto);
 					telaProjeto.limparCampos();
 					
 					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(projeto, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(projeto, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 				}
 				catch (ValidacaoException e)
 				{
@@ -164,7 +174,7 @@ public class Controlador_Cadastro {
 		});
 	}
 	
-	public void adicionarEventoJInternalCadastro(
+	private void adicionarEventoJInternalCadastro(
 			JInternal_TelaCadastro_Tarefa telaCadastroTarefa, TTarefa tTarefa, TelaEtapa telaEtapa) {
 		telaCadastroTarefa.getTelaCadastro_Tarefa().getBotao1()
 			.addActionListener(ActionEvent->{
@@ -188,26 +198,26 @@ public class Controlador_Cadastro {
 					tarefa.setConcluida(finalizada);
 					tarefa.setPrioridade(prior);
 					tarefa.setHorario(localDateTime);
-					tarefa.setEtapa(controlador_Principal.getEtapa_Atual());
+					tarefa.setEtapa(ctrl_P.getEtapa_Atual());
 					Fachada.getInstance().inserir(tarefa);
 					tTarefa.addValor(tarefa);
 					telaCadastro.limparCampos();
 					
-					controlador_Principal.getEtapa_Atual().setPorcentagem(
+					ctrl_P.getEtapa_Atual().setPorcentagem(
 							Fachada.getInstance()
 								.getBoEtapa()
-								.recalcularPorcentagem(controlador_Principal.getEtapa_Atual())
+								.recalcularPorcentagem(ctrl_P.getEtapa_Atual())
 							);
 					
 					telaEtapa
 					.getBarraProgressBar()
 					.setValue(
-							Math.round(controlador_Principal.getEtapa_Atual().getPorcentagem())
+							Math.round(ctrl_P.getEtapa_Atual().getPorcentagem())
 							);
 					
 					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(tarefa, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(tarefa, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 					
 				} 
 				catch (ValidacaoException e)
@@ -217,7 +227,7 @@ public class Controlador_Cadastro {
 		});
 	}
 	
-	public void adicionarEventoJInternalCadastro(
+	private void adicionarEventoJInternalCadastro(
 			JInternal_TelaCadastroSubTarefa telaCadastroSubTarefa, TSubTarefa tSubTarefa, TelaInfoSubEtapa telaInfoSubEtapa) {
 		telaCadastroSubTarefa.getTelaCadastro_Tarefa().getBotao1()
 			.addActionListener(ActionEvent->{
@@ -242,26 +252,26 @@ public class Controlador_Cadastro {
 					tarefa.setConcluida(finalizada);
 					tarefa.setPrioridade(prior);
 					tarefa.setHorario(localDateTime);
-					tarefa.setSub_etapa(controlador_Principal.getSubEtapa_Atual());
+					tarefa.setSub_etapa(ctrl_P.getSubEtapa_Atual());
 					Fachada.getInstance().inserir(tarefa);
 					tSubTarefa.addValor(tarefa);
 					telaCadastro.limparCampos();
 					
-					controlador_Principal.getEtapa_Atual().setPorcentagem(
+					ctrl_P.getEtapa_Atual().setPorcentagem(
 							Fachada.getInstance()
 								.getBoEtapa()
-								.recalcularPorcentagem(controlador_Principal.getEtapa_Atual())
+								.recalcularPorcentagem(ctrl_P.getEtapa_Atual())
 							);
 					
 					telaInfoSubEtapa
 					.getBarraProgressBar()
 					.setValue(
-							Math.round(controlador_Principal.getEtapa_Atual().getPorcentagem())
+							Math.round(ctrl_P.getEtapa_Atual().getPorcentagem())
 							);
 					
 					LogUpdate log = new LogUpdate();
-					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(tarefa, controlador_Principal.getPessoa_Logada(), log);
-					controlador_Principal.gettLogUpdate().addValor(log);
+					Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(tarefa, ctrl_P.getPessoa_Logada(), log);
+					ctrl_P.gettLogUpdate().addValor(log);
 					
 				} 
 				catch (ValidacaoException e)
@@ -272,7 +282,7 @@ public class Controlador_Cadastro {
 	}
 
 	
-	public void cadastrarPessoa(TelaCadastro_Pessoa telaPessoa, String type_user, TPessoa tPessoa, Pessoa responsavelLog) throws ValidacaoException
+	protected void cadastrarPessoa(TelaCadastro_Pessoa telaPessoa, String type_user, TPessoa tPessoa, Pessoa responsavelLog) throws ValidacaoException
 	{
 		String nome = telaPessoa.getNomeField().getTexto();
 		String cpf = telaPessoa.getCampoFormatadoCPF().getText();
@@ -302,6 +312,6 @@ public class Controlador_Cadastro {
 		
 		LogUpdate log = new LogUpdate();
 		Fachada.getInstance().getBoLogUpdate().gerarLogInsercao(pessoa, responsavelLog, log);
-		controlador_Principal.gettLogUpdate().addValor(log);
+		ctrl_P.gettLogUpdate().addValor(log);
 	}
 }

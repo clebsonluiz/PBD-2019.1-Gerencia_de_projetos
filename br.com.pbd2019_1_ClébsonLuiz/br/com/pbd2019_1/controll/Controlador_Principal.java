@@ -69,6 +69,7 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoSubEtapa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoSubTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
+import br.com.pbd2019_1.view.JanelaPrincipal;
 import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.PopUp;
 import br.com.pbd2019_1.view.TelaCadastro_Pessoa;
@@ -194,26 +195,33 @@ public class Controlador_Principal {
 	private Controlador_Info_JInternal_Tela controlador_Info_JInternal_Tela;
 	private Controlador_Cadastro controlador_Cadastro;
 	private Controlador_Backup controlador_Backup;
-
+	private Controlador_JInternal_SQL ctrl_JInternal_SQL;
+	
 	private Ctrl_PreenchementoTela ctrl_PreenchementoTela;
+	private Ctrl_JTable ctrl_JTable;
+	private Ctrl_JTable_Colab ctrl_JTable_Colab;
+	private Ctrl_Listeners_Projeto ctrl_Listeners_Projeto;
+	private Ctrl_PopUp ctrl_PopUp;
+	
+	private JanelaPrincipal janelaPrincipal;
 	
 	private static PopUp popUpCaracteristica = new PopUp(new String[]{"Salvar", "Excluir"});
 	private static PopUp popUp = new PopUp(new String[]{"", "Excluir", ""});
 	
-	public Controlador_Principal(TelaPrincipal telaPrincipal) {
-		super();
-		this.telaPrincipal = telaPrincipal;
+	public Controlador_Principal(JanelaPrincipal janelaPrincipal) {
+		this.janelaPrincipal = janelaPrincipal;
+		this.telaPrincipal = janelaPrincipal.getTelaPrincipal();
 		this.controlador_Info_JInternal_Tela = new Controlador_Info_JInternal_Tela(this);
 		this.controlador_Cadastro = new Controlador_Cadastro(this);
 		this.controlador_Backup = new Controlador_Backup(this);
+		this.ctrl_JInternal_SQL = new Controlador_JInternal_SQL(this);
 		this.ctrl_PreenchementoTela = new Ctrl_PreenchementoTela(this);
+		this.ctrl_JTable = new Ctrl_JTable(this);
+		this.ctrl_JTable_Colab = new Ctrl_JTable_Colab(this);
+		this.ctrl_Listeners_Projeto = new Ctrl_Listeners_Projeto(this);
+		this.ctrl_PopUp = new Ctrl_PopUp(this);
 	}
 
-	public void adicionarEventoJFrame(JFrame frame)
-	{
-		this.controlador_Backup.adicionarEvento(frame);
-	}
-	
 	public void adicionarJInternals(JInternal_TelaCadastro_Etapa jInternal_TelaCadastro_Etapa,
 			JInternal_TelaCadastro_Projeto jInternal_TelaCadastro_Projeto,
 			JInternal_TelaCadastro_Pessoa jInternal_TelaCadastro_Pessoa,
@@ -359,6 +367,8 @@ public class Controlador_Principal {
 				.getTelaInfoLog()
 				.getTable();
 		
+		
+		
 		DefaultTableModel tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(new String[] {"Ordem", "Antes", "Depois"});
 		tableInfoLog.setModel(tableModel);
@@ -434,267 +444,7 @@ public class Controlador_Principal {
 		
 		adicionarEventosComboBox(tableTarefas, tableColaboradores);
 		
-		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Tarefa, tTarefa, jInternal_TelaInfoEtapa.getTelaEtapa_Tarefas().getTelaEtapa());
-		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Etapa, tEtapa);
-		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Projeto, tProjeto);
-		controlador_Cadastro.adicionarEventoJInternalCadastro(jInternal_TelaCadastro_Pessoa, tPessoa);
 		
-		controlador_Backup.adicionarEvento(jInternal_TelaBackups, tBackup);
-		
-		controlador_Info_JInternal_Tela.adicionarEventosJInternals();
-		
-	}
-	
-	public void adicionarEventosTelaPrincipal() {
-		
-		telaPrincipal.getTelaCadastro_Pessoa()
-			.getBotao().addActionListener(ActionEvent->{
-				try 
-				{
-					TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
-					
-					controlador_Cadastro.cadastrarPessoa(telaPessoa, Pessoa.COMUM_USER, tPessoa, null);
-				} 
-				catch (ValidacaoException e) 
-				{
-					MeuJDialog.exibirAlertaErro(null, "Erro ao cadastrar pessoa", e.getMessage());
-				}
-			});
-		
-		telaPrincipal.getTelaCadastro_Pessoa()
-		.getBtCadastrarComoAdmin().addActionListener(ActionEvent->{
-			try 
-			{
-				TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
-				
-				controlador_Cadastro.cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, null);
-			} 
-			catch (ValidacaoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao cadastrar pessoa", e.getMessage());
-			}
-		});
-		
-		telaPrincipal.getTela_CadastroSuperUsuario().getBtMeCadastre().addActionListener((ActionEvent)->
-		{
-			try 
-			{
-				Tela_CadastroSuperUsuario telaS = telaPrincipal.getTela_CadastroSuperUsuario();
-				
-				if(!telaS.getCmptxtNomebanco().getTexto().trim().equals(SUPER_USER_NOME_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtNomeusuariobanco().getTexto().trim().equals(SUPER_USER_USUARIO_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtNumeroentidades().getTexto().trim().equals(SUPER_USER_QT_ENTIDADE_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtPortabanco().getTexto().trim().equals(SUPER_USER_PORTA_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtSenhabanco().getTexto().trim().equals(SUPER_USER_SENHA_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				
-				TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
-				
-				controlador_Cadastro.cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, null);
-				
-				telaS.limparCampos();
-			} 
-			catch (ValidacaoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao cadastrar pessoa", e.getMessage());
-			}
-		});
-		
-		
-		telaPrincipal.getTelaLoginSistema()
-			.getBtnLogar().addActionListener(ActionEvent->{
-				//TODO - Inserir aqui o login
-				try 
-				{
-					String login_cpf = telaPrincipal
-							.getTelaLoginSistema()
-							.getLoginField()
-							.getTexto();
-					String senha = telaPrincipal
-							.getTelaLoginSistema()
-							.getSenhaField()
-							.getTexto();
-					
-					
-					pessoa_Logada = Fachada
-							.getInstance()
-							.getBoPessoa()
-							.buscarUsuarioResetado(login_cpf);
-					
-					if(pessoa_Logada != null)
-					{
-						
-						String senhaNova = UserUtil.PasswordUtil.sugerirSenha();
-						
-						
-						pessoa_Logada.setReset_senha(false);
-						pessoa_Logada.setUser_senha(senhaNova);
-						
-						Fachada.getInstance().atualizar(pessoa_Logada);
-						
-						jif_Reset_Senha.getLblSenha().setText(senhaNova);
-						jif_Reset_Senha.queroFoco();
-						
-						type_User_Logado = pessoa_Logada.getUser_type();
-						
-						if(type_User_Logado.equals(Pessoa.COMUM_USER))
-							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_COMUM);
-						else if(type_User_Logado.equals(Pessoa.ADMIN_USER))
-							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_ADMIN);
-						else if(type_User_Logado.equals(Pessoa.SUPER_USER))
-							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_SUPER);
-						
-						telaPrincipal.exibirTela(TelaPrincipal.TELA_PRINCIPAL);
-						
-						telaPrincipal.getTelaLoginSistema().getLblErro().setText("");
-					
-					}
-					else
-					{
-						pessoa_Logada = Fachada
-								.getInstance()
-								.getBoPessoa()
-								.buscarUsuario(
-										login_cpf,
-										senha
-										);
-						
-						if(pessoa_Logada != null) 
-						{
-							type_User_Logado = pessoa_Logada.getUser_type();
-							
-							if(type_User_Logado.equals(Pessoa.COMUM_USER))
-								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_COMUM);
-							else if(type_User_Logado.equals(Pessoa.ADMIN_USER))
-								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_ADMIN);
-							else if(type_User_Logado.equals(Pessoa.SUPER_USER))
-								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_SUPER);
-							
-							telaPrincipal.exibirTela(TelaPrincipal.TELA_PRINCIPAL);
-							
-							telaPrincipal.getTelaLoginSistema().getLblErro().setText("");
-						}
-					}
-					
-					
-				} 
-				catch (ValidacaoException | NoSuchAlgorithmException | UnsupportedEncodingException e) 
-				{
-					telaPrincipal.getTelaLoginSistema().getLblErro().setText(e.getMessage());
-				} 
-				catch (PropertyVetoException e) 
-				{
-					e.printStackTrace();
-				}
-				
-			});
-		
-		TelaOpcoes telaOpcoes1 = telaPrincipal.getTelaMenu().getTelaOpcoesComum();
-		TelaOpcoes telaOpcoes2 = telaPrincipal.getTelaMenu().getTelaOpcoesAdmin();
-		TelaOpcoes telaOpcoes3 = telaPrincipal.getTelaMenu().getTelaOpcoesSuper();
-		
-		adicionarEventoMenu(telaOpcoes1);
-		adicionarEventoMenu(telaOpcoes2);
-		adicionarEventoMenu(telaOpcoes3);
-	}
-	
-	private void adicionarEventoMenu(TelaOpcoes telaOpcoes) {
-		telaOpcoes.getBtnInfo().addActionListener(ActionEvent->{
-			//TODO - Inserir evento info usuario
-			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
-			try 
-			{
-				ctrl_PreenchementoTela.exibirJInternalInfoMinhaPessoa(pessoa_Logada);
-			} 
-			catch (ValidacaoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao Consultar Info de Pessoa", e.getMessage());
-			} 
-			catch (PropertyVetoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoPessoa", e.getMessage());
-			}
-			
-		});
-		
-		telaOpcoes.getBtnLog().addActionListener(ActionEvent->{
-			//TODO - Inserir evento ADM de ver os logs dos usuarios
-			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
-			try
-			{
-				tLogUpdate.getList().clear();
-				tLogUpdate.fireTableDataChanged();
-				jInternal_TabelaLogs.queroFoco();
-			}
-			catch (PropertyVetoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao consultar a lista de Logs", e.getMessage());
-			}
-			
-		});
-		
-		telaOpcoes.getBtnPessoas().addActionListener(ActionEvent->{
-			//TODO - Inserir evento ADM ver pessoas
-			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
-			try
-			{
-				tPessoa.getList().clear();
-				tPessoa.fireTableDataChanged();
-				jInternal_TabelaPessoas.queroFoco();
-			} 
-			catch (PropertyVetoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaPessoas", e.getMessage());
-			}
-			
-		});
-		
-		telaOpcoes.getBtnBackup().addActionListener(ActionEvent->{
-			//TODO - Inserir evento Backups BD
-			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
-			try 
-			{
-				jInternal_TelaBackups.queroFoco();
-			} 
-			catch (PropertyVetoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaBackup", e.getMessage());
-			}
-			
-		});
-		
-		telaOpcoes.getBtnSQL().addActionListener(ActionEvent->{
-			//TODO - Inserir evento SUPER USUARIO Inserir SQL
-			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
-			try 
-			{
-				jInternal_TelaInserirSQL.queroFoco();
-			} 
-			catch (PropertyVetoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela de SQL", e.getMessage());
-			}
-			
-		});
-		
-		telaOpcoes.getBtnSobre().addActionListener(ActionEvent->{
-			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado);
-			//TODO - Inserir evento Abrir tela Info Projeto
-			try 
-			{
-				jInternal_Sobre.queroFoco();
-			} 
-			catch (PropertyVetoException e) 
-			{
-				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir tela sobre o projeto", e.getMessage());
-			}
-		});
-		
-		telaOpcoes.getBtnSair().addActionListener(controlador_Backup);
 	}
 	
 	public void sair() throws PropertyVetoException {
@@ -728,6 +478,10 @@ public class Controlador_Principal {
 			jAbstract.setIcon(false);
 			jAbstract.setVisible(false);
 		}
+	}
+
+	public JanelaPrincipal getJanelaPrincipal() {
+		return janelaPrincipal;
 	}
 
 	public JInternal_TelaCadastro_Etapa getjInternal_TelaCadastro_Etapa() {return jInternal_TelaCadastro_Etapa;}
@@ -834,6 +588,8 @@ public class Controlador_Principal {
 	public SubEtapa getSubEtapa_Atual_Colab() {return subEtapa_Atual_Colab;}
 	public SubTarefa getSubTarefa_Atual_Colab() {return subTarefa_Atual_Colab;}
 
+	
+	
 	public void setPessoa_Atual_Colab(Pessoa pessoa_Atual_Colab) {this.pessoa_Atual_Colab = pessoa_Atual_Colab;}
 	public void setProjeto_Atual_Colab(Projeto projeto_Atual_Colab) {this.projeto_Atual_Colab = projeto_Atual_Colab;}
 	public void setEtapa_Atual_Colab(Etapa etapa_Atual_Colab) {this.etapa_Atual_Colab = etapa_Atual_Colab;}

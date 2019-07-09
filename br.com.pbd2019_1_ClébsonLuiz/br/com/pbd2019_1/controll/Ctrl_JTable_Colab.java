@@ -106,7 +106,7 @@ public class Ctrl_JTable_Colab {
 										);
 								
 								ctrl_P.getCtrl_PreenchementoTela()
-									.exibirJInternalInfoSubTarefa(
+									.exibirJInt_InfoSubTarefaColab(
 											ctrl_P.getSubTarefa_Atual_Colab()
 											);
 							}
@@ -126,7 +126,7 @@ public class Ctrl_JTable_Colab {
 										ctrl_P.gettTarefaColab().getValor(linha)
 										);
 								ctrl_P.getCtrl_PreenchementoTela()
-									.exibirJInternalInfoTarefa(
+									.exibirJInt_InfoTarefaColab(
 											ctrl_P.getTarefa_Atual_Colab()
 											);
 							} 
@@ -151,17 +151,17 @@ public class Ctrl_JTable_Colab {
 										);
 								
 								ctrl_P.getCtrl_PreenchementoTela()
-									.exibirJInternalInfoSubEtapa(
+									.exibirJInt_InfoSubEtapaColab(
 											ctrl_P.getSubEtapa_Atual_Colab()
 											);
 							} 
 							catch (ValidacaoException e1) 
 							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados da etapa", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados da sub etapa", e1.getMessage());
 							}
 							catch (PropertyVetoException e1)
 							{
-								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoEtapa", e1.getMessage());
+								MeuJDialog.exibirAlertaErro(null, "Erro ao exibir TelaInfoSubEtapa", e1.getMessage());
 							}
 						}
 					}
@@ -175,7 +175,7 @@ public class Ctrl_JTable_Colab {
 										ctrl_P.gettEtapaColab().getValor(linha)
 										);
 								ctrl_P.getCtrl_PreenchementoTela()
-									.exibirJInternalInfoEtapa(
+									.exibirJInt_InfoEtapaColab(
 											ctrl_P.getEtapa_Atual_Colab()
 											);
 							} 

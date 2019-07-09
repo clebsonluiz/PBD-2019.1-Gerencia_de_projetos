@@ -111,16 +111,16 @@ public class Ctrl_PreenchementoTela {
 	{
 		ctrl_P.setProjeto_Atual_Colab(p);
 		
-		TelaProjeto tP = ctrl_P.getjInternal_TelaInfoProjeto_Etapas()
+		TelaProjeto tP = ctrl_P.getJif_Inf_Proj_Colab()
 				.getTelaProjeto_Etapas()
 				.getTelaProjeto();
 		
 		atualizarDadoProjeto(tP,
-				ctrl_P.getProjeto_Atual(),
-				ctrl_P.gettEtapa(),
-				ctrl_P.gettColaborador()
+				ctrl_P.getProjeto_Atual_Colab(),
+				ctrl_P.gettEtapaColab(),
+				ctrl_P.gettColab()
 				);
-		ctrl_P.getjInternal_TelaInfoProjeto_Etapas().queroFoco();
+		ctrl_P.getJif_Inf_Proj_Colab().queroFoco();
 	}
 	
 	/**TODO - Visão do Colab*/
@@ -244,20 +244,15 @@ public class Ctrl_PreenchementoTela {
 	{
 		ctrl_P.setColaborador_Atual(c);
 		
-		ctrl_P.setProjeto_Atual((Projeto) Fachada.getInstance()
+		Projeto projeto = (Projeto) Fachada.getInstance()
 				.buscar(
 						Projeto.class,
 						ctrl_P.getColaborador_Atual()
 						.getProjeto()
 						.getId()
-						));
+						);
 		
-		TelaProjeto tP = ctrl_P.getjInternal_TelaInfoProjeto_Etapas_Simples()
-				.getTelaProjeto_Etapas_Simples()
-				.getTelaProjeto();
-	
-		atualizarDadoProjetoSimples(tP, ctrl_P.getProjeto_Atual(), ctrl_P.gettEtapa());
-		ctrl_P.getjInternal_TelaInfoProjeto_Etapas_Simples().queroFoco();
+		exibirJInt_InfoProjetoColab(projeto);
 	}
 	
 	public void exibirJInternalInfoPessoa(Pessoa p) throws ValidacaoException, PropertyVetoException

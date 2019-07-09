@@ -36,19 +36,20 @@ import br.com.pbd2019_1.view.MeuJFileChooser;
 public class Controlador_Backup implements Observer, ActionListener{
 
 	
-	private Controlador_Principal controlador_Principal;
+	private Controlador_Principal ctrl_P;
 	private JInternal_TelaBackups jInternal_TelaBackups;
 	private TBackup tBackup;
 	
-	
-	
 	public Controlador_Backup(Controlador_Principal controlador_Principal) {
-		this.controlador_Principal = controlador_Principal;
+		this.ctrl_P = controlador_Principal;
 	}
 
-	public void addEventJInternal()
+	public void adicionarEventos()
 	{
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaAgendarBackup());
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaAgendarBackup());
+		adicionarEventoBotoes(JInternal_Backup_Efetuando.getInstance());
+		adicionarEvento(ctrl_P.getJanelaPrincipal());
+		adicionarEvento(ctrl_P.getjInternal_TelaBackups(), ctrl_P.gettBackup());
 	}
 	
 	private void adicionarEventoJInternal(JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup)
@@ -56,21 +57,21 @@ public class Controlador_Backup implements Observer, ActionListener{
 		jInternal_TelaAgendarBackup.getBtDefinirHorario()
 		.addActionListener(ActionEvent->
 		{
-			Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+			Horario horario = ctrl_P.getjInternal_TelaAgendarBackup().getHorario();
 			DAOConfigDefault.setHorarioAgenda(horario.toString());
 		});
 		
 		jInternal_TelaAgendarBackup.getBtResetarHorario()
 		.addActionListener(ActionEvent->
 		{
-			Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+			Horario horario = ctrl_P.getjInternal_TelaAgendarBackup().getHorario();
 			
 			DAOConfigDefault.setHorarioAgenda(null);
 			horario.setLocalTime("00", "00", "00");
 		});
 	}
 	
-	public void adicionarEventoBotoes(JInternal_Backup_Efetuando jInternal)
+	private void adicionarEventoBotoes(JInternal_Backup_Efetuando jInternal)
 	{
 		/*Se o evento for para o backup normal */
 		jInternal.getBtnOK_Event_Backup_Normal().addActionListener(ActionEvent->{
@@ -81,7 +82,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			try 
 			{
 				jInternal.fechar();
-				controlador_Principal.sair();
+				ctrl_P.sair();
 			} 
 			catch (PropertyVetoException e)
 			{
@@ -95,7 +96,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 		});
 	}
 	
-	public void adicionarEvento(JFrame frame)
+	private void adicionarEvento(JFrame frame)
 	{
 		frame.addWindowListener(new WindowAdapter() {
 			
@@ -128,7 +129,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 		});
 	}
 	
-	public void adicionarEvento(JInternal_TelaBackups telaBackups, TBackup tBackup)
+	private void adicionarEvento(JInternal_TelaBackups telaBackups, TBackup tBackup)
 	{
 		DAOResBackup.getInstance().addObserver(this);
 		this.jInternal_TelaBackups = telaBackups;
@@ -187,7 +188,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			try
 			{
 				ConfigDefault config = DAOConfigDefault.loadConfig();
-				Horario horario = controlador_Principal.getjInternal_TelaAgendarBackup().getHorario();
+				Horario horario = ctrl_P.getjInternal_TelaAgendarBackup().getHorario();
 				
 				if(config != null && config.getHora_bakup() != null && config.getHora_bakup().length() == 8)
 				{
@@ -199,7 +200,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 					horario.setLocalTime("00", "00", "00");
 				}
 				
-				controlador_Principal.getjInternal_TelaAgendarBackup().queroFoco();
+				ctrl_P.getjInternal_TelaAgendarBackup().queroFoco();
 			}
 			catch (PropertyVetoException | ClassNotFoundException | IOException e) 
 			{
@@ -252,7 +253,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			String arquivoPathAbsolute = MeuJFileChooser.getInstance().getSelectedFile().getAbsolutePath();
 			
 			Backup b = new Backup();
-			b.setAutor_backup(controlador_Principal.getPessoa_Logada().getCpf());
+			b.setAutor_backup(ctrl_P.getPessoa_Logada().getCpf());
 			b.setData_backup(LocalDateTime.now());
 			b.setLocal_backup(arquivoPathAbsolute);
 			
@@ -287,7 +288,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 			{
 				try 
 				{
-					controlador_Principal.sair();
+					ctrl_P.sair();
 				}
 				catch (PropertyVetoException e) 
 				{
@@ -330,7 +331,7 @@ public class Controlador_Backup implements Observer, ActionListener{
 						{
 							try 
 							{
-								controlador_Principal.sair();
+								ctrl_P.sair();
 							} 
 							catch (PropertyVetoException e1)
 							{

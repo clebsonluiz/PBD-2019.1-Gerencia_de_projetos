@@ -16,7 +16,7 @@ public class Controlador_JInternal_SQL {
 		this.controlador_Principal = controlador_Principal;
 	}
 	
-	public void addEventsJInternalSQL()
+	public void adicionarEventos()
 	{
 		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInserirSQL());
 	}
