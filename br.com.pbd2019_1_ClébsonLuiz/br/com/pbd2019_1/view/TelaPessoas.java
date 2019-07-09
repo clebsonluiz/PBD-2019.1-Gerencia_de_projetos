@@ -134,5 +134,9 @@ public class TelaPessoas extends JPanel {
 	public Botao getBotao() {
 		return botao;
 	}
+
+	public JPanel getPanel_1() {
+		return panel_1;
+	}
 	
 }

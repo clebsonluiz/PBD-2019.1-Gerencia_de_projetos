@@ -1,5 +1,7 @@
 package br.com.pbd2019_1.controll;
 
+import javax.swing.JTable;
+
 import br.com.pbd2019_1.dao.DAOResSQL;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
@@ -8,17 +10,24 @@ import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.MeuJFileChooser;
 import br.com.pbd2019_1.view.TelaInserirSQL;
 
-public class Controlador_JInternal_SQL {
+public class Ctrl_JInternal_SQL {
 
-	private Controlador_Principal controlador_Principal;
+	private Controlador_Principal ctrl_P;
 
-	public Controlador_JInternal_SQL(Controlador_Principal controlador_Principal) {
-		this.controlador_Principal = controlador_Principal;
+	public Ctrl_JInternal_SQL(Controlador_Principal ctrl_P) {
+		this.ctrl_P = ctrl_P;
 	}
 	
 	public void adicionarEventos()
 	{
-		adicionarEventoJInternal(controlador_Principal.getjInternal_TelaInserirSQL());
+		JTable tableSQL = ctrl_P.getjInternal_TelaInserirSQL()
+				.getTelaInserirSQL().getTable();
+		
+		tableSQL.setModel(ctrl_P.gettObject());
+		
+		tableSQL.setRowHeight(30);
+		
+		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInserirSQL());
 	}
 	
 	private void adicionarEventoJInternal(JInternal_TelaInserirSQL jInternal_TelaInserirSQL) {
@@ -34,7 +43,7 @@ public class Controlador_JInternal_SQL {
 				if(sql == null)
 					sql = telaInserirSQL.getTextArea().getText();
 			
-				controlador_Principal.gettObject().addAll(Fachada.getInstance().inserirSQLGenerica(sql));
+				ctrl_P.gettObject().addAll(Fachada.getInstance().inserirSQLGenerica(sql));
 				
 				telaInserirSQL.getExceptionTextArea().setText("");
 			} catch (ValidacaoException e) {

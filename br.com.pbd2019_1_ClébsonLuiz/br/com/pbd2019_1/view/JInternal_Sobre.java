@@ -16,7 +16,16 @@ public class JInternal_Sobre extends JInternalAbstract {
 
 	private static final long serialVersionUID = 1L;
 
-	public JInternal_Sobre() {
+	private static JInternal_Sobre instance;
+	
+	public static JInternal_Sobre getInstance()
+	{
+		if(instance == null) 
+			instance = new JInternal_Sobre();
+		return instance;
+	}
+	
+	private JInternal_Sobre() {
 		super("Sobre");
 		setPreferredSize(new Dimension(450, 350));
 		setSize(new Dimension(450, 350));

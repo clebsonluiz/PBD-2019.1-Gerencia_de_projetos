@@ -117,6 +117,46 @@ public class Controlador_Info_JInternal_Tela {
 				MeuJDialog.exibirAlertaErro(null, "Erro", e.getMessage());
 			}
 		});
+		
+		/*jInternal_TabelaPessoasColaboradores
+		.getTelaPessoas()
+		.getBtAdicionarPessoa()
+		.addActionListener(ActionEvent->{
+			try 
+			{
+				int index = jInternal_TabelaPessoasColaboradores
+						.getTelaPessoas().getTable().getSelectedRow();
+				
+				if(index >= 0)
+				{
+					Projeto projeto = ctrl_P.getProjeto_Atual();
+					Pessoa pessoa = ctrl_P.gettColaboradorProjeto().getValor(index);
+					
+					Colaborador colab = new Colaborador();
+					colab.setData_ingresso(LocalDateTime.now());
+					colab.setPessoa(pessoa);
+					colab.setProjeto(projeto);
+					
+					Fachada.getInstance().inserir(colab);
+					
+					ctrl_P.gettColaborador().addValor(colab);
+					
+					LogUpdate log = new LogUpdate();
+					
+					Fachada.getInstance().gerarLogInsercao(
+							colab,
+							ctrl_P.getPessoa_Logada(),
+							log);
+					
+					ctrl_P.gettLogUpdate().addValor(log);
+				}
+			}
+			catch (ValidacaoException e)
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao adicionar colaborador", e.getMessage());
+			}
+			
+		});*/
 	}
 
 	private void adicionarEventoJInternal(JInternal_TabelaPessoas jInternal_TabelaPessoas) {

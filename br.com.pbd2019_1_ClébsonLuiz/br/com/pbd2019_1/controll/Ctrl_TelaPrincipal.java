@@ -8,6 +8,8 @@ import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.utils.UserUtil;
+import br.com.pbd2019_1.view.JIF_Reset_Senha;
+import br.com.pbd2019_1.view.JInternal_Sobre;
 import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.TelaMenu;
@@ -65,20 +67,22 @@ public class Ctrl_TelaPrincipal {
 			{
 				Tela_CadastroSuperUsuario telaS = telaPrincipal.getTela_CadastroSuperUsuario();
 				
-				if(!telaS.getCmptxtNomebanco().getTexto().trim().equals(SUPER_USER_NOME_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtNomeusuariobanco().getTexto().trim().equals(SUPER_USER_USUARIO_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtNumeroentidades().getTexto().trim().equals(SUPER_USER_QT_ENTIDADE_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtPortabanco().getTexto().trim().equals(SUPER_USER_PORTA_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
-				else if(!telaS.getCmptxtSenhabanco().getTexto().trim().equals(SUPER_USER_SENHA_BANCO))
-					throw new ValidacaoException("Uma das informações inserirdas na tela não condiz com o registrado no software");
+				String msg = "Uma das informações inserirdas na tela não condiz com o registrado no software";
+				
+				if(!telaS.getCmptxtNomebanco().getTexto().trim().equals(Controlador_Principal.SUPER_USER_NOME_BANCO))
+					throw new ValidacaoException(msg);
+				else if(!telaS.getCmptxtNomeusuariobanco().getTexto().trim().equals(Controlador_Principal.SUPER_USER_USUARIO_BANCO))
+					throw new ValidacaoException(msg);
+				else if(!telaS.getCmptxtNumeroentidades().getTexto().trim().equals(Controlador_Principal.SUPER_USER_QT_ENTIDADE_BANCO))
+					throw new ValidacaoException(msg);
+				else if(!telaS.getCmptxtPortabanco().getTexto().trim().equals(Controlador_Principal.SUPER_USER_PORTA_BANCO))
+					throw new ValidacaoException(msg);
+				else if(!telaS.getCmptxtSenhabanco().getTexto().trim().equals(Controlador_Principal.SUPER_USER_SENHA_BANCO))
+					throw new ValidacaoException(msg);
 				
 				TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
 				
-				controlador_Cadastro.cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, tPessoa, null);
+				ctrl_P.getControlador_Cadastro().cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, ctrl_P.gettPessoa(), null);
 				
 				telaS.limparCampos();
 			} 
@@ -104,32 +108,34 @@ public class Ctrl_TelaPrincipal {
 							.getTexto();
 					
 					
-					pessoa_Logada = Fachada
+					ctrl_P.setPessoa_Logada(Fachada
 							.getInstance()
 							.getBoPessoa()
-							.buscarUsuarioResetado(login_cpf);
+							.buscarUsuarioResetado(login_cpf));
 					
-					if(pessoa_Logada != null)
+					if(ctrl_P.getPessoa_Logada() != null)
 					{
 						
 						String senhaNova = UserUtil.PasswordUtil.sugerirSenha();
 						
 						
-						pessoa_Logada.setReset_senha(false);
-						pessoa_Logada.setUser_senha(senhaNova);
+						ctrl_P.getPessoa_Logada().setReset_senha(false);
+						ctrl_P.getPessoa_Logada().setUser_senha(senhaNova);
 						
-						Fachada.getInstance().atualizar(pessoa_Logada);
+						Fachada.getInstance().atualizar(ctrl_P.getPessoa_Logada());
 						
-						jif_Reset_Senha.getLblSenha().setText(senhaNova);
-						jif_Reset_Senha.queroFoco();
+						JIF_Reset_Senha.getInstance().getLblSenha().setText(senhaNova);
+						JIF_Reset_Senha.getInstance().queroFoco();
 						
-						type_User_Logado = pessoa_Logada.getUser_type();
+						ctrl_P.setType_User_Logado(
+								ctrl_P.getPessoa_Logada().getUser_type()
+								); 
 						
-						if(type_User_Logado.equals(Pessoa.COMUM_USER))
+						if(ctrl_P.getType_User_Logado().equals(Pessoa.COMUM_USER))
 							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_COMUM);
-						else if(type_User_Logado.equals(Pessoa.ADMIN_USER))
+						else if(ctrl_P.getType_User_Logado().equals(Pessoa.ADMIN_USER))
 							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_ADMIN);
-						else if(type_User_Logado.equals(Pessoa.SUPER_USER))
+						else if(ctrl_P.getType_User_Logado().equals(Pessoa.SUPER_USER))
 							telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_SUPER);
 						
 						telaPrincipal.exibirTela(TelaPrincipal.TELA_PRINCIPAL);
@@ -139,23 +145,25 @@ public class Ctrl_TelaPrincipal {
 					}
 					else
 					{
-						pessoa_Logada = Fachada
+						ctrl_P.setPessoa_Logada(Fachada
 								.getInstance()
 								.getBoPessoa()
 								.buscarUsuario(
 										login_cpf,
 										senha
-										);
+										));
 						
-						if(pessoa_Logada != null) 
+						if(ctrl_P.getPessoa_Logada() != null) 
 						{
-							type_User_Logado = pessoa_Logada.getUser_type();
+							ctrl_P.setType_User_Logado(
+									ctrl_P.getPessoa_Logada().getUser_type()
+									);
 							
-							if(type_User_Logado.equals(Pessoa.COMUM_USER))
+							if(ctrl_P.getType_User_Logado().equals(Pessoa.COMUM_USER))
 								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_COMUM);
-							else if(type_User_Logado.equals(Pessoa.ADMIN_USER))
+							else if(ctrl_P.getType_User_Logado().equals(Pessoa.ADMIN_USER))
 								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_ADMIN);
-							else if(type_User_Logado.equals(Pessoa.SUPER_USER))
+							else if(ctrl_P.getType_User_Logado().equals(Pessoa.SUPER_USER))
 								telaPrincipal.getTelaMenu().exibirTelaOpcoes(TelaMenu.USER_SUPER);
 							
 							telaPrincipal.exibirTela(TelaPrincipal.TELA_PRINCIPAL);
@@ -192,7 +200,7 @@ public class Ctrl_TelaPrincipal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
-				ctrl_PreenchementoTela.exibirJInternalInfoMinhaPessoa(pessoa_Logada);
+				ctrl_P.getCtrl_PreenchementoTela().exibirJInternalInfoMinhaPessoa(ctrl_P.getPessoa_Logada());
 			} 
 			catch (ValidacaoException e) 
 			{
@@ -210,9 +218,9 @@ public class Ctrl_TelaPrincipal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
-				tLogUpdate.getList().clear();
-				tLogUpdate.fireTableDataChanged();
-				jInternal_TabelaLogs.queroFoco();
+				ctrl_P.gettLogUpdate().getList().clear();
+				ctrl_P.gettLogUpdate().fireTableDataChanged();
+				ctrl_P.getjInternal_TabelaLogs().queroFoco();
 			}
 			catch (PropertyVetoException e) 
 			{
@@ -226,9 +234,9 @@ public class Ctrl_TelaPrincipal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try
 			{
-				tPessoa.getList().clear();
-				tPessoa.fireTableDataChanged();
-				jInternal_TabelaPessoas.queroFoco();
+				ctrl_P.gettPessoa().getList().clear();
+				ctrl_P.gettPessoa().fireTableDataChanged();
+				ctrl_P.getjInternal_TabelaPessoas().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
 			{
@@ -242,7 +250,7 @@ public class Ctrl_TelaPrincipal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
-				jInternal_TelaBackups.queroFoco();
+				ctrl_P.getjInternal_TelaBackups().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
 			{
@@ -256,7 +264,7 @@ public class Ctrl_TelaPrincipal {
 			//if(!JInternal_TelaAlerta.isAtivado && !JInternal_Backup_Efetuando.isAtivado)
 			try 
 			{
-				jInternal_TelaInserirSQL.queroFoco();
+				ctrl_P.getjInternal_TelaInserirSQL().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
 			{
@@ -270,7 +278,7 @@ public class Ctrl_TelaPrincipal {
 			//TODO - Inserir evento Abrir tela Info Projeto
 			try 
 			{
-				jInternal_Sobre.queroFoco();
+				JInternal_Sobre.getInstance().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
 			{
@@ -278,7 +286,7 @@ public class Ctrl_TelaPrincipal {
 			}
 		});
 		
-		telaOpcoes.getBtnSair().addActionListener(controlador_Backup);
+		telaOpcoes.getBtnSair().addActionListener(ctrl_P.getControlador_Backup());
 	}
 	
 	

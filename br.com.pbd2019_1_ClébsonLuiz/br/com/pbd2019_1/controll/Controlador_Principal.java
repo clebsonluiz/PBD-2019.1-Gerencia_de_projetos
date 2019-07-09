@@ -1,13 +1,9 @@
 package br.com.pbd2019_1.controll;
 
 import java.beans.PropertyVetoException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Etapa;
@@ -17,9 +13,6 @@ import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.SubEtapa;
 import br.com.pbd2019_1.entidade.SubTarefa;
 import br.com.pbd2019_1.entidade.Tarefa;
-import br.com.pbd2019_1.exception.ValidacaoException;
-import br.com.pbd2019_1.fachada.Fachada;
-import br.com.pbd2019_1.tabelas.CellRenderer;
 import br.com.pbd2019_1.tabelas.TBackup;
 import br.com.pbd2019_1.tabelas.TCaracteristicaExtra;
 import br.com.pbd2019_1.tabelas.TColaboracoes;
@@ -32,8 +25,6 @@ import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TSubEtapa;
 import br.com.pbd2019_1.tabelas.TSubTarefa;
 import br.com.pbd2019_1.tabelas.TTarefa;
-import br.com.pbd2019_1.utils.DateUtil;
-import br.com.pbd2019_1.utils.UserUtil;
 import br.com.pbd2019_1.view.JIF_Inf_Etp_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_Proj_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_SbEtp_Colab;
@@ -70,13 +61,8 @@ import br.com.pbd2019_1.view.JInternal_TelaInfoSubTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
 import br.com.pbd2019_1.view.JanelaPrincipal;
-import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.PopUp;
-import br.com.pbd2019_1.view.TelaCadastro_Pessoa;
-import br.com.pbd2019_1.view.TelaMenu;
-import br.com.pbd2019_1.view.TelaOpcoes;
 import br.com.pbd2019_1.view.TelaPrincipal;
-import br.com.pbd2019_1.view.Tela_CadastroSuperUsuario;
 
 public class Controlador_Principal {
 
@@ -154,15 +140,12 @@ public class Controlador_Principal {
 	private JInternal_TabelaLogs jInternal_TabelaLogs;
 	private JInternal_InfoLog jInternal_InfoLog;
 	private JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup;
-	private JInternal_Sobre jInternal_Sobre;
 	
 	private JIF_Inf_Proj_Colab jif_Inf_Proj_Colab;
 	private JIF_Inf_Etp_Colab jif_Inf_Etp_Colab;
 	private JIF_Inf_SbEtp_Colab jif_Inf_SbEtp_Colab;
 	private JIF_Inf_SbTarf_Colab jif_Inf_SbTarf_Colab;
 	private JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab;
-	
-	private JIF_Reset_Senha jif_Reset_Senha;
 	
 	private TCaracteristicaExtra tCaracteristicaExtra;
 	private TCaracteristicaExtra tCaracteristicaExtra2;
@@ -176,7 +159,7 @@ public class Controlador_Principal {
 	private TObject tObject;
 	private TBackup tBackup;
 	
-	private TColaborador tColaboradorProjeto;
+	private TPessoa tColaboradorProjeto;
 	private TColaborador tColaboradorEtapa;
 	private TColaborador tColaboradorSubEtapa;
 	private TColaborador tColaboradorTarefa;
@@ -195,18 +178,21 @@ public class Controlador_Principal {
 	private Controlador_Info_JInternal_Tela controlador_Info_JInternal_Tela;
 	private Controlador_Cadastro controlador_Cadastro;
 	private Controlador_Backup controlador_Backup;
-	private Controlador_JInternal_SQL ctrl_JInternal_SQL;
+	private Ctrl_JInternal_SQL ctrl_JInternal_SQL;
 	
 	private Ctrl_PreenchementoTela ctrl_PreenchementoTela;
 	private Ctrl_JTable ctrl_JTable;
 	private Ctrl_JTable_Colab ctrl_JTable_Colab;
 	private Ctrl_Listeners_Projeto ctrl_Listeners_Projeto;
 	private Ctrl_PopUp ctrl_PopUp;
+	private Ctrl_TelaPrincipal ctrl_TelaPrincipal;
 	
 	private JanelaPrincipal janelaPrincipal;
 	
 	private static PopUp popUpCaracteristica = new PopUp(new String[]{"Salvar", "Excluir"});
 	private static PopUp popUp = new PopUp(new String[]{"", "Excluir", ""});
+	
+	private List<JInternalAbstract> jifs = new ArrayList<>();
 	
 	public Controlador_Principal(JanelaPrincipal janelaPrincipal) {
 		this.janelaPrincipal = janelaPrincipal;
@@ -214,12 +200,13 @@ public class Controlador_Principal {
 		this.controlador_Info_JInternal_Tela = new Controlador_Info_JInternal_Tela(this);
 		this.controlador_Cadastro = new Controlador_Cadastro(this);
 		this.controlador_Backup = new Controlador_Backup(this);
-		this.ctrl_JInternal_SQL = new Controlador_JInternal_SQL(this);
+		this.ctrl_JInternal_SQL = new Ctrl_JInternal_SQL(this);
 		this.ctrl_PreenchementoTela = new Ctrl_PreenchementoTela(this);
 		this.ctrl_JTable = new Ctrl_JTable(this);
 		this.ctrl_JTable_Colab = new Ctrl_JTable_Colab(this);
 		this.ctrl_Listeners_Projeto = new Ctrl_Listeners_Projeto(this);
 		this.ctrl_PopUp = new Ctrl_PopUp(this);
+		this.ctrl_TelaPrincipal = new Ctrl_TelaPrincipal(this);
 	}
 
 	public void adicionarJInternals(JInternal_TelaCadastro_Etapa jInternal_TelaCadastro_Etapa,
@@ -249,9 +236,7 @@ public class Controlador_Principal {
 			JIF_Inf_Etp_Colab jif_Inf_Etp_Colab,
 			JIF_Inf_SbEtp_Colab jif_Inf_SbEtp_Colab,
 			JIF_Inf_SbTarf_Colab jif_Inf_SbTarf_Colab,
-			JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab,
-			JIF_Reset_Senha jif_Reset_Senha
-			
+			JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab
 			) {
 		this.jInternal_TelaCadastro_Etapa = jInternal_TelaCadastro_Etapa;
 		this.jInternal_TelaCadastro_Projeto = jInternal_TelaCadastro_Projeto;
@@ -270,7 +255,6 @@ public class Controlador_Principal {
 		this.jInternal_TabelaLogs = jInternal_TabelaLogs;
 		this.jInternal_InfoLog = jInternal_InfoLog;
 		this.jInternal_TelaAgendarBackup = jInternal_TelaAgendarBackup;
-		this.jInternal_Sobre = jInternal_Sobre;
 		this.jInternal_TelaCadastroSubEtapa = jInternal_TelaCadastroSubEtapa;
 		this.jInternal_TelaCadastroSubTarefa = jInternal_TelaCadastroSubTarefa;
 		this.jInternal_TelaInfoPessoaOutrem =  jInternal_TelaInfoPessoaOutrem;
@@ -282,10 +266,45 @@ public class Controlador_Principal {
 		this.jif_Inf_SbEtp_Colab = jif_Inf_SbEtp_Colab;
 		this.jif_Inf_SbTarf_Colab = jif_Inf_SbTarf_Colab;
 		this.jif_Inf_Tarf_Colab = jif_Inf_Tarf_Colab;
-		this.jif_Reset_Senha = jif_Reset_Senha;
+		
+		Collections.addAll(jifs,
+				this.jInternal_TelaCadastro_Etapa,
+				this.jInternal_TelaCadastro_Projeto,
+				this.jInternal_TelaCadastro_Pessoa,
+				this.jInternal_TelaCadastro_Tarefa,
+				this.jInternal_TelaInfoEtapa,
+				this.jInternal_TelaInserirSQL,
+				this.jInternal_TelaInfoPessoa,
+				this.jInternal_TelaInfoTarefa,
+				this.jInternal_TelaInfoProjeto_Etapas,
+				this.jInternal_TelaInfoPessoa_Projetos,
+				this.jInternal_TelaInfoProjeto_Etapas_Simples,
+				this.jInternal_TabelaPessoas,
+				this.jInternal_TabelaPessoasColaboradores,
+				this.jInternal_TelaBackups,
+				this.jInternal_TabelaLogs,
+				this.jInternal_InfoLog,
+				this.jInternal_TelaAgendarBackup,
+				this.jInternal_TelaCadastroSubEtapa,
+				this.jInternal_TelaCadastroSubTarefa,
+				this.jInternal_TelaInfoPessoaOutrem,
+				this.jInternal_TelaInfoPessoaOutremSimples,
+				this.jInternal_TelaInfoSubEtapa,
+				this.jInternal_TelaInfoSubTarefa,
+				this.jif_Inf_Proj_Colab,
+				this.jif_Inf_Etp_Colab,
+				this.jif_Inf_SbEtp_Colab,
+				this.jif_Inf_SbTarf_Colab,
+				this.jif_Inf_Tarf_Colab,
+				JInternal_Sobre.getInstance(),
+				JInternal_Backup_Efetuando.getInstance(),
+				JIF_Reset_Senha.getInstance()
+				);
+		
 	}
 
-	public void adicionarTableModels() {
+	public void adicionarTableModels() 
+	{
 		tCaracteristicaExtra = new TCaracteristicaExtra();
 		tCaracteristicaExtra2 = new TCaracteristicaExtra();
 		tColaborador = new TColaborador();
@@ -298,153 +317,37 @@ public class Controlador_Principal {
 		tObject = new TObject();
 		tBackup = new TBackup();
 		
+		tColaboradorProjeto = new TPessoa();
+		tColaboradorEtapa = new TColaborador();
+		tColaboradorSubEtapa = new TColaborador();
+		tColaboradorTarefa = new TColaborador();
+		
 		tSubEtapa = new TSubEtapa();
 		tSubTarefa = new TSubTarefa();
 		
-		JTable tableTarefas = jInternal_TelaInfoEtapa
-				.getTelaEtapa_Tarefas()
-				.getTelaTarefas()
-				.getTable();
+		tColab = new TColaborador();
+		tProjetoColab = new TProjeto();
+		tEtapaColab = new TEtapa();
+		tTarefaColab = new TTarefa();
+		tSubEtapaColab = new TSubEtapa();
+		tSubTarefaColab = new TSubTarefa();
 		
-		JTable tableCaracteristicas2 = jInternal_TelaInfoPessoa
-				.getTelaInfoPessoa()
-				.getTelaContatoCaracteristica()
-				.getJTable();
+		this.controlador_Backup.adicionarTableModel();
+		this.ctrl_PreenchementoTela.adicionarTableModel();;
 		
-		JTable tableEtapas = jInternal_TelaInfoProjeto_Etapas
-				.getTelaProjeto_Etapas()
-				.getTelaEtapas()
-				.getTable();
-		
-		JTable tableColaboradores = jInternal_TelaInfoProjeto_Etapas
-				.getTelaProjeto_Etapas()
-				.getTelaColaboradores()
-				.getTable();
-		
-		JTable tableCaracteristicas = jInternal_TelaInfoPessoa_Projetos
-				.getTelaInfoPessoaProjetos()
-				.getTelaInfoPessoa()
-				.getTelaContatoCaracteristica()
-				.getJTable();
-		
-		JTable tableProjetos = jInternal_TelaInfoPessoa_Projetos
-				.getTelaInfoPessoaProjetos()
-				.getTelaProjetos()
-				.getTable();
-		
-		JTable tableColaboracoes = jInternal_TelaInfoPessoa_Projetos
-				.getTelaInfoPessoaProjetos()
-				.getTelaColaboracoes()
-				.getTable();
-		
-		JTable tableEtapas2 = jInternal_TelaInfoProjeto_Etapas_Simples
-				.getTelaProjeto_Etapas_Simples()
-				.getTelaEtapas()
-				.getTable();
-		
-		JTable tablePessoas = jInternal_TabelaPessoas
-				.getTelaPessoas()
-				.getTable();
-		
-		JTable tablePessoasDisponiveis = jInternal_TabelaPessoasColaboradores
-				.getTelaPessoas()
-				.getTable();
-		
-		JTable tableInserirSQL = jInternal_TelaInserirSQL
-				.getTelaInserirSQL()
-				.getTable();
-		
-		JTable tableBackups = jInternal_TelaBackups
-				.getTelaBackups()
-				.getTable();
-		
-		JTable tableLogs = jInternal_TabelaLogs
-				.getTelaLogs()
-				.getTable();
-		
-		
-		JTable tableInfoLog = jInternal_InfoLog
-				.getTelaInfoLog()
-				.getTable();
-		
-		
-		
-		DefaultTableModel tableModel = new DefaultTableModel();
-		tableModel.setColumnIdentifiers(new String[] {"Ordem", "Antes", "Depois"});
-		tableInfoLog.setModel(tableModel);
-		
-		tableLogs.setModel(tLogUpdate);
-		tableTarefas.setModel(tTarefa);
-		tableTarefas.getColumnModel().getColumn(2).setCellEditor(tTarefa.getCellEditor());
-		tableCaracteristicas.setModel(tCaracteristicaExtra);
-		tableEtapas.setModel(tEtapa);
-		tableColaboradores.setModel(tColaborador);
-//		tableColaboradores.getColumnModel().getColumn(2).setCellEditor(tColaborador.getCellEditor());
-		tableCaracteristicas2.setModel(tCaracteristicaExtra2);
-		tableProjetos.setModel(tProjeto);
-		tableColaboracoes.setModel(tColaboracoes);
-		tableEtapas2.setModel(tEtapa);
-		tablePessoas.setModel(tPessoa);
-		tablePessoasDisponiveis.setModel(tPessoa);
-
-		tableInserirSQL.setModel(tObject);
-		tableInserirSQL.setRowHeight(30);
-		
-		tableLogs.setRowHeight(50);
-
-		
-		tableBackups.setModel(tBackup);
-		tableBackups.setRowHeight(30);
-		tableBackups.getColumnModel().getColumn(0).setPreferredWidth(70);
-		tableBackups.getColumnModel().getColumn(1).setPreferredWidth(70);
-		tableBackups.getColumnModel().getColumn(2).setPreferredWidth(70);
-//		tableBackups.getColumnModel().getColumn(3).setPreferredWidth(70);
-		
-		
-		tableLogs.setDefaultRenderer(Object.class, new CellRenderer());
-		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
-		tableTarefas.setDefaultRenderer(Object.class, new CellRenderer());
-		tableCaracteristicas.setDefaultRenderer(Object.class, new CellRenderer());
-		tableEtapas.setDefaultRenderer(Object.class, new CellRenderer());
-		tableColaboradores.setDefaultRenderer(Object.class, new CellRenderer());
-		tableCaracteristicas2.setDefaultRenderer(Object.class, new CellRenderer());
-		tableProjetos.setDefaultRenderer(Object.class, new CellRenderer());
-		tableColaboracoes.setDefaultRenderer(Object.class, new CellRenderer());
-		tableEtapas2.setDefaultRenderer(Object.class, new CellRenderer());
-		tablePessoas.setDefaultRenderer(Object.class, new CellRenderer());
-		tablePessoasDisponiveis.setDefaultRenderer(Object.class, new CellRenderer());
-		
-		tableTarefas.setRowHeight(30);
-		tableTarefas.setRowHeight(30);
-		tableCaracteristicas.setRowHeight(30);
-		tableEtapas.setRowHeight(30);
-		tableColaboradores.setRowHeight(30);
-		tableCaracteristicas2.setRowHeight(30);
-		tableProjetos.setRowHeight(30);
-		tableColaboracoes.setRowHeight(30);
-		tableEtapas2.setRowHeight(30);
-		tablePessoas.setRowHeight(30);
-		tablePessoasDisponiveis.setRowHeight(30);
-		
-		
-		adicionarMouseEventJTable(tableTarefas);
-		adicionarMouseEventJTable(tableCaracteristicas);
-		adicionarMouseEventJTable(tableEtapas);
-		adicionarMouseEventJTable(tableColaboradores);
-		adicionarMouseEventJTable(tableCaracteristicas2);
-		adicionarMouseEventJTable(tableProjetos);
-		adicionarMouseEventJTable(tableColaboracoes);
-		adicionarMouseEventJTable(tableEtapas2);
-		adicionarMouseEventJTable(tablePessoas);
-		adicionarMouseEventJTable(tablePessoasDisponiveis);
-		adicionarMouseEventJTable(tableLogs);
-		adicionarMouseEventJTable(tableBackups);
-		
-		adicionarEventosPopUp();
-		
-		adicionarEventosComboBox(tableTarefas, tableColaboradores);
-		
-		
+	}
+	
+	public void adicionarEventos()
+	{
+		this.controlador_Info_JInternal_Tela.adicionarEventos();;
+		this.controlador_Cadastro.adicionarEventos();;
+		this.controlador_Backup.adicionarEventos();;
+		this.ctrl_JInternal_SQL.adicionarEventos();;
+		this.ctrl_JTable.adicionarEventos();;
+		this.ctrl_JTable_Colab.adicionarEventos();;
+		this.ctrl_Listeners_Projeto.adicionarEventos();;
+		this.ctrl_PopUp.adicionarEventos();;
+		this.ctrl_TelaPrincipal.adicionarEventos();;
 	}
 	
 	public void sair() throws PropertyVetoException {
@@ -453,28 +356,7 @@ public class Controlador_Principal {
 		telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
 		telaPrincipal.exibirTela(TelaPrincipal.TELA_LOGIN);
 		
-		JInternalAbstract jIA[] = new JInternalAbstract[18];
-		jIA[0] = jInternal_TelaCadastro_Etapa;
-		jIA[1] = jInternal_TelaCadastro_Projeto;
-		jIA[2] = jInternal_TelaCadastro_Pessoa;
-		jIA[3] = jInternal_TelaCadastro_Tarefa;
-		
-		jIA[4] = jInternal_TelaInfoEtapa;
-		jIA[5] = jInternal_TelaInserirSQL;
-		jIA[6] = jInternal_TelaInfoPessoa;
-		jIA[7] = jInternal_TelaInfoTarefa;
-		jIA[8] = jInternal_TelaInfoProjeto_Etapas;
-		jIA[9] = jInternal_TelaInfoPessoa_Projetos;
-		jIA[10] = jInternal_TelaInfoProjeto_Etapas_Simples;
-		jIA[11] = jInternal_TabelaPessoas;
-		jIA[12] = jInternal_TabelaPessoasColaboradores;
-		jIA[13] = jInternal_TelaBackups;
-		jIA[14] = jInternal_TabelaLogs;
-		jIA[15] = jInternal_InfoLog;
-		jIA[16] = jInternal_Sobre;
-		jIA[17] = JInternal_Backup_Efetuando.getInstance();
-		
-		for(JInternalAbstract jAbstract: jIA) {
+		for(JInternalAbstract jAbstract: jifs) {
 			jAbstract.setIcon(false);
 			jAbstract.setVisible(false);
 		}
@@ -484,6 +366,8 @@ public class Controlador_Principal {
 		return janelaPrincipal;
 	}
 
+	public JInternal_TelaCadastroSubEtapa getjInternal_TelaCadastroSubEtapa() {return jInternal_TelaCadastroSubEtapa;}
+	public JInternal_TelaCadastroSubTarefa getjInternal_TelaCadastroSubTarefa() {return jInternal_TelaCadastroSubTarefa;}
 	public JInternal_TelaCadastro_Etapa getjInternal_TelaCadastro_Etapa() {return jInternal_TelaCadastro_Etapa;}
 	public JInternal_TelaCadastro_Tarefa getjInternal_TelaCadastro_Tarefa() {return jInternal_TelaCadastro_Tarefa;}
 	public JInternal_TelaCadastro_Pessoa getjInternal_TelaCadastro_Pessoa() {return jInternal_TelaCadastro_Pessoa;}
@@ -493,6 +377,7 @@ public class Controlador_Principal {
 
 	public JInternal_TelaInfoEtapa getjInternal_TelaInfoEtapa() {return jInternal_TelaInfoEtapa;}
 	public JInternal_TelaInfoPessoa getjInternal_TelaInfoPessoa() {return jInternal_TelaInfoPessoa;}
+	public JInternal_TelaInfoPessoaOutrem getjInternal_TelaInfoPessoaOutrem() {return jInternal_TelaInfoPessoaOutrem;}
 	public JInternal_TelaInfoTarefa getjInternal_TelaInfoTarefa() {return jInternal_TelaInfoTarefa;}
 	public JInternal_TelaInfoProjeto_Etapas getjInternal_TelaInfoProjeto_Etapas() {return jInternal_TelaInfoProjeto_Etapas;}
 	public JInternal_TelaInfoPessoa_Projetos getjInternal_TelaInfoPessoa_Projetos() {return jInternal_TelaInfoPessoa_Projetos;}
@@ -505,13 +390,9 @@ public class Controlador_Principal {
 	public JInternal_TabelaPessoas getjInternal_TabelaPessoas() {return jInternal_TabelaPessoas;}
 	public JInternal_TabelaPessoasColaboradores getjInternal_TabelaPessoasColaboradores() {return jInternal_TabelaPessoasColaboradores;}
 	
-	public JInternal_TelaCadastroSubEtapa getjInternal_TelaCadastroSubEtapa() {return jInternal_TelaCadastroSubEtapa;}
-	public JInternal_TelaCadastroSubTarefa getjInternal_TelaCadastroSubTarefa() {return jInternal_TelaCadastroSubTarefa;}
-	public JInternal_TelaInfoPessoaOutrem getjInternal_TelaInfoPessoaOutrem() {return jInternal_TelaInfoPessoaOutrem;}
 	public JInternal_TelaInfoPessoaOutremSimples getjInternal_TelaInfoPessoaOutremSimples() {return jInternal_TelaInfoPessoaOutremSimples;}
 	public JInternal_TelaInfoSubEtapa getjInternal_TelaInfoSubEtapa() {return jInternal_TelaInfoSubEtapa;}
 	public JInternal_TelaInfoSubTarefa getjInternal_TelaInfoSubTarefa() {return jInternal_TelaInfoSubTarefa;}
-	public JInternal_Sobre getjInternal_Sobre() {return jInternal_Sobre;}
 
 	public Controlador_Info_JInternal_Tela getControlador_Info_JInternal_Tela() {return controlador_Info_JInternal_Tela;}
 	public Controlador_Cadastro getControlador_Cadastro() {return controlador_Cadastro;}
@@ -534,9 +415,7 @@ public class Controlador_Principal {
 	public JIF_Inf_SbTarf_Colab getJif_Inf_SbTarf_Colab() {return jif_Inf_SbTarf_Colab;}
 	public JIF_Inf_Tarf_Colab getJif_Inf_Tarf_Colab() {return jif_Inf_Tarf_Colab;}
 
-	public JIF_Reset_Senha getJif_Reset_Senha() {return jif_Reset_Senha;}
-
-	public TColaborador gettColaboradorProjeto() {return tColaboradorProjeto;}
+	public TPessoa gettColaboradorProjeto() {return tColaboradorProjeto;}
 	public TColaborador gettColaboradorEtapa() {return tColaboradorEtapa;}
 	public TColaborador gettColaboradorSubEtapa() {return tColaboradorSubEtapa;}
 	public TColaborador gettColaboradorTarefa() {return tColaboradorTarefa;}

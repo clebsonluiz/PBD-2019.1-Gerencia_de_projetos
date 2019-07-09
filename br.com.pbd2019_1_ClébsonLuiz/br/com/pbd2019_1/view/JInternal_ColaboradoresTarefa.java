@@ -11,6 +11,7 @@ public class JInternal_ColaboradoresTarefa extends JInternal_TabelaPessoasColabo
 		setMinimumSize(new Dimension(400, 300));
 		setPreferredSize(new Dimension(400, 300));
 		setSize(getPreferredSize());
+		getTelaPessoas().getPanel_1().setVisible(false);
 		getTelaPessoas().getBtAdicionarPessoa().setText("Adicionar Colaborador de Tarefa");
 		getTelaPessoas().getBtAdicionarPessoa().setVisible(true);
 	}

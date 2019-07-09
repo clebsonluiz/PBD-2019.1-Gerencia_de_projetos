@@ -11,6 +11,7 @@ public class JInternal_ColaboradoresEtapa extends JInternal_TabelaPessoasColabor
 		setMinimumSize(new Dimension(400, 300));
 		setPreferredSize(new Dimension(400, 300));
 		setSize(getPreferredSize());
+		getTelaPessoas().getPanel_1().setVisible(false);
 		getTelaPessoas().getBtAdicionarPessoa().setText("Adicionar Gerente de Etapa");
 		getTelaPessoas().getBtAdicionarPessoa().setVisible(true);
 	}

@@ -89,12 +89,25 @@ public class Ctrl_JTable {
 				.getTelaPessoas()
 				.getTable();
 		
-		JTable tablePessoasDisponiveis = ctrl_P.getjInternal_TabelaPessoasColaboradores()
-				.getTelaPessoas()
-				.getTable();
+//		JTable tablePessoasDisponiveis = ctrl_P.getjInternal_TabelaPessoasColaboradores()
+//				.getTelaPessoas()
+//				.getTable();
 		
 		JTable tableLogs = ctrl_P.getjInternal_TabelaLogs()
 				.getTelaLogs()
+				.getTable();
+		
+		JTable tableColabProjeto = ctrl_P.getjInternal_TabelaPessoasColaboradores()
+				.getTelaPessoas()
+				.getTable();
+		JTable tableColabEtapa = ctrl_P.getjInternal_ColaboradoresEtapa()
+				.getTelaPessoas()
+				.getTable();
+		JTable tableColabSubEtapa = ctrl_P.getjInternal_ColaboradoresSubEtapa()
+				.getTelaPessoas()
+				.getTable();
+		JTable tableColabTarefa = ctrl_P.getjInternal_ColaboradoresTarefa()
+				.getTelaPessoas()
 				.getTable();
 		
 		tableSubTarefas.setModel(ctrl_P.gettSubTarefa());
@@ -108,7 +121,12 @@ public class Ctrl_JTable {
 		tableColaboracoes.setModel(ctrl_P.gettColaboracoes());
 		tableEtapasSimples.setModel(ctrl_P.gettEtapa());
 		tablePessoas.setModel(ctrl_P.gettPessoa());
-		tablePessoasDisponiveis.setModel(ctrl_P.gettPessoa());
+//		tablePessoasDisponiveis.setModel(ctrl_P.gettPessoa());
+		
+		tableColabProjeto.setModel(ctrl_P.gettColaboradorProjeto());
+		tableColabEtapa.setModel(ctrl_P.gettColaboradorEtapa());
+		tableColabSubEtapa.setModel(ctrl_P.gettColaboradorSubEtapa());
+		tableColabTarefa.setModel(ctrl_P.gettColaboradorTarefa());
 		
 		tableTarefas.getColumnModel().getColumn(2).setCellEditor(ctrl_P.gettTarefa().getCellEditor());
 		
@@ -117,7 +135,13 @@ public class Ctrl_JTable {
 		Collections.addAll(tables, tableSubTarefas, tableSubEtapas,
 				tableLogs, tableTarefas, tableCaracteristicas, tableEtapas, 
 				tableColaboradores,	tableProjetos, tableColaboracoes,
-				tableEtapasSimples, tablePessoas, tablePessoasDisponiveis);
+				tableEtapasSimples, tablePessoas, 
+//				tablePessoasDisponiveis,
+				tableColabProjeto,
+				tableColabEtapa,
+				tableColabSubEtapa,
+				tableColabTarefa
+				);
 		
 		for(JTable table: tables)
 		{

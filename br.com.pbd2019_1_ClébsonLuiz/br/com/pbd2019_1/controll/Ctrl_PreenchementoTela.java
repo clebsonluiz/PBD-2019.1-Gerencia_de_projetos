@@ -53,6 +53,40 @@ public class Ctrl_PreenchementoTela {
 		this.ctrl_P = ctrl_P;
 	}
 	
+	public void adicionarTableModel()
+	{
+		JTable tableCaracteristicaOutrem1 = ctrl_P.getjInternal_TelaInfoPessoa()
+				.getTelaInfoPessoa()
+				.getTelaContatoCaracteristica()
+				.getJTable();
+		JTable tableCaracteristicaOutrem2 = ctrl_P.getjInternal_TelaInfoPessoaOutrem()
+				.getTelaInfoPessoaContatoOutrem()
+				.getTelaContatoCaracteristica()
+				.getJTable();
+		JTable tableCaracteristicaOutrem3 = ctrl_P.getjInternal_TelaInfoPessoaOutremSimples()
+				.getTelaInfoPessoaContatoOutremSimples()
+				.getTelaContatoCaracteristica()
+				.getJTable();
+		
+		JTable tableInfLog = ctrl_P.getjInternal_InfoLog()
+				.getTelaInfoLog()
+				.getTable();
+		
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.setColumnIdentifiers(new String[] {"Ordem", "Antes", "Depois"});
+		tableInfLog.setModel(tableModel);
+		
+		tableCaracteristicaOutrem1.setModel(ctrl_P.gettCaracteristicaExtra2());
+		tableCaracteristicaOutrem2.setModel(ctrl_P.gettCaracteristicaExtra2());
+		tableCaracteristicaOutrem3.setModel(ctrl_P.gettCaracteristicaExtra2());
+		
+		tableCaracteristicaOutrem1.setRowHeight(30);
+		tableCaracteristicaOutrem2.setRowHeight(30);
+		tableCaracteristicaOutrem3.setRowHeight(30);
+		tableInfLog.setRowHeight(30);
+		
+	}
+	
 	/*
 	 * TODO - A partir daqui é chamada de JInternals para exibição
 	 */
@@ -293,7 +327,7 @@ public class Ctrl_PreenchementoTela {
 	{
 		TelaInfoPessoaContatoOutremSimples tIP = ctrl_P.getjInternal_TelaInfoPessoaOutremSimples().getTelaInfoPessoaContatoOutremSimples();
 		
-		atualizarDadoPessoaColaboradorSimples(tIP, p, ctrl_P.gettCaracteristicaExtra());
+		atualizarDadoPessoaColaboradorSimples(tIP, p, ctrl_P.gettCaracteristicaExtra2());
 		
 		ctrl_P.getjInternal_TelaInfoPessoaOutremSimples().queroFoco();
 	}
@@ -499,6 +533,13 @@ public class Ctrl_PreenchementoTela {
 	{
 		atualizarDadoProjetoSimples(tp, p, te);
 		
+		List<Colaborador> lColaborador = Fachada.getInstance().getBoColaborador().buscarPorProjeto(p);
+		tc.addAll(lColaborador);
+		p.setColaboradores(lColaborador);
+	}
+	
+	private void atualizarDadoColaboradorProjeto(Projeto p, TColaborador tc) throws ValidacaoException
+	{
 		List<Colaborador> lColaborador = Fachada.getInstance().getBoColaborador().buscarPorProjeto(p);
 		tc.addAll(lColaborador);
 		p.setColaboradores(lColaborador);

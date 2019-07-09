@@ -15,6 +15,7 @@ import java.util.Observer;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 
 import br.com.pbd2019_1.dao.DAOConfigDefault;
 import br.com.pbd2019_1.dao.DAOResBackup;
@@ -44,6 +45,20 @@ public class Controlador_Backup implements Observer, ActionListener{
 		this.ctrl_P = controlador_Principal;
 	}
 
+	public void adicionarTableModel()
+	{
+
+		JTable tableBackups = ctrl_P.getjInternal_TelaBackups()
+				.getTelaBackups()
+				.getTable();
+		tableBackups.setModel(ctrl_P.gettBackup());
+		
+		tableBackups.setRowHeight(30);
+		tableBackups.getColumnModel().getColumn(0).setPreferredWidth(70);
+		tableBackups.getColumnModel().getColumn(1).setPreferredWidth(70);
+		tableBackups.getColumnModel().getColumn(2).setPreferredWidth(70);
+	}
+	
 	public void adicionarEventos()
 	{
 		adicionarEventoJInternal(ctrl_P.getjInternal_TelaAgendarBackup());

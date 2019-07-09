@@ -12,7 +12,16 @@ public class JIF_Reset_Senha extends JInternalAbstract {
 	private static final long serialVersionUID = 1L;
 	private JLabel lblSenha;
 
-	public JIF_Reset_Senha() {
+	public static JIF_Reset_Senha instance;
+	
+	public static JIF_Reset_Senha getInstance()
+	{
+		if(instance == null) 
+			instance = new JIF_Reset_Senha();
+		return instance;
+	}
+	
+	private JIF_Reset_Senha() {
 		super("Senha Resetada");
 		setResizable(false);
 		setIconifiable(false);

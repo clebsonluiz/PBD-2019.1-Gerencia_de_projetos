@@ -57,6 +57,8 @@ public class Ctrl_Listeners_Projeto {
 		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoTarefa());
 		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoSubEtapa());
 		adicionarEventoJInternal(ctrl_P.getjInternal_TelaInfoSubTarefa());
+		
+		adicionarEventosBotaoAddColaborador();
 	}
 	
 	/**TODO - Projeto*/
@@ -416,8 +418,9 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettColaboradorProjeto().getList().clear();
-				ctrl_P.gettColaboradorProjeto().fireTableDataChanged();
+				//TODO MUDAR AQUI
+//				ctrl_P.gettColaboradorProjeto().getList().clear();
+//				ctrl_P.gettColaboradorProjeto().fireTableDataChanged();
 				ctrl_P.getjInternal_TabelaPessoasColaboradores().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
@@ -436,14 +439,19 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettColaboradorEtapa().getList().clear();
-				ctrl_P.gettColaboradorEtapa().fireTableDataChanged();
+				List<Colaborador> lColaborador = Fachada.getInstance().getBoColaborador().buscarPorProjeto(ctrl_P.getProjeto_Atual());
+				
+				ctrl_P.gettColaboradorEtapa().addAll(lColaborador);
 				ctrl_P.getjInternal_ColaboradoresEtapa().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
 			{
 				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
-			}
+			} 
+			catch (ValidacaoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
+			} 
 		});
 		
 		tce.getBtRemoverColaborador().addActionListener((ActionEvent)->
@@ -495,11 +503,16 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettColaboradorSubEtapa().getList().clear();
-				ctrl_P.gettColaboradorSubEtapa().fireTableDataChanged();
+				List<Colaborador> lColaborador = Fachada.getInstance().getBoColaborador().buscarPorProjeto(ctrl_P.getProjeto_Atual());
+				
+				ctrl_P.gettColaboradorSubEtapa().addAll(lColaborador);
 				ctrl_P.getjInternal_ColaboradoresSubEtapa().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
+			} 
+			catch (ValidacaoException e) 
 			{
 				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
 			}
@@ -553,11 +566,16 @@ public class Ctrl_Listeners_Projeto {
 		{
 			try
 			{
-				ctrl_P.gettColaboradorTarefa().getList().clear();
-				ctrl_P.gettColaboradorTarefa().fireTableDataChanged();
+				List<Colaborador> lColaborador = Fachada.getInstance().getBoColaborador().buscarPorProjeto(ctrl_P.getProjeto_Atual());
+				
+				ctrl_P.gettColaboradorTarefa().addAll(lColaborador);
 				ctrl_P.getjInternal_ColaboradoresTarefa().queroFoco();
 			} 
 			catch (PropertyVetoException e) 
+			{
+				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
+			} 
+			catch (ValidacaoException e) 
 			{
 				MeuJDialog.exibirAlertaErro(null, "Erro ao exibir Tabela de Pessoas", e.getMessage());
 			}
@@ -623,7 +641,7 @@ public class Ctrl_Listeners_Projeto {
 			if(index >= 0)
 			try
 			{
-				Pessoa pessoa = ctrl_P.gettPessoa().getValor(index);
+				Pessoa pessoa = ctrl_P.gettColaboradorProjeto().getValor(index);
 				
 				Colaborador colaborador = new Colaborador();
 				colaborador.setData_ingresso(LocalDateTime.now());

@@ -11,6 +11,7 @@ public class JInternal_ColaboradoresSubEtapa extends JInternal_TabelaPessoasCola
 		setMinimumSize(new Dimension(400, 300));
 		setPreferredSize(new Dimension(400, 300));
 		setSize(getPreferredSize());
+		getTelaPessoas().getPanel_1().setVisible(false);
 		getTelaPessoas().getBtAdicionarPessoa().setText("Adicionar Colaborador de Sub Etapa");
 		getTelaPessoas().getBtAdicionarPessoa().setVisible(true);
 	}
