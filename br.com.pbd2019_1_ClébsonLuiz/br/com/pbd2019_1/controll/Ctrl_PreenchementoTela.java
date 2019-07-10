@@ -1,11 +1,14 @@
 package br.com.pbd2019_1.controll;
 
 import java.beans.PropertyVetoException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
 
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
 import br.com.pbd2019_1.entidade.Colaborador;
@@ -26,6 +29,7 @@ import br.com.pbd2019_1.tabelas.TColaboracoes;
 import br.com.pbd2019_1.tabelas.TColaborador;
 import br.com.pbd2019_1.tabelas.TEtapa;
 import br.com.pbd2019_1.tabelas.TProjeto;
+import br.com.pbd2019_1.tabelas.TSubEtapa;
 import br.com.pbd2019_1.tabelas.TSubTarefa;
 import br.com.pbd2019_1.tabelas.TTarefa;
 import br.com.pbd2019_1.utils.DateUtil;
@@ -120,25 +124,25 @@ public class Ctrl_PreenchementoTela {
 	public void exibirJInt_InfoTarefaColab(Tarefa t) throws PropertyVetoException, ValidacaoException 
 	{
 			ctrl_P.setTarefa_Atual_Colab(t);
-			preencherTelaTarefa(ctrl_P.getjInternal_TelaInfoTarefa().getTelaInfoTarefa().getTelaInfoTarefa(), ctrl_P.getTarefa_Atual());
+			preencherTelaTarefa(ctrl_P.getJif_Inf_Tarf_Colab().getTelaInfoTarefa().getTelaInfoTarefa(), ctrl_P.getTarefa_Atual_Colab());
 			atualizarDadoColaborador(ctrl_P.getjInternal_TelaInfoTarefa().getTelaInfoTarefa().getTelaColaboradorEnvolvido(), t, true);
 			
-			ctrl_P.getjInternal_TelaInfoTarefa().queroFoco();
+			ctrl_P.getJif_Inf_Tarf_Colab().queroFoco();
 	}
 	
 	public void exibirJInt_InfoEtapaColab(Etapa e) throws PropertyVetoException, ValidacaoException
 	{
 		ctrl_P.setEtapa_Atual_Colab(e);
 		
-		TelaEtapa tE = ctrl_P.getjInternal_TelaInfoEtapa()
+		TelaEtapa tE = ctrl_P.getJif_Inf_Etp_Colab()
 				.getTelaEtapa_Tarefas()
 				.getTelaEtapa();
 		
-		atualizarDadoEtapa(tE, ctrl_P.getEtapa_Atual(), ctrl_P.gettTarefa());
+		atualizarDadoEtapa(tE, ctrl_P.getEtapa_Atual_Colab(), ctrl_P.gettTarefaColab(), ctrl_P.gettSubEtapaColab());
 		
 		atualizarDadoColaborador(tE.getTelaColaboradorEnvolvido(), e, true);
 		
-		ctrl_P.getjInternal_TelaInfoEtapa().queroFoco();
+		ctrl_P.getJif_Inf_Etp_Colab().queroFoco();
 	}
 	
 	public void exibirJInt_InfoProjetoColab(Projeto p) throws ValidacaoException, PropertyVetoException
@@ -157,27 +161,28 @@ public class Ctrl_PreenchementoTela {
 		ctrl_P.getJif_Inf_Proj_Colab().queroFoco();
 	}
 	
-	/**TODO - Visão do Colab*/
+	
 	public void exibirJInternalInfoSubTarefa(SubTarefa t) throws PropertyVetoException 
 	{
 			ctrl_P.setSubTarefa_Atual(t);
-			preencherTelaTarefa(ctrl_P.getjInternal_TelaInfoTarefa().getTelaInfoTarefa().getTelaInfoTarefa(), ctrl_P.getTarefa_Atual());
-			ctrl_P.getjInternal_TelaInfoTarefa().queroFoco();
+			preencherTelaSubTarefa(ctrl_P.getjInternal_TelaInfoSubTarefa().getTelaInfoSubTarefa(), ctrl_P.getSubTarefa_Atual());
+			ctrl_P.getjInternal_TelaInfoSubTarefa().queroFoco();
 	}
 	
 	public void exibirJInternalInfoSubEtapa(SubEtapa e) throws PropertyVetoException, ValidacaoException
 	{
 		ctrl_P.setSubEtapa_Atual(e);
 		
-		TelaEtapa tE = ctrl_P.getjInternal_TelaInfoEtapa()
-				.getTelaEtapa_Tarefas()
-				.getTelaEtapa();
+		TelaInfoSubEtapa tE = ctrl_P.getjInternal_TelaInfoSubEtapa()
+				.getTelaInfoSubEtapaSubTarefas()
+				.getTelaInfoSubEtapa();
 		
-		atualizarDadoEtapa(tE, ctrl_P.getEtapa_Atual(), ctrl_P.gettTarefa());
+		
+		atualizarDadoSubEtapa(tE, e, ctrl_P.gettSubTarefa());
 		
 		atualizarDadoColaborador(tE.getTelaColaboradorEnvolvido(), e, false);
 		
-		ctrl_P.getjInternal_TelaInfoEtapa().queroFoco();
+		ctrl_P.getjInternal_TelaInfoSubEtapa().queroFoco();
 	}
 	
 	public void exibirJInternalInfoTarefa(Tarefa t) throws PropertyVetoException, ValidacaoException 
@@ -198,7 +203,7 @@ public class Ctrl_PreenchementoTela {
 				.getTelaEtapa_Tarefas()
 				.getTelaEtapa();
 		
-		atualizarDadoEtapa(tE, ctrl_P.getEtapa_Atual(), ctrl_P.gettTarefa());
+		atualizarDadoEtapa(tE, ctrl_P.getEtapa_Atual(), ctrl_P.gettTarefa(), ctrl_P.gettSubEtapa());
 		
 		atualizarDadoColaborador(tE.getTelaColaboradorEnvolvido(), e, false);
 		
@@ -351,8 +356,9 @@ public class Ctrl_PreenchementoTela {
 		String tipo = log.getTipo();
 		String cpf = log.getResponsavel();
 		
-		String data = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").format(log.getData_log());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
 		
+		String data = log.getData_log().format(formatter);
 		List<String> antes = log.getAntes();
 		List<String> depois = log.getDepois();
 		List<String> colunas = log.getColuna();
@@ -477,12 +483,12 @@ public class Ctrl_PreenchementoTela {
 		telaTarefa.getChckbxFinalizada().setSelected(tarefa.isConcluida());
 		telaTarefa.getPrioridadeComboBox().setSelectedItem(tarefa.getPrioridade());
 
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm:ss");
 		
-		String data = format1.format(tarefa.getHorario());
-		String horario = format2.format(tarefa.getHorario());
-		
+		String data = tarefa.getHorario().format(formatter1);
+		String horario = tarefa.getHorario().format(formatter2);
+				
 		System.out.println("Horario "+ tarefa.getHorario());
 		
 		String[] hora = horario.split(":");
@@ -503,11 +509,11 @@ public class Ctrl_PreenchementoTela {
 		telaTarefa.getChckbxFinalizada().setSelected(sub_tarefa.isConcluida());
 		telaTarefa.getPrioridadeComboBox().setSelectedItem(sub_tarefa.getPrioridade());
 
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm:ss");
 		
-		String data = format1.format(sub_tarefa.getHorario());
-		String horario = format2.format(sub_tarefa.getHorario());
+		String data = sub_tarefa.getHorario().format(formatter1);
+		String horario = sub_tarefa.getHorario().format(formatter2);
 		
 		System.out.println("Horario "+ sub_tarefa.getHorario());
 		
@@ -593,11 +599,13 @@ public class Ctrl_PreenchementoTela {
 		e.setSub_tarefas(t);
 	}
 	
-	private void atualizarDadoEtapa(TelaEtapa tE, Etapa e, TTarefa tT) throws ValidacaoException
+	private void atualizarDadoEtapa(TelaEtapa tE, Etapa e, TTarefa tT, TSubEtapa tSE) throws ValidacaoException
 	{
 		preencherTelaEtapa(tE,e);
 		List<Tarefa> t = Fachada.getInstance().getBoTarefa().buscarPorEtapa(e);
+		List<SubEtapa> se = Fachada.getInstance().getBoSubEtapa().getListPorEtapa(e);
 		tT.addAll(t);
+		tSE.addAll(se);
 		e.setTarefas(t);
 	}
 	

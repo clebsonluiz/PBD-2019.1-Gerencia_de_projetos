@@ -182,6 +182,20 @@ public class Ctrl_Listeners_Projeto {
 				}
 			});
 		
+		telaInfoEtapa.getTelaEtapa_Tarefas().getTelaSubEtapas().getBtNovaEtapa()
+			.addActionListener(ActionEvent->{
+				//TODO - Cadastrar a sub etapa
+				try 
+				{
+					ctrl_P.getjInternal_TelaCadastroSubEtapa().queroFoco();
+				} 
+				catch (PropertyVetoException e) 
+				{
+					MeuJDialog.exibirAlertaErro(null, "Erro ao exibir ", e.getMessage());
+				}
+			});
+		
+		
 		adicionarEventoJInternalColaborador(telaInfoEtapa);
 		
 	}
