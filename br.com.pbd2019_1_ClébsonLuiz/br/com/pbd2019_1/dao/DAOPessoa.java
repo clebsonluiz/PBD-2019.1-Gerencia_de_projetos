@@ -27,7 +27,6 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		} finally {
 			entityManager.close();
 		}
-		System.out.println("Quantidade : "+quantidade);
 		return (quantidade > 0)? true : false;
 	}
 	
@@ -45,7 +44,6 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		} finally {
 			entityManager.close();
 		}
-		System.out.println("Quantidade : "+quantidade);
 		return (quantidade > 0)? true : false;
 	}
 	
@@ -62,7 +60,6 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		} finally {
 			entityManager.close();
 		}
-		System.out.println("Quantidade : "+quantidade);
 		return (quantidade > 0)? true : false;
 	}
 	
@@ -79,7 +76,6 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 		} finally {
 			entityManager.close();
 		}
-		System.out.println("Quantidade : "+quantidade);
 		return (quantidade > 0)? true : false;
 	}
 	
@@ -108,7 +104,7 @@ public class DAOPessoa extends DAOGenerico<Pessoa>{
 			TypedQuery<Pessoa> query = entityManager.
 					createNamedQuery("Pessoa.buscarUsuario", Pessoa.class);
 			
-			query.setParameter("login", login);
+			query.setParameter("cpf", login);
 			query.setParameter("senha", senha);
 			
 			pessoa = query.getSingleResult();

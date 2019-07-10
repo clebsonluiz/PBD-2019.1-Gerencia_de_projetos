@@ -15,7 +15,6 @@ import javax.persistence.Table;
 			query = "select s from SubEtapaColaborador s where s.ativado = true and s.colaborador = :colaborador ORDER BY s.id ASC"),
 	@NamedQuery(name = "SubEtapaColaborador.sub_etapa",
 			query = "select s from SubEtapaColaborador s where s.ativado = true and s.sub_etapa = :sub_etapa ORDER BY s.id ASC"),
-	@NamedQuery(name = "", query = "")
 })
 public class SubEtapaColaborador extends Entidade{
 

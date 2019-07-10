@@ -71,6 +71,12 @@ public class TelaPrincipal extends JPanel {
 		add(gridPanel);
 		add(gridPanel2);
 		
+		telaLoginSistema.getBtnCadastrar().addActionListener(ActionEvent->
+		{
+			exibirTela(TELA_CADASTRO_PESSOA);
+			telaCadastro_Pessoa.limparCampos();
+		});
+		
 		Botao btn = new Botao("Cancelar", Color.RED.brighter());
 		btn.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		btn.setForeground(Color.WHITE);
@@ -86,7 +92,6 @@ public class TelaPrincipal extends JPanel {
 		Botao btn1 = telaCadastro_Pessoa.getBtCadastrarComoSuper();
 		
 		btn1.addActionListener(ActionEvent->{
-			telaCadastro_Pessoa.limparCampos();
 			exibirTela(TELA_CADASTRO_SUPER);
 			});
 		

@@ -15,7 +15,6 @@ import javax.persistence.Table;
 			query = "select tc from TarefaColaborador tc where tc.ativado = true and tc.colaborador = :colaborador"),
 	@NamedQuery(name = "TarefaColaborador.tarefa",
 			query = "select tc from TarefaColaborador tc where tc.ativado = true and tc.tarefa = :tarefa"),
-	@NamedQuery(name = "", query = "")
 })
 public class TarefaColaborador extends Entidade{
 

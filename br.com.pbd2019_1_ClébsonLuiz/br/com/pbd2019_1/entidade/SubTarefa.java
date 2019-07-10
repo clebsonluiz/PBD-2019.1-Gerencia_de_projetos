@@ -12,8 +12,6 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name = "SubTarefa.subEtapa",
 			query = "select s from SubTarefa s where s.ativado = true and s.sub_etapa = :sub_etapa"),
-	@NamedQuery(name = "", query = ""),
-	@NamedQuery(name = "", query = "")
 })
 public class SubTarefa extends AbstractTarefa{
 

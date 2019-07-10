@@ -95,7 +95,6 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				super.keyPressed(e);
 				String str1 = telaMiniPessoa2.getSenhaAntigaField().getTexto();
 				String str2 = telaMiniPessoa2.getSenhaNovaField().getTexto();
 				
@@ -109,11 +108,11 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.red.brighter());
 					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.WHITE);
 				}
-				else
+				/*else
 				{
 					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.white);
 					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.black);
-				}
+				}*/
 			}
 		};
 		

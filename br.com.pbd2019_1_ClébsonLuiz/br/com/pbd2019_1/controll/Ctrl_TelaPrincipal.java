@@ -82,9 +82,13 @@ public class Ctrl_TelaPrincipal {
 				
 				TelaCadastro_Pessoa telaPessoa = telaPrincipal.getTelaCadastro_Pessoa();
 				
-				ctrl_P.getControlador_Cadastro().cadastrarPessoa(telaPessoa, Pessoa.ADMIN_USER, ctrl_P.gettPessoa(), null);
+				ctrl_P.getControlador_Cadastro().cadastrarPessoa(telaPessoa, Pessoa.SUPER_USER, ctrl_P.gettPessoa(), null);
 				
 				telaS.limparCampos();
+				
+				MeuJDialog.exibirAlertaInfo(null, "SUCESSO", "CADASTRADO COM SUCESSO!");
+				ctrl_P.getJanelaPrincipal().getTelaPrincipal().exibirTela(TelaPrincipal.TELA_LOGIN);
+				
 			} 
 			catch (ValidacaoException e) 
 			{

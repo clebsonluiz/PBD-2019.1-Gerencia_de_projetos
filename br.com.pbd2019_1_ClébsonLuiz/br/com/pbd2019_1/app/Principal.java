@@ -28,7 +28,15 @@ import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.utils.DateUtil;
+import br.com.pbd2019_1.view.JIF_Inf_Etp_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_Proj_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_SbEtp_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_SbTarf_Colab;
+import br.com.pbd2019_1.view.JIF_Inf_Tarf_Colab;
 import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
+import br.com.pbd2019_1.view.JInternal_ColaboradoresEtapa;
+import br.com.pbd2019_1.view.JInternal_ColaboradoresSubEtapa;
+import br.com.pbd2019_1.view.JInternal_ColaboradoresTarefa;
 import br.com.pbd2019_1.view.JInternal_InfoLog;
 import br.com.pbd2019_1.view.JInternal_Sobre;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
@@ -36,15 +44,21 @@ import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
 import br.com.pbd2019_1.view.JInternal_TelaAgendarBackup;
 import br.com.pbd2019_1.view.JInternal_TelaBackups;
+import br.com.pbd2019_1.view.JInternal_TelaCadastroSubEtapa;
+import br.com.pbd2019_1.view.JInternal_TelaCadastroSubTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Etapa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Pessoa;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Projeto;
 import br.com.pbd2019_1.view.JInternal_TelaCadastro_Tarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoEtapa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa;
+import br.com.pbd2019_1.view.JInternal_TelaInfoPessoaOutrem;
+import br.com.pbd2019_1.view.JInternal_TelaInfoPessoaOutremSimples;
 import br.com.pbd2019_1.view.JInternal_TelaInfoPessoa_Projetos;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas;
 import br.com.pbd2019_1.view.JInternal_TelaInfoProjeto_Etapas_Simples;
+import br.com.pbd2019_1.view.JInternal_TelaInfoSubEtapa;
+import br.com.pbd2019_1.view.JInternal_TelaInfoSubTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInfoTarefa;
 import br.com.pbd2019_1.view.JInternal_TelaInserirSQL;
 import br.com.pbd2019_1.view.JanelaLoading;
@@ -62,6 +76,7 @@ public class Principal{
 	
 	public static void main(String[] args) throws FileNotFoundException, DocumentException, BOException, DAOException {
 		
+//		Fachada.getInstance().carregarBo();
 		
 /*		
 		List<String> antes = new ArrayList<>();
@@ -128,7 +143,7 @@ public class Principal{
 		System.exit(0);
 */
 
-		/*
+		
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
 		try 
@@ -181,6 +196,12 @@ public class Principal{
 		
 		Fachada.getInstance().carregarBoCaracteristicaExtra();
 		
+		Fachada.getInstance().carregarBoSubEtapa();
+		Fachada.getInstance().carregarBoSubEtapaColaborador();
+		Fachada.getInstance().carregarBoSubTarefa();
+		Fachada.getInstance().carregarBoTarefaColaborador();
+		Fachada.getInstance().carregarBoGerenteEtapa();
+		
 		janelaLoading.etapaAtual("Banco de Dados Carregado!", 50);
 		janelaLoading.etapaAtual("Janela Principal!", 50);
 		
@@ -211,43 +232,33 @@ public class Principal{
 		JInternal_InfoLog jInternal_InfoLog = new JInternal_InfoLog();
 		JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup = new JInternal_TelaAgendarBackup();
 		
-		JInternal_Sobre jInternal_Sobre = new JInternal_Sobre();
+		JInternal_ColaboradoresEtapa jInternal_ColaboradoresEtapa = new JInternal_ColaboradoresEtapa();
+		JInternal_ColaboradoresSubEtapa jInternal_ColaboradoresSubEtapa = new JInternal_ColaboradoresSubEtapa();
+		JInternal_ColaboradoresTarefa jInternal_ColaboradoresTarefa = new JInternal_ColaboradoresTarefa();
+		
+		JInternal_TelaCadastroSubEtapa jInternal_TelaCadastroSubEtapa = new JInternal_TelaCadastroSubEtapa();
+		JInternal_TelaCadastroSubTarefa jInternal_TelaCadastroSubTarefa = new JInternal_TelaCadastroSubTarefa();
+		JInternal_TelaInfoPessoaOutrem jInternal_TelaInfoPessoaOutrem = new JInternal_TelaInfoPessoaOutrem();
+		JInternal_TelaInfoPessoaOutremSimples jInternal_TelaInfoPessoaOutremSimples = new JInternal_TelaInfoPessoaOutremSimples();
+		JInternal_TelaInfoSubEtapa jInternal_TelaInfoSubEtapa = new JInternal_TelaInfoSubEtapa();
+		JInternal_TelaInfoSubTarefa jInternal_TelaInfoSubTarefa = new JInternal_TelaInfoSubTarefa();
+		
+		JIF_Inf_Proj_Colab jif_Inf_Proj_Colab = new JIF_Inf_Proj_Colab();
+		JIF_Inf_Etp_Colab jif_Inf_Etp_Colab = new JIF_Inf_Etp_Colab();
+		JIF_Inf_SbEtp_Colab jif_Inf_SbEtp_Colab = new JIF_Inf_SbEtp_Colab();
+		JIF_Inf_SbTarf_Colab jif_Inf_SbTarf_Colab = new JIF_Inf_SbTarf_Colab();
+		JIF_Inf_Tarf_Colab jif_Inf_Tarf_Colab = new JIF_Inf_Tarf_Colab();
 		
 		janelaLoading.etapaAtual("Restante das Telas Carregadas!", 70);
 		janelaLoading.etapaAtual("Área de Trabalho!", 70);
 		
-		JDesktopPane jDesktopPane = janela.getTelaPrincipal().getjDesktopPane();
-		
 		janelaLoading.etapaAtual("Área de Trabalho Carregada!", 71);
 		
-		janelaLoading.etapaAtual("Incorporando telas!", 71);
+		janelaLoading.etapaAtual("Controlador!", 71);
 		
-		jDesktopPane.add(jInternal_TelaCadastro_Etapa);
-		jDesktopPane.add(jInternal_TelaCadastro_Projeto);
-		jDesktopPane.add(jInternal_TelaCadastro_Pessoa);
-		jDesktopPane.add(jInternal_TelaCadastro_Tarefa);
-		jDesktopPane.add(jInternal_TelaInfoEtapa);
-		jDesktopPane.add(jInternal_TelaInserirSQL);
-		jDesktopPane.add(jInternal_TelaInfoPessoa);
-		jDesktopPane.add(jInternal_TelaInfoTarefa);
-		jDesktopPane.add(jInternal_TelaInfoProjeto_Etapas);
-		jDesktopPane.add(jInternal_TelaInfoPessoa_Projetos);
-		jDesktopPane.add(jInternal_TelaInfoProjeto_Etapas_Simples);
-		jDesktopPane.add(jInternal_TabelaPessoas);
-		jDesktopPane.add(jInternal_TabelaPessoasColaboradores);
-		jDesktopPane.add(jInternal_TelaBackups);
-		jDesktopPane.add(jInternal_TabelaLogs);
-		jDesktopPane.add(jInternal_InfoLog);
-		jDesktopPane.add(jInternal_TelaAgendarBackup);
-		jDesktopPane.add(jInternal_Sobre);
-		jDesktopPane.add(JInternal_Backup_Efetuando.getInstance());
-		
-		janelaLoading.etapaAtual("Telas Incorporadas!", 80);
-		janelaLoading.etapaAtual("Controlador!", 80);
-		
-		Controlador_Principal controlador = new Controlador_Principal(janela.getTelaPrincipal());
-		janelaLoading.etapaAtual("Controlador Carregado!", 85);
-		janelaLoading.etapaAtual("Parâmetros JInternals!", 85);
+		Controlador_Principal controlador = new Controlador_Principal(janela);
+		janelaLoading.etapaAtual("Controlador Carregado!", 80);
+		janelaLoading.etapaAtual("Parâmetros JInternals!", 80);
 		
 		controlador.adicionarJInternals(
 				jInternal_TelaCadastro_Etapa,
@@ -267,8 +278,31 @@ public class Principal{
 				jInternal_TabelaLogs,
 				jInternal_InfoLog,
 				jInternal_TelaAgendarBackup,
-				jInternal_Sobre);
+
+				jInternal_ColaboradoresEtapa,
+				jInternal_ColaboradoresSubEtapa,
+				jInternal_ColaboradoresTarefa,
+				
+				jInternal_TelaCadastroSubEtapa,
+				jInternal_TelaCadastroSubTarefa,
+				jInternal_TelaInfoPessoaOutrem,
+				jInternal_TelaInfoPessoaOutremSimples,
+				jInternal_TelaInfoSubEtapa,
+				jInternal_TelaInfoSubTarefa,
+				jif_Inf_Proj_Colab,
+				jif_Inf_Etp_Colab,
+				jif_Inf_SbEtp_Colab,
+				jif_Inf_SbTarf_Colab,
+				jif_Inf_Tarf_Colab
+				
+				);
 		
+		janelaLoading.etapaAtual("Incorporando Telas!", 81);
+
+		controlador.adicionarJInternalsAoJDesktop();
+		
+		janelaLoading.etapaAtual("Telas Incorporadas!", 85);
+
 		janelaLoading.etapaAtual("Parâmetros JInternals Carregado!", 90);
 		janelaLoading.etapaAtual("Adicionando TableModels!", 90);
 		
@@ -276,9 +310,8 @@ public class Principal{
 		
 		janelaLoading.etapaAtual("TableModels Adicionados!", 95);
 		janelaLoading.etapaAtual("Adicionando Eventos!", 95);
-		
-		controlador.adicionarEventosTelaPrincipal();
-		controlador.adicionarEventoJFrame(janela);
+
+		controlador.adicionarEventos();
 		
 		janelaLoading.etapaAtual("Eventos Adicionados!", 100);
 		janelaLoading.etapaAtual("Concluído!", 100);
@@ -286,6 +319,8 @@ public class Principal{
 		
 		janela.setVisible(true);
 		
+		
+		/*
 		new Thread(()->
 		{
 			while(true)
@@ -351,7 +386,7 @@ public class Principal{
 				}
 			}
 		}).start();
-*/
+		*/
 		
 	}
 	

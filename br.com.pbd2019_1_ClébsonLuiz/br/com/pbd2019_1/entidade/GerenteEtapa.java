@@ -15,8 +15,6 @@ import javax.persistence.Table;
 			query = "select g from GerenteEtapa g where g.ativado = true and g.etapa = :etapa"),
 	@NamedQuery(name = "Gerente.colaborador",
 			query = "select g from GerenteEtapa g where g.ativado = true and g.colaborador = :colaborador"),
-	@NamedQuery(name = "", 
-			query = "")
 })
 public class GerenteEtapa extends Entidade{
 

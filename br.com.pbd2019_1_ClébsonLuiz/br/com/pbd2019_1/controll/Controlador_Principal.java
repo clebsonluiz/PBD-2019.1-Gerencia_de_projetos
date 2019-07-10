@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JDesktopPane;
+
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
@@ -69,7 +71,7 @@ public class Controlador_Principal {
 	public static final String SUPER_USER_PORTA_BANCO = "5432";
 	public static final String SUPER_USER_NOME_BANCO = "PBD_GESTAO";
 	public static final String SUPER_USER_QT_ENTIDADE_BANCO = "17";
-	public static final String SUPER_USER_USUARIO_BANCO = "postegres";
+	public static final String SUPER_USER_USUARIO_BANCO = "postgres";
 	public static final String SUPER_USER_SENHA_BANCO = "13111996";
 	
 	
@@ -224,7 +226,10 @@ public class Controlador_Principal {
 			JInternal_TabelaLogs jInternal_TabelaLogs,
 			JInternal_InfoLog jInternal_InfoLog,
 			JInternal_TelaAgendarBackup jInternal_TelaAgendarBackup,
-			JInternal_Sobre jInternal_Sobre,
+			
+			JInternal_ColaboradoresEtapa jInternal_ColaboradoresEtapa,
+			JInternal_ColaboradoresSubEtapa jInternal_ColaboradoresSubEtapa,
+			JInternal_ColaboradoresTarefa jInternal_ColaboradoresTarefa,
 			
 			JInternal_TelaCadastroSubEtapa jInternal_TelaCadastroSubEtapa,
 			JInternal_TelaCadastroSubTarefa jInternal_TelaCadastroSubTarefa,
@@ -255,6 +260,11 @@ public class Controlador_Principal {
 		this.jInternal_TabelaLogs = jInternal_TabelaLogs;
 		this.jInternal_InfoLog = jInternal_InfoLog;
 		this.jInternal_TelaAgendarBackup = jInternal_TelaAgendarBackup;
+		
+		this.jInternal_ColaboradoresEtapa = jInternal_ColaboradoresEtapa;
+		this.jInternal_ColaboradoresSubEtapa = jInternal_ColaboradoresSubEtapa;
+		this.jInternal_ColaboradoresTarefa = jInternal_ColaboradoresTarefa;
+		
 		this.jInternal_TelaCadastroSubEtapa = jInternal_TelaCadastroSubEtapa;
 		this.jInternal_TelaCadastroSubTarefa = jInternal_TelaCadastroSubTarefa;
 		this.jInternal_TelaInfoPessoaOutrem =  jInternal_TelaInfoPessoaOutrem;
@@ -285,6 +295,11 @@ public class Controlador_Principal {
 				this.jInternal_TabelaLogs,
 				this.jInternal_InfoLog,
 				this.jInternal_TelaAgendarBackup,
+				
+				this.jInternal_ColaboradoresEtapa,
+				this.jInternal_ColaboradoresSubEtapa,
+				this.jInternal_ColaboradoresTarefa,
+				
 				this.jInternal_TelaCadastroSubEtapa,
 				this.jInternal_TelaCadastroSubTarefa,
 				this.jInternal_TelaInfoPessoaOutrem,
@@ -300,7 +315,12 @@ public class Controlador_Principal {
 				JInternal_Backup_Efetuando.getInstance(),
 				JIF_Reset_Senha.getInstance()
 				);
-		
+	}
+	
+	public void adicionarJInternalsAoJDesktop()
+	{
+		JDesktopPane desktop = telaPrincipal.getjDesktopPane();
+		jifs.forEach(jInternalAbstract-> desktop.add(jInternalAbstract));
 	}
 
 	public void adicionarTableModels() 

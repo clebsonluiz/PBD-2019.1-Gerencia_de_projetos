@@ -13,6 +13,9 @@ import javax.persistence.Transient;
 @NamedQueries({
 	@NamedQuery(name = "Tarefa.etapa",
 			query = "select t from Tarefa t where t.etapa = :etapa and t.ativado = true ORDER BY t.id ASC"),
+	@NamedQuery(name = "Tarefa.colaborador", 
+			query = "select t from Tarefa t inner join TarefaColaborador tc on (t.ativado = true and tc.ativado = true and tc.tarefa.id = t.id and tc = :tarefaColaborador ) ORDER BY t.id ASC "),
+
 })
 
 public class Tarefa extends AbstractTarefa{
