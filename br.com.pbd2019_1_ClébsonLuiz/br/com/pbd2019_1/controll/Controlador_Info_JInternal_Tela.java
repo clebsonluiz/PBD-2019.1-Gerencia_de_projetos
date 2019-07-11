@@ -87,14 +87,14 @@ public class Controlador_Info_JInternal_Tela {
 		.getTelaPessoas()
 		.getBotao()
 		.addActionListener(ActionEvent->
-		{
+		{	//TODO - Muidar aqui
 			try
 			{
 				int index = jInternal_TabelaPessoasColaboradores.getTelaPessoas().getEspecificarComboBox().getSelectedIndex();
 
 				if(index == 0)
 				{
-					ctrl_P.gettPessoa().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(ctrl_P.getPessoa_Logada()));
+					ctrl_P.gettColaboradorProjeto().addAll((List<Pessoa>) Fachada.getInstance().getBoPessoa().buscarPessoasDiferentesDe(ctrl_P.getPessoa_Logada()));
 				}
 				else
 				{
@@ -107,7 +107,7 @@ public class Controlador_Info_JInternal_Tela {
 
 					String disponibilidade = (i == 0)? "": (i == 1)? "true": "false";
 
-					ctrl_P.gettPessoa().addAll(
+					ctrl_P.gettColaboradorProjeto().addAll(
 							(List<Pessoa>) Fachada.getInstance()
 							.getBoPessoa()
 							.buscarPessoasEspecificarDiferentesDe(ctrl_P.getPessoa_Logada(), nome, cpf, disponibilidade)

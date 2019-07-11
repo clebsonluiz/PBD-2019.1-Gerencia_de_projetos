@@ -185,6 +185,11 @@ public class Ctrl_PopUp{
 				{
 					
 					Pessoa t = ctrl_P.gettPessoa().getValor(linha);
+					
+					if(t.getUser_type().equals(Pessoa.SUPER_USER)
+							&& !ctrl_P.getPessoa_Logada().getUser_type().equals(Pessoa.SUPER_USER))
+						throw new ValidacaoException("Você não tem permissão para remover esta pessoa do sistema");
+					
 					Fachada.getInstance().remover(t);
 					ctrl_P.gettPessoa().remover(linha);
 					

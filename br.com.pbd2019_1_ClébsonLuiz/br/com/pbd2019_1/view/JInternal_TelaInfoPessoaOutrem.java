@@ -14,8 +14,8 @@ public class JInternal_TelaInfoPessoaOutrem extends JInternalAbstract {
 		super("TelaInfoPessoaOutrem");
 		setResizable(false);
 		setIconifiable(false);
-		setMinimumSize(new Dimension(320, 420));
-		setPreferredSize(new Dimension(320, 420));
+		setMinimumSize(new Dimension(340, 460));
+		setPreferredSize(new Dimension(340, 460));
 		setSize(getPreferredSize());
 		
 		telaInfoPessoaContatoOutrem = new TelaInfoPessoaContatoOutrem();

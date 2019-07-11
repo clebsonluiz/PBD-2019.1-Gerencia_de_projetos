@@ -1,6 +1,7 @@
 package br.com.pbd2019_1.business;
 
 import java.util.List;
+import java.util.Map;
 
 import br.com.pbd2019_1.dao.DAO;
 import br.com.pbd2019_1.entidade.Entidade;
@@ -33,6 +34,9 @@ public abstract class BO {
 		return this.dao.buscaSQLGenerica(sql);
 	}
 	
+	public List<Map<String,Object>> querySQLGenerica(String sql) throws BOException, DAOException{
+		return this.dao.querySQLGenerica(sql);
+	}
 	protected void validacaoBuscaHQL(String s) throws BOException{
 		//TODO - Serão sobrescritos na classe concreta
 	}

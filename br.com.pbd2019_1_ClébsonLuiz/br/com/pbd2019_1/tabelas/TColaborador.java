@@ -16,7 +16,7 @@ public class TColaborador extends TGenerica<Colaborador>{
 	}
 	
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return (columnIndex == 2);
+		return false;
 	}
 	
 	@Override

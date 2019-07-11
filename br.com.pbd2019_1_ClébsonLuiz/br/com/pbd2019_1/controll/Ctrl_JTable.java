@@ -14,6 +14,7 @@ import br.com.pbd2019_1.entidade.Etapa;
 import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.entidade.SubEtapa;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.tabelas.CellRenderer;
@@ -128,7 +129,9 @@ public class Ctrl_JTable {
 		tableColabSubEtapa.setModel(ctrl_P.gettColaboradorSubEtapa());
 		tableColabTarefa.setModel(ctrl_P.gettColaboradorTarefa());
 		
+		
 		tableTarefas.getColumnModel().getColumn(2).setCellEditor(ctrl_P.gettTarefa().getCellEditor());
+		tableSubTarefas.getColumnModel().getColumn(2).setCellEditor(ctrl_P.gettSubTarefa().getCellEditor());
 		
 		List<JTable> tables = new ArrayList<>();
 		
@@ -192,7 +195,58 @@ public class Ctrl_JTable {
 				{
 					if(table.getModel() instanceof TSubTarefa) 
 					{
-						if (coluna == 4)
+						if (coluna == 3)
+						{
+							if(obj instanceof Boolean)
+							{
+								try 
+								{
+										boolean b = (((Boolean)obj).booleanValue());
+										System.out.println(((Boolean)obj).booleanValue());
+										System.out.println(b);
+										ctrl_P.gettSubTarefa().setValueAt(b, linha, coluna);
+										Fachada.getInstance().atualizar(ctrl_P.gettSubTarefa().getValor(linha));
+										
+										SubEtapa sub_etapa_Atual = ctrl_P.getSubEtapa_Atual();
+										
+										sub_etapa_Atual.setPorcentagem(
+												Fachada.getInstance()
+													.getBoSubEtapa()
+													.recalcularPorcentagem(sub_etapa_Atual)
+												);
+										
+										ctrl_P.getjInternal_TelaInfoSubEtapa()
+											.getTelaInfoSubEtapaSubTarefas()
+											.getTelaInfoSubEtapa()
+											.getBarraProgressBar()
+											.setValue(
+													Math.round(sub_etapa_Atual.getPorcentagem())
+													);
+										
+										Etapa etapa_Atual = ctrl_P.getEtapa_Atual();
+										
+										etapa_Atual.setPorcentagem(
+												Fachada.getInstance()
+													.getBoEtapa()
+													.recalcularPorcentagem(etapa_Atual)
+												);
+										
+										ctrl_P.getjInternal_TelaInfoEtapa()
+											.getTelaEtapa_Tarefas()
+											.getTelaEtapa()
+											.getBarraProgressBar()
+											.setValue(
+													Math.round(etapa_Atual.getPorcentagem())
+													);
+										
+								} 
+								catch (ValidacaoException ve) 
+								{
+									MeuJDialog.exibirAlertaErro(null, "Erro ao alterar", ve.getMessage());
+								}
+							}
+						}
+						else if (coluna == 4)
 						{
 							try 
 							{
@@ -366,7 +420,7 @@ public class Ctrl_JTable {
 					}
 					else if (table.getModel() instanceof TColaborador)
 					{
-						if(coluna == 3) 
+						if(coluna == 2) 
 						{
 							try 
 							{

@@ -15,6 +15,7 @@ public class JInternal_TelaInfoSubEtapa extends JInternalAbstract {
 		setPreferredSize(new Dimension(320, 400));
 		setSize(getPreferredSize());
 		telaInfoSubEtapaSubTarefas = new TelaInfoSubEtapaSubTarefas();
+		telaInfoSubEtapaSubTarefas.getTelaInfoSubEtapa().getTelaCadastroEdicao().desabilitar();
 		getContentPane().add(telaInfoSubEtapaSubTarefas, BorderLayout.CENTER);
 	}
 

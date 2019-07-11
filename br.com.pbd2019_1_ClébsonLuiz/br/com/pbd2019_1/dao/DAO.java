@@ -2,6 +2,7 @@ package br.com.pbd2019_1.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +12,7 @@ import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.transform.Transformers;
 
 import br.com.pbd2019_1.entidade.Entidade;
 import br.com.pbd2019_1.exception.DAOException;
@@ -56,6 +58,42 @@ public abstract class DAO {
 			
 			@SuppressWarnings({ "deprecation", "unchecked" })
 			NativeQuery<Object[]> query = session.createSQLQuery(sql);
+			
+			t = query.list();
+			
+		} 
+		
+		catch (Exception e) 
+		{
+			if(e.getMessage().equals("org.hibernate.MappingException: No Dialect mapping for JDBC type: 2002"))
+			{
+				e.printStackTrace();
+				throw new DAOException("Mapeamento Errado");
+			}
+			if(e.getMessage().equals("org.hibernate.exception.GenericJDBCException: could not extract ResultSet"))
+			{
+				e.printStackTrace();
+				throw new DAOException("Sem resultados");
+			}
+			e.printStackTrace();
+			throw new DAOException("Erro de busca lista SQL no banco de dados");
+		} 
+		finally 
+		{
+			entityManager.close();
+		}
+		return t;
+	}
+	
+	public List<Map<String,Object>> querySQLGenerica(String sql) throws DAOException{
+		EntityManager entityManager = createEntityManager();
+		List<Map<String,Object>> t = null;
+		try {
+			
+			Session session = entityManager.unwrap(Session.class);
+			
+			@SuppressWarnings({ "deprecation", "unchecked" })
+			NativeQuery<Map<String,Object>> query = (NativeQuery<Map<String, Object>>) session.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 			
 			t = query.list();
 			

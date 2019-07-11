@@ -290,6 +290,20 @@ public class Ctrl_Listeners_Projeto {
 					.getTelaCadastroEdicao()
 					.escondeBtn();
 					
+					ctrl_P.getEtapa_Atual().setPorcentagem(
+							Fachada.getInstance()
+								.getBoEtapa()
+								.recalcularPorcentagem(ctrl_P.getEtapa_Atual())
+							);
+					ctrl_P
+						.getjInternal_TelaInfoEtapa()
+						.getTelaEtapa_Tarefas()
+						.getTelaEtapa()
+						.getBarraProgressBar()
+						.setValue(
+								Math.round(ctrl_P.getEtapa_Atual().getPorcentagem())
+								);
+					
 					LogUpdate log = new LogUpdate();
 					Fachada.getInstance().gerarLogUpdate(
 							antes,
@@ -367,6 +381,36 @@ public class Ctrl_Listeners_Projeto {
 
 					Fachada.getInstance().atualizar(ctrl_P.getSubTarefa_Atual());
 					ctrl_P.gettSubTarefa().fireTableDataChanged();
+					
+					//Atualiza porcentagem de sub etapa
+					ctrl_P.getSubEtapa_Atual().setPorcentagem(
+							Fachada.getInstance()
+								.getBoSubEtapa()
+								.recalcularPorcentagem(ctrl_P.getSubEtapa_Atual())
+							);
+					ctrl_P
+						.getjInternal_TelaInfoSubEtapa()
+						.getTelaInfoSubEtapaSubTarefas()
+						.getTelaInfoSubEtapa()
+						.getBarraProgressBar()
+						.setValue(
+								Math.round(ctrl_P.getSubEtapa_Atual().getPorcentagem())
+								);
+					
+					//Atualiza porcentagem de etapa
+					ctrl_P.getEtapa_Atual().setPorcentagem(
+							Fachada.getInstance()
+								.getBoEtapa()
+								.recalcularPorcentagem(ctrl_P.getEtapa_Atual())
+							);
+					ctrl_P
+						.getjInternal_TelaInfoEtapa()
+						.getTelaEtapa_Tarefas()
+						.getTelaEtapa()
+						.getBarraProgressBar()
+						.setValue(
+								Math.round(ctrl_P.getEtapa_Atual().getPorcentagem())
+								);
 					
 					telaInfoSubTarefa
 					.getTelaInfoSubTarefa()
@@ -696,10 +740,14 @@ public class Ctrl_Listeners_Projeto {
 				
 				Fachada.getInstance().inserir(gerenteEtapa);
 			
+				ctrl_P.getjInternal_ColaboradoresEtapa().setVisible(false);
+				
+				ctrl_P.getEtapa_Atual().setGerenteEtapa(gerenteEtapa);
+				
 				TelaColaboradorEnvolvido tce = ctrl_P.getjInternal_TelaInfoEtapa().getTelaEtapa_Tarefas().getTelaEtapa().getTelaColaboradorEnvolvido();
 				
-				tce.getCmptxtResponsavel().setText(colaborador.getPessoa().getNome());
-				tce.getCmptxtDatalog().setText(colaborador.getData_ingresso().toString());
+				tce.getCmptxtResponsavel().setTexto(colaborador.getPessoa().getNome());
+				tce.getCmptxtDatalog().setTexto(colaborador.getData_ingresso().toString());
 				
 				tce.exibirComColaborador();
 				
@@ -732,11 +780,15 @@ public class Ctrl_Listeners_Projeto {
 				subEtapaColaborador.setColaborador(colaborador);
 				
 				Fachada.getInstance().inserir(subEtapaColaborador);
+				
+				ctrl_P.getSubEtapa_Atual().setSubEtapaColaborador(subEtapaColaborador);
 			
+				ctrl_P.getjInternal_ColaboradoresSubEtapa().setVisible(false);
+				
 				TelaColaboradorEnvolvido tce = ctrl_P.getjInternal_TelaInfoSubEtapa().getTelaInfoSubEtapaSubTarefas().getTelaInfoSubEtapa().getTelaColaboradorEnvolvido();
 				
-				tce.getCmptxtResponsavel().setText(colaborador.getPessoa().getNome());
-				tce.getCmptxtDatalog().setText(colaborador.getData_ingresso().toString());
+				tce.getCmptxtResponsavel().setTexto(colaborador.getPessoa().getNome());
+				tce.getCmptxtDatalog().setTexto(colaborador.getData_ingresso().toString());
 				
 				tce.exibirComColaborador();
 				
@@ -770,10 +822,15 @@ public class Ctrl_Listeners_Projeto {
 				
 				Fachada.getInstance().inserir(tarefaColaborador);
 			
+				ctrl_P.getTarefa_Atual().setTarefaColaborador(tarefaColaborador);
+				
+				ctrl_P.getjInternal_ColaboradoresTarefa().setVisible(false);
+				
+				
 				TelaColaboradorEnvolvido tce = ctrl_P.getjInternal_TelaInfoTarefa().getTelaInfoTarefa().getTelaColaboradorEnvolvido();
 				
-				tce.getCmptxtResponsavel().setText(colaborador.getPessoa().getNome());
-				tce.getCmptxtDatalog().setText(colaborador.getData_ingresso().toString());
+				tce.getCmptxtResponsavel().setTexto(colaborador.getPessoa().getNome());
+				tce.getCmptxtDatalog().setTexto(colaborador.getData_ingresso().toString());
 				
 				tce.exibirComColaborador();
 				
