@@ -78,13 +78,16 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 		
 		telaMiniPessoa2 = new TelaMiniPessoa2();
 		telaMiniPessoa2.getExibirSenhaChbx0().setBounds(215, 22, 75, 41);
-		((TitledBorder)telaMiniPessoa2.getBorder()).setTitle("Senha e Confirmar senha");;
+		((TitledBorder)telaMiniPessoa2.getBorda()).setTitle("Senha e Confirmar senha");;
 		telaMiniPessoa2.getPanel().setBounds(6, 6, 300, 140);
 		telaMiniPessoa2.getExibirSenhaChbx().setLocation(217, 76);
 		telaMiniPessoa2.getSenhaNovaField().setSize(202, 45);
 		telaMiniPessoa2.getSenhaNovaField().setLocation(10, 80);
 		telaMiniPessoa2.getSenhaAntigaField().setBounds(10, 25, 202, 45);
 		telaMiniPessoa2.setBounds(0, 147, 319, 150);
+		
+		telaMiniPessoa2.getSenhaAntigaField().setText("");
+		telaMiniPessoa2.getSenhaNovaField().setText("");
 		
 		telaMiniPessoa2.getSenhaAntigaField().setDescricao("Senha");
 		telaMiniPessoa2.getSenhaNovaField().setDescricao("Confirmar Senha");
@@ -101,13 +104,18 @@ public class TelaCadastro_Pessoa extends MeuJPanel{
 				if(str2.equals(str1) && !str1.trim().equals(""))
 				{
 					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.green.brighter());
-					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.WHITE);
+					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.black);
 				}
 				else if(!str2.equals(str1) && !str1.trim().equals(""))
 				{
 					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.red.brighter());
 					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.WHITE);
 				}
+				
+//				if(telaMiniPessoa2.getSenhaNovaField().getBackground() == Color.RED.brighter())
+//					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.white);
+//				else if (telaMiniPessoa2.getSenhaNovaField().getTexto().equals(""))
+//					telaMiniPessoa2.getSenhaNovaField().setForeground(Color.black);
 				/*else
 				{
 					telaMiniPessoa2.getSenhaNovaField().setBackground(Color.white);

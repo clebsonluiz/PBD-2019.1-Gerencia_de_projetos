@@ -1,7 +1,6 @@
 package br.com.pbd2019_1.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
@@ -59,8 +58,8 @@ public abstract class TelaPessoaContatoCaracteristica extends JPanel {
 		panel0.setBackground(telaMiniPessoa1.getBackground());
 		panel1.setBackground(telaMiniPessoa2.getBackground());
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.red);
+//		JPanel panel = new JPanel();
+//		panel.setBackground(Color.red);
 		
 		panel0.add(telaMiniPessoa1);
 		panel1.add(telaMiniPessoa2);

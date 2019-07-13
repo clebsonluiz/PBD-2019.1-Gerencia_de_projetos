@@ -132,9 +132,8 @@ public class TelaMiniPessoa2 extends MeuJPanel {
 		return exibirSenhaChbx0;
 	}
 
-	public Border getBorder() {
+	public Border getBorda() {
 		return border;
 	}
-	
 	
 }

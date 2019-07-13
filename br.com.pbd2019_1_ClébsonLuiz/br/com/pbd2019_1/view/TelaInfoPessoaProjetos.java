@@ -3,18 +3,17 @@ package br.com.pbd2019_1.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
-public class TelaInfoPessoaProjetos extends JPanel {
+public class TelaInfoPessoaProjetos extends MeuJPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private TelaInfoPessoa telaInfoPessoa;
 	private TelaProjetos telaProjetos;
 	private TelaColaboracoes telaColaboracoes;
-
+	private TelaJTabViewColaborador telaJTabViewColaborador;
 	private JTabbedPane tabbedPane;
 	
 	public TelaInfoPessoaProjetos() {
@@ -36,15 +35,21 @@ public class TelaInfoPessoaProjetos extends JPanel {
 		
 		telaProjetos = new TelaProjetos();
 		telaColaboracoes = new TelaColaboracoes();
+		telaJTabViewColaborador = new TelaJTabViewColaborador();
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 //		tabbedPane.setPreferredSize(new Dimension(400, 430));
 		
-		tabbedPane.addTab("Meus Projetos", telaProjetos);
-		tabbedPane.addTab("Minhas Colaborações", telaColaboracoes);
+		
+		JTabbedPane jTabbedPane = new JTabbedPane();
+		
+		jTabbedPane.addTab("Como Colaborador de Projeto", telaColaboracoes);
+		jTabbedPane.addTab("Colaborando como", telaJTabViewColaborador);
 		
 		splitPane.setRightComponent(tabbedPane);
 		
+		tabbedPane.addTab("Meus Projetos", telaProjetos);
+		tabbedPane.addTab("Minhas Colaborações", jTabbedPane);
 	}
 
 	public TelaInfoPessoa getTelaInfoPessoa() {
@@ -61,6 +66,10 @@ public class TelaInfoPessoaProjetos extends JPanel {
 
 	public JTabbedPane getTabbedPane() {
 		return tabbedPane;
+	}
+
+	public TelaJTabViewColaborador getTelaJTabViewColaborador() {
+		return telaJTabViewColaborador;
 	}
 	
 }
