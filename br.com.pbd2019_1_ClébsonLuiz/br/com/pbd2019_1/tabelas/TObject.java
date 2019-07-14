@@ -2,6 +2,7 @@ package br.com.pbd2019_1.tabelas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -38,6 +39,36 @@ public class TObject extends AbstractTableModel{
 
 			this.t.clear();
 			this.t.addAll(t);
+			fireTableStructureChanged();
+			fireTableDataChanged();
+		}
+	}
+	
+	public void addAllMap(List<Map<String, Object>> t) {
+		
+		if(t != null)
+		{
+			this.colunas.clear();
+			this.t.clear();
+			
+			if(t.size() > 0)
+			{
+				t.get(0).keySet().forEach(coluna->colunas.add(coluna));
+
+				
+				for(int i = 0; i < t.size(); i++)
+				{
+					Object[] o = new Object[colunas.size()];
+					Object coluna[] = t.get(i).keySet().toArray();
+					
+					for(int j = 0; j < coluna.length; j ++)
+					{
+						o[j] = t.get(i).get(coluna[j].toString());
+					}
+					
+					this.t.add(o);
+				}
+			}
 			fireTableStructureChanged();
 			fireTableDataChanged();
 		}

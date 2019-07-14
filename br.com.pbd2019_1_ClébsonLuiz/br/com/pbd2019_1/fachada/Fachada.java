@@ -1,6 +1,7 @@
 package br.com.pbd2019_1.fachada;
 
 import java.util.List;
+import java.util.Map;
 
 import br.com.pbd2019_1.business.BO;
 import br.com.pbd2019_1.business.BOBackup;
@@ -297,6 +298,10 @@ public class Fachada {
 	
 	public List<Object[]> inserirSQLGenerica(String sql) throws BOException, DAOException{
 		return bo.buscaSQLGenerica(sql);
+	}
+	
+	public List<Map<String, Object>> querySQLGenerica(String sql) throws BOException, DAOException{
+		return bo.querySQLGenerica(sql);
 	}
 	
 	/*Getters*/

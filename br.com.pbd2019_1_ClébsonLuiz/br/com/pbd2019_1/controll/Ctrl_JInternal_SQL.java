@@ -43,7 +43,10 @@ public class Ctrl_JInternal_SQL {
 				if(sql == null)
 					sql = telaInserirSQL.getTextArea().getText();
 			
-				ctrl_P.gettObject().addAll(Fachada.getInstance().inserirSQLGenerica(sql));
+//				ctrl_P.gettObject().addAll(Fachada.getInstance().inserirSQLGenerica(sql));
+				ctrl_P.gettObject().addAllMap(
+						Fachada.getInstance().querySQLGenerica(sql)
+						);
 				
 				telaInserirSQL.getExceptionTextArea().setText("");
 			} catch (ValidacaoException e) {
