@@ -48,7 +48,7 @@ public class BOViewTarefaColaborador extends BOView<ViewTarefaColaborador>
 	
 	public ViewTarefaColaborador getPorTarefa(int id_tarefa) throws DAOException, BOException
 	{
-		return buscaHQLGenerica("select tc from tarefa_colaborador_view tc where tc.cod_de_tarefa = " + id_tarefa);
+		return buscaHQLGenerica("select tc from ViewTarefaColaborador tc where tc.cod_de_tarefa = " + id_tarefa);
 	}
 	
 }

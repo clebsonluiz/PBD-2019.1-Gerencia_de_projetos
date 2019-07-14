@@ -1,7 +1,9 @@
 package br.com.pbd2019_1.dao;
 
+import java.awt.Paint;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,10 +19,18 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import br.com.pbd2019_1.entidade.AbstractEtapa;
 import br.com.pbd2019_1.entidade.Colaborador;
 import br.com.pbd2019_1.entidade.Etapa;
+import br.com.pbd2019_1.entidade.Pessoa;
 import br.com.pbd2019_1.entidade.Projeto;
+import br.com.pbd2019_1.entidade.SubEtapa;
 import br.com.pbd2019_1.entidade.Tarefa;
+import br.com.pbd2019_1.entidade.ViewGerenteEtapa;
+import br.com.pbd2019_1.entidade.ViewSubEtapaColaborador;
+import br.com.pbd2019_1.entidade.ViewTarefaColaborador;
+import br.com.pbd2019_1.exception.BOException;
+import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
 import br.com.pbd2019_1.fachada.Fachada;
 import br.com.pbd2019_1.utils.ChartsUtil;
@@ -29,7 +39,9 @@ import br.com.pbd2019_1.utils.RelatorioUtil;
 import br.com.pbd2019_1.utils.RelatorioUtil.DocUtil;
 
 public class DAOResRelatorio {
-
+	
+	final java.awt.Font font = new java.awt.Font("Arial", java.awt.Font.PLAIN, 20);
+	
 	private Document documento;
 	private PdfWriter writer;
 	
@@ -53,19 +65,25 @@ public class DAOResRelatorio {
 		return documento;
 	}
 	
-	public void gerarRelatorio(int op, Projeto projeto, String pathCaminho) throws FileNotFoundException, DocumentException
+	public void gerarRelatorio(int op, Projeto projeto, String pathCaminho) throws FileNotFoundException, DocumentException, ValidacaoException
 	{
 		Document documento = criarDocumento(pathCaminho);
 		
 		switch (op) 
 		{
 			case 0:
+				buscarDadosProjeto(projeto, false);
+				buscarColaboradores(projeto);
 				gerarRelatorioSistematico(projeto, documento);
 				break;
 			case 1:
+				buscarDadosProjeto(projeto, true);
+				buscarColaboradores(projeto);
 				gerarRelatorioCompleto(projeto, documento);
 				break;
 			case 2:
+				buscarDadosProjeto(projeto, true);
+				buscarColaboradores(projeto);
 				gerarRelatorioAnalitico(projeto, documento);
 				break;
 		}
@@ -105,7 +123,7 @@ public class DAOResRelatorio {
 	
 	public void conteudoProjetoCompletoTabelas(Projeto projeto, Document documento) throws DocumentException
 	{
-		conteudoProjeto("RELATORIO DE PROJETO", projeto, documento);
+		conteudoProjeto("RELATORIO ANALÍTICO", projeto, documento);
 		
 		Paragraph paragraph;
 		
@@ -130,33 +148,77 @@ public class DAOResRelatorio {
 		
 		for(int i = 0; i < projeto.getEtapas().size(); i++) 
 		{
-			
 			Etapa e = projeto.getEtapas().get(i);
 			paragraph = gerarParaEtapa(e, (i + 1) + ". Etapa", 1);
 			DocUtil.addEmptyLine(paragraph, 1);
 			documento.add(paragraph);
 			
+			try 
+			{
+				documento.add(buscarGerenteEtapa(e));
+			} 
+			catch (ValidacaoException e2) 
+			{
+				e2.printStackTrace();
+			}
 			
-			if(e.getTarefas().size() > 0) {
-				
+			if(e.getTarefas().size() > 0)
 				paragraph = DocUtil.addParagrafo("Tarefas da "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+//			else
+//				paragraph = DocUtil.addParagrafo("Não se tem tarefas adicionadas para "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+			documento.add(paragraph);
+			for(int j = 0; j < e.getTarefas().size(); j++) 
+			{
+				Tarefa t = e.getTarefas().get(j);
+				paragraph = gerarParaTarefa(t, DocUtil.addTab(2) + (j + 1) + ". Tarefa", 3);
 				DocUtil.addEmptyLine(paragraph, 1);
 				documento.add(paragraph);
-				documento.add(DocUtil.addTabelaTarefas(e.getTarefas()));
-			}
-			else {
-				paragraph = DocUtil.addParagrafo("Não se tem tarefas adicionadas para a "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
-				documento.add(paragraph);
+				
+				try 
+				{
+					documento.add(buscarColaboradorTarefa(t));
+				}
+				catch (ValidacaoException e1) 
+				{
+					e1.printStackTrace();
+				}
 			}
 			
+			if(e.getSub_etapas().size() > 0)
+				paragraph = DocUtil.addParagrafo("Sub Etapas da "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+			documento.add(paragraph);
+			for(int j = 0; j < e.getSub_etapas().size(); j++) 
+			{
+				SubEtapa sub = e.getSub_etapas().get(j);
+				paragraph = gerarParaEtapa(sub, DocUtil.addTab(0) + (j + 1) + ". Sub Etapa", 3);
+				DocUtil.addEmptyLine(paragraph, 1);
+				documento.add(paragraph);
+				
+				try 
+				{
+					documento.add(buscarColaboradorSubEtapa(sub));
+				} 
+				catch (ValidacaoException e1)
+				{
+					e1.printStackTrace();
+				}
+				
+				if(sub.getSub_tarefas().size() > 0)
+					paragraph = DocUtil.addParagrafo("Sub Tarefas da "+ (i + 1) + ". Sub Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+				
+				paragraph.add(DocUtil.addTabelaTarefas(sub.getSub_tarefas()));
+				
+				DocUtil.addEmptyLine(paragraph, 1);
+				documento.add(paragraph);
+				
+			}
 		}
-		
 		
 	}
 	
 	public void conteudoProjetoCompleto(Projeto projeto, Document documento) throws DocumentException
 	{
-		conteudoProjeto("RELATORIO DE PROJETO", projeto, documento);
+		conteudoProjeto("RELATORIO COMPLETO", projeto, documento);
 		
 		Paragraph paragraph;
 		
@@ -194,8 +256,8 @@ public class DAOResRelatorio {
 			
 			if(e.getTarefas().size() > 0)
 				paragraph = DocUtil.addParagrafo("Tarefas da "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
-			else
-				paragraph = DocUtil.addParagrafo("Não se tem tarefas adicionadas para "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+//			else
+//				paragraph = DocUtil.addParagrafo("Não se tem tarefas adicionadas para "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
 			documento.add(paragraph);
 			for(int j = 0; j < e.getTarefas().size(); j++) 
 			{
@@ -204,14 +266,31 @@ public class DAOResRelatorio {
 				DocUtil.addEmptyLine(paragraph, 1);
 				documento.add(paragraph);
 			}
+			
+			if(e.getSub_etapas().size() > 0)
+				paragraph = DocUtil.addParagrafo("Sub Etapas da "+ (i + 1) + ". Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+			documento.add(paragraph);
+			for(int j = 0; j < e.getSub_etapas().size(); j++) 
+			{
+				SubEtapa sub = e.getSub_etapas().get(j);
+				paragraph = gerarParaEtapa(sub, DocUtil.addTab(0) + (j + 1) + ". Sub Etapa", 3);
+				DocUtil.addEmptyLine(paragraph, 1);
+				documento.add(paragraph);
+				
+				if(sub.getSub_tarefas().size() > 0)
+					paragraph = DocUtil.addParagrafo("Sub Tarefas da "+ (i + 1) + ". Sub Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_CENTER);
+				
+				paragraph.add(DocUtil.addTabelaTarefas(sub.getSub_tarefas()));
+				
+				DocUtil.addEmptyLine(paragraph, 1);
+				documento.add(paragraph);
+			}
 		}
-		
-		
 	}
 	
 	public void conteudoProjetoResumido(Projeto projeto, Document documento) throws DocumentException
 	{
-		conteudoProjeto("RELATORIO DE PROJETO", projeto, documento);
+		conteudoProjeto("RELATORIO SISTEMATICO", projeto, documento);
 		
 		Paragraph paragraph;
 		PdfPTable table;
@@ -306,7 +385,7 @@ public class DAOResRelatorio {
 	}
 	
 	
-	public Paragraph gerarParaEtapa(Etapa etapa, String paragrafo, int tab)
+	public Paragraph gerarParaEtapa(AbstractEtapa etapa, String paragrafo, int tab)
 	{
 		Paragraph paragraph = new Paragraph(" ");
 
@@ -369,9 +448,14 @@ public class DAOResRelatorio {
 		
 		String data = DateUtil.getDateString("dd/MM/yyyy", DateUtil.getDate(horaData[0]));
 		
+		String status = (tarefa.isConcluida()) ? "Finalizada" : "Não Finalizada";
+		
+		if(tarefa.getHorario().isBefore(LocalDateTime.now()) && !tarefa.isConcluida())
+			status = "ATRASADA";
+		
 		paragraph.add(new Paragraph(DocUtil.addTab(tab) + "Nome: "+ tarefa.getNome()));
 		paragraph.add(new Paragraph(DocUtil.addTab(tab) + "Descrição: "+ tarefa.getDescricao()));
-		paragraph.add(new Paragraph(DocUtil.addTab(tab) + "Estado: "+ ((tarefa.isConcluida())? "Finalizada" : "Não Finalizada")));
+		paragraph.add(new Paragraph(DocUtil.addTab(tab) + "Estado: "+ status));
 		paragraph.add(new Paragraph(DocUtil.addTab(tab) + "Prioridade: "+ tarefa.getPrioridade()));
 		paragraph.add(new Paragraph(DocUtil.addTab(tab) + "Horário: "+ hora[0] + ":"+ hora[1] + ":" + hora[2]));
 		paragraph.add(new Paragraph(DocUtil.addTab(tab) + "Data: "+ data));
@@ -379,4 +463,256 @@ public class DAOResRelatorio {
 		return paragraph;
 	}
 	
+	public Paragraph buscarGerenteEtapa(Etapa etapa) throws BOException, DAOException
+	{
+		ViewGerenteEtapa vge = Fachada.getInstance()
+					.getBoViewGerenteEtapa().getPorEtapa(etapa.getId());
+		
+		Paragraph paragraph = null;
+		if(vge != null)
+		{
+			paragraph = DocUtil.addParagrafo(DocUtil.addTab(2) + "Gerente de Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_LEFT);
+			Image image = null;
+			
+			Pessoa p = new Pessoa();
+			p.setId(vge.getCod_de_pessoa());
+			
+			int[] var = Fachada.getInstance().getBoPessoa().buscarDesempenhoEtapas(p);
+			
+			Map<String, Double> map = new HashMap<>();
+			map.put("Completas", (double)var[0]);
+			map.put("Incompletas", (double)var[1]);
+			
+			try 
+			{
+				image = DocUtil.getGrafico(writer, 500, 200, 50, "Completas", map, "{1}", "Medida de Etapas", font, new Paint[] {java.awt.Color.yellow, java.awt.Color.RED});
+				image.setAlignment(Element.ALIGN_CENTER);
+			} 
+			catch (Exception e) {e.printStackTrace();}
+			
+			PdfPTable table = new PdfPTable(2);
+			table.setTotalWidth(DocUtil.LARGURA_TOTAL - DocUtil.M_ESQ - (DocUtil.M_DIR * 4));
+			table.setLockedWidth(true);
+			
+			PdfPCell c0 = new PdfPCell(new Phrase("CPF", DocUtil.SUBCATEGORIA_NEGRITO_FONT));
+			c0.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c0.setBackgroundColor(BaseColor.WHITE);
+			c0.setBorder(PdfPCell.NO_BORDER);
+			c0.setPadding(10);
+			table.addCell(c0);
+			
+			c0 = new PdfPCell(new Phrase(" "));
+			c0.setHorizontalAlignment(Element.ALIGN_CENTER);
+			c0.setBackgroundColor(BaseColor.WHITE);
+			c0.setBorder(PdfPCell.NO_BORDER);
+			c0.setPadding(10);
+			table.addCell(c0);
+			
+			PdfPCell c1 = new PdfPCell(new Phrase(vge.getCpf_pessoa()));
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(BaseColor.WHITE);
+			c1.setBorder(PdfPCell.NO_BORDER);
+			c1.setPadding(10);
+			table.addCell(c1);
+			
+			c1 = new PdfPCell(image);
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(BaseColor.WHITE);
+			c1.setBorder(PdfPCell.NO_BORDER);
+			c1.setPadding(10);
+			table.addCell(c1);
+			
+			paragraph.add(table);
+		}
+		else
+			paragraph = new Paragraph("");
+		
+		return paragraph;
+	}
+	
+	public Paragraph buscarColaboradorSubEtapa(SubEtapa etapa) throws BOException, DAOException
+	{
+		ViewSubEtapaColaborador vse = Fachada.getInstance()
+					.getBoViewSubEtapaColaborador()
+					.getPorSubEtapa(etapa.getId());
+		
+		Paragraph paragraph = null;
+		if(vse != null)
+		{
+			paragraph = DocUtil.addParagrafo(DocUtil.addTab(3) + "Colaborador de Sub Etapa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_LEFT);
+			Image image = null;
+			
+			Pessoa p = new Pessoa();
+			p.setId(vse.getCod_de_pessoa());
+			
+			int[] var = Fachada.getInstance().getBoPessoa().buscarDesempenhoEtapas(p);
+			
+			Map<String, Double> map = new HashMap<>();
+			map.put("Completas", (double)var[0]);
+			map.put("Incompletas", (double)var[1]);
+			
+			try 
+			{
+				image = DocUtil.getGrafico(writer, 500, 200, 50, "Completas", map, "{1}", "Medida de Etapas", font, new Paint[] {java.awt.Color.yellow, java.awt.Color.RED});
+				image.setAlignment(Element.ALIGN_CENTER);
+			} 
+			catch (Exception e) {e.printStackTrace();}
+			
+			PdfPTable table = new PdfPTable(2);
+			table.setTotalWidth(DocUtil.LARGURA_TOTAL - DocUtil.M_ESQ - (DocUtil.M_DIR * 4));
+			table.setLockedWidth(true);
+			
+			PdfPCell c0 = new PdfPCell(new Phrase("CPF", DocUtil.SUBCATEGORIA_NEGRITO_FONT));
+			c0.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c0.setBackgroundColor(BaseColor.WHITE);
+			c0.setBorder(PdfPCell.NO_BORDER);
+			c0.setPadding(10);
+			table.addCell(c0);
+			
+			c0 = new PdfPCell(new Phrase(" "));
+			c0.setHorizontalAlignment(Element.ALIGN_CENTER);
+			c0.setBackgroundColor(BaseColor.WHITE);
+			c0.setBorder(PdfPCell.NO_BORDER);
+			c0.setPadding(10);
+			table.addCell(c0);
+			
+			PdfPCell c1 = new PdfPCell(new Phrase(vse.getCpf_pessoa()));
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(BaseColor.WHITE);
+			c1.setBorder(PdfPCell.NO_BORDER);
+			c1.setPadding(10);
+			table.addCell(c1);
+			
+			c1 = new PdfPCell(image);
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(BaseColor.WHITE);
+			c1.setBorder(PdfPCell.NO_BORDER);
+			c1.setPadding(10);
+			table.addCell(c1);
+			
+			paragraph.add(table);
+		}
+		else
+			paragraph = new Paragraph("");
+		
+		return paragraph;
+	}
+	
+	public Paragraph buscarColaboradorTarefa(Tarefa tarefa) throws BOException, DAOException
+	{
+		ViewTarefaColaborador vt = Fachada.getInstance()
+				.getBoViewTarefaColaborador()
+				.getPorTarefa(tarefa.getId());
+		
+		Paragraph paragraph = null;
+		if(vt != null)
+		{
+			paragraph = DocUtil.addParagrafo( DocUtil.addTab(3) + "Colaborador de Tarefa", DocUtil.SUBCATEGORIA_NEGRITO_FONT, Element.ALIGN_LEFT);
+			Image image = null;
+			
+			Pessoa p = new Pessoa();
+			p.setId(vt.getCod_de_pessoa());
+			
+			int[] var = Fachada.getInstance().getBoPessoa().buscarDesempenhoEtapas(p);
+			
+			Map<String, Double> map = new HashMap<>();
+			map.put("Completas", (double)var[0]);
+			map.put("Incompletas", (double)var[1]);
+			
+			try 
+			{
+				image = DocUtil.getGrafico(writer, 500, 200, 50, "Completas", map, "{1}", "Medida de Etapas", font, new Paint[] {java.awt.Color.yellow, java.awt.Color.RED});
+				image.setAlignment(Element.ALIGN_CENTER);
+			} 
+			catch (Exception e) {e.printStackTrace();}
+			
+			PdfPTable table = new PdfPTable(2);
+			table.setTotalWidth(DocUtil.LARGURA_TOTAL - DocUtil.M_ESQ - (DocUtil.M_DIR * 4));
+			table.setLockedWidth(true);
+			
+			PdfPCell c0 = new PdfPCell(new Phrase("CPF", DocUtil.SUBCATEGORIA_NEGRITO_FONT));
+			c0.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c0.setBackgroundColor(BaseColor.WHITE);
+			c0.setBorder(PdfPCell.NO_BORDER);
+			c0.setPadding(10);
+			table.addCell(c0);
+			
+			c0 = new PdfPCell(new Phrase(""));
+			c0.setHorizontalAlignment(Element.ALIGN_CENTER);
+			c0.setBackgroundColor(BaseColor.WHITE);
+			c0.setBorder(PdfPCell.NO_BORDER);
+			c0.setPadding(10);
+			table.addCell(c0);
+			
+			PdfPCell c1 = new PdfPCell(new Phrase(vt.getCpf_pessoa()));
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(BaseColor.WHITE);
+			c1.setBorder(PdfPCell.NO_BORDER);
+			c1.setPadding(10);
+			table.addCell(c1);
+			
+			c1 = new PdfPCell(image);
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(BaseColor.WHITE);
+			c1.setBorder(PdfPCell.NO_BORDER);
+			c1.setPadding(10);
+			table.addCell(c1);
+			
+			paragraph.add(table);
+		}
+		else
+			paragraph = new Paragraph("");
+		
+		return paragraph;
+	}
+	
+	private void buscarDadosProjeto(Projeto projeto, boolean loadEtapas) throws ValidacaoException
+	{
+		projeto.setEtapas(
+				Fachada.getInstance().getBoEtapa().buscarPorProjeto(projeto)
+				);
+		if(loadEtapas)
+		{
+			for(Etapa etapa : projeto.getEtapas()) 
+			{
+				buscarTarefas(etapa);
+				buscarSubEtapas(etapa);
+			}
+		}
+	}
+	private void buscarColaboradores(Projeto projeto) throws ValidacaoException
+	{
+		projeto.setColaboradores(
+				Fachada.getInstance().getBoColaborador().buscarPorProjeto(projeto)
+				);
+		for(Colaborador colaborador : projeto.getColaboradores())
+		{
+			colaborador.setPessoa(
+					Fachada.getInstance()
+					.getBoPessoa()
+					.buscar(
+							colaborador.getPessoa().getId()
+							)
+					);
+		}
+	}
+	private void buscarTarefas(Etapa etapa) throws ValidacaoException
+	{
+		etapa.setTarefas(
+				Fachada.getInstance().getBoTarefa().buscarPorEtapa(etapa)
+				);
+	}
+	private void buscarSubEtapas(Etapa etapa) throws ValidacaoException
+	{
+		etapa.setSub_etapas(
+				Fachada.getInstance().getBoSubEtapa().getListPorEtapa(etapa)
+				);
+		for(SubEtapa sub: etapa.getSub_etapas()) buscarSubTarefas(sub);
+	}
+	private void buscarSubTarefas(SubEtapa sub_etapa) throws ValidacaoException
+	{
+		sub_etapa.setSub_tarefas(
+				Fachada.getInstance().getBoSubTarefa().getListPorEtapa(sub_etapa)
+				);
+	}
 }

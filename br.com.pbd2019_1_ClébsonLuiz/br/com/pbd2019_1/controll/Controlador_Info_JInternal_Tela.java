@@ -571,45 +571,6 @@ public class Controlador_Info_JInternal_Tela {
 							Projeto projeto = ctrl_P.gettProjeto().getValor(index);
 							String path = MeuJFileChooser.getInstance().getSelectedFile().getAbsolutePath();
 						
-						
-							projeto.setColaboradores(Fachada.getInstance().getBoColaborador().buscarPorProjeto(projeto));
-							
-							projeto.getColaboradores().forEach(colaborador->{
-								try
-								{
-									colaborador.setPessoa(
-											Fachada.getInstance()
-											.getBoPessoa()
-											.buscar(
-													colaborador.getPessoa().getId()
-													)
-									);
-								}
-								catch (ValidacaoException e)
-								{
-									MeuJDialog.exibirAlertaErro(null, "Erro ao Consultar dados de colaborador", e.getMessage());
-								}
-							});
-							
-							projeto.setEtapas(Fachada.getInstance().getBoEtapa().buscarPorProjeto(projeto));
-							
-							projeto.getEtapas().forEach(etapa->{
-								try
-								{
-									etapa.setTarefas(
-											Fachada.getInstance()
-											.getBoTarefa()
-											.buscarPorEtapa(etapa)
-									);
-								}
-								catch (ValidacaoException e)
-								{
-									MeuJDialog.exibirAlertaErro(null, "Erro ao consultar dados de etapa", e.getMessage());
-								}
-							});
-							
-							
-							
 							DAOResRelatorio.getInstance().gerarRelatorio(
 									telaInfoPessoaProjetos.getTelaInfoPessoaProjetos()
 									.getTelaProjetos().getComboBox().getSelectedIndex(),

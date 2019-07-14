@@ -25,7 +25,7 @@ public class BOViewGerenteEtapa extends BOView<ViewGerenteEtapa>{
 	
 	public ViewGerenteEtapa getPorEtapa(int id_etapa) throws DAOException, BOException
 	{
-		return buscaHQLGenerica("select ge from ViewGerenteEtapa where ge.cod_de_etapa = " + id_etapa);
+		return buscaHQLGenerica("select ge from ViewGerenteEtapa ge where ge.cod_de_etapa = " + id_etapa);
 	}
 }
 

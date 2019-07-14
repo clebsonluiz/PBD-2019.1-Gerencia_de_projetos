@@ -28,22 +28,20 @@ public class Etapa extends AbstractEtapa{
 	@Transient
 	private List<Tarefa> tarefas;
 	@Transient
+	private List<SubEtapa> sub_etapas;
+	@Transient
 	private GerenteEtapa gerenteEtapa;
 	
 	public Etapa() {}
 
 	public Projeto getProjeto() {return projeto;}
 	public List<Tarefa> getTarefas() {return tarefas;}
+	public GerenteEtapa getGerenteEtapa() {return gerenteEtapa;}
+	public List<SubEtapa> getSub_etapas() {return sub_etapas;}
 
 	public void setProjeto(Projeto projeto) {this.projeto = projeto;}
 	public void setTarefas(List<Tarefa> tarefas) {this.tarefas = tarefas;}
-
-	public GerenteEtapa getGerenteEtapa() {
-		return gerenteEtapa;
-	}
-
-	public void setGerenteEtapa(GerenteEtapa gerenteEtapa) {
-		this.gerenteEtapa = gerenteEtapa;
-	}
+	public void setGerenteEtapa(GerenteEtapa gerenteEtapa) {this.gerenteEtapa = gerenteEtapa;}
+	public void setSub_etapas(List<SubEtapa> sub_etapas) {this.sub_etapas = sub_etapas;}
 
 }

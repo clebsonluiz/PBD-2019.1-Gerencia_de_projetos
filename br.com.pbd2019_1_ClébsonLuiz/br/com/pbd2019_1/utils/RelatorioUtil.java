@@ -5,6 +5,7 @@ import java.awt.Paint;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -529,7 +530,12 @@ public interface RelatorioUtil {
 				celula.setPadding(10);
 				table.addCell(celula);
 
-				celula = new PdfPCell(new Phrase((tarefa.isConcluida()) ? "Finalizada" : "Não Finalizada"));
+				String status = (tarefa.isConcluida()) ? "Finalizada" : "Não Finalizada";
+					
+				if(tarefa.getHorario().isBefore(LocalDateTime.now()) && !tarefa.isConcluida())
+					status = "ATRASADA";
+				
+				celula = new PdfPCell(new Phrase(status));
 				celula.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celula.setBorderColor(BaseColor.WHITE);
 				celula.setBackgroundColor(cor);
