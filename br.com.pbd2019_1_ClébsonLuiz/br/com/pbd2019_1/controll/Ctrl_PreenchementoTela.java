@@ -311,7 +311,7 @@ public class Ctrl_PreenchementoTela {
 		TelaInfoPessoaContatoOutrem tIP = ctrl_P.getjInternal_TelaInfoPessoaOutrem().getTelaInfoPessoaContatoOutrem();
 		
 		atualizarDadoPessoaContatoOutrem(tIP, ctrl_P.getPessoa_Outrem(), ctrl_P.gettCaracteristicaExtra2());
-		ctrl_P.getjInternal_TelaInfoPessoa().queroFoco();
+		ctrl_P.getjInternal_TelaInfoPessoaOutrem().queroFoco();
 	}
 	
 	public void exibirJInternalInfoMinhaPessoa(Pessoa p) throws ValidacaoException, PropertyVetoException
@@ -343,6 +343,37 @@ public class Ctrl_PreenchementoTela {
 		
 		ctrl_P.getjInternal_InfoLog().queroFoco();
 	}
+	
+	public void exibirMinhaColaboracaoGerenteEtapa(Etapa e) throws PropertyVetoException, ValidacaoException
+	{
+		exibirJInternalInfoEtapa(e);
+		ctrl_P.getjInternal_TelaInfoEtapa()
+		.getTelaEtapa_Tarefas()
+		.getTelaEtapa()
+		.getTelaColaboradorEnvolvido()
+		.exibirComColaboradorVisaoColaborador();
+	}
+	
+	public void exibirMinhaColaboracaoSubEtapa(SubEtapa sb) throws PropertyVetoException, ValidacaoException
+	{
+		exibirJInternalInfoSubEtapa(sb);
+		
+		ctrl_P.getjInternal_TelaInfoSubEtapa()
+		.getTelaInfoSubEtapaSubTarefas()
+		.getTelaInfoSubEtapa()
+		.getTelaColaboradorEnvolvido()
+		.exibirComColaboradorVisaoColaborador();
+	}
+	
+	public void exibirMinhaColaboracaoTarefa(Tarefa t) throws PropertyVetoException, ValidacaoException
+	{
+		exibirJInternalInfoTarefa(t);
+		ctrl_P.getjInternal_TelaInfoTarefa()
+		.getTelaInfoTarefa()
+		.getTelaColaboradorEnvolvido()
+		.exibirComColaboradorVisaoColaborador();
+	}
+	
 	
 	
 	/*

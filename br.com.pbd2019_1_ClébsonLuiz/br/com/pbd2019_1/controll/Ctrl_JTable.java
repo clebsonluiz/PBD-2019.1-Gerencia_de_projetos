@@ -401,7 +401,7 @@ public class Ctrl_JTable {
 					}
 					else if (table.getModel() instanceof TColaboracoes)
 					{
-						if(coluna == 3)
+						if(coluna == 2)
 						{
 							try 
 							{

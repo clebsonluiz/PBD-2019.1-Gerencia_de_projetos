@@ -18,7 +18,9 @@
     	<class>entidade.GerenteEtapa</class>
     	<class>entidade.SubEtapaColaborador</class>
     	<class>entidade.TarefaColaborador</class>
-    	<class>entidade.Usuario</class>
+    	<class>entidade.ViewGerenteEtapa</class>
+    	<class>entidade.ViewSubEtapaColaborador</class>
+    	<class>entidade.ViewTarefaColaborador</class>
      	
         
         <properties>

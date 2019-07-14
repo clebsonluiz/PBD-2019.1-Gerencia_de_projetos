@@ -1,5 +1,6 @@
 package br.com.pbd2019_1.entidade;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,9 +11,13 @@ import org.hibernate.annotations.Immutable;
 @Table(name = "sub_etapa_colaborador_view")
 public class ViewSubEtapaColaborador extends View{
 	
+	@Column
     private int cod_de_sub_etapa;
+	@Column
     private String nome;
+	@Column
     private String descricao;
+	@Column
     private float porcentagem;
     
 	public String getNome() {return nome;}

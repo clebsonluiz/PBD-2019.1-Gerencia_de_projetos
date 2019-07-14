@@ -2,6 +2,7 @@ package br.com.pbd2019_1.entidade;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -10,9 +11,13 @@ public abstract class View {
 
 	@Id
 	private int id;
+	@Column
     private LocalDateTime data_ingresso;
+	@Column
     private int cod_de_pessoa;
+	@Column
     private String cpf_pessoa;
+	@Column
     private boolean ativado;
     
 	public int getId() {return id;}

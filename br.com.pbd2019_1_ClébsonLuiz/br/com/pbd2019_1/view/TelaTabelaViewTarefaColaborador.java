@@ -6,6 +6,7 @@ import java.awt.Dimension;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
@@ -63,7 +64,8 @@ public class TelaTabelaViewTarefaColaborador extends MeuJPanel {
 		meuJPanel.add(btBuscar);
 		
 		table = new JTable();
-		add(table, BorderLayout.CENTER);
+		JScrollPane jScroll = new JScrollPane(table);
+		add(jScroll, BorderLayout.CENTER);
 		
 		tipoBuscaTodas();
 		buscaEspecificaTudo();
@@ -98,7 +100,10 @@ public class TelaTabelaViewTarefaColaborador extends MeuJPanel {
 	{
 		buscaEspecificaCmbx.setVisible(true);
 		cmptxtNome.setVisible(true);
-		dateChooser.setVisible(false);
+		if(buscaEspecificaCmbx.getSelectedIndex() == 3)
+			dateChooser.setVisible(false);
+		else 
+			dateChooser.setVisible(true);
 	}
 	
 	void buscaEspecificaTudo() 

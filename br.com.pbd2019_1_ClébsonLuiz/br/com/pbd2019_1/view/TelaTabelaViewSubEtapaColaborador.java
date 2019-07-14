@@ -6,6 +6,7 @@ import java.awt.Dimension;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
@@ -47,7 +48,8 @@ public class TelaTabelaViewSubEtapaColaborador extends MeuJPanel {
 		meuJPanel.add(btBuscar);
 
 		table = new JTable();
-		add(table, BorderLayout.CENTER);
+		JScrollPane jScroll = new JScrollPane(table);
+		add(jScroll, BorderLayout.CENTER);
 
 		cmptxtNome.setVisible(false);
 

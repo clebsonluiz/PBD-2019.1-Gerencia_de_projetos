@@ -17,6 +17,9 @@ import br.com.pbd2019_1.business.BOSubEtapaColaborador;
 import br.com.pbd2019_1.business.BOSubTarefa;
 import br.com.pbd2019_1.business.BOTarefa;
 import br.com.pbd2019_1.business.BOTarefaColaborador;
+import br.com.pbd2019_1.business.BOViewGerenteEtapa;
+import br.com.pbd2019_1.business.BOViewSubEtapaColaborador;
+import br.com.pbd2019_1.business.BOViewTarefaColaborador;
 import br.com.pbd2019_1.dao.DAO;
 import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.entidade.CaracteristicaExtra;
@@ -55,6 +58,11 @@ public class Fachada {
 	private BOSubEtapaColaborador boSubEtapaColaborador;
 	private BOGerenteEtapa boGerenteEtapa;
 	
+	private BOViewGerenteEtapa boViewGerenteEtapa;
+	private BOViewSubEtapaColaborador boViewSubEtapaColaborador;
+	private BOViewTarefaColaborador boViewTarefaColaborador;
+	
+	
 	/*Loaders*/
 	public void carregarBo() {this.bo = new BO(new DAO() {}) {};}
 	public void carregarBoEtapa() {this.boEtapa = new BOEtapa();}
@@ -73,7 +81,9 @@ public class Fachada {
 	public void carregarBoSubEtapaColaborador() {this.boSubEtapaColaborador = new BOSubEtapaColaborador();}
 	public void carregarBoGerenteEtapa() {this.boGerenteEtapa = new BOGerenteEtapa();}
 	
-	
+	public void carregarBoViewGerenteEtapa() {this.boViewGerenteEtapa = new BOViewGerenteEtapa();}
+	public void carregarBoViewSubEtapaColaborador() {this.boViewSubEtapaColaborador = new BOViewSubEtapaColaborador();}
+	public void carregarBoViewTarefaColaborador() {this.boViewTarefaColaborador = new BOViewTarefaColaborador();}
 	
 	private  Fachada() {}
 
@@ -305,5 +315,9 @@ public class Fachada {
 	public BOTarefaColaborador getBoTarefaColaborador() {return boTarefaColaborador;}
 	public BOSubEtapaColaborador getBoSubEtapaColaborador() {return boSubEtapaColaborador;}
 	public BOGerenteEtapa getBoGerenteEtapa() {return boGerenteEtapa;}
+	
+	public BOViewGerenteEtapa getBoViewGerenteEtapa() {return boViewGerenteEtapa;}
+	public BOViewSubEtapaColaborador getBoViewSubEtapaColaborador() {return boViewSubEtapaColaborador;}
+	public BOViewTarefaColaborador getBoViewTarefaColaborador() {return boViewTarefaColaborador;}
 	
 }

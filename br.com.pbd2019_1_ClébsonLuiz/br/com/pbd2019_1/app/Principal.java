@@ -160,47 +160,75 @@ public class Principal{
 		
 		Fachada.getInstance().carregarBo();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 5);
+		janelaLoading.etapaAtual("Banco de Dados!", 2);
 		
 		Fachada.getInstance().carregarBoEtapa();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 10);
+		janelaLoading.etapaAtual("Banco de Dados!", 5);
 		
 		Fachada.getInstance().carregarBoBackup();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 15);
+		janelaLoading.etapaAtual("Banco de Dados!", 8);
 		
 		Fachada.getInstance().carregarBoPessoa();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 20);
+		janelaLoading.etapaAtual("Banco de Dados!", 11);
 		
 		Fachada.getInstance().carregarBoTarefa();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 25);
+		janelaLoading.etapaAtual("Banco de Dados!", 13);
 		
 		Fachada.getInstance().carregarBoContato();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 30);
+		janelaLoading.etapaAtual("Banco de Dados!", 16);
 		
 		Fachada.getInstance().carregarBoProjeto();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 35);
+		janelaLoading.etapaAtual("Banco de Dados!", 19);
 		
 		Fachada.getInstance().carregarBoLogUpdate();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 40);
+		janelaLoading.etapaAtual("Banco de Dados!", 22);
 		
 		Fachada.getInstance().carregarBoColaborador();
 		
-		janelaLoading.etapaAtual("Banco de Dados!", 45);
+		janelaLoading.etapaAtual("Banco de Dados!", 25);
 		
 		Fachada.getInstance().carregarBoCaracteristicaExtra();
 		
+		janelaLoading.etapaAtual("Banco de Dados!", 27);
+		
 		Fachada.getInstance().carregarBoSubEtapa();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 30);
+		
 		Fachada.getInstance().carregarBoSubEtapaColaborador();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 33);
+		
 		Fachada.getInstance().carregarBoSubTarefa();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 36);
+		
 		Fachada.getInstance().carregarBoTarefaColaborador();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 38);
+		
 		Fachada.getInstance().carregarBoGerenteEtapa();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 41);
+		
+		Fachada.getInstance().carregarBoViewGerenteEtapa();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 44);
+		
+		Fachada.getInstance().carregarBoViewSubEtapaColaborador();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 47);
+		
+		Fachada.getInstance().carregarBoViewTarefaColaborador();
+		
+		janelaLoading.etapaAtual("Banco de Dados!", 49);
 		
 		janelaLoading.etapaAtual("Banco de Dados Carregado!", 50);
 		janelaLoading.etapaAtual("Janela Principal!", 50);

@@ -27,6 +27,9 @@ import br.com.pbd2019_1.tabelas.TProjeto;
 import br.com.pbd2019_1.tabelas.TSubEtapa;
 import br.com.pbd2019_1.tabelas.TSubTarefa;
 import br.com.pbd2019_1.tabelas.TTarefa;
+import br.com.pbd2019_1.tabelas.TViewGerenteEtapa;
+import br.com.pbd2019_1.tabelas.TViewSubEtapaColaborador;
+import br.com.pbd2019_1.tabelas.TViewTarefaColaborador;
 import br.com.pbd2019_1.view.JIF_Inf_Etp_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_Proj_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_SbEtp_Colab;
@@ -110,8 +113,6 @@ public class Controlador_Principal {
 	private SubEtapa subEtapa_Atual_Colab;
 	private SubTarefa subTarefa_Atual_Colab;
 	
-	private TelaPrincipal telaPrincipal;
-	
 	private JInternal_ColaboradoresEtapa jInternal_ColaboradoresEtapa;
 	private JInternal_ColaboradoresSubEtapa jInternal_ColaboradoresSubEtapa;
 	private JInternal_ColaboradoresTarefa jInternal_ColaboradoresTarefa;
@@ -177,6 +178,10 @@ public class Controlador_Principal {
 	private TSubEtapa tSubEtapaColab;
 	private TSubTarefa tSubTarefaColab;
 	
+	private TViewGerenteEtapa tViewGerenteEtapa;
+	private TViewSubEtapaColaborador tViewSubEtapaColaborador;
+	private TViewTarefaColaborador tViewTarefaColaborador;
+	
 	private Controlador_Info_JInternal_Tela controlador_Info_JInternal_Tela;
 	private Controlador_Cadastro controlador_Cadastro;
 	private Controlador_Backup controlador_Backup;
@@ -188,6 +193,7 @@ public class Controlador_Principal {
 	private Ctrl_Listeners_Projeto ctrl_Listeners_Projeto;
 	private Ctrl_PopUp ctrl_PopUp;
 	private Ctrl_TelaPrincipal ctrl_TelaPrincipal;
+	private Ctrl_JTable_View ctrl_JTable_View;
 	
 	private JanelaPrincipal janelaPrincipal;
 	
@@ -198,7 +204,6 @@ public class Controlador_Principal {
 	
 	public Controlador_Principal(JanelaPrincipal janelaPrincipal) {
 		this.janelaPrincipal = janelaPrincipal;
-		this.telaPrincipal = janelaPrincipal.getTelaPrincipal();
 		this.controlador_Info_JInternal_Tela = new Controlador_Info_JInternal_Tela(this);
 		this.controlador_Cadastro = new Controlador_Cadastro(this);
 		this.controlador_Backup = new Controlador_Backup(this);
@@ -209,6 +214,7 @@ public class Controlador_Principal {
 		this.ctrl_Listeners_Projeto = new Ctrl_Listeners_Projeto(this);
 		this.ctrl_PopUp = new Ctrl_PopUp(this);
 		this.ctrl_TelaPrincipal = new Ctrl_TelaPrincipal(this);
+		this.ctrl_JTable_View = new Ctrl_JTable_View(this);
 	}
 
 	public void adicionarJInternals(JInternal_TelaCadastro_Etapa jInternal_TelaCadastro_Etapa,
@@ -319,7 +325,7 @@ public class Controlador_Principal {
 	
 	public void adicionarJInternalsAoJDesktop()
 	{
-		JDesktopPane desktop = telaPrincipal.getjDesktopPane();
+		JDesktopPane desktop = janelaPrincipal.getTelaPrincipal().getjDesktopPane();
 		jifs.forEach(jInternalAbstract-> desktop.add(jInternalAbstract));
 	}
 
@@ -352,9 +358,13 @@ public class Controlador_Principal {
 		tSubEtapaColab = new TSubEtapa();
 		tSubTarefaColab = new TSubTarefa();
 		
+		tViewGerenteEtapa = new TViewGerenteEtapa();
+		tViewSubEtapaColaborador = new TViewSubEtapaColaborador();
+		tViewTarefaColaborador = new TViewTarefaColaborador();
+		
 		this.controlador_Backup.adicionarTableModel();
 		this.ctrl_PreenchementoTela.adicionarTableModel();;
-		
+		this.ctrl_JTable_View.adicionarTableModels();
 	}
 	
 	public void adicionarEventos()
@@ -368,9 +378,12 @@ public class Controlador_Principal {
 		this.ctrl_Listeners_Projeto.adicionarEventos();;
 		this.ctrl_PopUp.adicionarEventos();;
 		this.ctrl_TelaPrincipal.adicionarEventos();;
+		this.ctrl_JTable_View.adicionarEventos();
 	}
 	
 	public void sair() throws PropertyVetoException {
+		
+		TelaPrincipal telaPrincipal = janelaPrincipal.getTelaPrincipal();
 		
 		telaPrincipal.getTelaLoginSistema().getLoginField().setText("");
 		telaPrincipal.getTelaLoginSistema().getSenhaField().setText("");
@@ -460,6 +473,10 @@ public class Controlador_Principal {
 	public TColaboracoes gettColaboracoes() {return tColaboracoes;}
 	public TCaracteristicaExtra gettCaracteristicaExtra() {return tCaracteristicaExtra;}
 	public TCaracteristicaExtra gettCaracteristicaExtra2() {return tCaracteristicaExtra2;}
+
+	public TViewGerenteEtapa gettViewGerenteEtapa() {return tViewGerenteEtapa;}
+	public TViewSubEtapaColaborador gettViewSubEtapaColaborador() {return tViewSubEtapaColaborador;}
+	public TViewTarefaColaborador gettViewTarefaColaborador() {return tViewTarefaColaborador;}
 
 	public Etapa getEtapa_Atual() {return etapa_Atual;}
 	public Tarefa getTarefa_Atual() {return tarefa_Atual;}

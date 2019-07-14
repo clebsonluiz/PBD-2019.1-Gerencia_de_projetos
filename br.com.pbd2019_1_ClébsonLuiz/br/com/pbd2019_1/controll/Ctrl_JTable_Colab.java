@@ -191,7 +191,7 @@ public class Ctrl_JTable_Colab {
 					}
 					else if (table.getModel() instanceof TColaborador)
 					{
-						if(coluna == 3) 
+						if(coluna == 2) 
 						{
 							try 
 							{

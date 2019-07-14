@@ -190,7 +190,7 @@ public class BOPessoa extends BOGenerico<Pessoa>{
 		cpf = UserUtil.DocumentoUtil.removerCaracteresEspeciais(cpf);
 		
 		
-		if(!(senha.length() > 6 && senha.length() < 11))
+		if((senha.length() > 6 && senha.length() < 11))
 		{
 			try
 			{

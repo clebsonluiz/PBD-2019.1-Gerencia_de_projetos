@@ -2,6 +2,7 @@ package br.com.pbd2019_1.entidade;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,11 +13,17 @@ import org.hibernate.annotations.Immutable;
 @Table(name = "tarefa_colaborador_view")
 public class ViewTarefaColaborador extends View
 {
+	@Column
     private int cod_de_tarefa;
+	@Column
     private String nome;
+	@Column
     private String descricao;
+	@Column
     private boolean concluida;
+	@Column
     private LocalDateTime horario;
+	@Column
     private String prioridade;
     
 	public int getCod_de_tarefa() {return cod_de_tarefa;}
