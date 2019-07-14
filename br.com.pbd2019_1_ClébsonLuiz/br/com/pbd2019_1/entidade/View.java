@@ -18,6 +18,8 @@ public abstract class View {
 	@Column
     private String cpf_pessoa;
 	@Column
+	private int cod_de_projeto;
+	@Column
     private boolean ativado;
     
 	public int getId() {return id;}
@@ -31,5 +33,7 @@ public abstract class View {
 	public void setCpf_pessoa(String cpf_pessoa) {this.cpf_pessoa = cpf_pessoa;}
 	public void setCod_de_pessoa(int cod_de_pessoa) {this.cod_de_pessoa = cod_de_pessoa;}
 	public void setData_ingresso(LocalDateTime data_ingresso) {this.data_ingresso = data_ingresso;}
-    
+	public int getCod_de_projeto() {return cod_de_projeto;}
+	public void setCod_de_projeto(int cod_de_projeto) {this.cod_de_projeto = cod_de_projeto;}
+	
 }

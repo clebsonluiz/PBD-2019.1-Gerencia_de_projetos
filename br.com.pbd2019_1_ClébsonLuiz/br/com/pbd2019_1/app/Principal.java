@@ -5,12 +5,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
-import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -22,7 +18,6 @@ import br.com.pbd2019_1.dao.DAOConfigDefault;
 import br.com.pbd2019_1.dao.DAOResBackup;
 import br.com.pbd2019_1.entidade.Backup;
 import br.com.pbd2019_1.entidade.ConfigDefault;
-import br.com.pbd2019_1.entidade.LogUpdate;
 import br.com.pbd2019_1.exception.BOException;
 import br.com.pbd2019_1.exception.DAOException;
 import br.com.pbd2019_1.exception.ValidacaoException;
@@ -33,12 +28,10 @@ import br.com.pbd2019_1.view.JIF_Inf_Proj_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_SbEtp_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_SbTarf_Colab;
 import br.com.pbd2019_1.view.JIF_Inf_Tarf_Colab;
-import br.com.pbd2019_1.view.JInternal_Backup_Efetuando;
 import br.com.pbd2019_1.view.JInternal_ColaboradoresEtapa;
 import br.com.pbd2019_1.view.JInternal_ColaboradoresSubEtapa;
 import br.com.pbd2019_1.view.JInternal_ColaboradoresTarefa;
 import br.com.pbd2019_1.view.JInternal_InfoLog;
-import br.com.pbd2019_1.view.JInternal_Sobre;
 import br.com.pbd2019_1.view.JInternal_TabelaLogs;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoas;
 import br.com.pbd2019_1.view.JInternal_TabelaPessoasColaboradores;
@@ -71,78 +64,9 @@ public class Principal{
 //	static Long tempoEntreVerificacao = (60000l * 30l); //30 min
 	static Long tempoEntreVerificacao = (60000l * 1l); //1 min
 	static Long tempo1dia = (60000l * 60l) * 24l;
-//	static Long tempo1dia = (60000l * 60l);
 	static Long tempoEspera = 0l;
 	
 	public static void main(String[] args) throws FileNotFoundException, DocumentException, BOException, DAOException {
-		
-//		Fachada.getInstance().carregarBo();
-		
-/*		
-		List<String> antes = new ArrayList<>();
-		List<String> depois = new ArrayList<>();
-		List<String> coluna = new ArrayList<>();
-		
-		Collections.addAll(antes, "", "", "", "");
-		Collections.addAll(depois, "Novo 1", "Novo 2", "Novo 3", "Novo 4");
-		Collections.addAll(coluna, "coluna1", "coluna2", "coluna3", "coluna4");
-		
-		
-		LogUpdate log = new LogUpdate();
-		
-		
-		log.setAntes(antes);
-		log.setDepois(depois);
-		log.setColuna(coluna);
-		log.setData_log(LocalDateTime.now());
-		log.setTipo("Cadastro");
-		log.setTabela("Pessoa");
-		log.setId_tabela(1);
-		log.setResponsavel("11629633445");
-		
-		Fachada.getInstance().carregarBoLogUpdate();
-		Fachada.getInstance().getBoLogUpdate().inserir(log);
-		
-		
-		LogUpdate log2 = Fachada.getInstance().getBoLogUpdate().buscar(log.getId());
-		System.out.println("\n\nImprimir");
-		System.out.println(log2.toString());*/
-		
-/*
-		Fachada.getInstance().carregarBoProjeto();
-		Fachada.getInstance().carregarBoEtapa();
-		Fachada.getInstance().carregarBoTarefa();
-		Fachada.getInstance().carregarBoColaborador();
-		
-		
-		
-		Pessoa pessoa = new Pessoa();
-		pessoa.setId(1);
-		
-		Projeto projeto = Fachada.getInstance().getBoProjeto().buscarPorPessoa(pessoa).get(4);
-		
-		projeto.setColaboradores(
-				Fachada.getInstance().getBoColaborador().buscarPorProjeto(projeto)
-				);
-		projeto.setEtapas(
-				Fachada.getInstance().getBoEtapa().buscarPorProjeto(projeto)
-				);
-		
-		projeto.getEtapas().forEach(etapa->{
-			try 
-			{
-				etapa.setTarefas(					
-						Fachada.getInstance().getBoTarefa().buscarPorEtapa(etapa)
-						);
-			} catch (DAOException e) {e.printStackTrace();}
-		});
-		
-		
-		DAOResRelatorio.getInstance().gerarRelatorio(2 , projeto, "C:\\Users\\Aluno.WIN-OT9K4KMKI2A\\Desktop\\TesteRelatorio.pdf");
-		
-		System.exit(0);
-*/
-
 		
 		UIManager.put("DesktopPaneUI","javax.swing.plaf.basic.BasicDesktopPaneUI");
 		
@@ -348,7 +272,6 @@ public class Principal{
 		janela.setVisible(true);
 		
 		
-		/*
 		new Thread(()->
 		{
 			while(true)
@@ -414,7 +337,6 @@ public class Principal{
 				}
 			}
 		}).start();
-		*/
 		
 	}
 	

@@ -1,7 +1,5 @@
 package br.com.pbd2019_1.tabelas;
 
-import java.text.SimpleDateFormat;
-
 import br.com.pbd2019_1.entidade.Backup;
 
 public class TBackup extends TGenerica<Backup>{
@@ -15,7 +13,7 @@ public class TBackup extends TGenerica<Backup>{
 	public Object getValueAt(int linha, int coluna) {
 		switch (coluna) {
 		case 0:
-			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getList().get(linha).getData_backup());
+			return getList().get(linha).getData_backup();
 		case 1:
 			return getList().get(linha).getStatus_backup();
 		case 2:

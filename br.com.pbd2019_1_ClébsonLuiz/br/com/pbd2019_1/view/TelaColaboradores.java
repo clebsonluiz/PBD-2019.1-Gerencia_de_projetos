@@ -19,7 +19,7 @@ public class TelaColaboradores extends JPanel {
 		setMinimumSize(new Dimension(510, 175));
 		setPreferredSize(new Dimension(510, 175));
 		setLayout(new BorderLayout(0, 0));
-		setBorder(ViewUtil.Bordas.criarBordaTitulo("Colaboradores"));
+//		setBorder(ViewUtil.Bordas.criarBordaTitulo("Colaboradores"));
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		

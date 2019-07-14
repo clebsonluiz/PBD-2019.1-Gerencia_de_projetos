@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import br.com.pbd2019_1.entidade.Etapa;
+import br.com.pbd2019_1.entidade.Projeto;
 import br.com.pbd2019_1.entidade.SubEtapa;
 import br.com.pbd2019_1.entidade.Tarefa;
 import br.com.pbd2019_1.entidade.ViewGerenteEtapa;
@@ -188,6 +189,10 @@ public class Ctrl_JTable_View
 			ctrl_P.setEtapa_Atual((Etapa)
 					Fachada.getInstance().buscar(Etapa.class, vg.getCod_de_etapa())
 					);
+			Projeto projeto = new Projeto();
+			projeto.setId(vg.getCod_de_projeto());
+			ctrl_P.setProjeto_Atual(projeto);
+			
 			ctrl_P.getCtrl_PreenchementoTela().exibirMinhaColaboracaoGerenteEtapa(ctrl_P.getEtapa_Atual());
 		}
 		catch (ValidacaoException e) 
@@ -207,6 +212,10 @@ public class Ctrl_JTable_View
 			ctrl_P.setSubEtapa_Atual((SubEtapa)
 					Fachada.getInstance().buscar(SubEtapa.class, vs.getCod_de_sub_etapa())
 					);
+			Projeto projeto = new Projeto();
+			projeto.setId(vs.getCod_de_projeto());
+			ctrl_P.setProjeto_Atual(projeto);
+			
 			ctrl_P.getCtrl_PreenchementoTela().exibirMinhaColaboracaoSubEtapa(ctrl_P.getSubEtapa_Atual());
 		}
 		catch (ValidacaoException e) 
@@ -226,6 +235,10 @@ public class Ctrl_JTable_View
 			ctrl_P.setTarefa_Atual((Tarefa)
 					Fachada.getInstance().buscar(Tarefa.class, vt.getCod_de_tarefa())
 					);
+			Projeto projeto = new Projeto();
+			projeto.setId(vt.getCod_de_projeto());
+			ctrl_P.setProjeto_Atual(projeto);
+			
 			ctrl_P.getCtrl_PreenchementoTela().exibirMinhaColaboracaoTarefa(ctrl_P.getTarefa_Atual());
 		}
 		catch (ValidacaoException e) 
