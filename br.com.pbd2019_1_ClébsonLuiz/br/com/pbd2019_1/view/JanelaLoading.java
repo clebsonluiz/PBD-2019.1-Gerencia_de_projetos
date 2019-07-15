@@ -31,8 +31,9 @@ public class JanelaLoading extends JFrame {
 		setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel(null);
+		panel.setBackground(Color.WHITE);
 		
-		add(panel, BorderLayout.CENTER);
+		getContentPane().add(panel, BorderLayout.CENTER);
 		
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
@@ -44,12 +45,12 @@ public class JanelaLoading extends JFrame {
 		
 		labelEtapa = new JLabel("Carregando:...");
 		labelEtapa.setFont(fonteCarregamento);
-		labelEtapa.setForeground(Color.white);
+		labelEtapa.setForeground(Color.BLUE);
 		labelEtapa.setBounds(6, 215, 388, 30);
 		panel.add(labelEtapa);
 		
 		JLabel label = new JLabel("");
-		label.setIcon(ViewUtil.Icones.IMAGEM_CARREGAMENTO);
+		label.setIcon(ViewUtil.Icones.IMAGEM_LOGO_PROJETO_1);
 		label.setBounds(0, 0, getWidth(), getHeight());
 		panel.add(label);
 	}
