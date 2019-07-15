@@ -182,9 +182,9 @@ public class Controlador_Principal {
 	private TViewSubEtapaColaborador tViewSubEtapaColaborador;
 	private TViewTarefaColaborador tViewTarefaColaborador;
 	
-	private Controlador_Info_JInternal_Tela controlador_Info_JInternal_Tela;
-	private Controlador_Cadastro controlador_Cadastro;
-	private Controlador_Backup controlador_Backup;
+	private Ctrl_Info_JInternal_Tela controlador_Info_JInternal_Tela;
+	private Ctrl_Cadastro controlador_Cadastro;
+	private Ctrl_Backup controlador_Backup;
 	private Ctrl_JInternal_SQL ctrl_JInternal_SQL;
 	
 	private Ctrl_PreenchementoTela ctrl_PreenchementoTela;
@@ -204,9 +204,9 @@ public class Controlador_Principal {
 	
 	public Controlador_Principal(JanelaPrincipal janelaPrincipal) {
 		this.janelaPrincipal = janelaPrincipal;
-		this.controlador_Info_JInternal_Tela = new Controlador_Info_JInternal_Tela(this);
-		this.controlador_Cadastro = new Controlador_Cadastro(this);
-		this.controlador_Backup = new Controlador_Backup(this);
+		this.controlador_Info_JInternal_Tela = new Ctrl_Info_JInternal_Tela(this);
+		this.controlador_Cadastro = new Ctrl_Cadastro(this);
+		this.controlador_Backup = new Ctrl_Backup(this);
 		this.ctrl_JInternal_SQL = new Ctrl_JInternal_SQL(this);
 		this.ctrl_PreenchementoTela = new Ctrl_PreenchementoTela(this);
 		this.ctrl_JTable = new Ctrl_JTable(this);
@@ -427,9 +427,9 @@ public class Controlador_Principal {
 	public JInternal_TelaInfoSubEtapa getjInternal_TelaInfoSubEtapa() {return jInternal_TelaInfoSubEtapa;}
 	public JInternal_TelaInfoSubTarefa getjInternal_TelaInfoSubTarefa() {return jInternal_TelaInfoSubTarefa;}
 
-	public Controlador_Info_JInternal_Tela getControlador_Info_JInternal_Tela() {return controlador_Info_JInternal_Tela;}
-	public Controlador_Cadastro getControlador_Cadastro() {return controlador_Cadastro;}
-	public Controlador_Backup getControlador_Backup() {return controlador_Backup;}
+	public Ctrl_Info_JInternal_Tela getControlador_Info_JInternal_Tela() {return controlador_Info_JInternal_Tela;}
+	public Ctrl_Cadastro getControlador_Cadastro() {return controlador_Cadastro;}
+	public Ctrl_Backup getControlador_Backup() {return controlador_Backup;}
 	public Ctrl_PreenchementoTela getCtrl_PreenchementoTela() {return ctrl_PreenchementoTela;}
 
 	public SubEtapa getSubEtapa_Atual() {return subEtapa_Atual;}

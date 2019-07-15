@@ -25,6 +25,7 @@ public class JIF_Reset_Senha extends JInternalAbstract {
 		super("Senha Resetada");
 		setResizable(false);
 		setIconifiable(false);
+		setMaximizable(false);
 		setPreferredSize(new Dimension(300, 300));
 		setMinimumSize(getPreferredSize());
 		setSize(new Dimension(300, 220));

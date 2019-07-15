@@ -1,13 +1,11 @@
 package br.com.pbd2019_1.view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import br.com.pbd2019_1.utils.ViewUtil;
 
 public class TelaColaboradores extends JPanel {
 

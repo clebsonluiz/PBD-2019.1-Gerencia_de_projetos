@@ -77,7 +77,7 @@ public class TelaPrincipal extends JPanel {
 			telaCadastro_Pessoa.limparCampos();
 		});
 		
-		Botao btn = new Botao("Cancelar", Color.RED.brighter());
+		Botao btn = new Botao("Voltar", Color.RED.brighter());
 		btn.setFont(ViewUtil.Fonts.Arial.ARIAL_MEDIO_B);
 		btn.setForeground(Color.WHITE);
 		

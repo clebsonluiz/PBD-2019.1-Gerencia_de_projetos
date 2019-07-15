@@ -34,14 +34,14 @@ import br.com.pbd2019_1.view.JanelaPrincipal;
 import br.com.pbd2019_1.view.MeuJDialog;
 import br.com.pbd2019_1.view.MeuJFileChooser;
 
-public class Controlador_Backup implements Observer, ActionListener{
+public class Ctrl_Backup implements Observer, ActionListener{
 
 	
 	private Controlador_Principal ctrl_P;
 	private JInternal_TelaBackups jInternal_TelaBackups;
 	private TBackup tBackup;
 	
-	public Controlador_Backup(Controlador_Principal controlador_Principal) {
+	public Ctrl_Backup(Controlador_Principal controlador_Principal) {
 		this.ctrl_P = controlador_Principal;
 	}
 

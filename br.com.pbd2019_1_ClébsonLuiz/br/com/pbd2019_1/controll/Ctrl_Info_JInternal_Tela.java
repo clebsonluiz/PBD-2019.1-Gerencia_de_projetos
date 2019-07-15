@@ -27,11 +27,11 @@ import br.com.pbd2019_1.view.TelaContatoCaracteristica;
 import br.com.pbd2019_1.view.TelaMiniPessoa1;
 import br.com.pbd2019_1.view.TelaMiniPessoa2;
 
-public class Controlador_Info_JInternal_Tela {
+public class Ctrl_Info_JInternal_Tela {
 
 	private Controlador_Principal ctrl_P;
 	
-	public Controlador_Info_JInternal_Tela(Controlador_Principal controlador_Principal) {
+	public Ctrl_Info_JInternal_Tela(Controlador_Principal controlador_Principal) {
 		this.ctrl_P = controlador_Principal;
 	}
 	

@@ -34,11 +34,11 @@ import br.com.pbd2019_1.view.TelaEtapa;
 import br.com.pbd2019_1.view.TelaInfoSubEtapa;
 import br.com.pbd2019_1.view.TelaProjeto;
 
-public class Controlador_Cadastro {
+public class Ctrl_Cadastro {
 	
 	private Controlador_Principal ctrl_P;
 	
-	public Controlador_Cadastro(Controlador_Principal ctrl_P) {
+	public Ctrl_Cadastro(Controlador_Principal ctrl_P) {
 		this.ctrl_P = ctrl_P;
 	}
 	
