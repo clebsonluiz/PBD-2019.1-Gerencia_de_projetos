@@ -82,9 +82,9 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 		else if(entidade instanceof Tarefa)
 			inserirLogTarefa(log, (Tarefa) entidade);
 		else if(entidade instanceof SubEtapa)
-			log.setTabela(SubEtapa.class.getSimpleName());
+			inserirLogSubEtapa(log, (SubEtapa) entidade);
 		else if(entidade instanceof SubTarefa)
-			log.setTabela(SubTarefa.class.getSimpleName());
+			inserirLogSubTarefa(log, (SubTarefa) entidade);
 	}
 	
 	public void gerarLogUpdate(List<String> antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
@@ -112,9 +112,9 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 		else if(entidade instanceof Tarefa)
 			updateLogTarefa(log, (Tarefa) entidade);
 		else if(entidade instanceof SubEtapa)
-			log.setTabela(SubEtapa.class.getSimpleName());
+			updateLogSubEtapa(log, (SubEtapa) entidade);
 		else if(entidade instanceof SubTarefa)
-			log.setTabela(SubTarefa.class.getSimpleName());
+			updateLogSubTarefa(log, (SubTarefa) entidade);
 	}
 	
 	public void gerarLogDelete(List<String> antes, Entidade entidade, Pessoa responsavel, LogUpdate log) 
@@ -155,6 +155,12 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(ta));
 		inserir(log);
 	}
+	
+	private void updateLogSubTarefa(LogUpdate log, SubTarefa ta) throws BOException, DAOException {
+		log.setTabela(SubTarefa.class.getSimpleName());
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(ta));
+		inserir(log);
+	}
 
 	private void updateLogProjeto(LogUpdate log, Projeto pro) throws BOException, DAOException {
 		log.setTabela(Projeto.class.getSimpleName());
@@ -174,6 +180,12 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 		inserir(log);
 	}
 
+	private void updateLogSubEtapa(LogUpdate log, SubEtapa e) throws BOException, DAOException {
+		log.setTabela(SubEtapa.class.getSimpleName());
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(e));
+		inserir(log);
+	}
+	
 	private void updateLogContato(LogUpdate log, Contato co) throws BOException, DAOException {
 		log.setTabela(Contato.class.getSimpleName());
 		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(co));
@@ -206,9 +218,23 @@ public class BOLogUpdate extends BOGenerico<LogUpdate>{
 		inserir(log);
 	}
 	
+	private void inserirLogSubTarefa(LogUpdate log, SubTarefa ta) throws BOException, DAOException
+	{
+		log.setTabela(SubTarefa.class.getSimpleName());
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(ta));
+		inserir(log);
+	}
+	
 	private void inserirLogEtapa(LogUpdate log, Etapa e) throws BOException, DAOException
 	{
 		log.setTabela(Etapa.class.getSimpleName());
+		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(e));
+		inserir(log);
+	}
+	
+	private void inserirLogSubEtapa(LogUpdate log, SubEtapa e) throws BOException, DAOException
+	{
+		log.setTabela(SubEtapa.class.getSimpleName());
 		log.setDepois(LogUpdateUtil.GerarLog.gerarLog(e));
 		inserir(log);
 	}

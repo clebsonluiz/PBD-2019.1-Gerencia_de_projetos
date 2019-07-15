@@ -42,7 +42,7 @@ public class TelaPesquisaLog extends JPanel {
 		add(tipoComboBox);
 		
 		tabelaComboBox = new JComboBox<String>();
-		tabelaComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TODAS", "PESSOA", "COLABORADOR", "CONTATO", "CARACTERISTICA", "PROJETO", "ETAPA", "TAREFA"}));
+		tabelaComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"TODAS", "PESSOA", "COLABORADOR", "CONTATO", "CARACTERISTICA", "PROJETO", "ETAPA", "TAREFA", "SUBETAPA", "SUBTAREFA"}));
 		tabelaComboBox.setPreferredSize(new Dimension(120, 40));
 		add(tabelaComboBox);
 		
